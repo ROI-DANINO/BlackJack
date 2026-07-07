@@ -12,13 +12,13 @@ settlement, outcomes, and replayable logs.
 2. Done: run the stack spike in `docs/specs/stack-boundaries.md` and decide the simulator-core boundary.
 3. Done: replace the worker implementation plan with
    `docs/superpowers/plans/2026-07-07-rust-free-play-simulator-core.md`.
-4. Build the core model: card, deck, shoe, ruleset, session, table, seat, dealer, round, hand, bet.
-5. Add seeded Fisher-Yates shuffle and shoe penetration handling.
-6. Implement initial deal, legal actions, hit, stand, double, split, dealer play, outcome
+4. Done: build the core model: card, deck, shoe, ruleset, session, table, seat, dealer, round, hand, bet.
+5. Done: add seeded Fisher-Yates shuffle and shoe penetration handling.
+6. Done: implement initial deal, legal actions, hit, stand, double, split, dealer play, outcome
    resolution, discard, bankroll settlement, and next round.
-7. Add round/session logs with seed, ruleset, shoe, card IDs, actions, bets, outcomes,
+7. Done: add round/session logs with seed, ruleset, shoe, card IDs, actions, bets, outcomes,
    bankroll deltas, and penetration state.
-8. Put a simple Free Play UI on top of the engine.
+8. Next: put a thin Free Play UI on top of the engine across the JSON/WASM-ready boundary.
 
 ## Locked Ruleset Summary
 - 6-deck shoe game.

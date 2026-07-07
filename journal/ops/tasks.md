@@ -9,7 +9,7 @@
 - [x] Draft the implementation plan in `docs/plans/`.
 - [x] Run the stack-boundary spike from `docs/specs/stack-boundaries.md` before simulator-core code.
 - [x] Rewrite or replace the worker implementation plan after the stack decision.
-- [ ] Implement the Rust Free Play simulator core from `docs/superpowers/plans/2026-07-07-rust-free-play-simulator-core.md`.
+- [x] Implement the Free Play skeleton simulator core from `docs/plans/v1-simulation-foundations.md`.
 
 ## Ideas
 - Original draft notes are indexed under `docs/imports/initial-product-notes/`.

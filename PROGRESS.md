@@ -8,7 +8,7 @@
 - V1 ruleset locked: 6-deck H17 DAS no-surrender peek, 3:2 blackjack, 75% default penetration.
 
 ## In progress
-- V1 Simulation Foundations: Rust simulator core plan is ready; next implement it task-by-task.
+- V1 Simulation Foundations: Rust simulator core implemented; next plan the TypeScript UI bridge over the JSON/WASM-ready boundary.
 
 ## Open questions
 - How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?
