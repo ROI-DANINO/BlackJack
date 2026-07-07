@@ -12,5 +12,5 @@ sessions:
 detour: []
 blocking: null
 next: "Build the TypeScript UI bridge over the JSON/WASM-ready core boundary."
-note: "Milestone closed by journal/ops/sessions/the-extraction-and-the-mend-2026-07-07T0928.md: Rust free-play core done (Tasks 1-6) + final review remediated (dealer-terminal draw, shoe reshuffle, ruleset validation); 44 tests green; blackjack extracted to its own repo. Craft gate FAIL-minor (Water) deferred: RoundLog lacks full custom-ruleset config — enrich before custom rulesets reach the UI."
+note: "Milestone closed by journal/ops/sessions/the-extraction-and-the-mend-2026-07-07T0928.md: Rust free-play core done (Tasks 1-6) + final review remediated (dealer-terminal draw, shoe reshuffle, ruleset validation); blackjack extracted to its own repo. Craft-gate Water finding resolved same session — RoundLog now carries the full Ruleset (commit 1c59fd7); all four criteria met, 45 tests green."
 ---
