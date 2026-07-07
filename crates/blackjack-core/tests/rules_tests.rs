@@ -85,3 +85,19 @@ fn split_aces_with_one_card_are_complete_when_rule_is_enabled() {
 
     assert_eq!(legal_actions(&hand, &v1_h17_ruleset(), 1, 100), Vec::new());
 }
+
+#[test]
+fn split_non_ace_hand_that_draws_an_ace_still_has_legal_actions() {
+    let hand = HandState {
+        cards: vec![card(Rank::Eight, "8"), card(Rank::Ace, "a")],
+        wager: 25,
+        is_complete: false,
+        is_doubled: false,
+        source: HandSource::Split,
+    };
+
+    assert_eq!(
+        legal_actions(&hand, &v1_h17_ruleset(), 1, 100),
+        vec![Action::Hit, Action::Stand, Action::Double]
+    );
+}

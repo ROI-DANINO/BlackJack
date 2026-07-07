@@ -62,7 +62,7 @@ pub fn legal_actions(
     if ruleset.split_aces_receive_one_card
         && matches!(hand.source, HandSource::Split)
         && hand.cards.len() == 2
-        && hand.cards.iter().any(|card| matches!(card.rank, Rank::Ace))
+        && matches!(hand.cards[0].rank, Rank::Ace)
     {
         return Vec::new();
     }
