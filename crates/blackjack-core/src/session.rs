@@ -14,11 +14,9 @@ pub fn start_session(
     if bankroll < 0 {
         return Err("bankroll must be non-negative".to_string());
     }
-    if default_bet <= 0 {
-        return Err("default_bet must be positive".to_string());
-    }
 
     let ruleset = ruleset.unwrap_or_else(v1_h17_ruleset);
+    validate_bet(default_bet, "default_bet", &ruleset)?;
     let shoe = create_shoe(ruleset.decks, seed, ruleset.penetration_percent, 1)?;
 
     Ok(SessionState {
@@ -42,9 +40,7 @@ pub fn start_round(session: &mut SessionState, bet: Option<i32>) -> Result<(), S
     }
 
     let bet = bet.unwrap_or(session.default_bet);
-    if bet <= 0 {
-        return Err("bet must be positive".to_string());
-    }
+    validate_bet(bet, "bet", &session.ruleset)?;
     if session.bankroll < bet {
         return Err("insufficient bankroll".to_string());
     }
@@ -209,23 +205,26 @@ fn split_hand(session: &mut SessionState) -> Result<(), String> {
         hand_index,
         card_id: None,
     });
-    Ok(())
+    sync_player_turn(session)
 }
 
 fn advance_hand(session: &mut SessionState) -> Result<(), String> {
-    let round = active_round_mut(session)?;
-    if let Some(next_index) = round
-        .hands
-        .iter()
-        .enumerate()
-        .skip(round.active_hand_index + 1)
-        .find_map(|(index, hand)| (!hand.is_complete).then_some(index))
     {
-        round.active_hand_index = next_index;
-        return Ok(());
+        let round = active_round_mut(session)?;
+        if let Some(next_index) = round
+            .hands
+            .iter()
+            .enumerate()
+            .skip(round.active_hand_index + 1)
+            .find_map(|(index, hand)| (!hand.is_complete).then_some(index))
+        {
+            round.active_hand_index = next_index;
+        } else {
+            return resolve_dealer_and_round(session);
+        }
     }
 
-    resolve_dealer_and_round(session)
+    sync_player_turn(session)
 }
 
 fn resolve_dealer_and_round(session: &mut SessionState) -> Result<(), String> {
@@ -319,7 +318,7 @@ fn settle_hands(hands: &[HandState], dealer_cards: &[Card], ruleset: &Ruleset) -
                     hand_index,
                     result: OutcomeResult::Blackjack,
                     wager: hand.wager,
-                    delta: (hand.wager as f32 * ruleset.blackjack_payout) as i32,
+                    delta: blackjack_delta(hand.wager, ruleset),
                 };
             }
             if score.is_bust {
@@ -365,6 +364,69 @@ fn deal_initial_card(
     target.push(card.clone());
     dealt_cards.push(card);
     Ok(())
+}
+
+fn sync_player_turn(session: &mut SessionState) -> Result<(), String> {
+    loop {
+        let should_complete = {
+            let round = active_round(session)?;
+            let hand = round
+                .hands
+                .get(round.active_hand_index)
+                .ok_or_else(|| "active hand missing".to_string())?;
+            if hand.is_complete {
+                false
+            } else {
+                let committed: i32 = round.hands.iter().map(|item| item.wager).sum();
+                legal_actions(
+                    hand,
+                    &session.ruleset,
+                    round.hands.len(),
+                    session.bankroll - committed,
+                )
+                .is_empty()
+            }
+        };
+
+        if !should_complete {
+            return Ok(());
+        }
+
+        {
+            let round = active_round_mut(session)?;
+            round.hands[round.active_hand_index].is_complete = true;
+        }
+        advance_hand(session)?;
+        if session
+            .round
+            .as_ref()
+            .is_some_and(|round| round.status == RoundStatus::Resolved)
+        {
+            return Ok(());
+        }
+    }
+}
+
+fn validate_bet(bet: i32, name: &str, ruleset: &Ruleset) -> Result<(), String> {
+    if bet <= 0 {
+        return Err(format!("{name} must be positive"));
+    }
+    if uses_three_to_two_blackjack(ruleset) && bet % 2 != 0 {
+        return Err("bet must be divisible by 2 for 3:2 blackjack payout".to_string());
+    }
+    Ok(())
+}
+
+fn uses_three_to_two_blackjack(ruleset: &Ruleset) -> bool {
+    (ruleset.blackjack_payout - 1.5).abs() < f32::EPSILON
+}
+
+fn blackjack_delta(wager: i32, ruleset: &Ruleset) -> i32 {
+    if uses_three_to_two_blackjack(ruleset) {
+        wager * 3 / 2
+    } else {
+        (wager as f32 * ruleset.blackjack_payout).round() as i32
+    }
 }
 
 fn active_round(session: &SessionState) -> Result<&RoundState, String> {

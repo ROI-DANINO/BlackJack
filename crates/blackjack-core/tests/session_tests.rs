@@ -5,7 +5,7 @@ use std::collections::HashSet;
 
 #[test]
 fn plays_complete_seeded_round_and_logs_dealt_cards() {
-    let mut session = start_session("complete-round", 1000, 25, None).expect("session");
+    let mut session = start_session("complete-round", 10_000, 2_500, None).expect("session");
     start_round(&mut session, None).expect("round");
 
     while session
@@ -40,7 +40,7 @@ fn plays_complete_seeded_round_and_logs_dealt_cards() {
 
 #[test]
 fn rejects_round_when_bankroll_cannot_cover_bet() {
-    let mut session = start_session("poor", 5, 25, None).expect("session");
+    let mut session = start_session("poor", 5, 50, None).expect("session");
     assert_eq!(
         start_round(&mut session, None).expect_err("insufficient"),
         "insufficient bankroll"
@@ -52,7 +52,7 @@ fn logs_auto_declined_insurance_when_dealer_shows_ace_seed_allows_it() {
     let mut found = None;
     for index in 0..500 {
         let seed = format!("ace-up-{index}");
-        let mut session = start_session(&seed, 1000, 25, None).expect("session");
+        let mut session = start_session(&seed, 10_000, 2_500, None).expect("session");
         start_round(&mut session, None).expect("round");
         if session
             .round
@@ -71,7 +71,7 @@ fn logs_auto_declined_insurance_when_dealer_shows_ace_seed_allows_it() {
 
 #[test]
 fn can_double_and_settle_bankroll() {
-    let mut session = start_session("double-seed", 1000, 25, None).expect("session");
+    let mut session = start_session("double-seed", 10_000, 2_500, None).expect("session");
     start_round(&mut session, None).expect("round");
 
     if current_legal_actions(&session)
@@ -80,6 +80,71 @@ fn can_double_and_settle_bankroll() {
     {
         apply_action(&mut session, Action::Double).expect("double");
         let log = session.logs.first().expect("log");
-        assert!(log.outcomes.iter().any(|outcome| outcome.wager == 50));
+        assert!(log.outcomes.iter().any(|outcome| outcome.wager == 5_000));
     }
+}
+
+#[test]
+fn rejects_odd_bets_for_three_to_two_blackjack_payout() {
+    let error = "bet must be divisible by 2 for 3:2 blackjack payout";
+
+    assert_eq!(
+        start_session("odd-default", 10_000, 25, None).expect_err("odd default bet"),
+        error
+    );
+
+    let mut session = start_session("odd-round", 10_000, 2_500, None).expect("session");
+    assert_eq!(
+        start_round(&mut session, Some(25)).expect_err("odd round bet"),
+        error
+    );
+}
+
+#[test]
+fn split_aces_round_does_not_get_stuck_with_no_legal_actions() {
+    let mut found = None;
+
+    for index in 0..10_000 {
+        let seed = format!("split-aces-{index}");
+        let mut session = start_session(&seed, 10_000, 2_500, None).expect("session");
+        start_round(&mut session, None).expect("round");
+
+        let round = session.round.as_ref().expect("round");
+        let hand = &round.hands[0];
+        if round.status == RoundStatus::PlayerTurn
+            && hand.cards.len() == 2
+            && hand.cards[0].rank == blackjack_core::Rank::Ace
+            && hand.cards[1].rank == blackjack_core::Rank::Ace
+            && current_legal_actions(&session)
+                .expect("legal actions")
+                .contains(&Action::Split)
+        {
+            let original_ids = [hand.cards[0].card_id.clone(), hand.cards[1].card_id.clone()];
+            found = Some((session, original_ids));
+            break;
+        }
+    }
+
+    let (mut session, original_ids) = found.expect("seed with pair of aces");
+    apply_action(&mut session, Action::Split).expect("split");
+
+    let round = session.round.as_ref().expect("round");
+    assert_eq!(round.hands.len(), 2);
+    assert_eq!(round.hands[0].cards[0].card_id, original_ids[0]);
+    assert_eq!(round.hands[1].cards[0].card_id, original_ids[1]);
+
+    if round.status == RoundStatus::Resolved {
+        assert!(!session.logs.is_empty());
+        return;
+    }
+
+    assert_eq!(round.status, RoundStatus::PlayerTurn);
+    assert!(round.active_hand_index < round.hands.len());
+    assert!(!round.hands[round.active_hand_index].is_complete);
+    assert!(
+        !current_legal_actions(&session)
+            .expect("legal actions after split")
+            .is_empty(),
+        "split hand got stuck with no legal actions"
+    );
 }
