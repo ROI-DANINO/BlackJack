@@ -56,6 +56,20 @@ fn start_session_command_returns_serializable_session() {
 }
 
 #[test]
+fn start_session_command_rejects_odd_default_bet_through_json_boundary() {
+    let error = "bet must be divisible by 2 for 3:2 blackjack payout";
+
+    let result = handle_command(CoreCommand::StartSession {
+        seed: "json-odd-default".to_string(),
+        bankroll: 2000,
+        default_bet: 25,
+        ruleset: None,
+    });
+
+    assert_eq!(result.expect_err("odd default bet"), error);
+}
+
+#[test]
 fn legal_actions_command_returns_actions_for_started_round() {
     let session = start_round(start_session("json-round"));
     let actions = legal_actions(session);
