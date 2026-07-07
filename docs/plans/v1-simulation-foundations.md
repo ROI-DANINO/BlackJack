@@ -7,12 +7,24 @@ Ship the Free Play skeleton: one human player vs dealer, complete rounds, real s
 cut card / penetration, legal actions, outcomes, and replayable logs.
 
 ## Sequence
-1. Lock the V1 default ruleset and matching Basic Strategy source.
+1. Done: lock the V1 default ruleset and matching Basic Strategy source.
 2. Build the core model: card, deck, shoe, ruleset, table, seat, dealer, round.
 3. Add seeded Fisher-Yates shuffle and shoe penetration handling.
 4. Implement initial deal, player hit/stand, dealer play, outcome resolution, discard, and next round.
 5. Add round/session logs with seed, ruleset, shoe, card IDs, actions, outcomes, and penetration state.
 6. Put a simple Free Play UI on top of the engine.
+
+## Locked Ruleset Summary
+- 6-deck shoe game.
+- Dealer hits soft 17.
+- Dealer peeks for blackjack.
+- Blackjack pays 3:2.
+- Double on any first two cards.
+- Double after split allowed.
+- Split to 4 hands; resplit non-aces; no resplit aces; split aces receive one card.
+- No surrender.
+- Insurance offered on dealer ace, default training advice is decline.
+- Default penetration is 75%, configurable.
 
 ## Engine Shape
 - Card/deck identity: stable `cardId` and `deckId`.

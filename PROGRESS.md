@@ -5,12 +5,11 @@
 ## Done
 - Product vision, roadmap draft, V1 simulation draft, learning notes, and research brief were folded into tracked owned docs.
 - Original pre-init notes are tracked and indexed under `docs/imports/initial-product-notes/`.
+- V1 ruleset locked: 6-deck H17 DAS no-surrender peek, 3:2 blackjack, 75% default penetration.
 
 ## In progress
-- V1 Simulation Foundations: verify and lock the default ruleset before implementation.
+- V1 Simulation Foundations: implement the Free Play skeleton.
 
 ## Open questions
-- What exact V1 ruleset should be locked?
-- What penetration percentage should V1 use by default?
-- Should surrender and insurance appear in V1 or wait?
-- What source should produce the first machine-readable Basic Strategy table?
+- How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?
+- What exact card lifecycle model will support future CSM/ASM variants cleanly?

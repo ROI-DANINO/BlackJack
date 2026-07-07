@@ -15,36 +15,54 @@ real shoe, seeded shuffle, cut card / penetration, and a modern-classic casino r
 - Use seeded Fisher-Yates for V1 replay/debug; defer physical shuffle and machine models.
 - Free Play must not manipulate cards for lessons; cards come from the actual ordered shoe.
 
-## V1 Ruleset To Verify
-Temporary default until research is completed:
+## Locked V1 Ruleset
+V1 uses one explicit ruleset so the simulator, Basic Strategy source, and logs agree.
 
 ```yaml
+id: v1-modern-classic-h17-6d
 table_type: shoe_game
 decks: 6
 shuffle: seeded_fisher_yates
-penetration: configurable
+penetration:
+  default_percent: 75
+  configurable: true
 csm: false
 asm: false
-blackjack_payout: research_tbd
-dealer_soft_17: research_tbd
-double_rules: research_tbd
-split_rules: research_tbd
-surrender: research_tbd
-insurance: later_or_optional
+dealer_peek: true
+blackjack_payout: "3:2"
+dealer_soft_17: hit
+double_rules:
+  allowed_totals: any_first_two_cards
+  after_split: true
+split_rules:
+  max_hands: 4
+  resplit_non_aces: true
+  resplit_aces: false
+  split_aces_receive_one_card: true
+surrender: false
+insurance:
+  offered_when_dealer_ace: true
+  default_training_advice: decline
 ```
 
-Working research hypothesis: V1 should probably use a 6-deck shoe game with H17, DAS,
-no surrender, 3:2 blackjack, no CSM, and configurable penetration. Avoid 6:5 as the
-training default unless the feature is explicitly about bad table selection.
+Decision rationale:
+- Six-deck H17 DAS no-surrender peek has a directly generated Basic Strategy table in BlackjackInfo.
+- H17 is a common training baseline for modern casino play; Blackjack Apprenticeship explicitly says its chart is based on the more common H17 game.
+- 3:2 blackjack stays the serious training default; 6:5 is intentionally excluded unless a future table-selection lesson teaches bad games.
+- Late surrender stays out of V1 because the selected Basic Strategy source is no-surrender and V1 should not add a second chart before the core simulator works.
+- Insurance is represented as an available table event but the V1 default advice is to decline; it is not part of the first Basic Strategy engine beyond logging the offer/decline path.
+- Default penetration is 75%, with the value configurable for later training and simulation comparisons.
 
 Research anchors:
-- Wizard of Odds — rule variations and expected-return effects.
-- Blackjack Apprenticeship — strategy charts and learning order.
-- BlackjackInfo — Basic Strategy engine for matching a chart to the locked ruleset.
-- Diaconis/Fulman/Holmes — casino shelf shuffling machine analysis, for later machine realism.
+- Wizard of Odds — rule variations and expected-return effects: https://wizardofodds.com/games/blackjack/rule-variations/
+- BlackjackInfo — generated Basic Strategy for 6 decks, H17, DAS, no surrender, peek: https://www.blackjackinfo.com/blackjack-basic-strategy-engine/
+- Blackjack Apprenticeship — H17 chart philosophy, order of operations, and training framing: https://www.blackjackapprenticeship.com/blackjack-strategy-charts/
+- Blackjack Apprenticeship — deck penetration framing: https://www.blackjackapprenticeship.com/how-much-does-penetration-really-matter/
+- Wizard of Odds — CSM/cut-card distinction: https://wizardofodds.com/games/blackjack/cut-card-effect/
 
-Before locking Basic Strategy, confirm the chart matches deck count, H17/S17,
-double rules, DAS, surrender, split/resplit rules, and blackjack payout.
+Basic Strategy source for V1: BlackjackInfo, generated with 6 decks, H17, DAS,
+No Surrender, Peek. Blackjack Apprenticeship remains the teaching/order-of-operations
+reference, not the machine-readable source.
 
 Decision order for a Basic Strategy engine should be explicit where relevant:
 surrender, split, double, then hit/stand.
@@ -193,9 +211,5 @@ removed_until_reshuffle
 - Allow starting the next round from the same shoe until penetration threshold.
 
 ## Open Questions
-- What exact V1 ruleset should be chosen?
-- What penetration percentage should V1 use by default?
-- Should surrender be included in V1?
-- How should insurance be represented?
 - What exact card lifecycle model best leaves room for future CSM/ASM variants?
-- What source should produce the first machine-readable Basic Strategy table?
+- How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?
