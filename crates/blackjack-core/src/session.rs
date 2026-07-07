@@ -312,7 +312,7 @@ fn resolve_dealer_and_round(session: &mut SessionState) -> Result<(), String> {
     let penetration_reached = needs_shuffle(&session.shoe);
     let log = RoundLog {
         seed: session.seed.clone(),
-        ruleset_id: session.ruleset.id.clone(),
+        ruleset: session.ruleset.clone(),
         shoe_number: session.shoe.shoe_number,
         dealt_cards,
         actions,

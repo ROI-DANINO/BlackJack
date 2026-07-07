@@ -164,7 +164,7 @@ pub struct HandOutcome {
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct RoundLog {
     pub seed: String,
-    pub ruleset_id: String,
+    pub ruleset: Ruleset,
     pub shoe_number: u32,
     pub dealt_cards: Vec<Card>,
     pub actions: Vec<ActionLog>,
