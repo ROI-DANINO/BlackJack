@@ -233,19 +233,33 @@ fn resolve_dealer_and_round(session: &mut SessionState) -> Result<(), String> {
         round.status = RoundStatus::DealerTurn;
     }
 
-    loop {
-        let must_hit = {
-            let round = active_round(session)?;
-            dealer_must_hit(&round.dealer.cards, &session.ruleset)
-        };
-        if !must_hit {
-            break;
-        }
+    // Only play out the dealer if at least one player hand still contests it — a
+    // hand that is neither busted nor a natural blackjack. If every hand is bust
+    // or a natural, the dealer stands on its two dealt cards and draws nothing,
+    // so it never consumes ordered shoe cards it should never see.
+    let dealer_has_live_contest = {
+        let round = active_round(session)?;
+        round
+            .hands
+            .iter()
+            .any(|hand| !score_hand(&hand.cards).is_bust && !is_natural_blackjack(hand))
+    };
 
-        let card = deal_card(&mut session.shoe)?;
-        let round = active_round_mut(session)?;
-        round.dealer.cards.push(card.clone());
-        round.dealt_cards.push(card);
+    if dealer_has_live_contest {
+        loop {
+            let must_hit = {
+                let round = active_round(session)?;
+                dealer_must_hit(&round.dealer.cards, &session.ruleset)
+            };
+            if !must_hit {
+                break;
+            }
+
+            let card = deal_card(&mut session.shoe)?;
+            let round = active_round_mut(session)?;
+            round.dealer.cards.push(card.clone());
+            round.dealt_cards.push(card);
+        }
     }
 
     let (outcomes, cards_to_discard, bankroll_before, dealt_cards, actions) = {
