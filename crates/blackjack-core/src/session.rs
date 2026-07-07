@@ -92,6 +92,25 @@ pub fn start_round(session: &mut SessionState, bet: Option<i32>) -> Result<(), S
     finish_if_naturals(session)
 }
 
+pub fn reshuffle_shoe(session: &mut SessionState) -> Result<(), String> {
+    if session
+        .round
+        .as_ref()
+        .is_some_and(|round| round.status != RoundStatus::Resolved)
+    {
+        return Err("cannot reshuffle mid-round".to_string());
+    }
+
+    session.shoe = create_shoe(
+        session.ruleset.decks,
+        &session.seed,
+        session.ruleset.penetration_percent,
+        session.shoe.shoe_number + 1,
+    )?;
+    session.round = None;
+    Ok(())
+}
+
 pub fn current_legal_actions(session: &SessionState) -> Result<Vec<Action>, String> {
     let round = active_round(session)?;
     let hand = round

@@ -1,5 +1,6 @@
 use crate::{
-    Action, Ruleset, SessionState, apply_action, current_legal_actions, start_round, start_session,
+    Action, Ruleset, SessionState, apply_action, current_legal_actions, reshuffle_shoe,
+    start_round, start_session,
 };
 use serde::{Deserialize, Serialize};
 
@@ -22,6 +23,9 @@ pub enum CoreCommand {
     ApplyAction {
         session: SessionState,
         action: Action,
+    },
+    Reshuffle {
+        session: SessionState,
     },
 }
 
@@ -51,5 +55,8 @@ pub fn handle_command(command: CoreCommand) -> Result<CoreResponse, String> {
             mut session,
             action,
         } => apply_action(&mut session, action).map(|()| CoreResponse::Session(Box::new(session))),
+        CoreCommand::Reshuffle { mut session } => {
+            reshuffle_shoe(&mut session).map(|()| CoreResponse::Session(Box::new(session)))
+        }
     }
 }
