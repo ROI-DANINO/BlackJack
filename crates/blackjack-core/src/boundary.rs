@@ -1,6 +1,5 @@
 use crate::{
-    apply_action, current_legal_actions, start_round, start_session, Action, Ruleset,
-    SessionState,
+    Action, Ruleset, SessionState, apply_action, current_legal_actions, start_round, start_session,
 };
 use serde::{Deserialize, Serialize};
 
@@ -29,7 +28,7 @@ pub enum CoreCommand {
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(tag = "type", content = "data", rename_all = "snake_case")]
 pub enum CoreResponse {
-    Session(SessionState),
+    Session(Box<SessionState>),
     Actions(Vec<Action>),
 }
 
@@ -40,15 +39,17 @@ pub fn handle_command(command: CoreCommand) -> Result<CoreResponse, String> {
             bankroll,
             default_bet,
             ruleset,
-        } => start_session(&seed, bankroll, default_bet, ruleset).map(CoreResponse::Session),
-        CoreCommand::StartRound { mut session, bet } => start_round(&mut session, bet).map(|()| {
-            CoreResponse::Session(session)
-        }),
+        } => start_session(&seed, bankroll, default_bet, ruleset)
+            .map(|session| CoreResponse::Session(Box::new(session))),
+        CoreCommand::StartRound { mut session, bet } => {
+            start_round(&mut session, bet).map(|()| CoreResponse::Session(Box::new(session)))
+        }
         CoreCommand::LegalActions { session } => {
             current_legal_actions(&session).map(CoreResponse::Actions)
         }
-        CoreCommand::ApplyAction { mut session, action } => {
-            apply_action(&mut session, action).map(|()| CoreResponse::Session(session))
-        }
+        CoreCommand::ApplyAction {
+            mut session,
+            action,
+        } => apply_action(&mut session, action).map(|()| CoreResponse::Session(Box::new(session))),
     }
 }

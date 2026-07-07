@@ -1,4 +1,6 @@
-use blackjack_core::{handle_command, Action, CoreCommand, CoreResponse, OutcomeResult, RoundStatus};
+use blackjack_core::{
+    Action, CoreCommand, CoreResponse, OutcomeResult, RoundStatus, handle_command,
+};
 
 fn start_session(seed: &str) -> blackjack_core::SessionState {
     match handle_command(CoreCommand::StartSession {
@@ -9,14 +11,14 @@ fn start_session(seed: &str) -> blackjack_core::SessionState {
     })
     .expect("session")
     {
-        CoreResponse::Session(session) => session,
+        CoreResponse::Session(session) => *session,
         CoreResponse::Actions(_) => panic!("expected session"),
     }
 }
 
 fn start_round(session: blackjack_core::SessionState) -> blackjack_core::SessionState {
     match handle_command(CoreCommand::StartRound { session, bet: None }).expect("round") {
-        CoreResponse::Session(session) => session,
+        CoreResponse::Session(session) => *session,
         CoreResponse::Actions(_) => panic!("expected session"),
     }
 }
@@ -33,11 +35,11 @@ fn natural_blackjack_session() -> (String, blackjack_core::SessionState) {
         let seed = format!("json-blackjack-{index}");
         let session = start_round(start_session(&seed));
 
-        if session
-            .logs
-            .first()
-            .is_some_and(|log| log.outcomes.iter().any(|outcome| outcome.result == OutcomeResult::Blackjack))
-        {
+        if session.logs.first().is_some_and(|log| {
+            log.outcomes
+                .iter()
+                .any(|outcome| outcome.result == OutcomeResult::Blackjack)
+        }) {
             return (seed, session);
         }
     }
@@ -89,7 +91,10 @@ fn json_boundary_preserves_natural_blackjack_payout_in_session_log() {
         .expect("blackjack outcome");
 
     assert_eq!(session.seed, seed);
-    assert_eq!(session.round.as_ref().expect("round").status, RoundStatus::Resolved);
+    assert_eq!(
+        session.round.as_ref().expect("round").status,
+        RoundStatus::Resolved
+    );
     assert_eq!(log.bankroll_before, 2000);
     assert_eq!(blackjack.wager, 50);
     assert_eq!(blackjack.delta, 75);

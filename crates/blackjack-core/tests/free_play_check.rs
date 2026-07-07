@@ -35,10 +35,11 @@ fn free_play_core_proves_traceable_cards_logs_bankroll_and_s17() {
 
     assert_eq!(session.ruleset.dealer_soft_17, DealerSoft17::Stand);
     assert_eq!(origins.len(), log.dealt_cards.len());
-    assert!(log
-        .dealt_cards
-        .iter()
-        .all(|card| !card.card_id.is_empty() && !card.deck_id.is_empty()));
+    assert!(
+        log.dealt_cards
+            .iter()
+            .all(|card| !card.card_id.is_empty() && !card.deck_id.is_empty())
+    );
     assert_eq!(log.bankroll_delta, outcome_delta);
     assert_eq!(log.bankroll_after, log.bankroll_before + outcome_delta);
 }

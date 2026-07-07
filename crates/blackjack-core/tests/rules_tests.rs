@@ -1,6 +1,6 @@
 use blackjack_core::{
-    dealer_must_hit, legal_actions, score_hand, v1_h17_ruleset, Action, Card, DealerSoft17,
-    HandSource, HandState, Rank, Suit,
+    Action, Card, DealerSoft17, HandSource, HandState, Rank, Suit, dealer_must_hit, legal_actions,
+    score_hand, v1_h17_ruleset,
 };
 
 fn card(rank: Rank, id: &str) -> Card {
@@ -115,10 +115,7 @@ fn split_ace_pair_can_only_resplit_when_rule_and_limits_allow_it() {
     let mut ruleset = v1_h17_ruleset();
     ruleset.resplit_aces = true;
 
-    assert_eq!(
-        legal_actions(&hand, &ruleset, 1, 100),
-        vec![Action::Split]
-    );
+    assert_eq!(legal_actions(&hand, &ruleset, 1, 100), vec![Action::Split]);
     assert_eq!(legal_actions(&hand, &ruleset, 4, 100), Vec::new());
     assert_eq!(legal_actions(&hand, &ruleset, 1, 0), Vec::new());
 }

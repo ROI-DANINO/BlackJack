@@ -1,6 +1,6 @@
 use blackjack_core::{
-    apply_action, current_legal_actions, start_round, start_session, Action, Card, OutcomeResult,
-    Rank, RoundStatus, Suit,
+    Action, Card, OutcomeResult, Rank, RoundStatus, Suit, apply_action, current_legal_actions,
+    start_round, start_session,
 };
 use std::collections::HashSet;
 
@@ -174,7 +174,11 @@ fn split_two_card_twenty_one_settles_as_a_normal_win() {
     session.shoe.penetration_index = usize::MAX;
 
     start_round(&mut session, None).expect("round");
-    assert!(current_legal_actions(&session).expect("legal").contains(&Action::Split));
+    assert!(
+        current_legal_actions(&session)
+            .expect("legal")
+            .contains(&Action::Split)
+    );
 
     apply_action(&mut session, Action::Split).expect("split");
     apply_action(&mut session, Action::Stand).expect("stand first");
@@ -189,5 +193,9 @@ fn split_two_card_twenty_one_settles_as_a_normal_win() {
 
     assert_eq!(first_hand.result, OutcomeResult::Win);
     assert_eq!(first_hand.delta, first_hand.wager);
-    assert!(!log.outcomes.iter().any(|outcome| outcome.result == OutcomeResult::Blackjack));
+    assert!(
+        !log.outcomes
+            .iter()
+            .any(|outcome| outcome.result == OutcomeResult::Blackjack)
+    );
 }
