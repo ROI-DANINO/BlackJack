@@ -18,7 +18,7 @@ fn creates_seeded_six_deck_shoe_with_unique_origins() {
 }
 
 #[test]
-fn shuffles_deterministically_by_seed() {
+fn shuffles_deterministically_by_seed_and_shoe_number() {
     let first: Vec<String> = create_shoe(6, "same-seed", 75, 1)
         .expect("shoe")
         .cards
@@ -33,7 +33,7 @@ fn shuffles_deterministically_by_seed() {
         .take(8)
         .map(|card| card.card_id)
         .collect();
-    let different: Vec<String> = create_shoe(6, "other-seed", 75, 1)
+    let different_shoe_number: Vec<String> = create_shoe(6, "same-seed", 75, 2)
         .expect("shoe")
         .cards
         .into_iter()
@@ -42,7 +42,13 @@ fn shuffles_deterministically_by_seed() {
         .collect();
 
     assert_eq!(first, second);
-    assert_ne!(first, different);
+    assert_ne!(first, different_shoe_number);
+}
+
+#[test]
+fn rejects_invalid_penetration_percent() {
+    assert!(create_shoe(6, "bad-penetration", 0, 1).is_err());
+    assert!(create_shoe(6, "bad-penetration", 101, 1).is_err());
 }
 
 #[test]
@@ -55,6 +61,16 @@ fn deals_from_ordered_shoe_and_tracks_discard() {
     assert_eq!(dealt, expected);
     assert_eq!(shoe.cursor, 1);
     assert_eq!(shoe.discard, vec![expected]);
+}
+
+#[test]
+fn rejects_dealing_past_the_end() {
+    let mut shoe = create_shoe(1, "exhaust-seed", 50, 1).expect("shoe");
+    for _ in 0..shoe.cards.len() {
+        deal_card(&mut shoe).expect("card");
+    }
+
+    assert!(deal_card(&mut shoe).is_err());
 }
 
 #[test]

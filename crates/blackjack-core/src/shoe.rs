@@ -47,7 +47,7 @@ pub fn create_shoe(
         }
     }
 
-    shuffle(&mut cards, seed);
+    shuffle(&mut cards, seed, shoe_number);
     let penetration_index = cards.len() * usize::from(penetration_percent) / 100;
     Ok(ShoeState {
         seed: seed.to_string(),
@@ -77,8 +77,8 @@ pub fn needs_shuffle(shoe: &ShoeState) -> bool {
     shoe.cursor >= shoe.penetration_index
 }
 
-fn shuffle(cards: &mut [Card], seed: &str) {
-    let mut rng = SeededRng::new(seed);
+fn shuffle(cards: &mut [Card], seed: &str, shoe_number: u32) {
+    let mut rng = SeededRng::new(&format!("{seed}:{shoe_number}"));
     for index in (1..cards.len()).rev() {
         let swap_index = rng.next_usize(index + 1);
         cards.swap(index, swap_index);
