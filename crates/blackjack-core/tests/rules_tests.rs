@@ -101,3 +101,24 @@ fn split_non_ace_hand_that_draws_an_ace_still_has_legal_actions() {
         vec![Action::Hit, Action::Stand, Action::Double]
     );
 }
+
+#[test]
+fn split_ace_pair_can_only_resplit_when_rule_and_limits_allow_it() {
+    let hand = HandState {
+        cards: vec![card(Rank::Ace, "a1"), card(Rank::Ace, "a2")],
+        wager: 25,
+        is_complete: false,
+        is_doubled: false,
+        source: HandSource::Split,
+    };
+
+    let mut ruleset = v1_h17_ruleset();
+    ruleset.resplit_aces = true;
+
+    assert_eq!(
+        legal_actions(&hand, &ruleset, 1, 100),
+        vec![Action::Split]
+    );
+    assert_eq!(legal_actions(&hand, &ruleset, 4, 100), Vec::new());
+    assert_eq!(legal_actions(&hand, &ruleset, 1, 0), Vec::new());
+}

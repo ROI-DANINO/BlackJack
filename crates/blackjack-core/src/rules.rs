@@ -59,12 +59,22 @@ pub fn legal_actions(
         return Vec::new();
     }
 
-    if ruleset.split_aces_receive_one_card
-        && matches!(hand.source, HandSource::Split)
+    let is_split_hand = matches!(hand.source, HandSource::Split);
+    let is_two_card_split_ace_hand = is_split_hand
         && hand.cards.len() == 2
-        && matches!(hand.cards[0].rank, Rank::Ace)
-    {
-        return Vec::new();
+        && matches!(hand.cards[0].rank, Rank::Ace);
+    let is_split_ace_pair = is_two_card_split_ace_hand && matches!(hand.cards[1].rank, Rank::Ace);
+
+    if ruleset.split_aces_receive_one_card && is_two_card_split_ace_hand {
+        if !is_split_ace_pair || !ruleset.resplit_aces {
+            return Vec::new();
+        }
+
+        return if hand_count < ruleset.max_split_hands && bankroll_available >= hand.wager {
+            vec![Action::Split]
+        } else {
+            Vec::new()
+        };
     }
 
     let mut actions = vec![Action::Hit, Action::Stand];
@@ -72,21 +82,13 @@ pub fn legal_actions(
     if hand.cards.len() == 2
         && !hand.is_doubled
         && bankroll_available >= hand.wager
-        && (matches!(hand.source, HandSource::Initial) || ruleset.double_after_split)
+        && (!is_split_hand || ruleset.double_after_split)
     {
         actions.push(Action::Double);
     }
 
     let is_pair = hand.cards.len() == 2 && hand.cards[0].rank == hand.cards[1].rank;
-    let is_split_aces = is_pair
-        && matches!(hand.cards[0].rank, Rank::Ace)
-        && matches!(hand.source, HandSource::Split);
-
-    if is_pair
-        && hand_count < ruleset.max_split_hands
-        && bankroll_available >= hand.wager
-        && (!is_split_aces || ruleset.resplit_aces)
-    {
+    if is_pair && hand_count < ruleset.max_split_hands && bankroll_available >= hand.wager {
         actions.push(Action::Split);
     }
 
