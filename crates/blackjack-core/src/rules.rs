@@ -59,6 +59,14 @@ pub fn legal_actions(
         return Vec::new();
     }
 
+    if ruleset.split_aces_receive_one_card
+        && matches!(hand.source, HandSource::Split)
+        && hand.cards.len() == 2
+        && hand.cards.iter().any(|card| matches!(card.rank, Rank::Ace))
+    {
+        return Vec::new();
+    }
+
     let mut actions = vec![Action::Hit, Action::Stand];
 
     if hand.cards.len() == 2

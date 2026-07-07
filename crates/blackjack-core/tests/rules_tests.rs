@@ -72,3 +72,16 @@ fn removes_double_and_split_when_bankroll_cannot_cover_them() {
         vec![Action::Hit, Action::Stand]
     );
 }
+
+#[test]
+fn split_aces_with_one_card_are_complete_when_rule_is_enabled() {
+    let hand = HandState {
+        cards: vec![card(Rank::Ace, "a"), card(Rank::Nine, "9")],
+        wager: 25,
+        is_complete: false,
+        is_doubled: false,
+        source: HandSource::Split,
+    };
+
+    assert_eq!(legal_actions(&hand, &v1_h17_ruleset(), 1, 100), Vec::new());
+}
