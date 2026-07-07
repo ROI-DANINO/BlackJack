@@ -10,7 +10,7 @@
 - [ ] Implement the Free Play skeleton from `docs/plans/v1-simulation-foundations.md` after the ruleset is locked.
 
 ## Ideas
-- Original draft notes archived under `journal/raw/archive/initial-product-notes/`.
+- Original draft notes are indexed under `docs/imports/initial-product-notes/`.
 
 ## Questions
 - What ruleset best matches the training target: common modern casino, good playable table, or explicit teaching baseline?

@@ -47,6 +47,10 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | journal/context/next.md | Cheap cross-chat bridge (`codex-next`); consumed + reset by `codex-end`. |
 | journal/decisions.md | ADR sink — terse "why we chose X", appended by `codex-end` at milestones. |
 | journal/memory/ | Recall index + atomic fact files. |
-| journal/raw/ | Local raw imports and archived source notes; fold useful details into owned docs before relying on them. |
+| journal/raw/ | Local inbox for unprocessed raw imports; fold useful details into owned docs before relying on them. |
+| docs/imports/initial-product-notes/ | Indexed original pre-init source notes and their folded destinations. |
+| docs/specs/product-vision.md | Product north star, product feel, learning philosophy, and what makes the simulator different. |
+| docs/specs/research-brief.md | Research anchors and open research questions for rules, strategy tables, and casino machine behavior. |
+| docs/specs/learning-mastery-and-scoring.md | Future V2+ learning, mastery, hinting, scoring, and simulated-player design notes. |
 | docs/specs/<name>.md | Design specs. |
 | docs/plans/ | Implementation plans for active specs. |

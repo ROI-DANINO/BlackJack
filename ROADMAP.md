@@ -1,6 +1,7 @@
 # Roadmap
 
 > Destination, phases, milestones, exit criteria.
+> Structure: versions -> milestones -> phases -> tasks. Only the active phase gets detailed tasks.
 
 ## Destination
 An approachable blackjack training game with accurate shoe simulation, Free Play, Basic Strategy mastery, card counting practice, and later casino-like cognitive load.
@@ -41,4 +42,20 @@ Likely scope:
 - Better table UI, onboarding, progression, rank/mastery presentation, game-feel polish, and clearer Free Play hints/reports.
 
 ## Later
-- Running count, true count, multi-seat tables, simulated players, casino pace, bet sizing, count deviations, rule variations, CSM/ASM variants, daily drills, and leaderboards.
+Add topics incrementally:
+
+- Running count mastery.
+- True count.
+- Multi-seat tables.
+- Simulated players.
+- Casino pace.
+- Bet sizing / unit sizing.
+- Count deviations.
+- Advanced counting systems.
+- Table rules variations.
+- CSM/ASM and machine-buffer table variants.
+- Leaderboards.
+- Daily challenges.
+- Shared daily shoe / daily drill.
+
+Each major topic should get its own research, spec, and implementation plan when it becomes active.

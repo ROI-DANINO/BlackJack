@@ -3,7 +3,8 @@
 > What is done / in progress *now*, and open questions.
 
 ## Done
-- Product vision, roadmap draft, V1 simulation draft, learning notes, and research brief were folded into the owned roadmap/spec surfaces.
+- Product vision, roadmap draft, V1 simulation draft, learning notes, and research brief were folded into tracked owned docs.
+- Original pre-init notes are tracked and indexed under `docs/imports/initial-product-notes/`.
 
 ## In progress
 - V1 Simulation Foundations: verify and lock the default ruleset before implementation.

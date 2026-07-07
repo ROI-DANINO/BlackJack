@@ -5,6 +5,9 @@
 ## Problem
 Build an initial Free Play experience where one player can play complete blackjack rounds against a dealer using a real shoe, not random card generation.
 
+V1 product goal: the user can play initial Free Play with one player vs dealer, using a
+real shoe, seeded shuffle, cut card / penetration, and a modern-classic casino ruleset.
+
 ## Decisions
 - Model cards, decks, shoes, shuffled order, dealt cards, burns, discard, cut card / penetration, and round logs explicitly.
 - Start with one human seat in the UI, but keep the engine table-shaped so more seats can be added later.
@@ -62,6 +65,38 @@ type Card = {
 The shuffled shoe is an ordered sequence. Dealing consumes from that sequence; no
 random card generation at deal time.
 
+## Shuffle
+V1 uses seeded Fisher-Yates:
+
+- keep the seed for replay/debug;
+- shuffle once into an ordered shoe sequence;
+- hide shuffle behind a strategy/interface so future physical/casino shuffle models can be added.
+
+Suggested concept:
+
+```ts
+interface ShuffleStrategy {
+  shuffle(cards: Card[], seed: string, config?: unknown): ShuffledShoe;
+}
+```
+
+Future strategies may include riffle/strip/cut simulation or machine-style variants, but
+do not implement those in the first milestone.
+
+## Cut Card / Penetration
+V1 includes cut card / penetration.
+
+Required behavior:
+
+- create shoe;
+- shuffle shoe;
+- place penetration threshold or cut-card index;
+- deal hands until threshold reached;
+- finish current round if required;
+- reshuffle / create new shoe for next round.
+
+Penetration percentage should be configurable.
+
 ## Table Shape
 V1 UI has one active human seat and no simulated players, but the engine should carry
 table state as a table, not as a single-hand shortcut.
@@ -76,6 +111,20 @@ type TableState = {
 };
 ```
 
+In V1:
+
+```ts
+activeHumanSeats = 1;
+simulatedPlayers = 0;
+```
+
+Future:
+
+- more seats;
+- simulated players;
+- table difficulty;
+- multi-hand count load.
+
 ## Round Flow
 V1 should support a clean, logged round flow:
 
@@ -89,6 +138,20 @@ V1 should support a clean, logged round flow:
 8. Move cards to discard.
 9. Append full round log.
 10. Check cut card / penetration.
+
+## Actions
+V1 minimum:
+
+- hit;
+- stand.
+
+V1 likely required soon:
+
+- double;
+- split;
+- surrender if selected ruleset includes it.
+
+The ruleset determines which actions are legal at any given moment.
 
 ## Log Shape
 Round/session logs should include seed, ruleset ID/config, deck count, penetration,
