@@ -1,8 +1,8 @@
 ---
 manifest_version: 1
-profile: standard
+profile: deep
 domain: code
-tier: standard
+tier: deep
 mode: project
 root: journal
 modules:
@@ -10,14 +10,15 @@ modules:
   memory: true
   blog: false
   notebook: false
-  audits: false
-  graphify: false
+  audits: true
+  graphify: true
   update: false
   decisions: true
 private:
   - context/
   - ops/sessions/
   - memory/
+  - raw/
   - log.md
 push: false
 desks: []
@@ -46,5 +47,6 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | journal/context/next.md | Cheap cross-chat bridge (`codex-next`); consumed + reset by `codex-end`. |
 | journal/decisions.md | ADR sink — terse "why we chose X", appended by `codex-end` at milestones. |
 | journal/memory/ | Recall index + atomic fact files. |
+| journal/raw/ | Local raw imports and archived source notes; fold useful details into owned docs before relying on them. |
 | docs/specs/<name>.md | Design specs. |
 | docs/plans/ | Implementation plans for active specs. |

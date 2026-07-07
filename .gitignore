@@ -1,4 +1,5 @@
 journal/context/
 journal/ops/sessions/
 journal/memory/
+journal/raw/
 journal/log.md
