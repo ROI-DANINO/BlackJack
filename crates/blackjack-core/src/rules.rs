@@ -60,9 +60,8 @@ pub fn legal_actions(
     }
 
     let is_split_hand = matches!(hand.source, HandSource::Split);
-    let is_two_card_split_ace_hand = is_split_hand
-        && hand.cards.len() == 2
-        && matches!(hand.cards[0].rank, Rank::Ace);
+    let is_two_card_split_ace_hand =
+        is_split_hand && hand.cards.len() == 2 && matches!(hand.cards[0].rank, Rank::Ace);
     let is_split_ace_pair = is_two_card_split_ace_hand && matches!(hand.cards[1].rank, Rank::Ace);
 
     if ruleset.split_aces_receive_one_card && is_two_card_split_ace_hand {
