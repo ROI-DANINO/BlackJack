@@ -16,6 +16,7 @@ pub fn start_session(
     }
 
     let ruleset = ruleset.unwrap_or_else(v1_h17_ruleset);
+    validate_ruleset(&ruleset)?;
     validate_bet(default_bet, "default_bet", &ruleset)?;
     let shoe = create_shoe(ruleset.decks, seed, ruleset.penetration_percent, 1)?;
 
@@ -423,6 +424,28 @@ fn sync_player_turn(session: &mut SessionState) -> Result<(), String> {
             return Ok(());
         }
     }
+}
+
+fn validate_ruleset(ruleset: &Ruleset) -> Result<(), String> {
+    if !ruleset.blackjack_payout.is_finite() {
+        return Err("blackjack_payout must be a finite number".to_string());
+    }
+    if ruleset.blackjack_payout <= 0.0 {
+        return Err("blackjack_payout must be greater than 0".to_string());
+    }
+    if ruleset.blackjack_payout > 100.0 {
+        return Err("blackjack_payout must be at most 100".to_string());
+    }
+    if !(1..=8).contains(&ruleset.decks) {
+        return Err("decks must be within 1..=8".to_string());
+    }
+    if !(1..=100).contains(&ruleset.penetration_percent) {
+        return Err("penetration_percent must be within 1..=100".to_string());
+    }
+    if ruleset.max_split_hands < 1 {
+        return Err("max_split_hands must be at least 1".to_string());
+    }
+    Ok(())
 }
 
 fn validate_bet(bet: i32, name: &str, ruleset: &Ruleset) -> Result<(), String> {
