@@ -313,7 +313,7 @@ fn settle_hands(hands: &[HandState], dealer_cards: &[Card], ruleset: &Ruleset) -
         .enumerate()
         .map(|(hand_index, hand)| {
             let score = score_hand(&hand.cards);
-            if score.is_blackjack && !dealer_score.is_blackjack {
+            if is_natural_blackjack(hand) && !dealer_score.is_blackjack {
                 return HandOutcome {
                     hand_index,
                     result: OutcomeResult::Blackjack,
@@ -353,6 +353,10 @@ fn settle_hands(hands: &[HandState], dealer_cards: &[Card], ruleset: &Ruleset) -
             }
         })
         .collect()
+}
+
+fn is_natural_blackjack(hand: &HandState) -> bool {
+    matches!(hand.source, HandSource::Initial) && score_hand(&hand.cards).is_blackjack
 }
 
 fn deal_initial_card(

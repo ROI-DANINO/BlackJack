@@ -1,7 +1,17 @@
 use blackjack_core::{
-    apply_action, current_legal_actions, start_round, start_session, Action, RoundStatus,
+    apply_action, current_legal_actions, start_round, start_session, Action, Card, OutcomeResult,
+    Rank, RoundStatus, Suit,
 };
 use std::collections::HashSet;
+
+fn card(card_id: &str, rank: Rank, suit: Suit) -> Card {
+    Card {
+        card_id: card_id.to_string(),
+        deck_id: "deck-1".to_string(),
+        rank,
+        suit,
+    }
+}
 
 #[test]
 fn plays_complete_seeded_round_and_logs_dealt_cards() {
@@ -147,4 +157,37 @@ fn split_aces_round_does_not_get_stuck_with_no_legal_actions() {
             .is_empty(),
         "split hand got stuck with no legal actions"
     );
+}
+
+#[test]
+fn split_two_card_twenty_one_settles_as_a_normal_win() {
+    let mut session = start_session("split-21", 10_000, 10, None).expect("session");
+    session.shoe.cards = vec![
+        card("p1", Rank::Ten, Suit::Clubs),
+        card("d1", Rank::Nine, Suit::Clubs),
+        card("p2", Rank::Ten, Suit::Diamonds),
+        card("d2", Rank::King, Suit::Diamonds),
+        card("split-1", Rank::Ace, Suit::Hearts),
+        card("split-2", Rank::Eight, Suit::Spades),
+    ];
+    session.shoe.cursor = 0;
+    session.shoe.penetration_index = usize::MAX;
+
+    start_round(&mut session, None).expect("round");
+    assert!(current_legal_actions(&session).expect("legal").contains(&Action::Split));
+
+    apply_action(&mut session, Action::Split).expect("split");
+    apply_action(&mut session, Action::Stand).expect("stand first");
+    apply_action(&mut session, Action::Stand).expect("stand second");
+
+    let log = session.logs.first().expect("round log");
+    let first_hand = log
+        .outcomes
+        .iter()
+        .find(|outcome| outcome.hand_index == 0)
+        .expect("first hand outcome");
+
+    assert_eq!(first_hand.result, OutcomeResult::Win);
+    assert_eq!(first_hand.delta, first_hand.wager);
+    assert!(!log.outcomes.iter().any(|outcome| outcome.result == OutcomeResult::Blackjack));
 }
