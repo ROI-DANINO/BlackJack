@@ -7,7 +7,9 @@
 - [x] Verify a credible V1 default ruleset: decks, H17/S17, payout, DAS, split/resplit, surrender, insurance, and penetration.
 - [x] Update `docs/specs/v1-simulation-foundations.md` with the locked ruleset.
 - [x] Draft the implementation plan in `docs/plans/`.
-- [ ] Implement the Free Play skeleton from `docs/plans/v1-simulation-foundations.md` after the ruleset is locked.
+- [x] Run the stack-boundary spike from `docs/specs/stack-boundaries.md` before simulator-core code.
+- [x] Rewrite or replace the worker implementation plan after the stack decision.
+- [ ] Implement the Rust Free Play simulator core from `docs/superpowers/plans/2026-07-07-rust-free-play-simulator-core.md`.
 
 ## Ideas
 - Original draft notes are indexed under `docs/imports/initial-product-notes/`.

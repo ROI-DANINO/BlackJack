@@ -11,6 +11,17 @@ Build a Duolingo-like blackjack training game that feels approachable while mode
 - Do not fake card flow: build shoes, shuffle once, deal from the ordered shoe, and keep card origins traceable.
 - Keep future tasks out of `journal/ops/tasks.md`; only the active phase gets task detail.
 
+## Coding Stack
+- Match the tool to the task; this is a math/simulation trainer, not a single-language app by default.
+- TypeScript is the default for browser UI, interaction state, and lightweight app shell code.
+- Python is welcome for research scripts, strategy-table generation, data processing, analytics, notebooks, and audits.
+- Rust/WASM is a first-class candidate for the simulator core when correctness, speed, Monte Carlo volume, or portable deterministic execution matters.
+- Default V1 storage is in-memory state. Add browser storage, SQLite, Postgres, or another database only when persistence, sync, history, analytics, accounts, or multi-device use becomes a real requirement.
+- Keep the simulator core UI-independent; UI code should call engine APIs, not own blackjack rules.
+- Research-driven development trigger: before choosing a new language, runtime, database, paid service, or cross-language boundary, write down the task it serves, the alternatives considered, and why the simpler current path no longer holds.
+- Do not make stack decisions permanent by accident. Prefer small boundaries and serializable data shapes so TypeScript, Python, Rust/WASM, and future backend tools can plug in without rewriting the product core.
+- Before writing the simulator core, run a short stack spike comparing TypeScript, Rust/WASM, and Python roles for the V1 engine boundary.
+
 ## Current phase
 See `journal/ops/phase.md`. Only the current phase gets detailed tasks
 (`journal/ops/tasks.md`); future phases stay in `ROADMAP.md`.

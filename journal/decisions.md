@@ -5,3 +5,4 @@
 
 | Date | Decision | Why |
 |------|----------|-----|
+| 2026-07-07 | V1 simulator core starts in Rust; TypeScript owns browser UI/app shell; Python owns research/data tooling. | Blackjack is simulation-heavy, and starting the durable card/shoe/round/betting core in Rust avoids a likely TypeScript-to-Rust migration when deterministic high-volume training and analysis arrive. |

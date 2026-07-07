@@ -9,13 +9,16 @@ settlement, outcomes, and replayable logs.
 
 ## Sequence
 1. Done: lock the V1 default ruleset and matching Basic Strategy source.
-2. Build the core model: card, deck, shoe, ruleset, session, table, seat, dealer, round, hand, bet.
-3. Add seeded Fisher-Yates shuffle and shoe penetration handling.
-4. Implement initial deal, legal actions, hit, stand, double, split, dealer play, outcome
+2. Done: run the stack spike in `docs/specs/stack-boundaries.md` and decide the simulator-core boundary.
+3. Done: replace the worker implementation plan with
+   `docs/superpowers/plans/2026-07-07-rust-free-play-simulator-core.md`.
+4. Build the core model: card, deck, shoe, ruleset, session, table, seat, dealer, round, hand, bet.
+5. Add seeded Fisher-Yates shuffle and shoe penetration handling.
+6. Implement initial deal, legal actions, hit, stand, double, split, dealer play, outcome
    resolution, discard, bankroll settlement, and next round.
-5. Add round/session logs with seed, ruleset, shoe, card IDs, actions, bets, outcomes,
+7. Add round/session logs with seed, ruleset, shoe, card IDs, actions, bets, outcomes,
    bankroll deltas, and penetration state.
-6. Put a simple Free Play UI on top of the engine.
+8. Put a simple Free Play UI on top of the engine.
 
 ## Locked Ruleset Summary
 - 6-deck shoe game.
@@ -58,7 +61,15 @@ settlement, outcomes, and replayable logs.
 - Keep card and deck origins traceable.
 - Keep rules in the ruleset object, not scattered through UI code.
 - Keep betting math in the engine, not scattered through UI code.
+- Decide the simulator-core language boundary before engine implementation.
 - Skip CSM/ASM, simulated players, learning paths, and casino polish.
+
+## Stack Spike
+- Decision: Rust owns the simulator core for card/shoe/round/betting/log logic.
+- TypeScript owns the browser UI and app shell.
+- Python owns research/data/table-generation/analytics work.
+- Use plain serializable commands, state, and logs across language boundaries.
+- Rust-core worker plan: `docs/superpowers/plans/2026-07-07-rust-free-play-simulator-core.md`.
 
 ## First Check
 Add one runnable engine check that creates a seeded 6-deck shoe, plays at least one complete
