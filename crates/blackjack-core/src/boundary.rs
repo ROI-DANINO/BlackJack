@@ -60,3 +60,30 @@ pub fn handle_command(command: CoreCommand) -> Result<CoreResponse, String> {
         }
     }
 }
+
+#[derive(Serialize)]
+#[serde(tag = "status", rename_all = "snake_case")]
+enum Envelope<T: Serialize> {
+    Ok { response: T },
+    Error { message: String },
+}
+
+/// Parse one command, run it, and return the `{status,...}` envelope as a JSON string.
+/// This is the single JSON entry point shared by the CLI and the WASM build.
+pub fn dispatch_json(input: &str) -> String {
+    let command: CoreCommand = match serde_json::from_str(input) {
+        Ok(command) => command,
+        Err(error) => return error_envelope(format!("invalid command json: {error}")),
+    };
+    match handle_command(command) {
+        Ok(response) => serde_json::to_string(&Envelope::Ok { response })
+            .unwrap_or_else(|error| error_envelope(format!("failed to serialize response: {error}"))),
+        Err(message) => error_envelope(message),
+    }
+}
+
+/// Build an `{"status":"error","message":...}` envelope string.
+pub fn error_envelope(message: String) -> String {
+    serde_json::to_string(&Envelope::<()>::Error { message })
+        .unwrap_or_else(|_| r#"{"status":"error","message":"unserializable error"}"#.to_string())
+}
