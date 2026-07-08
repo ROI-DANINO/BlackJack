@@ -45,6 +45,14 @@ insurance:
   default_training_advice: decline
 ```
 
+Note on `dealer_peek`: this describes V1's intended dealer behavior, not a literal field on
+the Rust `Ruleset` struct. Peek is implemented as unconditional — the engine always checks
+the dealer's hand for a natural immediately after dealing (`finish_if_naturals` in
+`session.rs`) — there is no ruleset toggle to disable it. If a future no-hole-card/European
+variant is ever built, `dealer_peek` would need to become a real `Ruleset` field at that
+point; until then, treat this line as documentation of current behavior, not a
+configurable option.
+
 Decision rationale:
 - Six-deck H17 DAS no-surrender peek has a directly generated Basic Strategy table in BlackjackInfo.
 - H17 is a common training baseline for modern casino play; Blackjack Apprenticeship explicitly says its chart is based on the more common H17 game.

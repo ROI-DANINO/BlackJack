@@ -9,8 +9,9 @@ sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
   - journal/ops/sessions/v1-ruleset-locked-20260707-035405.md
   - journal/ops/sessions/the-extraction-and-the-mend-2026-07-07T0928.md
+  - journal/ops/sessions/the-cut-card-and-the-wizard-2026-07-09T0134.md
 detour: []
 blocking: null
 next: "Build the TypeScript UI bridge over the JSON/WASM-ready core boundary."
-note: "Milestone closed by journal/ops/sessions/the-extraction-and-the-mend-2026-07-07T0928.md: Rust free-play core done (Tasks 1-6) + final review remediated (dealer-terminal draw, shoe reshuffle, ruleset validation); blackjack extracted to its own repo. Craft-gate Water finding resolved same session — RoundLog now carries the full Ruleset (commit 1c59fd7); all four criteria met, 45 tests green."
+note: "TS UI bridge still not started. This session was manual-testing + groundwork, not bridge work: verified the core live (cargo test + hand-played CLI rounds), built tools/play_cli.py (throwaway manual-play wizard), and commissioned an Opus round-history data analysis (journal/raw/_inbox/history-data-analysis-2026-07-09.md) recommending JSONL logging at the harness layer plus a resolved reveal-order-vs-shoe-true count derivation rule. Also clarified dealer_peek in the v1 spec as implicit/hardcoded, not a configurable field. No core code changed."
 ---
