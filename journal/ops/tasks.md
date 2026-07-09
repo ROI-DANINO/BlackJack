@@ -8,15 +8,15 @@ V1 milestone QA ran 2026-07-09 (`journal/qa/runs/2026-07-09-v1-milestone/`): mon
 flow, and abuse-resistance all solid; verdict = fix 6 items, then move to V2. Each fix gets a
 scoped feature QA per `docs/specs/qa-playtest-process.md`; statuses live in `journal/qa/ledger.md`.
 
-- [ ] **QA-001 (major)** — tie WASM freshness to the core: `dev`/`build`/`test` must rebuild or
+- [x] **QA-001 (major)** — tie WASM freshness to the core: `dev`/`build`/`test` must rebuild or
       verify `web/src/bridge/wasm/` when `crates/` changes (gitignored artifact went stale and
       silently dropped the split fix from the browser).
-- [ ] **QA-003 (blocker)** — history-duplication race: null `pendingLine` before the awaited
+- [x] **QA-003 (blocker)** — history-duplication race: null `pendingLine` before the awaited
       `sink.write` in `web/src/bridge/game.ts` (double-click Deal/Download duplicates a JSONL round).
-- [ ] **QA-004 (major)** — render `active_hand_index`: highlight the active hand during splits.
-- [ ] **QA-005 (major)** — display hand totals (player + dealer visible total).
-- [ ] **QA-007 (major)** — add a reset/new-session control so bankroll < bet isn't a dead end.
-- [ ] **QA-009 (decision)** — replace fixed seed `'free-play'` (`Table.tsx:29`) with a random
+- [x] **QA-004 (major)** — render `active_hand_index`: highlight the active hand during splits.
+- [x] **QA-005 (major)** — display hand totals (player + dealer visible total).
+- [x] **QA-007 (major)** — add a reset/new-session control so bankroll < bet isn't a dead end.
+- [x] **QA-009 (decision)** — replace fixed seed `'free-play'` (`Table.tsx:29`) with a random
       per-session seed, logged for reproducibility.
 - [ ] **Move to V2 Basic Strategy** once the above are `verified` in the ledger.
 
