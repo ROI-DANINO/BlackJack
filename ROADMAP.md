@@ -11,7 +11,7 @@ Free Play deals from the real shoe; learning layers can add hints, feedback, and
 around the hand, but they should not rig card flow for lessons.
 
 ## V1 — Simulation Foundations
-- [ ] Free Play skeleton — exit criteria: one player can play complete rounds against a dealer from a seeded 6-deck shoe with cut card / penetration, legal actions, outcomes, and logs.
+- [x] Free Play skeleton — exit criteria MET (2026-07-09): one player plays complete rounds vs a dealer from a seeded 6-deck shoe with cut card / penetration, legal actions, outcomes, logs, and shoe continuity (auto-reshuffle). Playable in-browser via WASM with JSONL history + per-hand notes. (Open: verify the split-legality question surfaced in playtest.)
 
 Scope:
 - Web app foundation with mobile-responsive thinking.

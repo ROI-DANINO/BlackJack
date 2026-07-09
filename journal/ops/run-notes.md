@@ -2,6 +2,26 @@
 
 Compact per-session decision/state notes (newest first).
 
+## 2026-07-09 — V1 Free Play skeleton complete (notes + reshuffle; milestone close)
+- **Milestone**: closed the prior milestone's accepted Fire craft-minor — `startRound` now
+  **auto-reshuffles + notices** on `"shoe must reshuffle"`, so Free Play crosses shoe boundaries.
+  Added **per-hand notes** (attach-on-Deal: buffer the resolved round, flush with an optional
+  harness `note: string|null` on the round JSONL line on Deal/Download; no core change). New
+  `GameState`: `noteDraft`/`notice`/`canNote`. **V1 Free Play exit criteria now met.**
+- **Verification chain**: `rd-verify` (opus) **PASS** on correctness invariants (no lost/double
+  round lines, note→correct hand, blank→null, no reshuffle loop, stateless-core strip preserved);
+  applied its defense-in-depth fix (reset note buffer on `startSession`). Craft gate (sonnet)
+  **PASS** on all four wl:criteria; folded its DRY nit (reuse `reshuffle()` inline). Merged to main
+  (b7b60c5, 176dd86, 7f83023, a27a076, 3a3bd6b); 46 Rust + 19 web tests green.
+- **Decisions**: notes = attach-on-Deal (note after seeing outcome), shoe = auto-reshuffle+notice.
+- **Process**: don't auto-use Fable — opt-in/suggested only (Roi correction). Used sonnet for the
+  craft gate, opus for rd-verify this session.
+- **Captured playtest feedback** (via the notes feature's first real use — 16-round session file):
+  possible **split-legality gap** ("shouldnt 10♣ Q♣ be splitable?"), a **per-hand win/lose/push
+  indicator** (asked twice), and an **insurance UI** request. Triage the split question first —
+  could be a real bug (equal-value vs equal-rank split rule) or intended.
+- **Next**: phase-boundary — triage those notes, then V1 polish vs. V2 Basic Strategy.
+
 ## 2026-07-09 — TS UI bridge shipped (milestone close)
 - **Milestone**: V1 sub-phase `ts-ui-bridge` done — browser-playable Free Play running the Rust
   core in-browser via **client-side WASM**. Brainstorm → spec → plan → `subagent-driven-development`
