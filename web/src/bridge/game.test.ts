@@ -4,6 +4,7 @@ import { GameController } from './game';
 import { CliTransport } from './cli-transport';
 import { MemorySink } from './log/memory-sink';
 import type { CoreTransport } from './transport';
+import type { SessionState } from './types';
 
 const BIN = new URL('../../../target/debug/blackjack-core', import.meta.url).pathname;
 beforeAll(() => execSync('cargo build -p blackjack-core', { cwd: new URL('../../../', import.meta.url).pathname }));
@@ -93,6 +94,49 @@ describe('GameController', () => {
       }
     }
     throw new Error('no natural found in 200 seeds — widen the search');
+  });
+
+  it('keeps latest resolved hand outcomes in state for the table UI', async () => {
+    const base = (round: SessionState['round'], logs: SessionState['logs'] = []): SessionState => ({
+      seed: 's',
+      ruleset: {
+        id: 'v1', decks: 6, penetration_percent: 75, dealer_soft_17: 'hit', blackjack_payout: 1.5,
+        max_split_hands: 4, double_after_split: true, resplit_aces: false,
+        split_aces_receive_one_card: true, insurance_auto_decline: true,
+      },
+      shoe: { seed: 's', shoe_number: 1, cards: [], cursor: 0, discard: [], penetration_index: 234 },
+      bankroll: 102000, default_bet: 2000, round, logs,
+    });
+    const resolvedRound: SessionState['round'] = {
+      status: 'resolved', bet: 2000, active_hand_index: 0, dealer: { cards: [] },
+      hands: [], dealt_cards: [], actions: [], bankroll_before: 100000,
+    };
+    const ok = (data: SessionState) => JSON.stringify({ status: 'ok', response: { type: 'session', data } });
+    const fake: CoreTransport = {
+      call(json: string): string {
+        const cmd = JSON.parse(json);
+        if (cmd.command === 'start_session') return ok(base(null));
+        if (cmd.command === 'start_round') return ok(base(resolvedRound, [{
+          seed: 's',
+          ruleset: base(null).ruleset,
+          shoe_number: 1,
+          dealt_cards: [],
+          actions: [],
+          outcomes: [{ hand_index: 0, result: 'win', wager: 2000, delta: 2000 }],
+          bankroll_before: 100000,
+          bankroll_after: 102000,
+          bankroll_delta: 2000,
+          penetration_reached: false,
+        }]));
+        return '{"status":"ok","response":{"type":"actions","data":[]}}';
+      },
+    };
+    const c = new GameController(fake, new MemorySink(), { now: () => 't' }, { next: () => 'sid' });
+
+    await c.startSession('s', 100000, 2000);
+    await c.startRound(2000);
+
+    expect(c.getState().lastOutcomes).toEqual([{ hand_index: 0, result: 'win', wager: 2000, delta: 2000 }]);
   });
 
   it('auto-reshuffles at the shoe boundary, then deals with a notice', async () => {
