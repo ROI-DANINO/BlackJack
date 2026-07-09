@@ -252,4 +252,19 @@ describe('GameController', () => {
     const written = roundLines(sink.text()).map((l) => JSON.parse(l).round_index);
     expect(written.filter((i) => i === 0)).toHaveLength(1);
   });
+
+  it('flushes the previous session\'s buffered round before starting a new session', async () => {
+    const { c, sink } = make();
+    await c.startSession('seed-a', 100000, 2000);
+    await c.startRound(2000);
+    let guard = 0;
+    while (c.getState().session!.round?.status === 'player_turn' && guard++ < 20) await c.act('stand');
+    expect(c.getState().session!.round!.status).toBe('resolved');
+
+    await c.startSession('seed-b', 100000, 2000);   // rescue from a dead-end: must not lose the round
+    const lines = sink.text().split('\n').filter(Boolean).map((l) => JSON.parse(l));
+    expect(lines.map((l) => l.type)).toEqual(['session_header', 'round', 'session_header']);
+    expect(lines[1].session_id).toBe('sid-0');       // the round belongs to the FIRST session
+    expect(lines[2].session_id).toBe('sid-1');
+  });
 });

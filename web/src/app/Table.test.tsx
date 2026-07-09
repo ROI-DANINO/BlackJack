@@ -232,4 +232,16 @@ describe('Table', () => {
     expect(t.seeds[0]).toMatch(/^fp-[a-z0-9]{1,10}$/);
     expect(await screen.findByText(/session seed/i)).toBeTruthy();
   });
+
+  it('offers a New session control that starts a fresh session with a fresh seed', async () => {
+    const t = new RecordingTransport();
+    const c = new GameController(t, new MemorySink(), { now: () => 't' }, { next: () => 'sid' });
+    render(<Table controller={c} />);
+    await fireEvent.click(screen.getByRole('button', { name: /start session/i }));
+    await fireEvent.click(await screen.findByRole('button', { name: /new session/i }));
+
+    expect(t.seeds).toHaveLength(2);
+    expect(t.seeds[1]).toMatch(/^fp-[a-z0-9]{1,10}$/);
+    expect(t.seeds[1]).not.toBe(t.seeds[0]);
+  });
 });

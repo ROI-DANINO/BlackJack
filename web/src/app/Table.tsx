@@ -75,6 +75,9 @@ export function Table({ controller }: { controller: GameController }) {
         const a = document.createElement('a'); a.href = url; a.download = `blackjack-session-${stamp}.jsonl`; a.click();
         URL.revokeObjectURL(url);
       }}>Download history</button>
+      <button onClick={() => void controller.startSession(freshSeed(), START_BANKROLL, DEFAULT_BET)}>
+        New session
+      </button>
     </div>
   );
 }

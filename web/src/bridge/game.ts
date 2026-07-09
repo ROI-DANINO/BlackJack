@@ -47,9 +47,9 @@ export class GameController {
   setNote(text: string): void { this.set({ noteDraft: text }); }
 
   async startSession(seed: string, bankroll: number, defaultBet: number, ruleset: Ruleset | null = null): Promise<void> {
+    await this.flushPending(); // preserve a prior session's buffered round (+ its note) — QA-007 rescue must not lose history
     this.sessionId = this.ids.next();
     this.roundIndex = 0;
-    this.pendingLine = null; // drop any buffered round from a prior session on this controller
     this.set({ noteDraft: '', notice: null, canNote: false, lastOutcomes: [] });
     const out = this.dispatch({ command: 'start_session', seed, bankroll, default_bet: defaultBet, ruleset });
     if (!out) return;
