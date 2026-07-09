@@ -70,7 +70,7 @@ export class GameController {
     // Shoe hit penetration: auto-reshuffle and deal again so Free Play never dead-ends.
     if (this.state.lastError?.includes('shoe must reshuffle')) {
       this.set({ lastError: null });
-      await this.command({ command: 'reshuffle', session: this.requireSession() });
+      await this.reshuffle();   // one source of truth for issuing the reshuffle command
       if (!this.state.lastError) {
         this.set({ notice: 'Shoe reshuffled — new shoe' });
         await this.command({ command: 'start_round', session: this.requireSession(), bet });
