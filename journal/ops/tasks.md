@@ -3,23 +3,22 @@
 > Only the current phase gets detailed tasks. Future work lives in ROADMAP.md.
 > codex-end archives this file to ops/archive/ before mutating it.
 
-## Active — phase boundary: V1 Free Play skeleton complete → triage & decide direction
-V1 Free Play exit criteria are met (craft gate PASS). Before picking the next phase, triage the
-feedback captured during playtest (via the new notes feature):
+## Active - phase boundary: V1 Free Play skeleton complete -> decide direction
+V1 Free Play exit criteria are met (craft gate PASS). The scoped Free Play polish pass fixed the
+split-legality gap and made resolved outcomes plus auto-declined insurance visible in the UI.
 
-- [ ] **Investigate the split-legality question FIRST (possible bug).** Playtest note: "shouldnt
-      10♣ Q♣ be splitable? both are equal 10.." (and "also should have a split in my opinion").
-      Check the core's split rule (`current_legal_actions` / split gating in `session.rs`): does it
-      require equal *rank* or equal *value*? Standard casino rules let you split any two 10-value
-      cards (10/J/Q/K). Decide: real gap to fix, or intended V1 simplification to document.
-- [ ] **Decide the next phase**: V1 Free Play polish (per-hand win/lose/push outcome indicator;
-      split fix if the above is a gap; insurance take/decline UI) vs. moving to V2 Basic Strategy.
+- [ ] **Decide the next phase**: move to V2 Basic Strategy, unless a fresh playtest exposes a
+      small V1 blocker.
 
 ## Ideas (captured from playtest notes)
-- Per-hand **win/lose/push indicator** in the UI after resolution (requested twice).
-- **Insurance option** UI (insurance is modeled as auto-decline today).
-- (The split-10 question is promoted to an Active task above.)
 - How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table? (V2)
+
+## Done — V1 Free Play polish pass
+- [x] **Split legality** — any two 10-value cards (10/J/Q/K) can split through the shared core
+      legal-action rule.
+- [x] **Per-hand outcome indicator** — the table shows win/loss/push/blackjack after resolution.
+- [x] **Insurance visibility** — dealer-ace insurance auto-decline is visible instead of silent;
+      no player-taken insurance flow added for V1.
 
 ## Done — Free Play UI polish cycle (shipped 2026-07-09, merged to main)
 - [x] **Per-hand notes** (attach-on-Deal): GameController buffers the resolved round and writes it
