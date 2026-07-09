@@ -2,6 +2,38 @@
 
 Compact per-session decision/state notes (newest first).
 
+## 2026-07-09 — TS UI bridge shipped (milestone close)
+- **Milestone**: V1 sub-phase `ts-ui-bridge` done — browser-playable Free Play running the Rust
+  core in-browser via **client-side WASM**. Brainstorm → spec → plan → `subagent-driven-development`
+  (9 tasks, TDD, fresh implementer+reviewer per task, model-tiered). Merged to `main` locally
+  (`push:false`): merges `ec8386f` + `d4afda8`; **46 Rust + 17 web tests green**.
+- **Architecture**: strict downward deps React → GameController → CoreTransport → WASM → Rust.
+  Core stays a pure stateless `command JSON → envelope JSON` fn; the client owns `SessionState`
+  and threads it through (strips `logs:[]` outbound → `next.logs` is the per-command delta,
+  which is what makes naturals get logged). `dispatch_json` is the single envelope shared by CLI
+  and WASM.
+- **Load-bearing fixes caught by review before/while building**:
+  - `rng.rs` **width-safe modulo** `(next_u64() % (upper as u64)) as usize` — without it wasm32
+    (`usize`=32-bit) truncates before the modulo and deals a *different shoe* than native; every
+    native test would stay green while the browser diverged. Behavior-preserving on 64-bit.
+  - WASM envelope must reuse `CliOutput` shape (not serde's default `Ok/Err` tagging).
+  - Log on `logs`-delta after **every** command, not gated on `apply_action` — else naturals
+    (resolve inside `start_round`) never log.
+  - Async `LogSink` seam now, so IndexedDB/DB drops in later without round-loop changes.
+- **Decisions**: hand-authored TS wire types guarded by Rust golden fixtures (incl. a
+  played-to-resolution fixture) instead of `ts-rs` — compile-time drift guard, no tool risk.
+  Vitest default env → `node` (React test carries a jsdom pragma). History JSONL exports live in
+  **`data/history/`** (gitignored data + tracked README), not `journal/raw/_inbox`; download name
+  `blackjack-session-<ts>.jsonl`.
+- **Craft gate (v1 wl:criteria)**: FAIL-minor **accepted [f]**. Earth/Water/Air met; Fire partial
+  — `GameController.reshuffle()` unwired in the UI, so Free Play dead-ends at penetration on a raw
+  `"shoe must reshuffle"`. Accepted: reshuffle UX was a documented open question; core+controller
+  support it. Bundled into next cycle.
+- **State**: main @ `d4afda8`. **Next**: small UI cycle — (1) per-hand notes input → harness
+  `note` field on the round JSONL line (no core change; open: attach-on-Deal vs type-during-hand,
+  lean attach-on-Deal); (2) wire `reshuffle()` so Free Play crosses the shoe boundary.
+- **Process note**: don't auto-use the Fable agent — opt-in/suggested only (Roi correction).
+
 ## 2026-07-09 — Manual testing, play wizard, round-history data design
 - **Verified the core is real, not just tested**: ran `cargo test` (45 green) and drove the
   `blackjack-core` CLI directly over stdin/stdout JSON (`start_session` → `start_round` →

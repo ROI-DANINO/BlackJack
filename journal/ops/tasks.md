@@ -3,28 +3,30 @@
 > Only the current phase gets detailed tasks. Future work lives in ROADMAP.md.
 > codex-end archives this file to ops/archive/ before mutating it.
 
-## Active — sub-phase: TS UI bridge over the core
-- [ ] Design the TypeScript UI bridge over the JSON/WASM-ready core boundary (`CoreCommand`/`CoreResponse`).
-- [ ] Decide the core delivery path to the browser: native JSON CLI vs WASM build of `blackjack-core`.
-- [ ] Add round-history JSONL logging to the harness (session-header + one line per resolved round) — do-now recommendation from `journal/raw/_inbox/history-data-analysis-2026-07-09.md`; no core changes needed.
+## Active — sub-phase: Free Play UI polish (notes + shoe continuity)
+- [ ] **Per-hand notes input.** During playtest, let the user type an optional note for the hand
+      they just played; save it as a harness-added `note` field on that round's JSONL line (no
+      core change — it's a harness annotation like `session_id`/`ts`). Open design decision:
+      attach-on-Deal (buffer the resolved round, flush with the note when the next round starts /
+      on download) vs. type-during-hand. Lean **attach-on-Deal**; confirm before building.
+- [ ] **Wire `GameController.reshuffle()` into the UI** (closes the accepted Fire craft-minor).
+      When `start_round` returns `"shoe must reshuffle"` at penetration, either auto-reshuffle
+      with a visible notice or surface an explicit reshuffle control in `Controls.tsx`/`Table.tsx`
+      so Free Play can cross the shoe boundary instead of dead-ending on a raw error string.
 
-## Done — Manual testing & data-history groundwork
-- [x] Verified the Rust core end-to-end (45 tests green; live CLI session/round/action calls).
-- [x] Built `tools/play_cli.py`, a throwaway interactive wizard for manually playing hands against the core CLI (dev tool, not product surface).
-- [x] Commissioned and refined round-history data analysis (what to save, JSONL format, reveal-order vs shoe-true count semantics) — parked in `journal/raw/_inbox/history-data-analysis-2026-07-09.md`.
-- [x] Clarified `dealer_peek` in `docs/specs/v1-simulation-foundations.md` as implicit/hardcoded behavior, not a configurable `Ruleset` field.
-
-## Done — Free Play simulator core (Rust)
-- [x] Enrich `RoundLog` with the full `Ruleset` so any hand (custom ruleset included) is reproducible from its log alone — closed the Water craft-gate finding.
-- [x] Verify a credible V1 default ruleset (decks, H17/S17, payout, DAS, split/resplit, surrender, insurance, penetration).
-- [x] Lock the ruleset in `docs/specs/v1-simulation-foundations.md`.
-- [x] Draft the implementation plan; run the stack-boundary spike; land the Rust worker plan.
-- [x] Implement the Free Play simulator core (Tasks 1–6): rules, shoe, scoring, session/split, JSON boundary + CLI.
-- [x] Remediate the final whole-branch review: dealer-terminal draw, shoe-reshuffle recovery, custom-ruleset validation.
-- [x] Extract blackjack into its own standalone git repo.
-
-## Ideas
-- Original draft notes are indexed under `docs/imports/initial-product-notes/`.
+## Done — TS UI bridge (V1 sub-phase, shipped 2026-07-09, merged to main)
+- [x] Brainstorm → design spec (`docs/superpowers/specs/2026-07-09-ts-ui-bridge-design.md`) →
+      implementation plan (`docs/superpowers/plans/2026-07-09-ts-ui-bridge.md`).
+- [x] Core: width-safe RNG modulo (cross-target determinism); unified JSON envelope +
+      feature-gated WASM export (`handleCommand`); golden wire fixtures.
+- [x] Web: Vite+React+TS scaffold + wasm build + async init gate; hand-authored wire types +
+      boundary validator + golden contract test; CoreTransport (WASM + CLI); async LogSink +
+      MemorySink; GameController (session/round loop, logs-delta history, error/fatal); React
+      table UI (bankroll, hands, hole-card hide, legal-action buttons, download, fatal banner).
+- [x] Built via subagent-driven-development (9 tasks); Fable pre-build/plan/whole-branch reviews;
+      merged to main locally. 46 Rust + 17 web tests green.
+- [x] `data/history/` established as the JSONL export home (gitignored data + tracked README).
 
 ## Questions
 - How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?
+- Per-hand notes: attach-on-Deal vs type-during-hand? (lean attach-on-Deal)
