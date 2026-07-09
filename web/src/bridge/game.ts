@@ -113,7 +113,10 @@ export class GameController {
       lastOutcomes = log.outcomes;
       this.set({ canNote: true });
     }
-    this.set({ session: this.strip(next), lastOutcomes, lastError: null });
+    const notice = next.round?.actions.some((item) => item.action === 'insurance_declined')
+      ? 'Insurance auto-declined'
+      : this.state.notice;
+    this.set({ session: this.strip(next), lastOutcomes, notice, lastError: null });
   }
 
   private async writePending(note: string | null): Promise<void> {

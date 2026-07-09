@@ -139,6 +139,46 @@ describe('GameController', () => {
     expect(c.getState().lastOutcomes).toEqual([{ hand_index: 0, result: 'win', wager: 2000, delta: 2000 }]);
   });
 
+  it('sets a notice when insurance is auto-declined by the core', async () => {
+    const ruleset = {
+      id: 'v1', decks: 6, penetration_percent: 75, dealer_soft_17: 'hit' as const, blackjack_payout: 1.5,
+      max_split_hands: 4, double_after_split: true, resplit_aces: false,
+      split_aces_receive_one_card: true, insurance_auto_decline: true,
+    };
+    const round: SessionState['round'] = {
+      status: 'player_turn',
+      bet: 2000,
+      active_hand_index: 0,
+      dealer: { cards: [{ card_id: 'dealer-ace', deck_id: 'deck-1', rank: 'ace', suit: 'spades' }] },
+      hands: [],
+      dealt_cards: [],
+      actions: [{ action: 'insurance_declined', hand_index: 0, card_id: null }],
+      bankroll_before: 100000,
+    };
+    const session = (activeRound: SessionState['round']): SessionState => ({
+      seed: 's',
+      ruleset,
+      shoe: { seed: 's', shoe_number: 1, cards: [], cursor: 0, discard: [], penetration_index: 234 },
+      bankroll: 100000,
+      default_bet: 2000,
+      round: activeRound,
+      logs: [],
+    });
+    const fake: CoreTransport = {
+      call(json: string): string {
+        const cmd = JSON.parse(json);
+        const data = cmd.command === 'start_round' ? session(round) : session(null);
+        return JSON.stringify({ status: 'ok', response: { type: 'session', data } });
+      },
+    };
+    const c = new GameController(fake, new MemorySink(), { now: () => 't' }, { next: () => 'sid' });
+
+    await c.startSession('s', 100000, 2000);
+    await c.startRound(2000);
+
+    expect(c.getState().notice).toBe('Insurance auto-declined');
+  });
+
   it('auto-reshuffles at the shoe boundary, then deals with a notice', async () => {
     // Fake core: the first Deal reports the shoe must reshuffle; reshuffle + retry succeed.
     const data = (shoe_number: number, round: unknown) => ({
