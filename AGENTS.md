@@ -11,6 +11,15 @@ Build a Duolingo-like blackjack training game that feels approachable while mode
 - Do not fake card flow: build shoes, shuffle once, deal from the ordered shoe, and keep card origins traceable.
 - Keep future tasks out of `journal/ops/tasks.md`; only the active phase gets task detail.
 
+## QA
+- Every new feature closes with its own scoped **feature QA** playtest before it is called done;
+  every milestone closes with a **milestone QA** pack run whose product verdict gates the phase
+  boundary. Process: `docs/specs/qa-playtest-process.md`.
+- QA is **ledger-driven**: read `journal/qa/ledger.md` before scoping a run. Deep-test only what
+  is new or changed since an area's last-passed commit; smoke-test proven areas. Record every
+  run and finding back into the ledger — that record is what keeps QA cheap without missing
+  regressions.
+
 ## Coding Stack
 - Match the tool to the task; this is a math/simulation trainer, not a single-language app by default.
 - TypeScript is the default for browser UI, interaction state, and lightweight app shell code.

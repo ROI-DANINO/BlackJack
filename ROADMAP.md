@@ -2,6 +2,8 @@
 
 > Destination, phases, milestones, exit criteria.
 > Structure: versions -> milestones -> phases -> tasks. Only the active phase gets detailed tasks.
+> QA gates: every feature ships with a scoped feature QA; every milestone below closes with a
+> milestone QA pack run before the next phase starts (`docs/specs/qa-playtest-process.md`).
 
 ## Destination
 An approachable blackjack training game with accurate shoe simulation, Free Play, Basic Strategy mastery, card counting practice, and later casino-like cognitive load.
@@ -12,6 +14,7 @@ around the hand, but they should not rig card flow for lessons.
 
 ## V1 — Simulation Foundations
 - [x] Free Play skeleton — exit criteria MET (2026-07-09): one player plays complete rounds vs a dealer from a seeded 6-deck shoe with cut card / penetration, legal actions, outcomes, logs, and shoe continuity (auto-reshuffle). Playable in-browser via WASM with JSONL history + per-hand notes. (Open: verify the split-legality question surfaced in playtest.)
+- [ ] V1 milestone QA — exit criteria: full milestone QA pack run against the browser build (rules & payout fidelity, state/round flow, player experience, edge/breaker, product review); all blocker findings fixed and verified; product verdict and coverage recorded in `journal/qa/ledger.md`. This gates the move to V2.
 
 Scope:
 - Web app foundation with mobile-responsive thinking.

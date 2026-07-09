@@ -14,7 +14,7 @@
 - **V1 Free Play polish scoped and shipped**: any two 10-value cards can split through the shared core legal-action rule; the table shows per-hand win/loss/push/blackjack outcomes after resolution; dealer-ace insurance auto-decline is visible instead of silent.
 
 ## In progress
-- Phase boundary: V1 Free Play skeleton and scoped polish are complete. Decide whether to move to V2 Basic Strategy now.
+- **V1 QA remediation** (then V2). The first milestone QA ran 2026-07-09: money math, round flow, and abuse-resistance all passed hard scrutiny (~300 independently re-derived rounds, 0 console errors); 14 findings recorded in `journal/qa/ledger.md`. Headline catch: the browser was serving a stale WASM build — the split-10 fix never reached it (QA-001/QA-002, now verified after rebuild). Remediation list (1 blocker + 4 majors + 1 seed decision) is in `journal/ops/tasks.md`; V2 starts when those are ledger-`verified`.
 
 ## Open questions
 - How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?

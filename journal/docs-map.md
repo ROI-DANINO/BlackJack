@@ -52,5 +52,8 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | docs/specs/product-vision.md | Product north star, product feel, learning philosophy, and what makes the simulator different. |
 | docs/specs/research-brief.md | Research anchors and open research questions for rules, strategy tables, and casino machine behavior. |
 | docs/specs/learning-mastery-and-scoring.md | Future V2+ learning, mastery, hinting, scoring, and simulated-player design notes. |
+| docs/specs/qa-playtest-process.md | The AI playtest QA process: agent pack, session protocols, scoping rules, run mechanics. |
+| journal/qa/ledger.md | QA coverage state (area × last-passed commit) + findings register. Read before scoping any QA run. |
+| journal/qa/runs/ | Per-run QA reports (one dir per run, one file per agent). |
 | docs/specs/<name>.md | Design specs. |
 | docs/plans/ | Implementation plans for active specs. |
