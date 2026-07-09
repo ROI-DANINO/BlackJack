@@ -16,7 +16,7 @@ impl SeededRng {
         if upper_exclusive == 0 {
             return 0;
         }
-        (self.next_u64() as usize) % upper_exclusive
+        (self.next_u64() % (upper_exclusive as u64)) as usize
     }
 
     fn next_u64(&mut self) -> u64 {

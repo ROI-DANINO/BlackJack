@@ -4,6 +4,8 @@ pub mod rules;
 pub mod session;
 pub mod shoe;
 pub mod types;
+#[cfg(feature = "wasm")]
+pub mod wasm;
 
 pub use boundary::*;
 pub use rules::*;
