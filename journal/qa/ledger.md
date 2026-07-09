@@ -45,6 +45,17 @@ Only `verified` closes a finding; `fixed` items get a targeted re-test in the ne
 **Coverage gaps carried forward:** split aces never dealt (deterministic shoe); 3–4-way
 resplits; double/split bankroll boundary observed in source only; multi-tab races untried.
 
+**Remediation-branch backlog (final whole-branch review, 2026-07-09 — none block merge):**
+targeted re-test should verify the seed VALUE renders (jsdom test only checks the label) and
+click-hammer New session in the real browser; `writePending`'s claim-before-await must be
+revisited when V2 adds a truly async sink (a suspending write could let `downloadLog` export
+without the in-flight round); Deal+New-session same-tick interleave can write a round line
+after the new header (correct session_id, wrong file position); wasm freshness guard doesn't
+watch `Cargo.lock`/`build-wasm.sh`; `Table.tsx` duplicates the startSession handler (extract
+`startFresh()` when bet controls arrive); HandView `hideFrom=0` shows no total; totals tests
+lack A,2,4 soft and A,A,9 soft-21 cases; no negative active-marker assertions (single-hand /
+resolved rounds).
+
 ## Run log
 
 | Date | Run | Type | Commit | Report dir | Outcome |
