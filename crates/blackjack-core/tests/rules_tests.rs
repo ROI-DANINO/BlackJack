@@ -119,3 +119,35 @@ fn split_ace_pair_can_only_resplit_when_rule_and_limits_allow_it() {
     assert_eq!(legal_actions(&hand, &ruleset, 4, 100), Vec::new());
     assert_eq!(legal_actions(&hand, &ruleset, 1, 0), Vec::new());
 }
+
+#[test]
+fn allows_split_for_any_two_ten_value_cards() {
+    let hand = HandState {
+        cards: vec![card(Rank::Ten, "10c"), card(Rank::Queen, "qc")],
+        wager: 25,
+        is_complete: false,
+        is_doubled: false,
+        source: HandSource::Initial,
+    };
+
+    assert_eq!(
+        legal_actions(&hand, &v1_h17_ruleset(), 1, 100),
+        vec![Action::Hit, Action::Stand, Action::Double, Action::Split]
+    );
+}
+
+#[test]
+fn rejects_split_for_different_non_ten_values() {
+    let hand = HandState {
+        cards: vec![card(Rank::Eight, "8"), card(Rank::Nine, "9")],
+        wager: 25,
+        is_complete: false,
+        is_doubled: false,
+        source: HandSource::Initial,
+    };
+
+    assert_eq!(
+        legal_actions(&hand, &v1_h17_ruleset(), 1, 100),
+        vec![Action::Hit, Action::Stand, Action::Double]
+    );
+}

@@ -199,3 +199,26 @@ fn split_two_card_twenty_one_settles_as_a_normal_win() {
             .any(|outcome| outcome.result == OutcomeResult::Blackjack)
     );
 }
+
+#[test]
+fn ten_and_face_card_can_split_through_session_legal_actions() {
+    let mut session = start_session("ten-face-split", 10_000, 10, None).expect("session");
+    session.shoe.cards = vec![
+        card("p1", Rank::Ten, Suit::Clubs),
+        card("d1", Rank::Nine, Suit::Clubs),
+        card("p2", Rank::Queen, Suit::Clubs),
+        card("d2", Rank::King, Suit::Diamonds),
+        card("split-1", Rank::Two, Suit::Hearts),
+        card("split-2", Rank::Three, Suit::Spades),
+    ];
+    session.shoe.cursor = 0;
+    session.shoe.penetration_index = usize::MAX;
+
+    start_round(&mut session, None).expect("round");
+
+    assert!(
+        current_legal_actions(&session)
+            .expect("legal")
+            .contains(&Action::Split)
+    );
+}
