@@ -120,9 +120,10 @@ export class GameController {
   }
 
   private async writePending(note: string | null): Promise<void> {
-    if (!this.pendingLine) return;
-    await this.sink.write({ ...this.pendingLine, note });
-    this.pendingLine = null;
+    const line = this.pendingLine;
+    if (!line) return;
+    this.pendingLine = null; // claim synchronously: a same-tick second flush must see it taken (QA-003)
+    await this.sink.write({ ...line, note });
   }
 
   /** Flush the buffered resolved round with the current note draft (or null if blank). */

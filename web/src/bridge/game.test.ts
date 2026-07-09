@@ -228,4 +228,28 @@ describe('GameController', () => {
     expect(c.getState().phase).toBe('fatal');
     expect(c.getState().fatalMessage).toBeTruthy();
   });
+
+  it('writes the buffered round exactly once when two Downloads race in the same tick', async () => {
+    const { c, sink } = make();
+    await c.startSession('seed-a', 100000, 2000);
+    await c.startRound(2000);
+    let guard = 0;
+    while (c.getState().session!.round?.status === 'player_turn' && guard++ < 20) await c.act('stand');
+    expect(c.getState().session!.round!.status).toBe('resolved');
+    // Same-tick double flush — an impatient double-click on "Download history".
+    await Promise.all([c.downloadLog(), c.downloadLog()]);
+    expect(roundLines(sink.text())).toHaveLength(1);
+  });
+
+  it('writes the buffered round exactly once when Deal and Download race in the same tick', async () => {
+    const { c, sink } = make();
+    await c.startSession('seed-a', 100000, 2000);
+    await c.startRound(2000);
+    let guard = 0;
+    while (c.getState().session!.round?.status === 'player_turn' && guard++ < 20) await c.act('stand');
+    await Promise.all([c.startRound(2000), c.downloadLog()]);
+    // Round 0 must appear exactly once (round 1 may still be buffered — buffered ≠ written).
+    const written = roundLines(sink.text()).map((l) => JSON.parse(l).round_index);
+    expect(written.filter((i) => i === 0)).toHaveLength(1);
+  });
 });
