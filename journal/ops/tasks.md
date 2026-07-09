@@ -3,16 +3,17 @@
 > Only the current phase gets detailed tasks. Future work lives in ROADMAP.md.
 > codex-end archives this file to ops/archive/ before mutating it.
 
-## Active — sub-phase: Free Play UI polish (notes + shoe continuity)
-- [ ] **Per-hand notes input.** During playtest, let the user type an optional note for the hand
-      they just played; save it as a harness-added `note` field on that round's JSONL line (no
-      core change — it's a harness annotation like `session_id`/`ts`). Open design decision:
-      attach-on-Deal (buffer the resolved round, flush with the note when the next round starts /
-      on download) vs. type-during-hand. Lean **attach-on-Deal**; confirm before building.
-- [ ] **Wire `GameController.reshuffle()` into the UI** (closes the accepted Fire craft-minor).
-      When `start_round` returns `"shoe must reshuffle"` at penetration, either auto-reshuffle
-      with a visible notice or surface an explicit reshuffle control in `Controls.tsx`/`Table.tsx`
-      so Free Play can cross the shoe boundary instead of dead-ending on a raw error string.
+## Active — sub-phase: Free Play UI polish (notes + shoe continuity) — DONE
+Both tasks shipped & merged to main (b7b60c5 + 176dd86 → merge 7f83023); rd-verify (opus) PASS;
+19/19 web tests green. This likely completes the V1 Free Play skeleton exit criteria — a
+phase-boundary decision (V2 Basic Strategy vs. more Free Play polish) is the next call, best made
+at a `/wl-end` milestone check.
+- [x] **Per-hand notes input** (attach-on-Deal). GameController buffers the resolved round and
+      writes it with an optional harness `note` field on the round JSONL line when you Deal (or
+      Download). No core change. New GameState: noteDraft/notice/canNote.
+- [x] **Wired `GameController.reshuffle()` into the UI** — auto-reshuffle + "Shoe reshuffled"
+      notice when the shoe hits penetration. **Closes the accepted Fire craft-minor** (Free Play
+      no longer dead-ends at the shoe boundary).
 
 ## Done — TS UI bridge (V1 sub-phase, shipped 2026-07-09, merged to main)
 - [x] Brainstorm → design spec (`docs/superpowers/specs/2026-07-09-ts-ui-bridge-design.md`) →
