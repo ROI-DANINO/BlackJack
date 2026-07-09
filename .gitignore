@@ -1,5 +1,9 @@
 /target/
 
+# Gameplay history exports (personal/ephemeral) — keep the dir + README, ignore the data.
+/data/history/*
+!/data/history/README.md
+
 journal/context/
 journal/ops/sessions/
 journal/memory/

@@ -30,7 +30,8 @@ export function Table({ controller }: { controller: GameController }) {
       <Controls controller={controller} state={state} />
       <button onClick={() => {
         const url = URL.createObjectURL(controller.downloadLog());
-        const a = document.createElement('a'); a.href = url; a.download = 'history.jsonl'; a.click();
+        const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const a = document.createElement('a'); a.href = url; a.download = `blackjack-session-${stamp}.jsonl`; a.click();
         URL.revokeObjectURL(url);
       }}>Download history</button>
     </div>
