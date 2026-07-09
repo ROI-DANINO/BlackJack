@@ -21,7 +21,7 @@ describe('MemorySink', () => {
       started_at: '2026-07-09T00:00:00Z', starting_bankroll: 100000, default_bet: 2000,
       ruleset, harness_version: 'ts-bridge-0.1.0',
     });
-    await sink.write({ type: 'round', schema_version: 1, session_id: 'sid', round_index: 0, ts: '2026-07-09T00:01:00Z', ...roundLog });
+    await sink.write({ type: 'round', schema_version: 1, session_id: 'sid', round_index: 0, ts: '2026-07-09T00:01:00Z', note: null, ...roundLog });
 
     const lines = sink.text().split('\n');
     expect(lines).toHaveLength(2);
