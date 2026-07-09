@@ -156,6 +156,16 @@ class SplitTurnTransport implements CoreTransport {
   }
 }
 
+class RecordingTransport implements CoreTransport {
+  seeds: string[] = [];
+  call(json: string): string {
+    const cmd = JSON.parse(json);
+    if (cmd.command === 'start_session') { this.seeds.push(cmd.seed); return SESSION; }
+    if (cmd.command === 'legal_actions') return '{"status":"ok","response":{"type":"actions","data":[]}}';
+    return SESSION;
+  }
+}
+
 describe('Table', () => {
   it('renders bankroll and a deal control after session start', async () => {
     const c = new GameController(new FakeTransport(), new MemorySink(), { now: () => 't' }, { next: () => 'sid' });
@@ -210,5 +220,16 @@ describe('Table', () => {
     expect(await screen.findAllByText(/playing/)).toHaveLength(1);
     expect(screen.getByText(/Hand 2/).parentElement!.textContent).toMatch(/playing/);
     expect(screen.getByText(/Hand 1/).parentElement!.textContent).not.toMatch(/playing/);
+  });
+
+  it('starts each session with a fresh random seed and displays it', async () => {
+    const t = new RecordingTransport();
+    const c = new GameController(t, new MemorySink(), { now: () => 't' }, { next: () => 'sid' });
+    render(<Table controller={c} />);
+    await fireEvent.click(screen.getByRole('button', { name: /start session/i }));
+
+    expect(t.seeds).toHaveLength(1);
+    expect(t.seeds[0]).toMatch(/^fp-[a-z0-9]{1,10}$/);
+    expect(await screen.findByText(/session seed/i)).toBeTruthy();
   });
 });

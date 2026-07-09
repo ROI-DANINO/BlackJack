@@ -3,6 +3,10 @@ import type { HandOutcome } from '../bridge/types';
 import { useGame } from './useGame';
 import { HandView } from './HandView';
 import { Controls } from './Controls';
+import { freshSeed } from './seed';
+
+const START_BANKROLL = 100000; // cents
+const DEFAULT_BET = 2000;      // cents
 
 const RESULT_LABEL: Record<HandOutcome['result'], string> = {
   win: 'Win',
@@ -26,7 +30,7 @@ export function Table({ controller }: { controller: GameController }) {
 
   if (state.phase === 'idle') {
     return (
-      <button onClick={() => void controller.startSession('free-play', 100000, 2000)}>
+      <button onClick={() => void controller.startSession(freshSeed(), START_BANKROLL, DEFAULT_BET)}>
         Start session
       </button>
     );
@@ -39,6 +43,7 @@ export function Table({ controller }: { controller: GameController }) {
   return (
     <div>
       <p>Bankroll: ${(s.bankroll / 100).toFixed(2)}</p>
+      <p><small>Session seed: {s.seed}</small></p>
       {round ? <HandView label="Dealer" cards={round.dealer.cards} hideFrom={dealerHideFrom} /> : null}
       {round ? round.hands.map((h, i) => {
         const outcome = outcomesByHand.get(i);
