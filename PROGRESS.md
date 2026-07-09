@@ -14,7 +14,7 @@
 - **V1 Free Play polish scoped and shipped**: any two 10-value cards can split through the shared core legal-action rule; the table shows per-hand win/loss/push/blackjack outcomes after resolution; dealer-ace insurance auto-decline is visible instead of silent.
 
 ## In progress
-- **V1 QA remediation** (then V2). The first milestone QA ran 2026-07-09: money math, round flow, and abuse-resistance all passed hard scrutiny (~300 independently re-derived rounds, 0 console errors); 14 findings recorded in `journal/qa/ledger.md`. Headline catch: the browser was serving a stale WASM build — the split-10 fix never reached it (QA-001/QA-002, now verified after rebuild). Remediation list (1 blocker + 4 majors + 1 seed decision) is in `journal/ops/tasks.md`; V2 starts when those are ledger-`verified`.
+- **V1 QA remediation SHIPPED** (merged to main 2026-07-09, fast-forward a97c45b): all six findings fixed — flush race (QA-003), wasm freshness guard (QA-001), hand totals (QA-005), active-hand marker (QA-004), New session control (QA-007), random per-session seed (QA-009). 55 Rust + 41 web tests green; final whole-branch review clean. Remaining before V2: a targeted feature-QA re-test against the running app to move the six ledger entries `fixed` → `verified` (re-test notes in the ledger's remediation-branch backlog).
 
 ## Open questions
 - How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?
