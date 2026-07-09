@@ -48,6 +48,8 @@ export class GameController {
   async startSession(seed: string, bankroll: number, defaultBet: number, ruleset: Ruleset | null = null): Promise<void> {
     this.sessionId = this.ids.next();
     this.roundIndex = 0;
+    this.pendingLine = null; // drop any buffered round from a prior session on this controller
+    this.set({ noteDraft: '', notice: null, canNote: false });
     const out = this.dispatch({ command: 'start_session', seed, bankroll, default_bet: defaultBet, ruleset });
     if (!out) return;
     if (out.status === 'error') { this.set({ lastError: out.message }); return; }
