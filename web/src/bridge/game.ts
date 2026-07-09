@@ -1,4 +1,4 @@
-import type { Action, CliOutput, CoreCommand, Ruleset, SessionState } from './types';
+import type { Action, CliOutput, CoreCommand, HandOutcome, Ruleset, SessionState } from './types';
 import type { CoreTransport } from './transport';
 import { BridgeError, parseCliOutput } from './validate';
 import type { LogSink, RoundLine } from './log/sink';
@@ -19,12 +19,13 @@ export interface GameState {
   noteDraft: string;           // in-progress note for the just-resolved hand
   notice: string | null;       // transient info (e.g. shoe reshuffled)
   canNote: boolean;            // a resolved hand is buffered, awaiting note + flush
+  lastOutcomes: HandOutcome[]; // latest resolved round outcomes for display
 }
 
 export class GameController {
   private state: GameState = {
     phase: 'idle', session: null, legalActions: [], lastError: null, fatalMessage: null,
-    noteDraft: '', notice: null, canNote: false,
+    noteDraft: '', notice: null, canNote: false, lastOutcomes: [],
   };
   private sessionId = '';
   private roundIndex = 0;
@@ -49,7 +50,7 @@ export class GameController {
     this.sessionId = this.ids.next();
     this.roundIndex = 0;
     this.pendingLine = null; // drop any buffered round from a prior session on this controller
-    this.set({ noteDraft: '', notice: null, canNote: false });
+    this.set({ noteDraft: '', notice: null, canNote: false, lastOutcomes: [] });
     const out = this.dispatch({ command: 'start_session', seed, bankroll, default_bet: defaultBet, ruleset });
     if (!out) return;
     if (out.status === 'error') { this.set({ lastError: out.message }); return; }
@@ -65,7 +66,7 @@ export class GameController {
 
   async startRound(bet: number | null = null): Promise<void> {
     await this.flushPending();     // write the previous hand (with its note) before dealing
-    this.set({ notice: null });
+    this.set({ notice: null, lastOutcomes: [] });
     await this.command({ command: 'start_round', session: this.requireSession(), bet });
     // Shoe hit penetration: auto-reshuffle and deal again so Free Play never dead-ends.
     if (this.state.lastError?.includes('shoe must reshuffle')) {
@@ -102,15 +103,20 @@ export class GameController {
     // We always send logs:[] onward, so next.logs holds only rounds resolved by THIS command.
     // Buffer the resolved round instead of writing it now, so a note typed after the hand
     // (attach-on-Deal) rides along when it flushes. At most one round resolves per command.
+    let lastOutcomes = this.state.lastOutcomes;
     for (const log of next.logs) {
       if (this.pendingLine) await this.writePending(null); // defensive; never expected
       this.pendingLine = {
         type: 'round', schema_version: SCHEMA_VERSION, session_id: this.sessionId,
         round_index: this.roundIndex++, ts: this.clock.now(), note: null, ...log,
       };
+      lastOutcomes = log.outcomes;
       this.set({ canNote: true });
     }
-    this.set({ session: this.strip(next), lastError: null });
+    const notice = next.round?.actions.some((item) => item.action === 'insurance_declined')
+      ? 'Insurance auto-declined'
+      : this.state.notice;
+    this.set({ session: this.strip(next), lastOutcomes, notice, lastError: null });
   }
 
   private async writePending(note: string | null): Promise<void> {

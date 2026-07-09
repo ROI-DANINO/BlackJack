@@ -1,7 +1,21 @@
 import type { GameController } from '../bridge/game';
+import type { HandOutcome } from '../bridge/types';
 import { useGame } from './useGame';
 import { HandView } from './HandView';
 import { Controls } from './Controls';
+
+const RESULT_LABEL: Record<HandOutcome['result'], string> = {
+  win: 'Win',
+  loss: 'Loss',
+  push: 'Push',
+  blackjack: 'Blackjack',
+};
+
+function formatOutcome(outcome: HandOutcome): string {
+  const dollars = `$${(Math.abs(outcome.delta) / 100).toFixed(2)}`;
+  const signed = outcome.delta > 0 ? `+${dollars}` : outcome.delta < 0 ? `-${dollars}` : dollars;
+  return `${RESULT_LABEL[outcome.result]} (${signed})`;
+}
 
 export function Table({ controller }: { controller: GameController }) {
   const state = useGame(controller);
@@ -20,12 +34,21 @@ export function Table({ controller }: { controller: GameController }) {
 
   const s = state.session!;
   const round = s.round;
+  const outcomesByHand = new Map(state.lastOutcomes.map((outcome) => [outcome.hand_index, outcome]));
   const dealerHideFrom = round && round.status === 'player_turn' ? 1 : undefined;
   return (
     <div>
       <p>Bankroll: ${(s.bankroll / 100).toFixed(2)}</p>
       {round ? <HandView label="Dealer" cards={round.dealer.cards} hideFrom={dealerHideFrom} /> : null}
-      {round ? round.hands.map((h, i) => <HandView key={i} label={`Hand ${i + 1}`} cards={h.cards} />) : null}
+      {round ? round.hands.map((h, i) => {
+        const outcome = outcomesByHand.get(i);
+        return (
+          <div key={i}>
+            <HandView label={`Hand ${i + 1}`} cards={h.cards} />
+            {outcome ? <span>{formatOutcome(outcome)}</span> : null}
+          </div>
+        );
+      }) : null}
       {state.notice ? <p role="status">{state.notice}</p> : null}
       {state.lastError ? <p role="status">{state.lastError}</p> : null}
       <Controls controller={controller} state={state} />
