@@ -4,8 +4,11 @@
   "type": "module",
   "scripts": {
     "build:wasm": "bash scripts/build-wasm.sh",
+    "predev": "bash scripts/check-wasm-fresh.sh",
     "dev": "vite",
+    "prebuild": "bash scripts/check-wasm-fresh.sh",
     "build": "tsc --noEmit && vite build",
+    "pretest": "bash scripts/check-wasm-fresh.sh",
     "test": "vitest run"
   },
   "dependencies": {
