@@ -125,6 +125,37 @@ class PlayerTurnTransport implements CoreTransport {
   }
 }
 
+class SplitTurnTransport implements CoreTransport {
+  call(json: string): string {
+    const cmd = JSON.parse(json);
+    const ruleset = { id: 'v1-modern-classic-h17-6d', decks: 6, penetration_percent: 75, dealer_soft_17: 'hit', blackjack_payout: 1.5, max_split_hands: 4, double_after_split: true, resplit_aces: false, split_aces_receive_one_card: true, insurance_auto_decline: true };
+    const round = {
+      status: 'player_turn',
+      bet: 2000,
+      active_hand_index: 1,   // hand 2 is being played
+      dealer: { cards: [{ card_id: 'd1', deck_id: 'deck-1', rank: 'nine', suit: 'clubs' }, { card_id: 'd2', deck_id: 'deck-1', rank: 'king', suit: 'hearts' }] },
+      hands: [
+        { cards: [{ card_id: 'p1', deck_id: 'deck-1', rank: 'eight', suit: 'clubs' }, { card_id: 'p2', deck_id: 'deck-1', rank: 'three', suit: 'hearts' }], wager: 2000, is_complete: true, is_doubled: false, source: 'split' },
+        { cards: [{ card_id: 'p3', deck_id: 'deck-1', rank: 'eight', suit: 'spades' }, { card_id: 'p4', deck_id: 'deck-1', rank: 'five', suit: 'diamonds' }], wager: 2000, is_complete: false, is_doubled: false, source: 'split' },
+      ],
+      dealt_cards: [],
+      actions: [],
+      bankroll_before: 100000,
+    };
+    const session = {
+      seed: 'free-play',
+      ruleset,
+      shoe: { seed: 'free-play', shoe_number: 1, cards: [], cursor: 0, discard: [], penetration_index: 234 },
+      bankroll: 96000,
+      default_bet: 2000,
+      round: cmd.command === 'start_session' ? null : round,
+      logs: [],
+    };
+    if (cmd.command === 'legal_actions') return '{"status":"ok","response":{"type":"actions","data":["hit","stand"]}}';
+    return JSON.stringify({ status: 'ok', response: { type: 'session', data: session } });
+  }
+}
+
 describe('Table', () => {
   it('renders bankroll and a deal control after session start', async () => {
     const c = new GameController(new FakeTransport(), new MemorySink(), { now: () => 't' }, { next: () => 'sid' });
@@ -168,5 +199,16 @@ describe('Table', () => {
 
     expect(await screen.findByText(/Hand 1 \(17\)/)).toBeTruthy();
     expect(screen.getByText(/Dealer \(9 \+ \?\)/)).toBeTruthy();   // hole card hidden: 9 visible + ?
+  });
+
+  it('marks only the active hand during a split turn', async () => {
+    const c = new GameController(new SplitTurnTransport(), new MemorySink(), { now: () => 't' }, { next: () => 'sid' });
+    render(<Table controller={c} />);
+    await fireEvent.click(screen.getByRole('button', { name: /start session/i }));
+    await fireEvent.click(await screen.findByRole('button', { name: /deal/i }));
+
+    expect(await screen.findAllByText(/playing/)).toHaveLength(1);
+    expect(screen.getByText(/Hand 2/).parentElement!.textContent).toMatch(/playing/);
+    expect(screen.getByText(/Hand 1/).parentElement!.textContent).not.toMatch(/playing/);
   });
 });

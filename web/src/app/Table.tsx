@@ -42,9 +42,10 @@ export function Table({ controller }: { controller: GameController }) {
       {round ? <HandView label="Dealer" cards={round.dealer.cards} hideFrom={dealerHideFrom} /> : null}
       {round ? round.hands.map((h, i) => {
         const outcome = outcomesByHand.get(i);
+        const active = round.status === 'player_turn' && round.hands.length > 1 && i === round.active_hand_index;
         return (
           <div key={i}>
-            <HandView label={`Hand ${i + 1}`} cards={h.cards} />
+            <HandView label={`Hand ${i + 1}`} cards={h.cards} active={active} />
             {outcome ? <span>{formatOutcome(outcome)}</span> : null}
           </div>
         );
