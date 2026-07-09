@@ -19,6 +19,7 @@ export type RoundLine = {
   session_id: string;
   round_index: number;
   ts: string;
+  note: string | null; // optional per-hand playtest annotation (harness-added)
 } & RoundLog;
 
 export type LogLine = SessionHeader | RoundLine;

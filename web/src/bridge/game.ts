@@ -1,7 +1,7 @@
 import type { Action, CliOutput, CoreCommand, Ruleset, SessionState } from './types';
 import type { CoreTransport } from './transport';
 import { BridgeError, parseCliOutput } from './validate';
-import type { LogSink } from './log/sink';
+import type { LogSink, RoundLine } from './log/sink';
 
 const SCHEMA_VERSION = 1;
 const HARNESS_VERSION = 'ts-bridge-0.1.0';
@@ -16,12 +16,19 @@ export interface GameState {
   legalActions: Action[];
   lastError: string | null;    // recoverable rule error
   fatalMessage: string | null; // poisoned/malformed core
+  noteDraft: string;           // in-progress note for the just-resolved hand
+  notice: string | null;       // transient info (e.g. shoe reshuffled)
+  canNote: boolean;            // a resolved hand is buffered, awaiting note + flush
 }
 
 export class GameController {
-  private state: GameState = { phase: 'idle', session: null, legalActions: [], lastError: null, fatalMessage: null };
+  private state: GameState = {
+    phase: 'idle', session: null, legalActions: [], lastError: null, fatalMessage: null,
+    noteDraft: '', notice: null, canNote: false,
+  };
   private sessionId = '';
   private roundIndex = 0;
+  private pendingLine: RoundLine | null = null; // resolved round buffered until note + flush
   private listeners = new Set<() => void>();
 
   constructor(
@@ -33,7 +40,10 @@ export class GameController {
 
   getState = (): GameState => this.state;
   subscribe = (fn: () => void): (() => void) => { this.listeners.add(fn); return () => { this.listeners.delete(fn); }; };
-  downloadLog = (): Blob => this.sink.export();
+  downloadLog = async (): Promise<Blob> => { await this.flushPending(); return this.sink.export(); };
+
+  /** Set the note for the just-resolved hand; saved when it flushes (next Deal / Download). */
+  setNote(text: string): void { this.set({ noteDraft: text }); }
 
   async startSession(seed: string, bankroll: number, defaultBet: number, ruleset: Ruleset | null = null): Promise<void> {
     this.sessionId = this.ids.next();
@@ -52,7 +62,18 @@ export class GameController {
   }
 
   async startRound(bet: number | null = null): Promise<void> {
+    await this.flushPending();     // write the previous hand (with its note) before dealing
+    this.set({ notice: null });
     await this.command({ command: 'start_round', session: this.requireSession(), bet });
+    // Shoe hit penetration: auto-reshuffle and deal again so Free Play never dead-ends.
+    if (this.state.lastError?.includes('shoe must reshuffle')) {
+      this.set({ lastError: null });
+      await this.command({ command: 'reshuffle', session: this.requireSession() });
+      if (!this.state.lastError) {
+        this.set({ notice: 'Shoe reshuffled — new shoe' });
+        await this.command({ command: 'start_round', session: this.requireSession(), bet });
+      }
+    }
     this.refreshLegal();
   }
 
@@ -77,13 +98,31 @@ export class GameController {
 
   private async applySession(next: SessionState): Promise<void> {
     // We always send logs:[] onward, so next.logs holds only rounds resolved by THIS command.
+    // Buffer the resolved round instead of writing it now, so a note typed after the hand
+    // (attach-on-Deal) rides along when it flushes. At most one round resolves per command.
     for (const log of next.logs) {
-      await this.sink.write({
+      if (this.pendingLine) await this.writePending(null); // defensive; never expected
+      this.pendingLine = {
         type: 'round', schema_version: SCHEMA_VERSION, session_id: this.sessionId,
-        round_index: this.roundIndex++, ts: this.clock.now(), ...log,
-      });
+        round_index: this.roundIndex++, ts: this.clock.now(), note: null, ...log,
+      };
+      this.set({ canNote: true });
     }
     this.set({ session: this.strip(next), lastError: null });
+  }
+
+  private async writePending(note: string | null): Promise<void> {
+    if (!this.pendingLine) return;
+    await this.sink.write({ ...this.pendingLine, note });
+    this.pendingLine = null;
+  }
+
+  /** Flush the buffered resolved round with the current note draft (or null if blank). */
+  private async flushPending(): Promise<void> {
+    if (!this.pendingLine) return;
+    const draft = this.state.noteDraft.trim();
+    await this.writePending(draft === '' ? null : draft);
+    this.set({ canNote: false, noteDraft: '' });
   }
 
   private refreshLegal(): void {

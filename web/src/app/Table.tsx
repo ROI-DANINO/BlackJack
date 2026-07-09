@@ -26,10 +26,22 @@ export function Table({ controller }: { controller: GameController }) {
       <p>Bankroll: ${(s.bankroll / 100).toFixed(2)}</p>
       {round ? <HandView label="Dealer" cards={round.dealer.cards} hideFrom={dealerHideFrom} /> : null}
       {round ? round.hands.map((h, i) => <HandView key={i} label={`Hand ${i + 1}`} cards={h.cards} />) : null}
+      {state.notice ? <p role="status">{state.notice}</p> : null}
       {state.lastError ? <p role="status">{state.lastError}</p> : null}
       <Controls controller={controller} state={state} />
-      <button onClick={() => {
-        const url = URL.createObjectURL(controller.downloadLog());
+      {state.canNote ? (
+        <label>
+          Note for this hand:{' '}
+          <input
+            type="text"
+            value={state.noteDraft}
+            placeholder="optional — saved with this hand on Deal"
+            onChange={(e) => controller.setNote(e.target.value)}
+          />
+        </label>
+      ) : null}
+      <button onClick={async () => {
+        const url = URL.createObjectURL(await controller.downloadLog());
         const stamp = new Date().toISOString().replace(/[:.]/g, '-');
         const a = document.createElement('a'); a.href = url; a.download = `blackjack-session-${stamp}.jsonl`; a.click();
         URL.revokeObjectURL(url);
