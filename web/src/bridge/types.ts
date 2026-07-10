@@ -6,6 +6,7 @@ export type Rank =
   | 'eight' | 'nine' | 'ten' | 'jack' | 'queen' | 'king';
 export type Suit = 'clubs' | 'diamonds' | 'hearts' | 'spades';
 export interface Card { card_id: string; deck_id: string; rank: Rank; suit: Suit }
+export type PresetCard = { rank: Rank; suit: Suit };
 
 export type DealerSoft17 = 'hit' | 'stand';
 export interface Ruleset {
@@ -62,6 +63,14 @@ export interface SessionState {
 // Client-produced commands. Internally tagged on "command".
 export type CoreCommand =
   | { command: 'start_session'; seed: string; bankroll: number; default_bet: number; ruleset: Ruleset | null }
+  | {
+      command: 'start_session_with_prefix';
+      seed: string;
+      bankroll: number;
+      default_bet: number;
+      ruleset: Ruleset | null;
+      prefix: PresetCard[];
+    }
   | { command: 'start_round'; session: SessionState; bet: number | null }
   | { command: 'legal_actions'; session: SessionState }
   | { command: 'apply_action'; session: SessionState; action: Action }
