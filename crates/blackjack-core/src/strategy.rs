@@ -1,4 +1,4 @@
-use crate::{Action, Card, HandState, Ruleset, rules, score_hand};
+use crate::{Action, Card, HandSource, HandState, Ruleset, rules, score_hand};
 
 const HARD: [&str; 14] = [
     "HHHHHHHHHH",
@@ -69,7 +69,7 @@ pub fn basic_strategy_action(
     if legal_actions.is_empty()
         || hand.is_complete
         || score_hand(&hand.cards).is_bust
-        || score_hand(&hand.cards).is_blackjack
+        || (matches!(&hand.source, HandSource::Initial) && score_hand(&hand.cards).is_blackjack)
     {
         return Ok(None);
     }
