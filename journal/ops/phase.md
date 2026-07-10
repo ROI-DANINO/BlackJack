@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
-sub_phase: strategy-source-research
-plan: docs/superpowers/plans/2026-07-10-basic-strategy-oracle.md
+sub_phase: first-guided-drill-design
+plan: null
 spec: docs/superpowers/specs/2026-07-10-v2-learning-foundations-roadmap-design.md
-step: "Execute the approved Basic Strategy oracle plan task-by-task, beginning with exhaustive failing chart-contract tests."
+step: "Brainstorm and approve the first guided drill design before implementation."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -14,8 +14,9 @@ sessions:
   - journal/ops/sessions/the-notes-that-wrote-back-2026-07-09T0501.md
   - journal/ops/sessions/the-ten-value-and-the-lamp-2026-07-09T0605.md
   - journal/ops/sessions/the-table-and-the-tutor-2026-07-10T1114.md
+  - journal/ops/sessions/the-oracle-and-the-guide-2026-07-10T1441.md
 detour: []
 blocking: null
-next: "Choose the execution mode for the approved oracle plan; no lessons or AI integration are in this feature."
-note: "V1 gate is cleared. The AI-coach direction is recorded as future learning design; V2 now has an approved oracle implementation plan."
+next: "Brainstorm the first guided drill: a short reversible immediate-feedback learning loop powered by the strategy oracle."
+note: "Milestone close: Basic Strategy oracle completed and feature-QA passed in journal/ops/sessions/the-oracle-and-the-guide-2026-07-10T1441.md."
 ---
