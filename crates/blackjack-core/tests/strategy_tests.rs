@@ -253,6 +253,20 @@ fn returns_no_recommendation_without_legal_actions() {
 }
 
 #[test]
+fn returns_no_recommendation_for_natural_blackjack_with_legal_actions() {
+    let hand = initial_hand(&[Rank::Ace, Rank::King]);
+    assert_eq!(
+        basic_strategy_action(
+            &hand,
+            &card(Rank::Six, "dealer-upcard"),
+            &v1_h17_ruleset(),
+            &[Action::Hit, Action::Stand],
+        ),
+        Ok(None)
+    );
+}
+
+#[test]
 fn rejects_an_unsupported_ruleset_id() {
     let hand = initial_hand(&[Rank::Ten, Rank::Seven]);
     let legal = legal_actions(&hand, &v1_h17_ruleset(), 1, 100);

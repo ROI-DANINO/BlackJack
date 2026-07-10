@@ -66,7 +66,11 @@ pub fn basic_strategy_action(
             ruleset.id
         ));
     }
-    if legal_actions.is_empty() || hand.is_complete || score_hand(&hand.cards).is_bust {
+    if legal_actions.is_empty()
+        || hand.is_complete
+        || score_hand(&hand.cards).is_bust
+        || score_hand(&hand.cards).is_blackjack
+    {
         return Ok(None);
     }
 
