@@ -12,7 +12,7 @@ recorded commit (or it has never run); smoke-test otherwise.
 
 | Area | Watched files | Last run | Last-passed commit | Verdict | Notes |
 |------|---------------|----------|--------------------|---------|-------|
-| Engine rules & math | `crates/` | 2026-07-09-v1-milestone | 6121a51 | PASS | 55 Rust tests + 300+ rounds independently re-derived in-browser (H17, payouts, split legality) |
+| Engine rules & math | `crates/` | 2026-07-10-strategy-oracle | bdda2f0 | PASS | Strategy-oracle feature QA: 320 source-chart cells + fallbacks deep-tested; 63 core Rust tests passed (existing engine smoke). |
 | UI/wire fidelity (display ↔ engine ↔ JSONL) | `web/src/`, `crates/` wire types | 2026-07-10-qa-suite | c5aff12 | PASS | **now guarded by `qa:rules`** — 90 rounds re-derived, 12/12 situations ≥2×, 0 violations. (Orig. passed only after mid-run WASM rebuild — QA-001/QA-002.) |
 | Betting & payout math (bankroll, 3:2, push, split/double stakes) | `web/src/`, `crates/` | 2026-07-10-qa-suite | c5aff12 | PASS | **now guarded by `qa:rules`** — H17, payout multipliers, split/double scaling, bankroll chain re-derived per round, 0 discrepancies |
 | Round & state flow (turns, buttons, reset, reshuffle) | `web/src/` | 2026-07-10-qa-suite | c5aff12 | PASS | **now guarded by `qa:flow`** — 273 snapshots, 29 split-turn, 1 reshuffle, 0 violations; QA-004 active-hand marker positively verified |
@@ -64,3 +64,4 @@ resolved rounds).
 | 2026-07-09 | v1-milestone | milestone QA (first run, all deep) | 6121a51 (+WASM rebuild) | `runs/2026-07-09-v1-milestone/` | 14 findings (2 blockers: QA-002 verified-closed, QA-003 open); verdict: remediate 6 items, then V2 |
 | 2026-07-10 | v1-remediation-retest | targeted feature-QA re-test (manual, Roi playing) | 30ec927 | — | 6 remediated findings (QA-001/003/004/005/007/009) re-tested against running build → all **verified**; V1 gate cleared for V2. QA-003 caveat: same-tick Deal race unreachable by manual input |
 | 2026-07-10 | qa-suite | Tier-1 script suite (first run of qa:rules + qa:flow; qa:breakit restructured) | c5aff12 | `runs/2026-07-10-{rules,flow,breakit}/` | All PASS: rules 90 rounds/12-of-12 situations/0 violations, flow 273 snapshots/0 violations, breakit 12/12. No new findings. Replaces mechanical pack agents 1/2/4 with deterministic scripts |
+| 2026-07-10 | strategy-oracle | scoped feature QA (engine) | bdda2f0 | `runs/2026-07-10-strategy-oracle/` | PASS: new oracle deep-tested across 320 chart cells and fallback/boundary cases; existing core engine suite smoke-tested (63 tests); no findings. |
