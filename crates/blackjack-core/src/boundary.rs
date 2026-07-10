@@ -1,6 +1,6 @@
 use crate::{
-    Action, Ruleset, SessionState, apply_action, current_legal_actions, reshuffle_shoe,
-    start_round, start_session,
+    Action, PresetCard, Ruleset, SessionState, apply_action, current_legal_actions, reshuffle_shoe,
+    start_round, start_session, start_session_with_prefix,
 };
 use serde::{Deserialize, Serialize};
 
@@ -12,6 +12,13 @@ pub enum CoreCommand {
         bankroll: i32,
         default_bet: i32,
         ruleset: Option<Ruleset>,
+    },
+    StartSessionWithPrefix {
+        seed: String,
+        bankroll: i32,
+        default_bet: i32,
+        ruleset: Option<Ruleset>,
+        prefix: Vec<PresetCard>,
     },
     StartRound {
         session: SessionState,
@@ -44,6 +51,14 @@ pub fn handle_command(command: CoreCommand) -> Result<CoreResponse, String> {
             default_bet,
             ruleset,
         } => start_session(&seed, bankroll, default_bet, ruleset)
+            .map(|session| CoreResponse::Session(Box::new(session))),
+        CoreCommand::StartSessionWithPrefix {
+            seed,
+            bankroll,
+            default_bet,
+            ruleset,
+            prefix,
+        } => start_session_with_prefix(&seed, bankroll, default_bet, ruleset, prefix)
             .map(|session| CoreResponse::Session(Box::new(session))),
         CoreCommand::StartRound { mut session, bet } => {
             start_round(&mut session, bet).map(|()| CoreResponse::Session(Box::new(session)))

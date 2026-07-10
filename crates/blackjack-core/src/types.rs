@@ -35,6 +35,15 @@ pub struct Card {
     pub suit: Suit,
 }
 
+/// A card specified for an arranged opening. The engine synthesizes arranged-origin
+/// ids from the index and removes one same-rank/suit real card so composition is preserved.
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub struct PresetCard {
+    pub rank: Rank,
+    pub suit: Suit,
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum DealerSoft17 {
