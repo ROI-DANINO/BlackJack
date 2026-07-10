@@ -16,6 +16,6 @@ sessions:
   - journal/ops/sessions/the-table-and-the-tutor-2026-07-10T1114.md
 detour: []
 blocking: null
-next: "Run a dedicated Basic Strategy source/oracle research brainstorm. Do not start implementation until the chart provenance, decision precedence, and encoding approach are agreed."
-note: "Checkpointed in journal/ops/sessions/the-table-and-the-tutor-2026-07-10T1114.md. V1 gate is cleared; V2 remains at strategy-source research with no implementation plan."
+next: "Finish the Basic Strategy source/oracle research decision, then write its focused design spec before implementation."
+note: "V1 gate is cleared. The AI-coach direction is recorded as future learning design; V2 is back at strategy-source research with no implementation plan."
 ---

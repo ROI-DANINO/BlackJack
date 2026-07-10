@@ -135,3 +135,15 @@ players are."
 
 High difficulty can include chaotic or mistake-prone players because they increase cognitive
 load and make card flow less predictable.
+
+## Future AI Coach
+
+AI is a calm, expert coach-companion: it explains, encourages, summarizes patterns, and selects
+the next useful practice from approved curriculum facts. It never decides rules, legal actions,
+round outcomes, or Basic Strategy; the engine and strategy oracle remain authoritative.
+
+Start with session-only context. Add durable learner state only when scoring/progression needs it;
+browser-local storage is enough before accounts, sync, or analytics justify a server database.
+Use explicit retrieval of small, tagged, verified curriculum facts first—not vector RAG. Revisit
+semantic retrieval only when the trusted source corpus becomes too large for deliberate selection.
+Future personas may vary tone, never instructional truth.
