@@ -1,8 +1,8 @@
 use crate::{
     Action, ActionLog, Card, DealerState, HandOutcome, HandSource, HandState, LoggedAction,
-    OutcomeResult, RoundLog, RoundState, RoundStatus, Ruleset, SessionState, create_shoe,
-    deal_card, dealer_must_hit, discard_cards, legal_actions, needs_shuffle, score_hand,
-    v1_h17_ruleset,
+    OutcomeResult, PresetCard, RoundLog, RoundState, RoundStatus, Ruleset, SessionState,
+    create_prefix_shoe, create_shoe, deal_card, dealer_must_hit, discard_cards, legal_actions,
+    needs_shuffle, score_hand, v1_h17_ruleset,
 };
 
 pub fn start_session(
@@ -19,6 +19,35 @@ pub fn start_session(
     validate_ruleset(&ruleset)?;
     validate_bet(default_bet, "default_bet", &ruleset)?;
     let shoe = create_shoe(ruleset.decks, seed, ruleset.penetration_percent, 1)?;
+
+    Ok(SessionState {
+        seed: seed.to_string(),
+        ruleset,
+        shoe,
+        bankroll,
+        default_bet,
+        round: None,
+        logs: Vec::new(),
+    })
+}
+
+/// Start a session whose shoe has a chosen opening arranged on top of a real,
+/// composition-correct shuffled six-deck shoe (see `create_prefix_shoe`). Rules,
+/// bet, and bankroll validation match `start_session`. Used by guided-drill situations.
+pub fn start_session_with_prefix(
+    seed: &str,
+    bankroll: i32,
+    default_bet: i32,
+    ruleset: Option<Ruleset>,
+    prefix: Vec<PresetCard>,
+) -> Result<SessionState, String> {
+    if bankroll < 0 {
+        return Err("bankroll must be non-negative".to_string());
+    }
+    let ruleset = ruleset.unwrap_or_else(v1_h17_ruleset);
+    validate_ruleset(&ruleset)?;
+    validate_bet(default_bet, "default_bet", &ruleset)?;
+    let shoe = create_prefix_shoe(ruleset.decks, seed, ruleset.penetration_percent, &prefix)?;
 
     Ok(SessionState {
         seed: seed.to_string(),

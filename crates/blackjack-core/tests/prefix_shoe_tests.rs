@@ -1,4 +1,7 @@
-use blackjack_core::{PresetCard, Rank, Suit, create_prefix_shoe, deal_card};
+use blackjack_core::{
+    Action, CoreCommand, PresetCard, Rank, RoundStatus, Suit, create_prefix_shoe,
+    current_legal_actions, deal_card, dispatch_json, start_round, start_session_with_prefix,
+};
 
 fn preset(cards: &[(Rank, Suit)]) -> Vec<PresetCard> {
     cards.iter().map(|(rank, suit)| PresetCard { rank: rank.clone(), suit: suit.clone() }).collect()
@@ -51,4 +54,44 @@ fn unavailable_prefix_card_is_rejected() {
 fn empty_prefix_is_rejected() {
     let err = create_prefix_shoe(6, "lesson:x", 75, &[]).expect_err("rejected");
     assert!(err.contains("at least one card"));
+}
+
+#[test]
+fn arranged_pair_opening_offers_split_and_resolves_for_real() {
+    // Player 8♠, 8♥ against dealer 6♦ up. Downstream is real shuffled cards.
+    let prefix = preset(&[(Rank::Eight, Suit::Spades), (Rank::Six, Suit::Diamonds), (Rank::Eight, Suit::Hearts)]);
+    let mut session =
+        start_session_with_prefix("lesson:split", 100_000, 2_000, None, prefix).expect("session");
+    start_round(&mut session, None).expect("deals");
+
+    let round = session.round.as_ref().expect("round");
+    assert_eq!(round.status, RoundStatus::PlayerTurn);
+    assert_eq!(round.hands[0].cards[0].deck_id, "arranged"); // provenance
+    let legal = current_legal_actions(&session).expect("legal");
+    assert!(legal.contains(&Action::Split)); // the situation is set up
+}
+
+#[test]
+fn arranged_natural_blackjack_resolves_without_a_decision() {
+    // Player A♠ + K♥ vs dealer 6♦ up -> natural, settles on deal (no player decision).
+    let prefix = preset(&[(Rank::Ace, Suit::Spades), (Rank::Six, Suit::Diamonds), (Rank::King, Suit::Hearts)]);
+    let mut session =
+        start_session_with_prefix("lesson:bj", 100_000, 2_000, None, prefix).expect("session");
+    start_round(&mut session, None).expect("deals");
+    assert_eq!(session.round.as_ref().unwrap().status, RoundStatus::Resolved);
+    let log = session.logs.last().expect("logged");
+    assert_eq!(log.outcomes[0].result, blackjack_core::OutcomeResult::Blackjack);
+}
+
+#[test]
+fn start_session_with_prefix_dispatches_over_json() {
+    let command = CoreCommand::StartSessionWithPrefix {
+        seed: "lesson:bj".to_string(), bankroll: 100_000, default_bet: 2_000, ruleset: None,
+        prefix: preset(&[(Rank::Ace, Suit::Spades), (Rank::Six, Suit::Diamonds), (Rank::King, Suit::Hearts)]),
+    };
+    let json = serde_json::to_string(&command).expect("serializes");
+    assert!(json.contains("\"command\":\"start_session_with_prefix\""));
+    let out = dispatch_json(&json);
+    assert!(out.contains("\"status\":\"ok\""));
+    assert!(out.contains("\"deck_id\":\"arranged\""));
 }
