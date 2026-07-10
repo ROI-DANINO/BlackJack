@@ -15,8 +15,9 @@ sessions:
   - journal/ops/sessions/the-ten-value-and-the-lamp-2026-07-09T0605.md
   - journal/ops/sessions/the-table-and-the-tutor-2026-07-10T1114.md
   - journal/ops/sessions/the-oracle-and-the-guide-2026-07-10T1441.md
+  - journal/ops/sessions/the-door-and-the-deck-2026-07-10T1504.md
 detour: []
 blocking: null
 next: "Brainstorm the first guided drill: a short reversible immediate-feedback learning loop powered by the strategy oracle."
-note: "Milestone close: Basic Strategy oracle completed and feature-QA passed in journal/ops/sessions/the-oracle-and-the-guide-2026-07-10T1441.md."
+note: "Repository documentation added and pushed in the-door-and-the-deck-2026-07-10T1504.md; the next product step remains the first guided-drill design."
 ---

@@ -121,6 +121,6 @@ Expected: no whitespace errors and only planned documentation changes.
 
 Commit the three documentation files and this plan with message `docs: add project and contributor guides`, then run `git push origin HEAD`.
 
-- [ ] **Step 4: Close the session**
+- [x] **Step 4: Close the session**
 
 Run `$codex-end` after the push to write the required session handoff and reconcile project records.
