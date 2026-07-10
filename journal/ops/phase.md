@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
 sub_phase: strategy-source-research
-plan: null
+plan: docs/superpowers/plans/2026-07-10-basic-strategy-oracle.md
 spec: docs/superpowers/specs/2026-07-10-v2-learning-foundations-roadmap-design.md
-step: "Research the ruleset-matched Basic Strategy source, its provenance, precedence, and edge cases before designing or encoding the strategy oracle."
+step: "Execute the approved Basic Strategy oracle plan task-by-task, beginning with exhaustive failing chart-contract tests."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -16,6 +16,6 @@ sessions:
   - journal/ops/sessions/the-table-and-the-tutor-2026-07-10T1114.md
 detour: []
 blocking: null
-next: "Finish the Basic Strategy source/oracle research decision, then write its focused design spec before implementation."
-note: "V1 gate is cleared. The AI-coach direction is recorded as future learning design; V2 is back at strategy-source research with no implementation plan."
+next: "Choose the execution mode for the approved oracle plan; no lessons or AI integration are in this feature."
+note: "V1 gate is cleared. The AI-coach direction is recorded as future learning design; V2 now has an approved oracle implementation plan."
 ---
