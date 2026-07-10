@@ -19,7 +19,8 @@
 - **Live tail range is a maximum, not a quota:** 5–10 decisions with an explicit "Got it" control to the recap. (spec §Live tail)
 - **Wire types are snake_case**, mirroring Rust serde; camelCase is forbidden and guarded by `web/src/bridge/contract.test.ts`.
 - **Money is integer cents.** Bankroll `100000`, bet `2000`; bets must be even for the 3:2 payout (`session.rs:474`).
-- **WASM is a build artifact.** After any Rust change, run `npm --prefix web run build:wasm`; `pretest`/`predev`/`prebuild` run `scripts/check-wasm-fresh.sh` and fail on a stale pkg.
+- **WASM is a build artifact.** After any Rust change, run `npm --prefix web run build:wasm`; `pretest`/`predev`/`prebuild` run `scripts/check-wasm-fresh.sh` and fail on a stale pkg. `web/src/bridge/wasm/` is **gitignored** (QA-001) — never `git add` it.
+- **Engine-touching tests init via the shared helper.** Node's `fetch` cannot load the wasm `file:` URL, so the zero-arg `initCore()` fails under Vitest (node and jsdom). Every test that calls the real engine must `await initCoreForTest()` from `web/src/bridge/test-init.ts` (created in Task 3), which reads the wasm bytes with `fs` and passes them to `initCore(bytes)`. Add `!` non-null assertions on optional `cards[i]` / `round` / `logs` accesses so `tsc --noEmit` (run by `npm run build`) stays clean.
 - **Conventions:** unstyled semantic HTML + ARIA roles (no CSS under `web/`), co-located `*.test.ts(x)`, `// @vitest-environment jsdom` per DOM test.
 
 ---
@@ -425,7 +426,27 @@ git commit -m "feat(core): start_session_with_prefix command for arranged openin
 - [ ] **Step 1: Rebuild the WASM package**
 
 Run: `npm --prefix web run build:wasm`
-Expected: succeeds; `handleCommand` signature unchanged (JSON in/out).
+Expected: succeeds; `handleCommand` signature unchanged (JSON in/out). Do NOT `git add` the regenerated `web/src/bridge/wasm/` — it is gitignored (QA-001); the freshness guard ties it to the Rust sources.
+
+- [ ] **Step 1b: Create the shared test-init helper**
+
+Create `web/src/bridge/test-init.ts` (every engine-touching test uses this):
+
+```ts
+import { readFileSync } from 'node:fs';
+import initCore from './wasm/blackjack_core';
+
+let ready: Promise<unknown> | null = null;
+
+/** Init the WASM core for Vitest (node/jsdom): Node's fetch can't load the wasm
+ *  file: URL, so read the bytes and pass them to initCore(). Memoized per process. */
+export function initCoreForTest(): Promise<unknown> {
+  if (!ready) {
+    ready = Promise.resolve(initCore(readFileSync(new URL('./wasm/blackjack_core_bg.wasm', import.meta.url))));
+  }
+  return ready;
+}
+```
 
 - [ ] **Step 2: Write the failing test**
 
@@ -433,12 +454,12 @@ Create `web/src/bridge/drill-transport.test.ts`:
 
 ```ts
 import { beforeAll, describe, expect, it } from 'vitest';
-import initCore from './wasm/blackjack_core';
 import { WasmTransport } from './core-client';
 import { parseCliOutput } from './validate';
+import { initCoreForTest } from './test-init';
 import type { CoreCommand, PresetCard } from './types';
 
-beforeAll(async () => { await initCore(); });
+beforeAll(async () => { await initCoreForTest(); });
 
 describe('start_session_with_prefix transport', () => {
   it('arranges an opening and preserves six-deck composition', () => {
@@ -455,8 +476,8 @@ describe('start_session_with_prefix transport', () => {
     if (out.status !== 'ok' || out.response.type !== 'session') throw new Error('expected session');
     const session = out.response.data;
     expect(session.shoe.cards).toHaveLength(312);
-    expect(session.shoe.cards[0].deck_id).toBe('arranged');
-    expect(session.shoe.cards[0].card_id).toBe('arranged-0-8-spades');
+    expect(session.shoe.cards[0]!.deck_id).toBe('arranged');
+    expect(session.shoe.cards[0]!.card_id).toBe('arranged-0-8-spades');
   });
 });
 ```
@@ -497,8 +518,8 @@ Expected: PASS.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add web/src/bridge/wasm web/src/bridge/types.ts web/src/bridge/drill-transport.test.ts
-git commit -m "feat(bridge): expose start_session_with_prefix + PresetCard; rebuild wasm"
+git add web/src/bridge/types.ts web/src/bridge/test-init.ts web/src/bridge/drill-transport.test.ts
+git commit -m "feat(bridge): expose start_session_with_prefix + PresetCard; add test-init helper"
 ```
 
 ---
@@ -611,13 +632,13 @@ Create `web/src/drill/situations.test.ts`:
 
 ```ts
 import { beforeAll, describe, expect, it } from 'vitest';
-import initCore from '../bridge/wasm/blackjack_core';
+import { initCoreForTest } from '../bridge/test-init';
 import { WasmTransport } from '../bridge/core-client';
 import { parseCliOutput } from '../bridge/validate';
 import type { CoreCommand, PresetCard, SessionState } from '../bridge/types';
 import { elevenOpening, naturalBlackjackOpening, pairOpening, stiffSixteenOpening } from './situations';
 
-beforeAll(async () => { await initCore(); });
+beforeAll(async () => { await initCoreForTest(); });
 const transport = new WasmTransport();
 
 function deal(prefix: PresetCard[]): SessionState {
@@ -1002,12 +1023,12 @@ Create `web/src/drill/controller.test.ts`:
 
 ```ts
 import { beforeAll, describe, expect, it } from 'vitest';
-import initCore from '../bridge/wasm/blackjack_core';
+import { initCoreForTest } from '../bridge/test-init';
 import { WasmTransport } from '../bridge/core-client';
 import { UNITS } from './units';
 import { DrillController } from './controller';
 
-beforeAll(async () => { await initCore(); });
+beforeAll(async () => { await initCoreForTest(); });
 let n = 0;
 const make = (unitIndex = 2) => new DrillController(new WasmTransport(), UNITS[unitIndex], () => `d-${(n += 1)}`, () => 0);
 
@@ -1255,13 +1276,13 @@ Create `web/src/app/Drill.test.tsx`:
 // @vitest-environment jsdom
 import { beforeAll, describe, expect, it } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import initCore from '../bridge/wasm/blackjack_core';
+import { initCoreForTest } from '../bridge/test-init';
 import { WasmTransport } from '../bridge/core-client';
 import { UNITS } from '../drill/units';
 import { DrillController } from '../drill/controller';
 import { Drill } from './Drill';
 
-beforeAll(async () => { await initCore(); });
+beforeAll(async () => { await initCoreForTest(); });
 let n = 0;
 
 describe('Drill view', () => {
@@ -1382,10 +1403,10 @@ Create `web/src/app/App.test.tsx`:
 // @vitest-environment jsdom
 import { beforeAll, describe, expect, it } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import initCore from '../bridge/wasm/blackjack_core';
+import { initCoreForTest } from '../bridge/test-init';
 import { App } from './App';
 
-beforeAll(async () => { await initCore(); });
+beforeAll(async () => { await initCoreForTest(); });
 
 describe('App', () => {
   it('defaults to Free Play and can open a drill unit', () => {
