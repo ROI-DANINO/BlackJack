@@ -1,5 +1,5 @@
 use crate::rng::SeededRng;
-use crate::{Card, Rank, ShoeState, Suit};
+use crate::{Card, PresetCard, Rank, ShoeState, Suit};
 
 const RANKS: [Rank; 13] = [
     Rank::Ace,
@@ -52,6 +52,74 @@ pub fn create_shoe(
     Ok(ShoeState {
         seed: seed.to_string(),
         shoe_number,
+        cards,
+        cursor: 0,
+        discard: Vec::new(),
+        penetration_index,
+    })
+}
+
+/// Build a real, shuffled six-deck shoe with a chosen opening arranged on top.
+/// The opening is honest: each arranged card replaces one shuffled card of the SAME
+/// rank+suit, so total and per-rank/suit composition are unchanged. Arranged cards
+/// carry arranged-origin ids; the remainder keeps normal shoe ids.
+pub fn create_prefix_shoe(
+    decks: u8,
+    seed: &str,
+    penetration_percent: u8,
+    prefix: &[PresetCard],
+) -> Result<ShoeState, String> {
+    if prefix.is_empty() {
+        return Err("prefix must contain at least one card".to_string());
+    }
+    if decks == 0 {
+        return Err("decks must be positive".to_string());
+    }
+    if penetration_percent == 0 || penetration_percent > 100 {
+        return Err("penetration_percent must be 1..=100".to_string());
+    }
+
+    // Real, shuffled six-deck (identical construction to create_shoe).
+    let mut remainder = Vec::with_capacity(decks as usize * 52);
+    for deck in 1..=decks {
+        let deck_id = format!("deck-{deck}");
+        for suit in SUITS.iter() {
+            for rank in RANKS.iter() {
+                remainder.push(Card {
+                    card_id: format!("{deck_id}-{}-{}", rank_slug(rank), suit_slug(suit)),
+                    deck_id: deck_id.clone(),
+                    rank: rank.clone(),
+                    suit: suit.clone(),
+                });
+            }
+        }
+    }
+    shuffle(&mut remainder, seed, 1);
+
+    // Pull one same-rank/suit real card per arranged card; prepend synthetic arranged cards.
+    let mut arranged = Vec::with_capacity(prefix.len());
+    for (index, spec) in prefix.iter().enumerate() {
+        let position = remainder
+            .iter()
+            .position(|c| c.rank == spec.rank && c.suit == spec.suit)
+            .ok_or_else(|| {
+                format!("prefix card {}-{} unavailable in shoe", rank_slug(&spec.rank), suit_slug(&spec.suit))
+            })?;
+        remainder.remove(position);
+        arranged.push(Card {
+            card_id: format!("arranged-{index}-{}-{}", rank_slug(&spec.rank), suit_slug(&spec.suit)),
+            deck_id: "arranged".to_string(),
+            rank: spec.rank.clone(),
+            suit: spec.suit.clone(),
+        });
+    }
+
+    let mut cards = arranged;
+    cards.extend(remainder);
+    let penetration_index = cards.len() * usize::from(penetration_percent) / 100;
+    Ok(ShoeState {
+        seed: seed.to_string(),
+        shoe_number: 1,
         cards,
         cursor: 0,
         discard: Vec::new(),
