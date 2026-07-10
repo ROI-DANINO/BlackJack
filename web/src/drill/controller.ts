@@ -72,9 +72,9 @@ export class DrillController {
       const situation = this.state.unit.situations[index]!;
       const prefix = situation.build(this.seq());
       const started = this.command({ command: 'start_session_with_prefix', seed: `lesson:${situation.id}`, bankroll: BANKROLL, default_bet: BET, ruleset: null, prefix });
-      if (!started) { this.set({ error: `Could not set up “${situation.topic}.” Try again.` }); return; }
+      if (!started) { if (!this.state.fatal) this.set({ error: `Could not set up “${situation.topic}.” Try again.` }); return; }
       const dealt = this.command({ command: 'start_round', session: started as SessionState, bet: null });
-      if (!dealt) { this.set({ error: `Could not deal “${situation.topic}.” Try again.` }); return; }
+      if (!dealt) { if (!this.state.fatal) this.set({ error: `Could not deal “${situation.topic}.” Try again.` }); return; }
       const session = dealt as SessionState;
       this.set({ phase: 'situation', situationIndex: index, session, error: null, feedback: [], awaitingContinue: false });
       if (session.round!.status === 'resolved') { this.resolveSituation(situation, session); return; }
@@ -120,14 +120,15 @@ export class DrillController {
   private record(phase: 'situation' | 'live', situation: Situation | null, session: SessionState, feedback: string[]): void {
     const r = session.round!;
     const log = session.logs.at(-1)!;
-    this.state.records.push({
+    const rec = {
       phase, unitId: this.state.unit.id, topic: situation?.topic ?? 'Live practice', situationId: situation?.id ?? null,
       playerCardIds: r.hands.flatMap((h) => h.cards.map((c) => c.card_id)),
       dealerUpcardId: r.dealer.cards[0]?.card_id ?? null,
       legalActions: this.state.legalActions,
       actionsTaken: log.actions.filter((a) => a.action !== 'insurance_declined').map((a) => a.action as Action),
       outcomes: log.outcomes, feedback,
-    });
+    };
+    this.set({ records: [...this.state.records, rec] });
   }
 
   private legal(session: SessionState): Action[] {

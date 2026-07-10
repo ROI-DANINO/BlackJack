@@ -27,7 +27,7 @@ export function Drill({ controller }: { controller: DrillController }) {
   return (
     <section>
       <h2>{state.unit.title}</h2>
-      {state.error && <p role="status">{state.error} <button onClick={() => controller.retry()}>Try again</button></p>}
+      {state.error && <p role="alert">{state.error} <button onClick={() => controller.retry()}>Try again</button></p>}
       {state.prompt && !state.awaitingContinue && <p>{state.prompt}</p>}
       {round && (
         <>
