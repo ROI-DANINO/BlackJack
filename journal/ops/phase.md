@@ -13,8 +13,9 @@ sessions:
   - journal/ops/sessions/the-bridge-and-the-table-2026-07-09T0406.md
   - journal/ops/sessions/the-notes-that-wrote-back-2026-07-09T0501.md
   - journal/ops/sessions/the-ten-value-and-the-lamp-2026-07-09T0605.md
+  - journal/ops/sessions/the-table-and-the-tutor-2026-07-10T1114.md
 detour: []
 blocking: null
 next: "Run a dedicated Basic Strategy source/oracle research brainstorm. Do not start implementation until the chart provenance, decision precedence, and encoding approach are agreed."
-note: "V1 gate cleared by the 2026-07-10 targeted QA re-test. V2 roadmap is deliberately high-level: teach Blackjack Foundations, then Strategy Table Fundamentals, through small feature-specific research/design/build cycles. No full V2 implementation plan exists yet."
+note: "Checkpointed in journal/ops/sessions/the-table-and-the-tutor-2026-07-10T1114.md. V1 gate is cleared; V2 remains at strategy-source research with no implementation plan."
 ---
