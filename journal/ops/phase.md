@@ -1,10 +1,10 @@
 ---
-phase: v1-simulation-foundations
-sub_phase: freeplay-polish-complete
-plan: docs/plans/v1-simulation-foundations.md
-spec: docs/specs/v1-simulation-foundations.md
-step: "V1 Free Play skeleton and scoped polish complete. Awaiting phase-boundary call: move to V2 Basic Strategy unless a fresh playtest exposes a small V1 blocker."
-prior_phase: freeplay-skeleton-complete
+phase: v2-learning-foundations
+sub_phase: strategy-source-research
+plan: null
+spec: docs/superpowers/specs/2026-07-10-v2-learning-foundations-roadmap-design.md
+step: "Research the ruleset-matched Basic Strategy source, its provenance, precedence, and edge cases before designing or encoding the strategy oracle."
+prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
   - journal/ops/sessions/v1-ruleset-locked-20260707-035405.md
@@ -15,6 +15,6 @@ sessions:
   - journal/ops/sessions/the-ten-value-and-the-lamp-2026-07-09T0605.md
 detour: []
 blocking: null
-next: "Decide whether to start V2 Basic Strategy now; first design question is how to encode the BlackjackInfo chart into a machine-readable Basic Strategy table. Push local main first if remote sync matters."
-note: "Milestone close — scoped V1 Free Play polish COMPLETE (session the-ten-value-and-the-lamp-2026-07-09T0605). Split legality fixed at the shared Rust rule gate (any two 10-value cards can split); browser table shows per-hand win/loss/push/blackjack outcomes; dealer-ace insurance auto-decline is visible without adding player-taken insurance. Merged codex/freeplay-polish into local main, then removed tracked SDD scratch and ignored /.superpowers/. Verification on merged main: cargo test -p blackjack-core PASS (55 Rust integration tests), cd web && npm test PASS (23 web tests, known act warnings), cd web && npm run build PASS. Final review ready-to-merge; craft self-review PASS on Earth/Water/Fire/Air. main is ahead of origin/main by local commits; push remains false."
+next: "Run a dedicated Basic Strategy source/oracle research brainstorm. Do not start implementation until the chart provenance, decision precedence, and encoding approach are agreed."
+note: "V1 gate cleared by the 2026-07-10 targeted QA re-test. V2 roadmap is deliberately high-level: teach Blackjack Foundations, then Strategy Table Fundamentals, through small feature-specific research/design/build cycles. No full V2 implementation plan exists yet."
 ---

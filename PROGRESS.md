@@ -12,9 +12,10 @@
 - **TS UI bridge shipped**: browser-playable Free Play runs the Rust core in-browser via client-side WASM. New `web/` (Vite+React+TS); strict React → GameController → CoreTransport → WASM → Rust; hand-authored wire types golden-fixture guarded; async LogSink → JSONL history to `data/history/`. Built via subagent-driven-development (9 tasks) with Fable pre-build/plan/whole-branch reviews; merged to main locally; 46 Rust + 17 web tests green.
 - **V1 Free Play skeleton COMPLETE**: auto-reshuffle at the shoe boundary (Free Play crosses shoes) + per-hand notes (attach-on-Deal, harness `note` on the round JSONL line). rd-verify (opus) + craft gate (sonnet) both PASS; merged to main (through 3a3bd6b); 46 Rust + 19 web tests green. V1 exit criteria met.
 - **V1 Free Play polish scoped and shipped**: any two 10-value cards can split through the shared core legal-action rule; the table shows per-hand win/loss/push/blackjack outcomes after resolution; dealer-ace insurance auto-decline is visible instead of silent.
+- **V1 QA gate cleared**: the targeted browser re-test verified QA-001/003/004/005/007/009; the ledger records GO for V2.
 
 ## In progress
-- **V1 QA remediation SHIPPED** (merged to main 2026-07-09, fast-forward a97c45b): all six findings fixed — flush race (QA-003), wasm freshness guard (QA-001), hand totals (QA-005), active-hand marker (QA-004), New session control (QA-007), random per-session seed (QA-009). 55 Rust + 41 web tests green; final whole-branch review clean. Remaining before V2: a targeted feature-QA re-test against the running app to move the six ledger entries `fixed` → `verified` (re-test notes in the ledger's remediation-branch backlog).
+- **V2 Learning Foundations roadmap settled**: two subjects, Blackjack Foundations then Strategy Table Fundamentals. Next is a dedicated research task that verifies the exact Basic Strategy source and encoding before implementation.
 
 ## Open questions
 - How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?
