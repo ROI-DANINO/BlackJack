@@ -2,5 +2,7 @@ node_modules/
 dist/
 dist-breakit/
 dist-prodcheck/
+dist-qa-rules/
+dist-qa-flow/
 src/bridge/wasm/
 *.tsbuildinfo

@@ -4,7 +4,7 @@
 import { join } from 'node:path';
 import type { Browser } from 'playwright';
 import type { Artifacts } from '../types';
-import { attachRecorder } from '../browser';
+import { attachRecorder } from '../../lib/browser';
 import {
   runAttack, startSessionUi, readSeed, playRoundUi, captureDownload, captureDownloads,
   clickDownload, clickNewSession, type AttackCtx,

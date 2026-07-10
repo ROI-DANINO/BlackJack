@@ -7,15 +7,15 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import { assertHookStrippedFromProdBuild, assertWasmFresh, startPreview } from './server';
-import { launchBrowser, chromiumVersionOf } from './browser';
+import { assertHookStrippedFromProdBuild, assertWasmFresh, startPreview } from '../lib/server';
+import { launchBrowser, chromiumVersionOf } from '../lib/browser';
 import { realisticAttacks } from './attacks/realistic';
 import { injectedAttacks } from './attacks/injected';
 import { evaluate } from './oracle';
 import { buildReport, writeReport } from './report';
 import type { Artifacts, AttackResult } from './types';
 
-const WEB_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const WEB_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const REPO_ROOT = resolve(WEB_ROOT, '..');
 const RUNS_ROOT = join(REPO_ROOT, 'journal', 'qa', 'runs');
 
@@ -43,7 +43,7 @@ async function main(): Promise<number> {
   log(`  ${hookCheck.ok ? 'OK' : 'FAIL'}: ${hookCheck.detail}`);
 
   log('building instrumented bundle + starting vite preview…');
-  const preview = await startPreview();
+  const preview = await startPreview({ outDir: 'dist-breakit', port: 4319 });
   log(`  preview up at ${preview.baseUrl}`);
 
   const browser = await launchBrowser();

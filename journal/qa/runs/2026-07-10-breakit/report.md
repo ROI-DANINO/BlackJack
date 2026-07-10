@@ -1,11 +1,11 @@
 # Breakit run report
 
-> Adversarial E2E abuse harness. Spec: `docs/specs/2026-07-10-breakit-adversarial-harness.md`.
+> QA script-suite role `breakit`. Spec: `docs/specs/2026-07-10-breakit-adversarial-harness.md`.
 
-- **Verdict:** PASS — no invariant broke
-- Started: 2026-07-10T06:31:15.873Z
-- Finished: 2026-07-10T06:31:52.643Z
-- Commit: `7e4a710`
+- **Verdict:** PASS
+- Started: 2026-07-10T07:24:27.894Z
+- Finished: 2026-07-10T07:25:03.198Z
+- Commit: `a4e2069`
 - Chromium: 149.0.7827.55
 - Base URL: http://localhost:4319/
 - Prod-build hook absent (tree-shaken): PASS

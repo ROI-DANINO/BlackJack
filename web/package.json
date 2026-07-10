@@ -10,7 +10,11 @@
     "build": "tsc --noEmit && vite build",
     "pretest": "bash scripts/check-wasm-fresh.sh",
     "test": "vitest run",
-    "breakit": "tsx breakit/run.ts"
+    "qa": "tsx qa/run-all.ts",
+    "qa:rules": "tsx qa/rules/run.ts",
+    "qa:flow": "tsx qa/flow/run.ts",
+    "qa:breakit": "tsx qa/breakit/run.ts",
+    "breakit": "tsx qa/breakit/run.ts"
   },
   "dependencies": {
     "react": "^18.3.1",

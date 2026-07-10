@@ -3,7 +3,7 @@
 
 import { readFileSync } from 'node:fs';
 import type { Browser, BrowserContext, Download, Page } from 'playwright';
-import { attachRecorder, newAttackContext, type Recorder } from '../browser';
+import { attachRecorder, newAttackContext, type Recorder } from '../../lib/browser';
 import type { Artifacts, AttackKind } from '../types';
 
 export interface AttackCtx {

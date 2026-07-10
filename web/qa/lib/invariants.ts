@@ -1,39 +1,10 @@
-// Oracle: the ONLY place pass/fail is decided. Pure functions over exported JSONL,
-// console output, and DOM-captured values. Unit-tested against hand-built fixtures so the
-// harness can be proven to actually detect breaks (guard against a no-op green harness).
+// PURE shared invariant checks over the exported JSONL + console. Role-agnostic: these are the
+// integrity properties that must hold for ANY session regardless of how it was driven (attacks,
+// scripted basic strategy, flow walk). Lifted from breakit's oracle.ts. Unit-tested via
+// qa/breakit/oracle.test.ts (and re-exercised by rules/flow fixtures) so no check can go no-op.
 
-import type { Artifacts, ConsoleMessage, Invariant, LogLine, RoundLine, SessionHeader } from './types';
-
-export interface ParseResult {
-  records: LogLine[];
-  errors: string[];
-}
-
-/** Split JSONL into records; every non-empty line must be exactly one valid JSON object. */
-export function parseJsonl(text: string): ParseResult {
-  const records: LogLine[] = [];
-  const errors: string[] = [];
-  const lines = text.split('\n');
-  lines.forEach((line, i) => {
-    if (line.trim() === '') return;
-    let v: unknown;
-    try {
-      v = JSON.parse(line);
-    } catch {
-      errors.push(`line ${i + 1}: not valid JSON: ${line.slice(0, 80)}`);
-      return;
-    }
-    if (!v || typeof v !== 'object' || typeof (v as { type?: unknown }).type !== 'string') {
-      errors.push(`line ${i + 1}: record missing string 'type'`);
-      return;
-    }
-    records.push(v as LogLine);
-  });
-  return { records, errors };
-}
-
-const isHeader = (r: LogLine): r is SessionHeader => r.type === 'session_header';
-const isRound = (r: LogLine): r is RoundLine => r.type === 'round';
+import { isHeader, isRound, parseJsonl } from './jsonl';
+import type { ConsoleMessage, Invariant, LogLine } from './types';
 
 /** History integrity: one header per session, rounds have a header, no dup/regressing round_index. */
 export function checkHistory(records: LogLine[]): Invariant[] {
@@ -225,54 +196,16 @@ export function checkConsole(messages: ConsoleMessage[]): Invariant {
   };
 }
 
-/** Compose every applicable invariant for one attack's artifacts. */
-export function evaluate(a: Artifacts): Invariant[] {
-  const inv: Invariant[] = [];
+/** No page crash during the run. */
+export function checkNoCrash(crashed: boolean): Invariant {
+  return { name: 'robustness: no page crash', passed: !crashed, detail: crashed ? 'page crashed' : undefined };
+}
 
-  inv.push({
-    name: 'attack completed without throwing',
-    passed: !a.error,
-    detail: a.error,
-  });
-  inv.push({
-    name: 'no page crash',
-    passed: !a.crashed,
-    detail: a.crashed ? 'page crashed during attack' : undefined,
-  });
-  if (a.timedOutMs != null) {
-    inv.push({ name: 'no hang (within per-attack timeout)', passed: false, detail: `timed out after ${a.timedOutMs}ms` });
-  } else {
-    inv.push({ name: 'no hang (within per-attack timeout)', passed: true });
-  }
-
-  inv.push(checkConsole(a.console));
-
-  const texts = [a.jsonl, ...(a.extraJsonl ?? [])].filter((t) => t && t.trim() !== '');
-  texts.forEach((t, i) => {
-    const { records, errors } = parseJsonl(t);
-    inv.push({
-      name: `jsonl[${i}]: well-formed (one valid record per line)`,
-      passed: errors.length === 0,
-      detail: errors.length ? errors.slice(0, 5).join('; ') : undefined,
-    });
-    if (errors.length === 0) {
-      inv.push(...checkHistory(records));
-      inv.push(checkSessionFlush(records));
-      inv.push(checkMoney(records));
-      inv.push(checkCards(records));
-      if (a.onScreenSeed) inv.push(checkSeedOnScreen(records, a.onScreenSeed));
-    }
-  });
-
-  if (a.seeds && a.seeds.length >= 2) inv.push(checkSeedsDistinct(a.seeds));
-  if (a.pairJsonl) inv.push(checkDeterminism(a.pairJsonl[0], a.pairJsonl[1]));
-  if (a.freshDealWorks !== undefined) {
-    inv.push({
-      name: 'no stuck UI: a fresh Deal still resolves after the attack',
-      passed: a.freshDealWorks,
-      detail: a.freshDealWorks ? undefined : 'post-attack Deal did not resolve',
-    });
-  }
-
-  return inv;
+/** No stuck UI: a fresh Deal still resolves after the run. */
+export function checkFreshDealWorks(freshDealWorks: boolean): Invariant {
+  return {
+    name: 'no stuck UI: a fresh Deal still resolves',
+    passed: freshDealWorks,
+    detail: freshDealWorks ? undefined : 'post-run Deal did not resolve',
+  };
 }

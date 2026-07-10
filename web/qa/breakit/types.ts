@@ -1,16 +1,12 @@
-// Shared shapes for the breakit adversarial harness.
-// Attacks produce Artifacts (no assertions); the oracle turns Artifacts into Invariants.
+// Breakit-specific shapes. Shared atoms (LogLine, ConsoleMessage, Invariant) come from ../lib/types;
+// only the attack→result assembly lives here. Attacks produce Artifacts (no assertions); the oracle
+// turns Artifacts into Invariants.
 
-import type { LogLine, RoundLine, SessionHeader } from '../src/bridge/log/sink';
+import type { ConsoleMessage, Invariant, LogLine, RoundLine, SessionHeader } from '../lib/types';
 
-export type { LogLine, RoundLine, SessionHeader };
+export type { LogLine, RoundLine, SessionHeader, ConsoleMessage, Invariant };
 
 export type AttackKind = 'realistic' | 'injected';
-
-export interface ConsoleMessage {
-  type: string; // 'error' | 'warning' | 'log' | ...
-  text: string;
-}
 
 /**
  * Raw output of one attack. An attack drives the app and records what happened;
@@ -40,12 +36,6 @@ export interface Artifacts {
   error?: string;
   /** Free-form repro breadcrumbs for the report. */
   repro?: string;
-}
-
-export interface Invariant {
-  name: string;
-  passed: boolean;
-  detail?: string;
 }
 
 export interface AttackResult {
