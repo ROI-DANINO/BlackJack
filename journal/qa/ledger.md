@@ -19,6 +19,7 @@ recorded commit (or it has never run); smoke-test otherwise.
 | Player experience & clarity | `web/src/` | 2026-07-10-v1-remediation-retest | 30ec927 | PASS-with-reservations | QA-005 (totals) verified 2026-07-10; QA-006 open backlog; "functional, polish is V2/V3" |
 | Robustness (rapid input, illegal actions, refresh, long grind) | `web/src/` | 2026-07-10-v1-remediation-retest | 30ec927 | PASS | QA-003 blocker verified-closed + QA-007 verified (2026-07-10); QA-008 (refresh wipe) / QA-012 remain open backlog, non-blocking; 0 console errors |
 | Product readiness (V1 gate) | whole build | 2026-07-10-v1-remediation-retest | 30ec927 | GO (for V2) | 6-item remediation list all verified 2026-07-10 → V1 gate cleared, V2 Basic Strategy unblocked. Still not external-playtest-ready (QA-006/008/010–014 backlog; styling V3). See `runs/2026-07-09-v1-milestone/product-review.md` |
+| Adversarial abuse (breakit E2E harness) | `web/breakit/`, `web/src/` | — | — | never-run | `cd web && npm run breakit` drives the live preview build with 12 attacks; non-zero exit gates the milestone. Reports in `runs/<date>-breakit/`; breaks triaged into QA-NNN by hand (harness never auto-edits this ledger). |
 
 ## Findings register
 

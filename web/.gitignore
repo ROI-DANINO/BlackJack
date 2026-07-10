@@ -1,4 +1,6 @@
 node_modules/
 dist/
+dist-breakit/
+dist-prodcheck/
 src/bridge/wasm/
 *.tsbuildinfo

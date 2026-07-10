@@ -37,7 +37,8 @@ Three principles resolve the thoroughness-vs-waste tension:
   blockers are fixed and verified.
 - **Milestone QA** — every milestone closes with a full pack run: all active agents, deep on
   everything changed since the last milestone QA, smoke on the rest. The Product Review agent's
-  verdict gates the phase boundary.
+  verdict gates the phase boundary. Every milestone QA also runs the breakit adversarial E2E
+  abuse harness (`cd web && npm run breakit`); a non-zero exit blocks the phase boundary.
 
 ## Scoping protocol (before any run)
 
