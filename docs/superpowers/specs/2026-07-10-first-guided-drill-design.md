@@ -45,11 +45,14 @@ Choose staged results to include wins, losses, pushes, and at least one result t
 strong-looking total from a winning outcome. This teaches the stakes without implying that one
 hand establishes a strategy rule.
 
-Each scenario uses a full, ruleset-compatible six-deck lesson shoe with card origins retained.
-Its reproducible shuffle seed and target position are chosen when authoring the scenario; the shoe
-is shuffled once and dealt in order. It is a declared drill setup, not presented as a random
-casino deal. The existing simulator remains the authority for legal actions, card draws, dealer
-play, and settlement.
+Each scenario uses an explicitly arranged **ordered lesson shoe**: the exact card sequence the
+scenario needs, supplied in dealing order and consumed strictly in order by the engine. Cards are
+marked as lesson-origin (`deck_id: "lesson"`, traceable `card_id`s) so their provenance is
+auditable and never presented as a random casino deal. The shoe is arranged once — not shuffled —
+through a dedicated engine command; the existing simulator remains the authority for legal
+actions, card draws, dealer play, and settlement. The author supplies enough trailing cards to
+cover every dealer draw the scripted line can reach. Deck count is not fixed for a lesson shoe: it
+carries only the cards the scenario scripts.
 
 ### Live practice
 
@@ -57,7 +60,12 @@ After the warm-ups, the UI explicitly says live practice is beginning (for examp
 play a real shoe”). It starts a fresh normally shuffled six-deck shoe and uses its ordered card
 flow for the unit's remaining five to ten decisions. The learner plays every action that is legal
 in the current hand; feedback reinforces the relevant vocabulary and outcome rather than grading
-the decision.
+the decision. The five-to-ten range is a maximum, not a quota: an explicit “Got it” control lets
+the learner end live practice at any time and jump straight to the recap.
+
+The oracle stays out of this first unit entirely — no recommendation, even quietly, during live
+practice. Oracle-assisted live practice belongs to the later Strategy Table Fundamentals unit,
+where the learner has been taught the decision tool the oracle implements.
 
 ## Feedback and Tone
 
