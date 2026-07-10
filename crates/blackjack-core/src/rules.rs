@@ -103,7 +103,7 @@ pub fn dealer_must_hit(cards: &[Card], ruleset: &Ruleset) -> bool {
             && matches!(ruleset.dealer_soft_17, DealerSoft17::Hit))
 }
 
-fn rank_value(rank: &Rank) -> u8 {
+pub(crate) fn rank_value(rank: &Rank) -> u8 {
     match rank {
         Rank::Ace => 1,
         Rank::Two => 2,
