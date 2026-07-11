@@ -8,6 +8,7 @@
 
 import type { Action } from './bridge/types';
 import type { GameController } from './bridge/game';
+import type { DrillController } from './drill/controller';
 import { WasmTransport } from './bridge/core-client';
 import { freshSeed } from './app/seed';
 
@@ -32,6 +33,16 @@ export interface BreakitHook {
   version: string;
 }
 
+export interface DrillHook {
+  getState: () => ReturnType<DrillController['getState']>;
+  begin: () => void;
+  choose: (action: string) => void;
+  next: () => void;
+  beginLive: () => void;
+  finish: () => void;
+  version: string;
+}
+
 export function mountBreakit(controller: GameController): void {
   const hook: BreakitHook = {
     controller,
@@ -48,4 +59,17 @@ export function mountBreakit(controller: GameController): void {
     version: 'breakit-hook-1',
   };
   (globalThis as unknown as { __breakit: BreakitHook }).__breakit = hook;
+}
+
+export function mountDrill(controller: DrillController): void {
+  const hook: DrillHook = {
+    getState: () => controller.getState(),
+    begin: () => controller.begin(),
+    choose: (action) => controller.choose(action as Action),
+    next: () => controller.next(),
+    beginLive: () => controller.beginLive(),
+    finish: () => controller.finish(),
+    version: 'drill-hook-1',
+  };
+  (globalThis as unknown as { __drill: DrillHook }).__drill = hook;
 }

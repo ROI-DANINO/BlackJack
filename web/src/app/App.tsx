@@ -34,10 +34,7 @@ export function App() {
     const c = new DrillController(new WasmTransport(), UNITS[index]!, freshSeed);
     c.begin();
     if (import.meta.env.DEV || import.meta.env.VITE_BREAKIT) {
-      // mountDrill lands in Task 11; cast keeps this a type-safe no-op until then.
-      void import('../breakit-hook').then((m) =>
-        (m as unknown as { mountDrill?: (c: DrillController) => void }).mountDrill?.(c),
-      );
+      void import('../breakit-hook').then((m) => m.mountDrill(c));
     }
     setDrill(c);
   }
