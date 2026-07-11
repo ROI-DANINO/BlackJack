@@ -2,7 +2,28 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Fold every current raw-inbox source into its authoritative documentation owner, preserve the originals in a tracked indexed archive, and leave `journal/raw/_inbox/` empty.
+**Goal:** Fold every current raw-inbox source into its authoritative documentation owner, preserve the originals in a tracked indexed archive, and leave `journal/raw/_inbox/` holding only the retained history analysis (see Controller Amendments).
+
+## Controller Amendments (2026-07-11 execution)
+
+These owner-approved deviations override any conflicting task text below. Reviewers must
+check against these, not the original wording.
+
+1. **Branch, not `main`.** All commits land on `docs/raw-inbox-fold` and ship via PR.
+2. **`git mv` fails on two sources.** `journal/raw/` is gitignored (`.gitignore:11`). Eight
+   inbox files were force-tracked, but `files.zip` and `history-data-analysis-2026-07-09.md`
+   are **untracked + ignored**, so `git mv` errors on them. Use plain `mv` for `files.zip`
+   (then `git add` the destination); do **not** move the history file at all (see 3). The
+   eight tracked `.md` files still use `git mv`.
+3. **History analysis stays in `_inbox`.** Per owner decision,
+   `journal/raw/_inbox/history-data-analysis-2026-07-09.md` is **not** moved to the archive;
+   it remains in place (gitignored, untracked). No `history/` archive directory is created.
+   Its disposition row stays in `INDEX.md` marked *retained in _inbox*, and its
+   count-semantics conclusion still folds into `research-brief.md` in Task 3. The inbox
+   therefore ends with exactly one file (the history analysis), not empty.
+4. **`files.zip` is tracked with its extracted members.** The original binary bundle is
+   retained in the archive beside its five extracted readable `.md` members (needed for the
+   `cmp` byte-verification and for provenance).
 
 **Architecture:** Use a destination-led documentation pass. Existing owned docs receive only durable, current conclusions; the import archive retains original source context and an index records accepted, covered, rejected, and deferred material without becoming a new authority.
 
@@ -30,7 +51,7 @@
 - `docs/imports/v2-research-2026-07-11/research/` — seven V2 research notes and the continuation handoff, moved unchanged.
 - `docs/imports/v2-research-2026-07-11/course-bundle/files.zip` — original source bundle, moved unchanged.
 - `docs/imports/v2-research-2026-07-11/course-bundle/{how-to-teach,unit-1-basics,unit-2-basic-strategy,rules-spec,roadmap}.md` — readable byte-matched ZIP members.
-- `docs/imports/v2-research-2026-07-11/history/history-data-analysis-2026-07-09.md` — history analysis, moved unchanged.
+- (No `history/` archive dir — the history analysis is retained in `journal/raw/_inbox/` per Controller Amendment 3.)
 
 ### Existing owners
 
@@ -51,8 +72,8 @@
 - Create by move: `docs/imports/v2-research-2026-07-11/research/*.md`
 - Create by move: `docs/imports/v2-research-2026-07-11/course-bundle/files.zip`
 - Create by extraction: `docs/imports/v2-research-2026-07-11/course-bundle/*.md`
-- Create by move: `docs/imports/v2-research-2026-07-11/history/history-data-analysis-2026-07-09.md`
-- Remove by move: all files under `journal/raw/_inbox/`
+- Retain in place (Amendment 3): `journal/raw/_inbox/history-data-analysis-2026-07-09.md` — not moved.
+- Remove by move: the eight tracked `.md` sources + `files.zip` under `journal/raw/_inbox/`
 
 **Interfaces:**
 - Consumes: the ten current inbox files and the five Markdown members stored in `files.zip`.
@@ -79,15 +100,18 @@ Run:
 ```bash
 mkdir -p docs/imports/v2-research-2026-07-11/research
 mkdir -p docs/imports/v2-research-2026-07-11/course-bundle
-mkdir -p docs/imports/v2-research-2026-07-11/history
 git mv journal/raw/_inbox/v2-research-*.md docs/imports/v2-research-2026-07-11/research/
 git mv journal/raw/_inbox/v2-codebase-continuation-handoff.md docs/imports/v2-research-2026-07-11/research/
-git mv journal/raw/_inbox/history-data-analysis-2026-07-09.md docs/imports/v2-research-2026-07-11/history/
-git mv journal/raw/_inbox/files.zip docs/imports/v2-research-2026-07-11/course-bundle/files.zip
+mv journal/raw/_inbox/files.zip docs/imports/v2-research-2026-07-11/course-bundle/files.zip
 unzip -j docs/imports/v2-research-2026-07-11/course-bundle/files.zip '*.md' -d docs/imports/v2-research-2026-07-11/course-bundle/
 ```
 
-Expected: Git records the nine Markdown inputs and ZIP as moves; `unzip` creates five readable
+Per Controller Amendments 2–3: the seven research notes + handoff use `git mv` (tracked);
+`files.zip` uses plain `mv` (untracked + ignored, so `git mv` would fail); the history
+analysis is **not** moved. No `history/` directory is created.
+
+Expected: Git records the eight Markdown inputs as moves; `files.zip` is relocated (shows up
+as an untracked addition at the new path, staged in Step 6); `unzip` creates five readable
 Markdown files beside the ZIP.
 
 - [ ] **Step 3: Verify every extracted member byte-for-byte**
@@ -132,7 +156,7 @@ Create `docs/imports/v2-research-2026-07-11/INDEX.md` with exactly this content:
 | `research/v2-research-06-ux-foundations.md` | Accepted + Deferred | Decision-versus-outcome and responsible framing fold into `docs/specs/product-vision.md`; detailed UI states and visual work wait for their feature cycles. |
 | `research/v2-research-07-validation-and-qa-strategy.md` | Accepted + Deferred | Learning-integrity expectations fold into `docs/specs/qa-playtest-process.md`; feature scenarios and new scripts wait for Strategy Table Fundamentals. |
 | `research/v2-codebase-continuation-handoff.md` | Covered | The H17 oracle and first guided drill are shipped and feature-QA closed; its pre-implementation inspection tasks are obsolete. |
-| `history/history-data-analysis-2026-07-09.md` | Covered + Deferred | Local JSONL history is implemented; player-visible versus shoe-true count semantics fold into `docs/specs/research-brief.md` for future counting research. |
+| `_inbox/history-data-analysis-2026-07-09.md` | Covered + Deferred (retained in _inbox) | Original retained in `journal/raw/_inbox/` per owner decision, not moved into this archive. Local JSONL history is implemented; player-visible versus shoe-true count semantics fold into `docs/specs/research-brief.md` for future counting research. |
 | `course-bundle/files.zip` | Rejected + Archived | Original transport bundle retained for provenance; its readable members are indexed separately below. |
 | `course-bundle/how-to-teach.md` | Accepted + Rejected | Decision-versus-outcome, practice progression, misconception feedback, and spacing are folded; XP/leaderboards and dealer-bust-first sequencing are not accepted V2 decisions. |
 | `course-bundle/unit-1-basics.md` | Covered + Rejected | Foundations concepts are covered by the shipped guided drill; S17 and resplit-ace assumptions do not match the locked H17 baseline. |
@@ -156,16 +180,21 @@ Create `docs/imports/v2-research-2026-07-11/INDEX.md` with exactly this content:
 Run:
 
 ```bash
-test -z "$(find journal/raw/_inbox -mindepth 1 -print -quit)"
+# Inbox retains exactly the history analysis (Controller Amendment 3), nothing else.
+test "$(find journal/raw/_inbox -maxdepth 1 -type f | wc -l)" -eq 1
+test -f journal/raw/_inbox/history-data-analysis-2026-07-09.md
 test "$(find docs/imports/v2-research-2026-07-11/research -maxdepth 1 -type f | wc -l)" -eq 8
 test "$(find docs/imports/v2-research-2026-07-11/course-bundle -maxdepth 1 -type f | wc -l)" -eq 6
-test "$(find docs/imports/v2-research-2026-07-11/history -maxdepth 1 -type f | wc -l)" -eq 1
-test "$(rg -c '^\| `(?:research|history|course-bundle)/' docs/imports/v2-research-2026-07-11/INDEX.md)" -eq 15
+test ! -d docs/imports/v2-research-2026-07-11/history
+# 15 source rows: 14 archived (research/ + course-bundle/) + 1 retained (_inbox/).
+test "$(rg -c '^\| `(?:research|course-bundle)/' docs/imports/v2-research-2026-07-11/INDEX.md)" -eq 14
+test "$(rg -c '^\| `_inbox/history-data-analysis-2026-07-09.md`' docs/imports/v2-research-2026-07-11/INDEX.md)" -eq 1
 git diff --check
 git status --short
 ```
 
-Expected: all `test` commands exit 0; the index has 15 source rows; Git shows only archive moves,
+Expected: all `test` commands exit 0; the index has 14 archived rows + 1 retained row; Git
+shows the eight `.md` archive moves, the relocated `files.zip` (untracked at its new path),
 five extracted Markdown additions, and `INDEX.md`.
 
 - [ ] **Step 6: Commit the tracked archive**
@@ -177,7 +206,9 @@ git add -A journal/raw/_inbox docs/imports/v2-research-2026-07-11
 git commit -m "docs: archive processed V2 research inputs"
 ```
 
-Expected: one commit containing the archive/index and removal-by-move of every inbox source.
+Expected: one commit containing the archive/index, the removal-by-move of the eight tracked
+inbox `.md` sources, and the relocated + extracted `files.zip` members. The history analysis
+stays untracked in `_inbox` and does not appear in the commit.
 
 ---
 
@@ -437,7 +468,7 @@ Run:
 test -f docs/imports/v2-research-2026-07-11/INDEX.md
 test -d docs/imports/v2-research-2026-07-11/research
 test -d docs/imports/v2-research-2026-07-11/course-bundle
-test -d docs/imports/v2-research-2026-07-11/history
+test ! -d docs/imports/v2-research-2026-07-11/history
 ! rg -n "How should the BlackjackInfo chart be encoded" docs/specs/research-brief.md
 rg -n "Strategy Provenance Policy|player-perceived count|## Learning state|Learning-integrity contract|v2-research-2026-07-11" docs/specs/research-brief.md docs/architecture.md docs/specs/qa-playtest-process.md journal/docs-map.md
 git diff --check
@@ -487,10 +518,13 @@ for member in how-to-teach.md unit-1-basics.md unit-2-basic-strategy.md rules-sp
   unzip -p docs/imports/v2-research-2026-07-11/course-bundle/files.zip "$member" |
     cmp - "docs/imports/v2-research-2026-07-11/course-bundle/$member"
 done
-test -z "$(find journal/raw/_inbox -mindepth 1 -print -quit)"
+# Inbox retains only the history analysis (Controller Amendment 3).
+test "$(find journal/raw/_inbox -maxdepth 1 -type f | wc -l)" -eq 1
+test -f journal/raw/_inbox/history-data-analysis-2026-07-09.md
 ```
 
-Expected: ZIP integrity passes, all five comparisons exit 0 without output, and the inbox is empty.
+Expected: ZIP integrity passes, all five comparisons exit 0 without output, and the inbox
+holds exactly the retained history analysis.
 
 - [ ] **Step 2: Verify index coverage exactly once per source**
 
@@ -506,7 +540,7 @@ for source in \
   research/v2-research-06-ux-foundations.md \
   research/v2-research-07-validation-and-qa-strategy.md \
   research/v2-codebase-continuation-handoff.md \
-  history/history-data-analysis-2026-07-09.md \
+  _inbox/history-data-analysis-2026-07-09.md \
   course-bundle/files.zip \
   course-bundle/how-to-teach.md \
   course-bundle/unit-1-basics.md \
