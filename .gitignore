@@ -1,5 +1,6 @@
 /target/
 /.superpowers/
+/.worktrees/
 
 # Gameplay history exports (personal/ephemeral) — keep the dir + README, ignore the data.
 /data/history/*
