@@ -13,7 +13,12 @@
 - Treat this as a training product, not gambling software.
 - Do not fake card flow: arranged openings sit on a composition-correct shuffled shoe, all later cards come from that ordered shoe, and origins remain traceable.
 - Rust owns scoring, soft/hard state, natural blackjack, legal actions, dealer behavior, wager changes, settlement, and later strategy recommendations.
-- The browser owns typed curriculum and presentation; it must not independently grade rule-dependent answers.
+- The browser owns typed curriculum and presentation. Static vocabulary, goal, and round-order
+  checks may use typed curriculum answer keys backed by engine integration tests; computed totals,
+  legality, dealer play, wagers, outcomes, and strategy must never be reimplemented or graded in
+  TypeScript.
+- Use Rust where rules computation, correctness, or performance benefits. Do not create a Rust
+  teaching-content API merely to store prose or static labels.
 - Learning correctness and hand outcome are separate facts.
 - Units are two-to-four-minute mechanics-first lessons; visual polish, animation, course-map art, rewards, and coach/pet presentation are V3 work.
 - Progress and attempt evidence remain in memory. All units are directly selectable in recommended order; prerequisites are recorded but not enforced.

@@ -227,6 +227,13 @@ are available. Do not expand browser-owned blackjack calculations. Existing arra
 continue through `start_session_with_prefix`, a composition-correct shuffled shoe, and the normal
 round machinery.
 
+Static teaching definitions such as vocabulary, the stated goal, and round-stage ordering may use
+typed curriculum answer keys when they require no runtime calculation. Integration tests must tie
+those definitions to observed engine behavior. Do not add a Rust teaching-content API merely to
+store prose or static labels; use Rust where rules computation, correctness, or performance
+benefits, and never duplicate its scoring, legality, wager, outcome, or dealer-play algorithms in
+TypeScript.
+
 Every engine-backed teaching hand must preserve the existing safeguards:
 
 - the arranged opening is visibly traceable as arranged-origin;
