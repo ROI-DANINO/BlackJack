@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
-sub_phase: first-guided-drill-design
-plan: null
-spec: docs/superpowers/specs/2026-07-10-v2-learning-foundations-roadmap-design.md
-step: "Brainstorm and approve the first guided drill design before implementation."
+sub_phase: first-guided-drill-qa
+plan: docs/superpowers/plans/2026-07-10-first-guided-drill.md
+spec: docs/superpowers/specs/2026-07-10-first-guided-drill-design.md
+step: "Run deferred QA for the merged Get to Know Blackjack drill."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -16,8 +16,9 @@ sessions:
   - journal/ops/sessions/the-table-and-the-tutor-2026-07-10T1114.md
   - journal/ops/sessions/the-oracle-and-the-guide-2026-07-10T1441.md
   - journal/ops/sessions/the-door-and-the-deck-2026-07-10T1504.md
+  - journal/ops/sessions/the-lesson-and-the-ledger-2026-07-11T1524.md
 detour: []
 blocking: null
-next: "Brainstorm the first guided drill: a short reversible immediate-feedback learning loop powered by the strategy oracle."
-note: "Repository documentation added and pushed in the-door-and-the-deck-2026-07-10T1504.md; the next product step remains the first guided-drill design."
+next: "Run plan Tasks 11-12: browser drill QA role, ledger-driven feature QA, and Player Experience pass; review the Hit-on-16 teaching choice first if needed."
+note: "Mid-work checkpoint the-lesson-and-the-ledger-2026-07-11T1524.md folded in the Claude Code merge handoff; drill implementation is merged, QA remains open."
 ---

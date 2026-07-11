@@ -1,13 +1,17 @@
-# Tasks — Current Phase Only
+# Tasks - Current Phase Only
 
 > Only the current phase gets detailed tasks. Future work lives in `ROADMAP.md`.
 
-## Active — V2 first guided drill design
+## Active - V2 first guided drill QA
 
-- [ ] **Design the first guided drill** — define one short oracle-powered scenario loop with
-      reversible immediate feedback, concise explanation, and feature QA. Do not add AI coaching,
-      persistence, or generic curriculum infrastructure.
+- [ ] **Review Hit-on-16 teaching choice** - decide whether the "Hit, Stand & the stakes" unit
+      should hint Hit on stiff 16 to show bust risk, or adjust the scenario/copy before more units.
+- [ ] **Task 11: browser drill QA role** - add the `qa/drill/` role from
+      `docs/superpowers/plans/2026-07-10-first-guided-drill.md`.
+- [ ] **Task 12: feature QA + ledger** - run scoped feature QA, include the required Player
+      Experience pass, record reports, and update `journal/qa/ledger.md`.
 
 ## Ideas
 
-- No V2 feature backlog here. Add a task only when its research or build cycle becomes active.
+- Tracked post-merge follow-ups live in `.superpowers/sdd/progress.md` until the deferred QA work
+  resolves or accepts them.
