@@ -6,6 +6,18 @@ Approved processing design. This pass folds durable material from `journal/raw/_
 existing authoritative documentation, records meaningful rejected or superseded claims, and moves
 the original sources into a tracked import archive. It changes documentation only.
 
+## Execution Amendment
+
+During execution, the owner approved retaining
+`journal/raw/_inbox/history-data-analysis-2026-07-09.md` as a local-only, gitignored source instead
+of moving it into the tracked archive. The tracked index records its disposition and the durable
+count-semantics conclusion still folds into `docs/specs/research-brief.md`.
+
+This amendment overrides the `history/` archive directory, move, empty-inbox, and tracked-source
+requirements below for that file only. The final archive contains fourteen tracked sources; the
+inbox contains exactly the retained history analysis. All other design requirements remain in
+force. See the implementation plan's `Controller Amendments` section for the executable record.
+
 ## Outcome
 
 Clear the raw inbox without losing source provenance or creating another competing source of truth.
