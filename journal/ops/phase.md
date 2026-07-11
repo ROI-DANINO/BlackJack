@@ -3,7 +3,7 @@ phase: v2-learning-foundations
 sub_phase: strategy-table-fundamentals-design
 plan: null
 spec: null
-step: "Start the Strategy Table Fundamentals design cycle."
+step: "Review the V2 sources for Strategy Table Fundamentals design."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -18,8 +18,9 @@ sessions:
   - journal/ops/sessions/the-door-and-the-deck-2026-07-10T1504.md
   - journal/ops/sessions/the-lesson-and-the-ledger-2026-07-11T1524.md
   - journal/ops/sessions/the-drill-and-the-proof-2026-07-11T1637.md
+  - journal/ops/sessions/the-fold-and-the-footnote-2026-07-11T2026.md
 detour: []
 blocking: null
 next: "Define the first Strategy Table Fundamentals lesson and decide the spec shape for table-navigation practice."
-note: "Milestone close in journal/ops/sessions/the-drill-and-the-proof-2026-07-11T1637.md: Get to Know Blackjack feature QA closed; `qa:drill` added; QA-015 fixed+verified."
+note: "Mid-work checkpoint in journal/ops/sessions/the-fold-and-the-footnote-2026-07-11T2026.md: V2 raw research folded through PR #3; review consistency fixes committed locally at `7b227a7`."
 ---
