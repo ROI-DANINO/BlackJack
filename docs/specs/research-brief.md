@@ -19,6 +19,17 @@ Research anchors:
 - Blackjack Apprenticeship — strategy charts and learning order.
 - BlackjackInfo — basic strategy engine for generating charts by ruleset.
 
+### Strategy Provenance Policy
+
+Every strategy artifact must identify the exact supported ruleset, source name and retrieval date,
+encoding or generation method, independent cross-check, and known unsupported cases. A friendly
+table name is not enough to establish compatibility. The Rust oracle and engine legal actions stay
+authoritative at runtime.
+
+For future rule-variation work, separate dimensions that change legality or flow, settlement,
+Basic Strategy, and operational conditions such as penetration or shuffle method. Do not add a
+ruleset/profile matrix until a second verified profile creates a concrete need.
+
 ### Modern Casino Default Hypothesis
 V1 locks a 6-deck shoe game with H17, DAS, no surrender, dealer peek, 3:2 blackjack,
 and 75% default penetration.
@@ -67,5 +78,9 @@ Future table modes may require buffer or delayed-return card lifecycle modeling.
 - Diaconis, Fulman, Holmes — Analysis of casino shelf shuffling machines: https://arxiv.org/abs/1107.2961
 
 ## Open Questions
-- How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?
+
 - What exact card lifecycle model will support future CSM/ASM variants cleanly?
+- For future counting training, how will each decision distinguish the physical shoe-true count
+  from the player-perceived count that excludes an unseen dealer hole card until reveal?
+- Which rule variation should become the second verified strategy profile when variation literacy
+  becomes active?

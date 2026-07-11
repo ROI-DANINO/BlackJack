@@ -27,6 +27,19 @@ whenever the core changes.
 Python is reserved for research, strategy-table generation, data processing, analytics, and
 notebooks—not as a production application runtime.
 
+## Learning state
+
+Learning features keep three responsibilities separate:
+
+- engine game state owns cards, rules, legal actions, strategy truth, and outcomes;
+- controller learning state owns the current objective, exercise sequence, submitted attempt, and
+  feedback timing; and
+- React presentation state owns panels, focus, animation, and expanded explanations.
+
+The learning controller may ask the engine to evaluate and resolve a decision, but it does not
+recreate legality or strategy. Transient presentation details do not enter engine or learning
+records.
+
 ## Simulation invariants
 
 - A shoe is assembled before a hand begins, shuffled once into an ordered sequence, and dealt from

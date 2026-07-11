@@ -126,6 +126,22 @@ mechanics), then:
 | Long Session QA (full) | stability over 50+ rounds matters; breakit's grind covers V1 |
 | Regression QA | not an agent — regression is the ledger-driven scripts + smoke/re-test protocol |
 
+### Learning-integrity contract
+
+When a scoped feature adds strategy hints, grading, explanations, or assisted practice, its QA must
+verify all of the following:
+
+- a correct decision remains correct when the hand loses, and a wrong decision remains wrong when
+  the hand wins;
+- every recommendation comes from the active ruleset-matched oracle and is legal in the evaluated
+  state;
+- table visibility and assistance are observable when the feature uses them; and
+- learner comprehension is judged separately from strategy fidelity, engine flow, and visual
+  polish.
+
+The feature design selects exact scenarios and decides whether these checks belong in a script or a
+judgment pass. Results and findings still follow the ledger-driven process.
+
 ## Run mechanics
 
 1. **Preflight**: `cargo test -p blackjack-core` green; `cd web && npm test` green; record the
