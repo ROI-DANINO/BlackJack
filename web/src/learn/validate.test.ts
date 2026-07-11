@@ -93,10 +93,19 @@ describe('validateSubject', () => {
     expect(validateSubject(subject)).toEqual(['unit basics: duplicate step id: intro']);
   });
 
-  it('rejects unknown unit prerequisites', () => {
+  it('rejects a prerequisite that is not a declared skill id', () => {
     const subject = validSubject();
+    // 'nope' is neither a declared skill nor a unit id.
     subject.units[0]!.prerequisites = ['nope'];
     expect(validateSubject(subject)).toEqual(['unit basics: unknown prerequisite: nope']);
+  });
+
+  it('accepts a prerequisite that is a declared skill id (prerequisites are skills, not units)', () => {
+    const subject = validSubject();
+    // 'totals' is a declared skill but NOT a unit id — it must be accepted, since a unit's
+    // prerequisites name the SKILLS it depends on, not other units.
+    subject.units[0]!.prerequisites = ['totals'];
+    expect(validateSubject(subject)).toEqual([]);
   });
 
   it('rejects unit outcomes that are not declared skills', () => {

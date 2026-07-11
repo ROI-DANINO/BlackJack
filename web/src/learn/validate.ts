@@ -7,7 +7,6 @@ export function validateSubject(subject: Subject): string[] {
   const messages: string[] = [];
 
   const skillIds = new Set(subject.skills.map((s) => s.id));
-  const unitIds = new Set(subject.units.map((u) => u.id));
 
   const seenSkillIds = new Set<string>();
   for (const skill of subject.skills) {
@@ -38,7 +37,9 @@ export function validateSubject(subject: Subject): string[] {
     }
 
     for (const prereq of unit.prerequisites) {
-      if (!unitIds.has(prereq)) {
+      // Prerequisites name the SKILLS a unit depends on (each introduced as an outcome by an
+      // earlier unit), not other units — so they are validated against declared skill ids.
+      if (!skillIds.has(prereq)) {
         messages.push(`unit ${unit.id}: unknown prerequisite: ${prereq}`);
       }
     }
