@@ -1,5 +1,6 @@
 use blackjack_core::{
-    Action, CoreCommand, CoreResponse, OutcomeResult, RoundStatus, handle_command,
+    Action, CoreCommand, CoreResponse, OutcomeResult, PresetCard, Rank, RoundStatus, Suit,
+    handle_command,
 };
 
 fn start_session(seed: &str) -> blackjack_core::SessionState {
@@ -13,6 +14,7 @@ fn start_session(seed: &str) -> blackjack_core::SessionState {
     {
         CoreResponse::Session(session) => *session,
         CoreResponse::Actions(_) => panic!("expected session"),
+        CoreResponse::HandFacts(_) => panic!("expected session"),
     }
 }
 
@@ -20,6 +22,7 @@ fn start_round(session: blackjack_core::SessionState) -> blackjack_core::Session
     match handle_command(CoreCommand::StartRound { session, bet: None }).expect("round") {
         CoreResponse::Session(session) => *session,
         CoreResponse::Actions(_) => panic!("expected session"),
+        CoreResponse::HandFacts(_) => panic!("expected session"),
     }
 }
 
@@ -27,6 +30,7 @@ fn legal_actions(session: blackjack_core::SessionState) -> Vec<Action> {
     match handle_command(CoreCommand::LegalActions { session }).expect("actions") {
         CoreResponse::Actions(actions) => actions,
         CoreResponse::Session(_) => panic!("expected actions"),
+        CoreResponse::HandFacts(_) => panic!("expected actions"),
     }
 }
 
@@ -78,6 +82,30 @@ fn legal_actions_command_returns_actions_for_started_round() {
 
     assert!(actions.contains(&Action::Hit));
     assert!(actions.contains(&Action::Stand));
+}
+
+#[test]
+fn describe_hand_command_returns_engine_owned_ace_facts() {
+    let cards = vec![
+        PresetCard {
+            rank: Rank::Ace,
+            suit: Suit::Spades,
+        },
+        PresetCard {
+            rank: Rank::Six,
+            suit: Suit::Hearts,
+        },
+    ];
+    let response = handle_command(CoreCommand::DescribeHand { cards }).expect("hand facts");
+    match response {
+        CoreResponse::HandFacts(facts) => {
+            assert_eq!(facts.hard_total, 7);
+            assert_eq!(facts.best_total, 17);
+            assert!(facts.is_soft);
+            assert!(!facts.is_bust);
+        }
+        other => panic!("expected hand facts, got {other:?}"),
+    }
 }
 
 #[test]

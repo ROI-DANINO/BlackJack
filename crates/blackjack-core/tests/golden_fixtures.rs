@@ -34,6 +34,12 @@ fn actions_response_shape_is_stable() {
     assert_eq!(json, r#"{"type":"actions","data":["hit","stand","double","split"]}"#);
 }
 
+#[test]
+fn response_hand_facts_fixture_is_stable() {
+    let cmd = r#"{"command":"describe_hand","cards":[{"rank":"ace","suit":"spades"},{"rank":"six","suit":"hearts"}]}"#;
+    check_or_write("response_hand_facts.json", &dispatch_json(cmd));
+}
+
 /// A full SessionState played to resolution, serialized RAW (not enveloped) so the TS
 /// contract test can dereference every nested round/hand/dealer/log field name.
 fn resolved_session_json() -> String {

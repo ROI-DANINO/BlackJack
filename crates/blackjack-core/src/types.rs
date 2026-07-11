@@ -45,6 +45,14 @@ pub struct PresetCard {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct HandFacts {
+    pub hard_total: u8,
+    pub best_total: u8,
+    pub is_soft: bool,
+    pub is_bust: bool,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum DealerSoft17 {
     Hit,
