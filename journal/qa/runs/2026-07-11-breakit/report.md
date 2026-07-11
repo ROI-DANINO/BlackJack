@@ -3,9 +3,9 @@
 > QA script-suite role `breakit`. Spec: `docs/specs/2026-07-10-breakit-adversarial-harness.md`.
 
 - **Verdict:** PASS
-- Started: 2026-07-11T13:22:30.452Z
-- Finished: 2026-07-11T13:23:07.693Z
-- Commit: `44606e2`
+- Started: 2026-07-11T13:40:07.381Z
+- Finished: 2026-07-11T13:40:42.056Z
+- Commit: `8c0dc69`
 - Chromium: 149.0.7827.55
 - Base URL: http://localhost:4319/
 - Prod-build hook absent (tree-shaken): PASS

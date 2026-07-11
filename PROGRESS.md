@@ -13,11 +13,14 @@
 - **V1 Free Play skeleton COMPLETE**: auto-reshuffle at the shoe boundary (Free Play crosses shoes) + per-hand notes (attach-on-Deal, harness `note` on the round JSONL line). rd-verify (opus) + craft gate (sonnet) both PASS; merged to main (through 3a3bd6b); 46 Rust + 19 web tests green. V1 exit criteria met.
 - **V1 Free Play polish scoped and shipped**: any two 10-value cards can split through the shared core legal-action rule; the table shows per-hand win/loss/push/blackjack outcomes after resolution; dealer-ace insurance auto-decline is visible instead of silent.
 - **V1 QA gate cleared**: the targeted browser re-test verified QA-001/003/004/005/007/009; the ledger records GO for V2.
+- **Basic Strategy oracle shipped and feature-QA passed**: the V1-ruleset oracle is Rust-owned, ruleset-keyed, and covered across the verified source chart.
+- **First V2 guided drill shipped and feature-QA passed**: "Get to Know Blackjack" teaches table reading, blackjack vs 21, Hit/Stand, Double, Split, and reactive outcomes through real engine hands. `qa:drill` is now part of the Tier-1 QA gate; full feature QA passed 2026-07-11 with `QA-015` fixed and verified.
 
 ## In progress
-- **V2 Learning Foundations roadmap settled**: two subjects, Blackjack Foundations then Strategy Table Fundamentals. Next is a dedicated research task that verifies the exact Basic Strategy source and encoding before implementation.
+- **V2 Strategy Table Fundamentals design**: next slice is deciding the first table-navigation lesson and how it uses the verified Basic Strategy oracle without making the first experience memorization-first.
 
 ## Open questions
-- How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?
+- What should the first Strategy Table Fundamentals lesson teach first: hand classification, row/column lookup, or table-open practice?
+- How should the product distinguish the Blackjack Foundations "try Hit to feel bust risk" moment from later Basic Strategy recommendations?
 - Should a later ruleset support player-taken insurance, or should V1/V2 keep training auto-decline?
 - What exact card lifecycle model will support future CSM/ASM variants cleanly?

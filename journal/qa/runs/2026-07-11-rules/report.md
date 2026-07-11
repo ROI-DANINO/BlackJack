@@ -3,9 +3,9 @@
 > QA script-suite role `rules`. Spec: `docs/specs/2026-07-10-qa-script-suite.md`.
 
 - **Verdict:** PASS
-- Started: 2026-07-11T13:22:00.984Z
-- Finished: 2026-07-11T13:22:11.242Z
-- Commit: `44606e2`
+- Started: 2026-07-11T13:39:38.549Z
+- Finished: 2026-07-11T13:39:48.184Z
+- Commit: `8c0dc69`
 - Chromium: 149.0.7827.55
 - Base URL: http://localhost:4320/
 - Rounds re-derived: 90

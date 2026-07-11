@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
-sub_phase: first-guided-drill-qa
-plan: docs/superpowers/plans/2026-07-10-first-guided-drill.md
-spec: docs/superpowers/specs/2026-07-10-first-guided-drill-design.md
-step: "Run deferred QA for the merged Get to Know Blackjack drill."
+sub_phase: strategy-table-fundamentals-design
+plan: null
+spec: null
+step: "Start the Strategy Table Fundamentals design cycle."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -17,8 +17,9 @@ sessions:
   - journal/ops/sessions/the-oracle-and-the-guide-2026-07-10T1441.md
   - journal/ops/sessions/the-door-and-the-deck-2026-07-10T1504.md
   - journal/ops/sessions/the-lesson-and-the-ledger-2026-07-11T1524.md
+  - journal/ops/sessions/the-drill-and-the-proof-2026-07-11T1637.md
 detour: []
 blocking: null
-next: "Run plan Tasks 11-12: browser drill QA role, ledger-driven feature QA, and Player Experience pass; review the Hit-on-16 teaching choice first if needed."
-note: "Mid-work checkpoint the-lesson-and-the-ledger-2026-07-11T1524.md folded in the Claude Code merge handoff; drill implementation is merged, QA remains open."
+next: "Define the first Strategy Table Fundamentals lesson and decide the spec shape for table-navigation practice."
+note: "Milestone close in journal/ops/sessions/the-drill-and-the-proof-2026-07-11T1637.md: Get to Know Blackjack feature QA closed; `qa:drill` added; QA-015 fixed+verified."
 ---
