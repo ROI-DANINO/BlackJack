@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "coverage": [
+    {
+      "unitId": "reading-the-table",
+      "title": "Reading the table",
+      "situationRecords": 2,
+      "liveRecords": 3,
+      "recapRows": 5
+    },
+    {
+      "unitId": "hit-stand-stakes",
+      "title": "Hit, Stand, and the stakes",
+      "situationRecords": 1,
+      "liveRecords": 3,
+      "recapRows": 4
+    },
+    {
+      "unitId": "double-split",
+      "title": "Double and Split",
+      "situationRecords": 2,
+      "liveRecords": 3,
+      "recapRows": 5
+    }
+  ],
+  "violations": []
+}

@@ -12,14 +12,15 @@ recorded commit (or it has never run); smoke-test otherwise.
 
 | Area | Watched files | Last run | Last-passed commit | Verdict | Notes |
 |------|---------------|----------|--------------------|---------|-------|
-| Engine rules & math | `crates/` | 2026-07-10-strategy-oracle | bdda2f0 | PASS | Strategy-oracle feature QA: 320 source-chart cells + fallbacks deep-tested; 63 core Rust tests passed (existing engine smoke). |
-| UI/wire fidelity (display ↔ engine ↔ JSONL) | `web/src/`, `crates/` wire types | 2026-07-10-qa-suite | c5aff12 | PASS | **now guarded by `qa:rules`** — 90 rounds re-derived, 12/12 situations ≥2×, 0 violations. (Orig. passed only after mid-run WASM rebuild — QA-001/QA-002.) |
-| Betting & payout math (bankroll, 3:2, push, split/double stakes) | `web/src/`, `crates/` | 2026-07-10-qa-suite | c5aff12 | PASS | **now guarded by `qa:rules`** — H17, payout multipliers, split/double scaling, bankroll chain re-derived per round, 0 discrepancies |
-| Round & state flow (turns, buttons, reset, reshuffle) | `web/src/` | 2026-07-10-qa-suite | c5aff12 | PASS | **now guarded by `qa:flow`** — 273 snapshots, 29 split-turn, 1 reshuffle, 0 violations; QA-004 active-hand marker positively verified |
-| Player experience & clarity | `web/src/` | 2026-07-10-v1-remediation-retest | 30ec927 | PASS-with-reservations | QA-005 (totals) verified 2026-07-10; QA-006 open backlog; "functional, polish is V2/V3" |
-| Robustness (rapid input, illegal actions, refresh, long grind) | `web/src/` | 2026-07-10-qa-suite | c5aff12 | PASS | **now guarded by `qa:breakit`** — 12/12 attacks, 0 breaks. QA-003/QA-007 verified; QA-008 (refresh wipe)/QA-012 open backlog, non-blocking |
+| Engine rules & math | `crates/` | 2026-07-11-get-to-know-blackjack | 44606e2 | PASS | `cargo test -p blackjack-core` passed; prefix-shoe/session tests cover composition-preserving arranged openings. Existing engine paths smoke-tested. |
+| UI/wire fidelity (display ↔ engine ↔ JSONL) | `web/src/`, `crates/` wire types | 2026-07-11-get-to-know-blackjack | 44606e2 | PASS | `qa:rules` passed — 90 rounds re-derived, 12/12 situations ≥2×, 0 violations; `npm test` 144/144 passed. |
+| Betting & payout math (bankroll, 3:2, push, split/double stakes) | `web/src/`, `crates/` | 2026-07-11-get-to-know-blackjack | 44606e2 | PASS | `qa:rules` passed — H17, payout multipliers, split/double scaling, bankroll chain re-derived per round, 0 discrepancies. |
+| Round & state flow (turns, buttons, reset, reshuffle) | `web/src/` | 2026-07-11-get-to-know-blackjack | 44606e2 | PASS | `qa:flow` passed — 273 snapshots, 29 split-turn, 1 reshuffle, 0 violations; drill resolved split marker fixed as QA-015. |
+| Guided drill learning loop | `web/src/drill/`, `web/src/app/Drill.tsx`, `web/src/breakit-hook.ts`, prefix-session engine path | 2026-07-11-get-to-know-blackjack | 44606e2 | PASS | `qa:drill` passed — 3/3 units, 5 arranged situations, 9 live hands, 0 violations; PX pass says short/playable with no strategy grading. |
+| Player experience & clarity | `web/src/` | 2026-07-11-get-to-know-blackjack | 44606e2 | PASS-with-reservations | PX pass completed all three units; QA-015 fixed+verified; Hit-on-16 accepted as bust-risk orientation, not strategy advice. QA-014 V3 polish reservation remains. |
+| Robustness (rapid input, illegal actions, refresh, long grind) | `web/src/` | 2026-07-11-get-to-know-blackjack | 44606e2 | PASS | `qa:breakit` passed — 12/12 attacks, 0 breaks. QA-008 (refresh wipe)/QA-012 open backlog remain non-blocking. |
 | Product readiness (V1 gate) | whole build | 2026-07-10-v1-remediation-retest | 30ec927 | GO (for V2) | 6-item remediation list all verified 2026-07-10 → V1 gate cleared, V2 Basic Strategy unblocked. Still not external-playtest-ready (QA-006/008/010–014 backlog; styling V3). See `runs/2026-07-09-v1-milestone/product-review.md` |
-| QA script suite (`web/qa/`: rules+flow+breakit) | `web/qa/`, `web/src/` | 2026-07-10-qa-suite | c5aff12 | PASS | `cd web && npm run qa` runs all three Tier-1 scripts; non-zero exit gates the milestone. Reports in `runs/<date>-{rules,flow,breakit}/`; breaks triaged into QA-NNN by hand (scripts never auto-edit this ledger). See `docs/specs/2026-07-10-qa-script-suite.md`. |
+| QA script suite (`web/qa/`: rules+flow+breakit+drill) | `web/qa/`, `web/src/` | 2026-07-11-get-to-know-blackjack | 44606e2 | PASS | `cd web && npm run qa` now runs rules → flow → breakit → drill; all four passed at 44606e2. Reports in `runs/2026-07-11-{rules,flow,breakit,drill}/`. |
 
 ## Findings register
 
@@ -42,6 +43,7 @@ Only `verified` closes a finding; `fixed` items get a targeted re-test in the ne
 | QA-012 | 2026-07-09-v1-milestone | robustness | minor | Rejected-click error text lingers in the status line until next successful action | open — backlog |
 | QA-013 | 2026-07-09-v1-milestone | player experience | minor | Note field strips newlines (single-line input) and visually crowds the Download button | open — backlog |
 | QA-014 | 2026-07-09-v1-milestone | player experience | note | Unstyled UI reads as a debug harness — explicitly V3 scope, recorded so it isn't re-reported | open — V3 |
+| QA-015 | 2026-07-11-player-experience | player experience | minor | Drill Split feedback screen kept showing `← playing` after the split round had resolved, making the Continue state look like an active turn | **verified** (2026-07-11) — `Drill.tsx` now gates active marker on `player_turn`; regression in `Drill.test.tsx`; final `npm run qa` passed |
 
 **Coverage gaps carried forward:** split aces never dealt (deterministic shoe); 3–4-way
 resplits; double/split bankroll boundary observed in source only; multi-tab races untried.
@@ -65,3 +67,4 @@ resolved rounds).
 | 2026-07-10 | v1-remediation-retest | targeted feature-QA re-test (manual, Roi playing) | 30ec927 | — | 6 remediated findings (QA-001/003/004/005/007/009) re-tested against running build → all **verified**; V1 gate cleared for V2. QA-003 caveat: same-tick Deal race unreachable by manual input |
 | 2026-07-10 | qa-suite | Tier-1 script suite (first run of qa:rules + qa:flow; qa:breakit restructured) | c5aff12 | `runs/2026-07-10-{rules,flow,breakit}/` | All PASS: rules 90 rounds/12-of-12 situations/0 violations, flow 273 snapshots/0 violations, breakit 12/12. No new findings. Replaces mechanical pack agents 1/2/4 with deterministic scripts |
 | 2026-07-10 | strategy-oracle | scoped feature QA (engine) | bdda2f0 | `runs/2026-07-10-strategy-oracle/` | PASS: new oracle deep-tested across 320 chart cells and fallback/boundary cases; existing core engine suite smoke-tested (63 tests); no findings. |
+| 2026-07-11 | get-to-know-blackjack | scoped feature QA (guided drill + ledger) | 44606e2 | `runs/2026-07-11-{rules,flow,breakit,drill,player-experience}/` | PASS-with-reservations: cargo core suite passed; `npm test` 144/144; full `npm run qa` passed all four roles. PX found QA-015, fixed+verified; Hit-on-16 accepted as orientation copy, not strategy advice. |
