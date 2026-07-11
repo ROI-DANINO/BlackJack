@@ -29,7 +29,7 @@ Non-goals:
 ## V2 — Learning Foundations
 - [ ] Learning foundations — exit criteria: a new player can learn the current table's legal
   actions, navigate the matching Basic Strategy table, and use it in guided practice with
-  immediate or delayed feedback.
+  immediate or delayed feedback that keeps decision quality separate from hand outcome.
 
 V2 ships two ordered, replayable subjects:
 - **Blackjack Foundations** — teaches hit/stand first, then double and split, using short
@@ -66,7 +66,7 @@ Add topics incrementally:
 - Bet sizing / unit sizing.
 - Count deviations.
 - Advanced counting systems.
-- Table rules variations.
+- Table-rule literacy and ruleset-matched strategy deltas.
 - CSM/ASM and machine-buffer table variants.
 - Leaderboards.
 - Daily challenges.

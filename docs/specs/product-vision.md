@@ -54,6 +54,14 @@ The game teaches execution first.
 The goal is not to make the player a blackjack theorist. Explanations should be short and
 useful, serving correct play and long-term mastery.
 
+Feedback judges the quality of a decision against the active ruleset-matched strategy, never the
+hand result. A correct decision can lose and a poor decision can win; the product must show those
+as separate facts so it teaches skill rather than superstition.
+
+Motivation should reward practice, comprehension, and improving decision quality. It must not
+celebrate money won, encourage loss chasing, imply guaranteed profit, or punish a learner for
+ending a session.
+
 Basic Strategy should be learned in small chunks but tested in realistic mixtures. The player
 should gradually move from:
 
