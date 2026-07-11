@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
-sub_phase: strategy-table-fundamentals-design
-plan: null
-spec: null
-step: "Review the V2 sources for Strategy Table Fundamentals design."
+sub_phase: blackjack-basics-build
+plan: docs/superpowers/plans/2026-07-11-blackjack-basics-learning-foundation.md
+spec: docs/superpowers/specs/2026-07-11-blackjack-basics-learning-foundation-design.md
+step: "Resume SDD Task 3: typed curriculum contracts and validation."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -19,8 +19,9 @@ sessions:
   - journal/ops/sessions/the-lesson-and-the-ledger-2026-07-11T1524.md
   - journal/ops/sessions/the-drill-and-the-proof-2026-07-11T1637.md
   - journal/ops/sessions/the-fold-and-the-footnote-2026-07-11T2026.md
+  - journal/ops/sessions/the-foundation-and-the-worktree-2026-07-11T2308.md
 detour: []
 blocking: null
-next: "Define the first Strategy Table Fundamentals lesson and decide the spec shape for table-navigation practice."
-note: "Mid-work checkpoint in journal/ops/sessions/the-fold-and-the-footnote-2026-07-11T2026.md: V2 raw research folded through PR #3; review consistency fixes committed locally at `7b227a7`."
+next: "In `.worktrees/blackjack-basics`, read `.superpowers/sdd/progress.md` and re-dispatch Task 3; Tasks 1-2 are already complete and reviewed."
+note: "Mid-build checkpoint in journal/ops/sessions/the-foundation-and-the-worktree-2026-07-11T2308.md: feature branch clean at `81ced34`; interrupted Task 3 left no partial files."
 ---
