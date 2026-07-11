@@ -26,4 +26,25 @@ describe('Drill view', () => {
     expect(screen.getByRole('button', { name: /continue/i })).toBeTruthy();
     expect(screen.getAllByRole('status').length).toBeGreaterThan(0);
   });
+
+  it('does not show an active hand marker after a split situation resolves', () => {
+    const c = new DrillController(new WasmTransport(), UNITS[2]!, () => `d-${(n += 1)}`, () => 0);
+    render(<Drill controller={c} />);
+    act(() => c.begin());
+    fireEvent.click(screen.getByRole('button', { name: /double/i }));
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+    fireEvent.click(screen.getByRole('button', { name: /split/i }));
+
+    let guard = 0;
+    while (!screen.queryByRole('button', { name: /continue/i }) && guard++ < 20) {
+      const action =
+        screen.queryByRole('button', { name: /^Stand$/ }) ??
+        screen.getAllByRole('button').find((button) => /^(Hit|Double|Split)/.test(button.textContent ?? ''));
+      expect(action).toBeTruthy();
+      fireEvent.click(action!);
+    }
+
+    expect(screen.getByRole('button', { name: /continue/i })).toBeTruthy();
+    expect(screen.queryByText(/playing/i)).toBeNull();
+  });
 });

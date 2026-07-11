@@ -33,7 +33,12 @@ export function Drill({ controller }: { controller: DrillController }) {
         <>
           <HandView label="Dealer" cards={round.dealer.cards} hideFrom={hideFrom} />
           {round.hands.map((h, i) => (
-            <HandView key={i} label={`Hand ${i + 1}`} cards={h.cards} active={round.hands.length > 1 && i === round.active_hand_index} />
+            <HandView
+              key={i}
+              label={`Hand ${i + 1}`}
+              cards={h.cards}
+              active={round.status === 'player_turn' && round.hands.length > 1 && i === round.active_hand_index}
+            />
           ))}
         </>
       )}
