@@ -3,9 +3,9 @@
 > QA script-suite role `learn`. Spec: `docs/superpowers/specs/2026-07-11-blackjack-basics-learning-foundation-design.md`.
 
 - **Verdict:** PASS
-- Started: 2026-07-12T03:47:54.415Z
-- Finished: 2026-07-12T03:48:05.597Z
-- Commit: `7daf35c`
+- Started: 2026-07-12T04:47:18.624Z
+- Finished: 2026-07-12T04:47:29.991Z
+- Commit: `8952828`
 - Chromium: 149.0.7827.55
 - Base URL: http://localhost:4325/
 - Units completed: 9/9
@@ -32,4 +32,3 @@
 ### Violations
 
 None — every unit was visited, every declared required check passed, arranged/live provenance and six-deck composition held, no step was double-graded correct, recap capabilities match declared outcomes, and the browser console stayed clean.
-

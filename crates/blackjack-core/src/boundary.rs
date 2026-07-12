@@ -96,8 +96,9 @@ pub fn dispatch_json(input: &str) -> String {
         Err(error) => return error_envelope(format!("invalid command json: {error}")),
     };
     match handle_command(command) {
-        Ok(response) => serde_json::to_string(&Envelope::Ok { response })
-            .unwrap_or_else(|error| error_envelope(format!("failed to serialize response: {error}"))),
+        Ok(response) => serde_json::to_string(&Envelope::Ok { response }).unwrap_or_else(|error| {
+            error_envelope(format!("failed to serialize response: {error}"))
+        }),
         Err(message) => error_envelope(message),
     }
 }

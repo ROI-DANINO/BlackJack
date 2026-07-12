@@ -1,6 +1,6 @@
 use blackjack_core::{
-    basic_strategy_action, legal_actions, v1_h17_ruleset, Action, Card, HandSource, HandState,
-    Rank, Ruleset, Suit,
+    Action, Card, HandSource, HandState, Rank, Ruleset, Suit, basic_strategy_action, legal_actions,
+    v1_h17_ruleset,
 };
 
 const DEALER_UPCARDS: [Rank; 10] = [

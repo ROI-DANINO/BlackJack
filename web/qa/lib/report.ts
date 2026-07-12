@@ -36,7 +36,9 @@ export function writeRoleReport(runsRoot: string, dateStamp: string, report: Rol
   mkdirSync(dir, { recursive: true });
   const mdPath = join(dir, 'report.md');
   const jsonPath = join(dir, 'report.json');
-  writeFileSync(mdPath, `${header(report)}\n${report.body}\n`);
+  // Normalize to exactly one trailing newline: role bodies whose last line is blank would
+  // otherwise leave a "blank line at EOF" that `git diff --check` flags on every run.
+  writeFileSync(mdPath, `${`${header(report)}\n${report.body}`.replace(/\s+$/, '')}\n`);
   writeFileSync(jsonPath, JSON.stringify(report.json, null, 2));
   return { dir, mdPath, jsonPath };
 }

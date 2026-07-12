@@ -4,12 +4,22 @@ use blackjack_core::{
 };
 
 fn preset(cards: &[(Rank, Suit)]) -> Vec<PresetCard> {
-    cards.iter().map(|(rank, suit)| PresetCard { rank: rank.clone(), suit: suit.clone() }).collect()
+    cards
+        .iter()
+        .map(|(rank, suit)| PresetCard {
+            rank: rank.clone(),
+            suit: suit.clone(),
+        })
+        .collect()
 }
 
 #[test]
 fn prefix_is_dealt_first_in_order_with_arranged_provenance() {
-    let prefix = preset(&[(Rank::Eight, Suit::Spades), (Rank::Six, Suit::Diamonds), (Rank::Eight, Suit::Hearts)]);
+    let prefix = preset(&[
+        (Rank::Eight, Suit::Spades),
+        (Rank::Six, Suit::Diamonds),
+        (Rank::Eight, Suit::Hearts),
+    ]);
     let mut shoe = create_prefix_shoe(6, "lesson:split", 75, &prefix).expect("builds");
 
     // Composition is still a true six-deck.
@@ -31,10 +41,18 @@ fn per_rank_suit_composition_is_preserved() {
     let prefix = preset(&[(Rank::Ace, Suit::Spades)]);
     let shoe = create_prefix_shoe(6, "lesson:bj", 75, &prefix).expect("builds");
     // Exactly six ace-of-spades across the shoe (one arranged + five remaining real).
-    let count = shoe.cards.iter().filter(|c| c.rank == Rank::Ace && c.suit == Suit::Spades).count();
+    let count = shoe
+        .cards
+        .iter()
+        .filter(|c| c.rank == Rank::Ace && c.suit == Suit::Spades)
+        .count();
     assert_eq!(count, 6);
     // Remainder is normal shoe origin.
-    let real_left = shoe.cards.iter().filter(|c| c.deck_id != "arranged").count();
+    let real_left = shoe
+        .cards
+        .iter()
+        .filter(|c| c.deck_id != "arranged")
+        .count();
     assert_eq!(real_left, 311);
 }
 
@@ -42,8 +60,12 @@ fn per_rank_suit_composition_is_preserved() {
 fn unavailable_prefix_card_is_rejected() {
     // Seven copies of one exact card cannot exist in a six-deck shoe.
     let prefix = preset(&[
-        (Rank::Ace, Suit::Spades), (Rank::Ace, Suit::Spades), (Rank::Ace, Suit::Spades),
-        (Rank::Ace, Suit::Spades), (Rank::Ace, Suit::Spades), (Rank::Ace, Suit::Spades),
+        (Rank::Ace, Suit::Spades),
+        (Rank::Ace, Suit::Spades),
+        (Rank::Ace, Suit::Spades),
+        (Rank::Ace, Suit::Spades),
+        (Rank::Ace, Suit::Spades),
+        (Rank::Ace, Suit::Spades),
         (Rank::Ace, Suit::Spades),
     ]);
     let err = create_prefix_shoe(6, "lesson:x", 75, &prefix).expect_err("rejected");
@@ -59,7 +81,11 @@ fn empty_prefix_is_rejected() {
 #[test]
 fn arranged_pair_opening_offers_split_and_resolves_for_real() {
     // Player 8♠, 8♥ against dealer 6♦ up. Downstream is real shuffled cards.
-    let prefix = preset(&[(Rank::Eight, Suit::Spades), (Rank::Six, Suit::Diamonds), (Rank::Eight, Suit::Hearts)]);
+    let prefix = preset(&[
+        (Rank::Eight, Suit::Spades),
+        (Rank::Six, Suit::Diamonds),
+        (Rank::Eight, Suit::Hearts),
+    ]);
     let mut session =
         start_session_with_prefix("lesson:split", 100_000, 2_000, None, prefix).expect("session");
     start_round(&mut session, None).expect("deals");
@@ -74,20 +100,37 @@ fn arranged_pair_opening_offers_split_and_resolves_for_real() {
 #[test]
 fn arranged_natural_blackjack_resolves_without_a_decision() {
     // Player A♠ + K♥ vs dealer 6♦ up -> natural, settles on deal (no player decision).
-    let prefix = preset(&[(Rank::Ace, Suit::Spades), (Rank::Six, Suit::Diamonds), (Rank::King, Suit::Hearts)]);
+    let prefix = preset(&[
+        (Rank::Ace, Suit::Spades),
+        (Rank::Six, Suit::Diamonds),
+        (Rank::King, Suit::Hearts),
+    ]);
     let mut session =
         start_session_with_prefix("lesson:bj", 100_000, 2_000, None, prefix).expect("session");
     start_round(&mut session, None).expect("deals");
-    assert_eq!(session.round.as_ref().unwrap().status, RoundStatus::Resolved);
+    assert_eq!(
+        session.round.as_ref().unwrap().status,
+        RoundStatus::Resolved
+    );
     let log = session.logs.last().expect("logged");
-    assert_eq!(log.outcomes[0].result, blackjack_core::OutcomeResult::Blackjack);
+    assert_eq!(
+        log.outcomes[0].result,
+        blackjack_core::OutcomeResult::Blackjack
+    );
 }
 
 #[test]
 fn start_session_with_prefix_dispatches_over_json() {
     let command = CoreCommand::StartSessionWithPrefix {
-        seed: "lesson:bj".to_string(), bankroll: 100_000, default_bet: 2_000, ruleset: None,
-        prefix: preset(&[(Rank::Ace, Suit::Spades), (Rank::Six, Suit::Diamonds), (Rank::King, Suit::Hearts)]),
+        seed: "lesson:bj".to_string(),
+        bankroll: 100_000,
+        default_bet: 2_000,
+        ruleset: None,
+        prefix: preset(&[
+            (Rank::Ace, Suit::Spades),
+            (Rank::Six, Suit::Diamonds),
+            (Rank::King, Suit::Hearts),
+        ]),
     };
     let json = serde_json::to_string(&command).expect("serializes");
     assert!(json.contains("\"command\":\"start_session_with_prefix\""));

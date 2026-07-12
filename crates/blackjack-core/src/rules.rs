@@ -99,8 +99,8 @@ pub fn legal_actions(
         actions.push(Action::Double);
     }
 
-    let is_pair = hand.cards.len() == 2
-        && rank_value(&hand.cards[0].rank) == rank_value(&hand.cards[1].rank);
+    let is_pair =
+        hand.cards.len() == 2 && rank_value(&hand.cards[0].rank) == rank_value(&hand.cards[1].rank);
     if is_pair && hand_count < ruleset.max_split_hands && bankroll_available >= hand.wager {
         actions.push(Action::Split);
     }

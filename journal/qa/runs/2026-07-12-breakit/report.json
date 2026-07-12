@@ -1,0 +1,1087 @@
+{
+  "startedAt": "2026-07-12T04:46:44.690Z",
+  "finishedAt": "2026-07-12T04:47:16.559Z",
+  "commit": "8952828",
+  "chromiumVersion": "149.0.7827.55",
+  "baseUrl": "http://localhost:4319/",
+  "prodHookAbsent": true,
+  "results": [
+    {
+      "attack": "1-deal-spam",
+      "kind": "realistic",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "seed integrity: on-screen seed matches session_header.seed",
+          "passed": true
+        },
+        {
+          "name": "no stuck UI: a fresh Deal still resolves after the attack",
+          "passed": true
+        }
+      ],
+      "repro": "start → 6 same-tick Deal clicks → stand out → 2 rounds → download"
+    },
+    {
+      "attack": "2-download-spam",
+      "kind": "realistic",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[1]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[2]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "no stuck UI: a fresh Deal still resolves after the attack",
+          "passed": true
+        }
+      ],
+      "repro": "start → 1 round (buffered) → 3 same-tick Download clicks"
+    },
+    {
+      "attack": "3-new-session-spam",
+      "kind": "realistic",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "seed integrity: on-screen seed matches session_header.seed",
+          "passed": true
+        },
+        {
+          "name": "seed integrity: New session changes the seed",
+          "passed": true
+        }
+      ],
+      "repro": "start → 1 round (buffered) → New session ×3 → download; assert flush order + seed changes"
+    },
+    {
+      "attack": "4-interleave",
+      "kind": "realistic",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[1]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[2]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[3]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[4]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "no stuck UI: a fresh Deal still resolves after the attack",
+          "passed": true
+        }
+      ],
+      "repro": "loop×4: round → same-tick Deal+Download → New session → download"
+    },
+    {
+      "attack": "5-grind",
+      "kind": "realistic",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "seed integrity: on-screen seed matches session_header.seed",
+          "passed": true
+        },
+        {
+          "name": "no stuck UI: a fresh Deal still resolves after the attack",
+          "passed": true
+        }
+      ],
+      "repro": "grind 70 rounds (targets ≥1 shoe reshuffle) → download"
+    },
+    {
+      "attack": "6-refresh-mid-write",
+      "kind": "realistic",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "seed integrity: on-screen seed matches session_header.seed",
+          "passed": true
+        },
+        {
+          "name": "no stuck UI: a fresh Deal still resolves after the attack",
+          "passed": true
+        }
+      ],
+      "repro": "start → 1 round buffered → reload → fresh session plays cleanly (integrity of post-reload session)"
+    },
+    {
+      "attack": "7-two-tabs",
+      "kind": "realistic",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[1]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        }
+      ],
+      "repro": "two tabs start sessions and play 3 interleaved rounds each; each tab exports independently"
+    },
+    {
+      "attack": "8-concurrent-calls",
+      "kind": "injected",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "no stuck UI: a fresh Deal still resolves after the attack",
+          "passed": true
+        }
+      ],
+      "repro": "two un-awaited deal()/act() in one tick; assert history stays consistent"
+    },
+    {
+      "attack": "9-malformed-envelopes",
+      "kind": "injected",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "no stuck UI: a fresh Deal still resolves after the attack",
+          "passed": true
+        }
+      ],
+      "repro": "illegal/out-of-turn/empty actions + raw malformed core envelopes → then a clean round"
+    },
+    {
+      "attack": "10-note-injection",
+      "kind": "injected",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        }
+      ],
+      "repro": "inject newlines/control-chars/fake-record/20k-char notes; assert JSONL stays one valid record per line"
+    },
+    {
+      "attack": "11-download-during-write",
+      "kind": "injected",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[1]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[2]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[3]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "jsonl[4]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        }
+      ],
+      "repro": "loop×4: resolve round (buffered) → same-tick deal()+downloadText() race → assert no dup/lost line"
+    },
+    {
+      "attack": "12-seed-determinism",
+      "kind": "injected",
+      "passed": true,
+      "invariants": [
+        {
+          "name": "attack completed without throwing",
+          "passed": true
+        },
+        {
+          "name": "no page crash",
+          "passed": true
+        },
+        {
+          "name": "no hang (within per-attack timeout)",
+          "passed": true
+        },
+        {
+          "name": "robustness: no console errors or warnings",
+          "passed": true
+        },
+        {
+          "name": "jsonl[0]: well-formed (one valid record per line)",
+          "passed": true
+        },
+        {
+          "name": "history: exactly one session_header per session_id",
+          "passed": true
+        },
+        {
+          "name": "history: every round has a matching session_header",
+          "passed": true
+        },
+        {
+          "name": "history: no duplicate round_index within a session",
+          "passed": true
+        },
+        {
+          "name": "history: round_index strictly increasing per session",
+          "passed": true
+        },
+        {
+          "name": "session flush: rounds are contiguous under their header (QA-007 order)",
+          "passed": true
+        },
+        {
+          "name": "money conservation: bankroll chains and deltas balance",
+          "passed": true
+        },
+        {
+          "name": "card conservation: no card dealt twice within a shoe",
+          "passed": true
+        },
+        {
+          "name": "seed integrity: same seed ⇒ identical shoe (determinism)",
+          "passed": true
+        }
+      ],
+      "repro": "two fresh sessions, same fixed seed + same actions → dealt-card sequences must be identical"
+    }
+  ],
+  "passed": true
+}

@@ -15,12 +15,18 @@ fn invalid_json_produces_status_error_envelope() {
     let out = dispatch_json("not json");
     let v: serde_json::Value = serde_json::from_str(&out).unwrap();
     assert_eq!(v["status"], "error");
-    assert!(v["message"].as_str().unwrap().contains("invalid command json"));
+    assert!(
+        v["message"]
+            .as_str()
+            .unwrap()
+            .contains("invalid command json")
+    );
 }
 
 #[test]
 fn rules_error_produces_status_error_envelope() {
-    let cmd = r#"{"command":"start_session","seed":"s","bankroll":-1,"default_bet":2000,"ruleset":null}"#;
+    let cmd =
+        r#"{"command":"start_session","seed":"s","bankroll":-1,"default_bet":2000,"ruleset":null}"#;
     let out = dispatch_json(cmd);
     let v: serde_json::Value = serde_json::from_str(&out).unwrap();
     assert_eq!(v["status"], "error");

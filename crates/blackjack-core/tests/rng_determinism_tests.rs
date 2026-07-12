@@ -5,7 +5,13 @@ use blackjack_core::start_session;
 #[test]
 fn shoe_prefix_is_stable_for_seed() {
     let s = start_session("det-check", 100000, 2000, None).unwrap();
-    let prefix: Vec<String> = s.shoe.cards.iter().take(6).map(|c| c.card_id.clone()).collect();
+    let prefix: Vec<String> = s
+        .shoe
+        .cards
+        .iter()
+        .take(6)
+        .map(|c| c.card_id.clone())
+        .collect();
     // Step 2: captured native shoe prefix (pre-fix)
     let expected: Vec<&str> = vec![
         "deck-4-4-diamonds",
@@ -15,5 +21,8 @@ fn shoe_prefix_is_stable_for_seed() {
         "deck-6-A-hearts",
         "deck-2-4-spades",
     ];
-    assert_eq!(prefix, expected, "shoe prefix changed — RNG is not behavior-preserving on native");
+    assert_eq!(
+        prefix, expected,
+        "shoe prefix changed — RNG is not behavior-preserving on native"
+    );
 }
