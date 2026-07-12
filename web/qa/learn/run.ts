@@ -70,8 +70,6 @@ const WEB_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const REPO_ROOT = resolve(WEB_ROOT, '..');
 const RUNS_ROOT = join(REPO_ROOT, 'journal', 'qa', 'runs');
 const SPEC_LINK = 'docs/superpowers/specs/2026-07-11-blackjack-basics-learning-foundation-design.md';
-// Fixed run-dir stamp matching the plan/spec references, independent of the actual run date.
-const RUN_DATE_STAMP = '2026-07-11';
 const GUARD_LIMIT = 120;
 
 interface DrivenUnit {
@@ -224,6 +222,7 @@ async function driveUnit(page: Page, unit: Unit): Promise<DrivenUnit> {
 
 async function main(): Promise<number> {
   const startedAt = new Date().toISOString();
+  const dateStamp = startedAt.slice(0, 10);
 
   log('checking WASM freshness...');
   assertWasmFresh();
@@ -294,7 +293,7 @@ async function main(): Promise<number> {
     body: renderBody(perUnitSummary, invariants),
     json: { passed, coverage, violations: failed },
   };
-  const written = writeRoleReport(RUNS_ROOT, RUN_DATE_STAMP, report);
+  const written = writeRoleReport(RUNS_ROOT, dateStamp, report);
 
   log(`units: ${coverage.length}/${BLACKJACK_BASICS.units.length}; violations: ${failed.length}`);
   for (const f of failed.slice(0, 20)) log(`  x ${f.name}${f.detail ? ` — ${f.detail}` : ''}`);
