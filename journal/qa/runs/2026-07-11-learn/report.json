@@ -1,0 +1,215 @@
+{
+  "passed": true,
+  "coverage": [
+    {
+      "unitId": "meet-blackjack",
+      "requiredChecks": [
+        "goal-check",
+        "face-value-check"
+      ],
+      "attempts": [
+        {
+          "stepId": "goal-check",
+          "correct": false
+        },
+        {
+          "stepId": "goal-check",
+          "correct": true
+        },
+        {
+          "stepId": "face-value-check",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "unitId": "read-your-hand",
+      "requiredChecks": [
+        "soft-total-check",
+        "ace-adjust-check",
+        "bust-check"
+      ],
+      "attempts": [
+        {
+          "stepId": "soft-total-check",
+          "correct": true
+        },
+        {
+          "stepId": "ace-adjust-check",
+          "correct": true
+        },
+        {
+          "stepId": "bust-check",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "unitId": "round-flow",
+      "requiredChecks": [
+        "dealer-info-check",
+        "round-order-check"
+      ],
+      "attempts": [
+        {
+          "stepId": "dealer-info-check",
+          "correct": false
+        },
+        {
+          "stepId": "dealer-info-check",
+          "correct": true
+        },
+        {
+          "stepId": "round-order-check",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "unitId": "hit-and-stand",
+      "requiredChecks": [
+        "action-check"
+      ],
+      "attempts": [
+        {
+          "stepId": "action-check",
+          "correct": false
+        },
+        {
+          "stepId": "action-check",
+          "correct": true
+        },
+        {
+          "stepId": "hit-hand",
+          "correct": true
+        },
+        {
+          "stepId": "stand-hand",
+          "correct": true
+        },
+        {
+          "stepId": "stand-check",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "unitId": "win-lose-push",
+      "requiredChecks": [
+        "outcome-check"
+      ],
+      "attempts": [
+        {
+          "stepId": "wlp-hand",
+          "correct": true
+        },
+        {
+          "stepId": "outcome-check",
+          "correct": false
+        },
+        {
+          "stepId": "outcome-check",
+          "correct": true
+        },
+        {
+          "stepId": "wager-check",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "unitId": "blackjack-is-special",
+      "requiredChecks": [
+        "natural-check",
+        "payout-check"
+      ],
+      "attempts": [
+        {
+          "stepId": "bjs-hand",
+          "correct": null
+        },
+        {
+          "stepId": "natural-check",
+          "correct": false
+        },
+        {
+          "stepId": "natural-check",
+          "correct": true
+        },
+        {
+          "stepId": "payout-check",
+          "correct": false
+        },
+        {
+          "stepId": "payout-check",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "unitId": "double",
+      "requiredChecks": [
+        "double-wager-check"
+      ],
+      "attempts": [
+        {
+          "stepId": "double-cards-check",
+          "correct": false
+        },
+        {
+          "stepId": "double-cards-check",
+          "correct": true
+        },
+        {
+          "stepId": "double-hand",
+          "correct": true
+        },
+        {
+          "stepId": "double-wager-check",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "unitId": "split",
+      "requiredChecks": [
+        "split-count-check"
+      ],
+      "attempts": [
+        {
+          "stepId": "split-wager-check",
+          "correct": false
+        },
+        {
+          "stepId": "split-wager-check",
+          "correct": true
+        },
+        {
+          "stepId": "split-hand",
+          "correct": true
+        },
+        {
+          "stepId": "split-count-check",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "unitId": "complete-round",
+      "requiredChecks": [
+        "final-outcome-check"
+      ],
+      "attempts": [
+        {
+          "stepId": "checkpoint-hand",
+          "correct": null
+        },
+        {
+          "stepId": "final-outcome-check",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "violations": []
+}

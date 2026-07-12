@@ -14,7 +14,7 @@
     "qa:rules": "tsx qa/rules/run.ts",
     "qa:flow": "tsx qa/flow/run.ts",
     "qa:breakit": "tsx qa/breakit/run.ts",
-    "qa:drill": "tsx qa/drill/run.ts",
+    "qa:learn": "tsx qa/learn/run.ts",
     "breakit": "tsx qa/breakit/run.ts"
   },
   "dependencies": {
