@@ -4,6 +4,6 @@ dist-breakit/
 dist-prodcheck/
 dist-qa-rules/
 dist-qa-flow/
-dist-qa-drill/
+dist-qa-learn/
 src/bridge/wasm/
 *.tsbuildinfo

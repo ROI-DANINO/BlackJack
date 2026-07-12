@@ -1,4 +1,6 @@
-use crate::{Action, Card, DealerSoft17, HandSource, HandState, Rank, Ruleset};
+use crate::{
+    Action, Card, DealerSoft17, HandFacts, HandSource, HandState, PresetCard, Rank, Ruleset,
+};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct HandScore {
@@ -24,13 +26,10 @@ pub fn v1_h17_ruleset() -> Ruleset {
     }
 }
 
-pub fn score_hand(cards: &[Card]) -> HandScore {
-    let hard_total = cards.iter().map(|card| rank_value(&card.rank)).sum();
-    let ace_count = cards
-        .iter()
-        .filter(|card| matches!(card.rank, Rank::Ace))
-        .count();
-
+fn score_ranks<'a>(ranks: impl IntoIterator<Item = &'a Rank>, card_count: usize) -> HandScore {
+    let ranks: Vec<Rank> = ranks.into_iter().cloned().collect();
+    let hard_total = ranks.iter().map(rank_value).sum();
+    let ace_count = ranks.iter().filter(|rank| **rank == Rank::Ace).count();
     let mut best_total = hard_total;
     let mut soft_aces = 0;
     for _ in 0..ace_count {
@@ -44,8 +43,22 @@ pub fn score_hand(cards: &[Card]) -> HandScore {
         hard_total,
         best_total,
         is_soft: soft_aces > 0,
-        is_blackjack: cards.len() == 2 && best_total == 21,
+        is_blackjack: card_count == 2 && best_total == 21,
         is_bust: best_total > 21,
+    }
+}
+
+pub fn score_hand(cards: &[Card]) -> HandScore {
+    score_ranks(cards.iter().map(|card| &card.rank), cards.len())
+}
+
+pub fn describe_hand(cards: &[PresetCard]) -> HandFacts {
+    let score = score_ranks(cards.iter().map(|card| &card.rank), cards.len());
+    HandFacts {
+        hard_total: score.hard_total,
+        best_total: score.best_total,
+        is_soft: score.is_soft,
+        is_bust: score.is_bust,
     }
 }
 
@@ -86,8 +99,8 @@ pub fn legal_actions(
         actions.push(Action::Double);
     }
 
-    let is_pair = hand.cards.len() == 2
-        && rank_value(&hand.cards[0].rank) == rank_value(&hand.cards[1].rank);
+    let is_pair =
+        hand.cards.len() == 2 && rank_value(&hand.cards[0].rank) == rank_value(&hand.cards[1].rank);
     if is_pair && hand_count < ruleset.max_split_hands && bankroll_available >= hand.wager {
         actions.push(Action::Split);
     }

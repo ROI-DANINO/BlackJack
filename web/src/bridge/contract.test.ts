@@ -26,6 +26,12 @@ describe('wire contract vs Rust golden fixtures', () => {
     expect(out.response.data).toEqual(['hit', 'stand', 'double', 'split']);
   });
 
+  it('parses Rust hand facts', () => {
+    const out = parseCliOutput(read('response_hand_facts.json'));
+    if (out.status !== 'ok' || out.response.type !== 'hand_facts') throw new Error('shape');
+    expect(out.response.data).toEqual({ hard_total: 7, best_total: 17, is_soft: true, is_bust: false });
+  });
+
   it('covers every nested round/hand/dealer/log field name (guards nested drift)', () => {
     // Raw (non-enveloped) SessionState fixture, played to resolution.
     // This block only COMPILES if types.ts declares each field with its exact wire name,

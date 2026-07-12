@@ -7,6 +7,12 @@ export type Rank =
 export type Suit = 'clubs' | 'diamonds' | 'hearts' | 'spades';
 export interface Card { card_id: string; deck_id: string; rank: Rank; suit: Suit }
 export type PresetCard = { rank: Rank; suit: Suit };
+export interface HandFacts {
+  hard_total: number;
+  best_total: number;
+  is_soft: boolean;
+  is_bust: boolean;
+}
 
 export type DealerSoft17 = 'hit' | 'stand';
 export interface Ruleset {
@@ -74,12 +80,14 @@ export type CoreCommand =
   | { command: 'start_round'; session: SessionState; bet: number | null }
   | { command: 'legal_actions'; session: SessionState }
   | { command: 'apply_action'; session: SessionState; action: Action }
-  | { command: 'reshuffle'; session: SessionState };
+  | { command: 'reshuffle'; session: SessionState }
+  | { command: 'describe_hand'; cards: PresetCard[] };
 
 // Core-produced responses. Adjacently tagged on "type"/"data".
 export type CoreResponse =
   | { type: 'session'; data: SessionState }
-  | { type: 'actions'; data: Action[] };
+  | { type: 'actions'; data: Action[] }
+  | { type: 'hand_facts'; data: HandFacts };
 
 // Envelope produced by dispatch_json / CliOutput.
 export type CliOutput =

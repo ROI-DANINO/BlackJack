@@ -103,11 +103,19 @@ pub fn create_prefix_shoe(
             .iter()
             .position(|c| c.rank == spec.rank && c.suit == spec.suit)
             .ok_or_else(|| {
-                format!("prefix card {}-{} unavailable in shoe", rank_slug(&spec.rank), suit_slug(&spec.suit))
+                format!(
+                    "prefix card {}-{} unavailable in shoe",
+                    rank_slug(&spec.rank),
+                    suit_slug(&spec.suit)
+                )
             })?;
         remainder.remove(position);
         arranged.push(Card {
-            card_id: format!("arranged-{index}-{}-{}", rank_slug(&spec.rank), suit_slug(&spec.suit)),
+            card_id: format!(
+                "arranged-{index}-{}-{}",
+                rank_slug(&spec.rank),
+                suit_slug(&spec.suit)
+            ),
             deck_id: "arranged".to_string(),
             rank: spec.rank.clone(),
             suit: spec.suit.clone(),

@@ -1,6 +1,6 @@
 use crate::{
-    Action, PresetCard, Ruleset, SessionState, apply_action, current_legal_actions, reshuffle_shoe,
-    start_round, start_session, start_session_with_prefix,
+    Action, HandFacts, PresetCard, Ruleset, SessionState, apply_action, current_legal_actions,
+    describe_hand, reshuffle_shoe, start_round, start_session, start_session_with_prefix,
 };
 use serde::{Deserialize, Serialize};
 
@@ -34,6 +34,9 @@ pub enum CoreCommand {
     Reshuffle {
         session: SessionState,
     },
+    DescribeHand {
+        cards: Vec<PresetCard>,
+    },
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -41,6 +44,7 @@ pub enum CoreCommand {
 pub enum CoreResponse {
     Session(Box<SessionState>),
     Actions(Vec<Action>),
+    HandFacts(HandFacts),
 }
 
 pub fn handle_command(command: CoreCommand) -> Result<CoreResponse, String> {
@@ -73,6 +77,7 @@ pub fn handle_command(command: CoreCommand) -> Result<CoreResponse, String> {
         CoreCommand::Reshuffle { mut session } => {
             reshuffle_shoe(&mut session).map(|()| CoreResponse::Session(Box::new(session)))
         }
+        CoreCommand::DescribeHand { cards } => Ok(CoreResponse::HandFacts(describe_hand(&cards))),
     }
 }
 
@@ -91,8 +96,9 @@ pub fn dispatch_json(input: &str) -> String {
         Err(error) => return error_envelope(format!("invalid command json: {error}")),
     };
     match handle_command(command) {
-        Ok(response) => serde_json::to_string(&Envelope::Ok { response })
-            .unwrap_or_else(|error| error_envelope(format!("failed to serialize response: {error}"))),
+        Ok(response) => serde_json::to_string(&Envelope::Ok { response }).unwrap_or_else(|error| {
+            error_envelope(format!("failed to serialize response: {error}"))
+        }),
         Err(message) => error_envelope(message),
     }
 }

@@ -1,4 +1,4 @@
-// qa:all — run the scriptable QA roles sequentially (rules → flow → breakit → drill), each in its own
+// qa:all — run the scriptable QA roles sequentially (rules → flow → breakit → learn), each in its own
 // process (its own build + preview + chromium), aggregate the verdict, and EXIT NON-ZERO if any
 // role fails. This is the milestone Tier-1 gate.
 
@@ -12,7 +12,7 @@ const ROLES: Array<{ name: string; entry: string }> = [
   { name: 'rules', entry: 'qa/rules/run.ts' },
   { name: 'flow', entry: 'qa/flow/run.ts' },
   { name: 'breakit', entry: 'qa/breakit/run.ts' },
-  { name: 'drill', entry: 'qa/drill/run.ts' },
+  { name: 'learn', entry: 'qa/learn/run.ts' },
 ];
 
 function log(msg: string): void {

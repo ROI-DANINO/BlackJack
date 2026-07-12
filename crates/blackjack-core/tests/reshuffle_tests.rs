@@ -141,5 +141,6 @@ fn reshuffle_command_round_trips_through_boundary() {
             assert!(session.round.is_none());
         }
         CoreResponse::Actions(_) => panic!("expected session response"),
+        CoreResponse::HandFacts(_) => panic!("expected session response"),
     }
 }

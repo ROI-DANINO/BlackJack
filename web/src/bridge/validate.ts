@@ -21,7 +21,7 @@ export function parseCliOutput(raw: string): CliOutput {
   }
   if (o.status === 'ok') {
     const r = o.response as Record<string, unknown> | undefined;
-    if (!r || (r.type !== 'session' && r.type !== 'actions') || !('data' in r)) {
+    if (!r || (r.type !== 'session' && r.type !== 'actions' && r.type !== 'hand_facts') || !('data' in r)) {
       throw new BridgeError('ok envelope has malformed response');
     }
     return { status: 'ok', response: r as unknown as CoreResponse };
