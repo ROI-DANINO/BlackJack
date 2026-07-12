@@ -1,6 +1,6 @@
-// Content-coverage tests for the Blackjack Basics curriculum (units 1-6). These are pure
+// Content-coverage tests for the Blackjack Basics curriculum (all nine units). These are pure
 // structural/data assertions — no controller, no WASM core — matching the committed
-// contracts (types.ts / validate.ts). Full engine-graded playthroughs are Task 7's job.
+// contracts (types.ts / validate.ts). Full engine-graded playthroughs live in controller.test.ts.
 
 import { describe, expect, it } from 'vitest';
 import { validateSubject } from '../validate';
@@ -34,17 +34,43 @@ describe('BLACKJACK_BASICS — structural coverage', () => {
     expect(validateSubject(BLACKJACK_BASICS)).toEqual([]);
   });
 
-  it('declares units 1-6 in the exact locked order', () => {
-    expect(BLACKJACK_BASICS.units.slice(0, 6).map((u) => u.id)).toEqual([
+  it('declares all nine units in the exact locked order', () => {
+    expect(BLACKJACK_BASICS.units.map((u) => u.id)).toEqual([
       'meet-blackjack', 'read-your-hand', 'round-flow', 'hit-and-stand',
-      'win-lose-push', 'blackjack-is-special',
+      'win-lose-push', 'blackjack-is-special', 'double', 'split', 'complete-round',
     ]);
   });
 
   it('gives every unit at least one required check and ends on a recap step', () => {
-    for (const unit of BLACKJACK_BASICS.units.slice(0, 6)) {
+    for (const unit of BLACKJACK_BASICS.units) {
       expect(unit.requiredChecks.length).toBeGreaterThan(0);
       expect(unit.steps.at(-1)?.type).toBe('recap');
+    }
+  });
+
+  it('makes Double request the double action and Split request the split action', () => {
+    const handOf = (unitId: string, stepId: string) => {
+      const unit = BLACKJACK_BASICS.units.find((u) => u.id === unitId)!;
+      const step = unit.steps.find((s) => s.id === stepId)!;
+      if (step.type !== 'hand') throw new Error(`${stepId} is not a hand step`);
+      return step;
+    };
+    expect(handOf('double', 'double-hand').requestedAction).toBe('double');
+    expect(handOf('split', 'split-hand').requestedAction).toBe('split');
+  });
+
+  it('runs the checkpoint on a live hand with no requested action and no strategy answer rule', () => {
+    const unit = BLACKJACK_BASICS.units.find((u) => u.id === 'complete-round')!;
+    const handSteps = unit.steps.filter((s) => s.type === 'hand');
+    expect(handSteps).toHaveLength(1);
+    const hand = handSteps[0]!;
+    if (hand.type !== 'hand') throw new Error('expected a hand step');
+    expect(hand.setup.kind).toBe('live');
+    // The checkpoint never asks the learner to perform a "right" action — no requested action,
+    // and its final question grades outcome comprehension (last_outcome), never oracle agreement.
+    expect(hand.requestedAction).toBeUndefined();
+    for (const step of unit.steps) {
+      if (step.type === 'question') expect(step.answer.kind).toBe('last_outcome');
     }
   });
 
@@ -62,13 +88,17 @@ describe('BLACKJACK_BASICS — structural coverage', () => {
       { id: 'outcomes', title: 'Recognize win, loss, and push' },
       { id: 'wager-result', title: 'Follow the original wager' },
       { id: 'natural-blackjack', title: 'Distinguish blackjack from ordinary 21' },
+      { id: 'double', title: 'Explain and use Double' },
+      { id: 'split', title: 'Explain and use Split' },
+      { id: 'split-hands', title: 'Follow separately played split hands' },
+      { id: 'complete-round', title: 'Complete and explain a full round' },
     ]);
   });
 
   // Prerequisites are SKILL ids (each introduced as an outcome by an earlier unit), per the
   // design and the brief's unitGraph. The committed validator checks them against skill ids.
-  it('locks the prerequisite/outcome graph for units 1-6 to the brief exactly', () => {
-    const graph = BLACKJACK_BASICS.units.slice(0, 6).map((u) => ({
+  it('locks the prerequisite/outcome graph for all nine units to the brief exactly', () => {
+    const graph = BLACKJACK_BASICS.units.map((u) => ({
       id: u.id, prerequisites: u.prerequisites, outcomes: u.outcomes,
     }));
     expect(graph).toEqual([
@@ -78,6 +108,16 @@ describe('BLACKJACK_BASICS — structural coverage', () => {
       { id: 'hit-and-stand', prerequisites: ['round-flow', 'hand-total', 'bust'], outcomes: ['hit', 'stand'] },
       { id: 'win-lose-push', prerequisites: ['round-flow', 'bust'], outcomes: ['outcomes', 'wager-result'] },
       { id: 'blackjack-is-special', prerequisites: ['hand-total', 'outcomes', 'wager-result'], outcomes: ['natural-blackjack'] },
+      { id: 'double', prerequisites: ['hit', 'stand', 'wager-result'], outcomes: ['double'] },
+      { id: 'split', prerequisites: ['round-flow', 'wager-result'], outcomes: ['split', 'split-hands'] },
+      {
+        id: 'complete-round',
+        prerequisites: [
+          'goal', 'hand-total', 'dealer-info', 'hit', 'stand', 'outcomes',
+          'wager-result', 'natural-blackjack', 'double', 'split', 'split-hands',
+        ],
+        outcomes: ['complete-round'],
+      },
     ]);
   });
 
@@ -89,8 +129,11 @@ describe('BLACKJACK_BASICS — structural coverage', () => {
       'hit-and-stand': ['explain', 'question', 'hand', 'hand', 'question', 'recap'],
       'win-lose-push': ['explain', 'hand', 'question', 'question', 'recap'],
       'blackjack-is-special': ['explain', 'hand', 'question', 'question', 'recap'],
+      'double': ['explain', 'question', 'hand', 'question', 'recap'],
+      'split': ['explain', 'question', 'hand', 'question', 'recap'],
+      'complete-round': ['explain', 'hand', 'question', 'recap'],
     };
-    for (const unit of BLACKJACK_BASICS.units.slice(0, 6)) {
+    for (const unit of BLACKJACK_BASICS.units) {
       const actual = unit.steps.map((s) => s.type);
       const expected = requiredStepTypes[unit.id]!;
       // "additional explanation screens are allowed" — every required type must appear in
@@ -141,12 +184,15 @@ describe('BLACKJACK_BASICS — structural coverage', () => {
     }
     expect(byId.get('outcome-check')!.answer).toMatchObject({ kind: 'last_outcome' });
     expect(byId.get('payout-check')!.answer).toMatchObject({ kind: 'last_bankroll_delta' });
-    // Fixed 2000-cent teaching wager -> a natural pays 3:2 -> +3000-cent delta.
-    expect(byId.get('payout-check')!.correct).toBeTruthy();
+    // Fixed 2000-cent teaching wager -> a natural pays 3:2 -> +3000-cent delta. Pin the exact
+    // wire value the intended-correct choice offers (the controller grades against '3000').
+    expect(byId.get('payout-check')!.choices).toContainEqual(
+      expect.objectContaining({ value: '3000' }),
+    );
   });
 
   it('every requiredChecks id names a question step whose outcomeId belongs to its unit', () => {
-    for (const unit of BLACKJACK_BASICS.units.slice(0, 6)) {
+    for (const unit of BLACKJACK_BASICS.units) {
       const stepsById = new Map(unit.steps.map((s) => [s.id, s]));
       for (const checkId of unit.requiredChecks) {
         const step = stepsById.get(checkId);
@@ -167,6 +213,9 @@ describe('BLACKJACK_BASICS — structural coverage', () => {
     expect(ids('hit-and-stand')).toEqual(expect.arrayContaining(['action-check']));
     expect(ids('win-lose-push')).toEqual(expect.arrayContaining(['outcome-check']));
     expect(ids('blackjack-is-special')).toEqual(expect.arrayContaining(['natural-check', 'payout-check']));
+    expect(ids('double')).toEqual(expect.arrayContaining(['double-wager-check']));
+    expect(ids('split')).toEqual(expect.arrayContaining(['split-count-check']));
+    expect(ids('complete-round')).toEqual(expect.arrayContaining(['final-outcome-check']));
   });
 
   it('hit-and-stand includes one requested Hit hand and one requested Stand hand', () => {

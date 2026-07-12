@@ -1,10 +1,11 @@
-// Blackjack Basics: beginner curriculum data (units 1-6 of 9). Pure, serializable content
+// Blackjack Basics: beginner curriculum data (all nine units). Pure, serializable content
 // authored against the committed contracts (../types), answer-rule conventions
 // (../controller resolveAnswer), and named openings (../situations). No functions, no
 // strategy language — this is mechanics-first literacy, one concept per screen.
 //
-// Units 7-9 and the full end-to-end playthrough walk are a later task; this file only
-// declares the first six units plus the full stable skill catalog they draw from.
+// Units 7-9 (Double, Split, and the live complete-round checkpoint) close the subject. The
+// checkpoint runs a fresh real shoe and grades outcome comprehension (last_outcome), never
+// oracle agreement. The full engine-graded end-to-end walk lives in ../controller.test.ts.
 
 import type { Skill, Subject, Unit } from '../types';
 import { OPENINGS } from '../situations';
@@ -22,6 +23,10 @@ const SKILLS: Skill[] = [
   { id: 'outcomes', title: 'Recognize win, loss, and push' },
   { id: 'wager-result', title: 'Follow the original wager' },
   { id: 'natural-blackjack', title: 'Distinguish blackjack from ordinary 21' },
+  { id: 'double', title: 'Explain and use Double' },
+  { id: 'split', title: 'Explain and use Split' },
+  { id: 'split-hands', title: 'Follow separately played split hands' },
+  { id: 'complete-round', title: 'Complete and explain a full round' },
 ];
 
 const MEET_BLACKJACK: Unit = {
@@ -420,6 +425,187 @@ const BLACKJACK_IS_SPECIAL: Unit = {
   ],
 };
 
+const DOUBLE: Unit = {
+  id: 'double',
+  title: 'Double Down',
+  goal: 'Add an equal wager, take exactly one card, and stand automatically.',
+  prerequisites: ['hit', 'stand', 'wager-result'],
+  outcomes: ['double'],
+  requiredChecks: ['double-wager-check'],
+  steps: [
+    {
+      id: 'intro',
+      type: 'explain',
+      title: 'Doubling down',
+      body:
+        'Double adds a second wager equal to your first, then takes exactly one more card and ' +
+        'ends your turn automatically. You commit more, but you take only that one card.',
+    },
+    {
+      id: 'double-cards-check',
+      type: 'question',
+      outcomeId: 'double',
+      prompt: 'After you Double, how many more cards do you take?',
+      choices: [
+        { value: 'one', label: 'Exactly one more card' },
+        { value: 'many', label: 'As many as you want' },
+      ],
+      answer: { kind: 'literal', value: 'one' },
+      correct: 'Right — Double takes exactly one card, then stands for you.',
+      incorrect: 'Double takes exactly one more card and then stands automatically.',
+    },
+    {
+      id: 'double-hand',
+      type: 'hand',
+      outcomeId: 'double',
+      title: 'Double on eleven',
+      intro: 'You have a two-card eleven and a $20 wager. Choose Double.',
+      setup: { kind: 'arranged', openings: OPENINGS.elevens },
+      requestedAction: 'double',
+      teach: 'Double adds an equal wager and draws one card, then your turn ends.',
+    },
+    {
+      id: 'double-wager-check',
+      type: 'question',
+      outcomeId: 'double',
+      prompt: 'After doubling a $20 wager, what wager is now on this hand?',
+      choices: [
+        { value: '4000', label: '$40' },
+        { value: '2000', label: '$20' },
+      ],
+      answer: { kind: 'last_wager', handIndex: 0 },
+      correct: 'Right — Double adds another $20, so $40 is at stake.',
+      incorrect: 'Double adds an equal wager; it does not merely change the number of cards.',
+    },
+    {
+      id: 'recap',
+      type: 'recap',
+      title: 'Double Down — done',
+      capabilities: [
+        { outcomeId: 'double', text: 'You can explain and use Double.' },
+      ],
+    },
+  ],
+};
+
+const SPLIT: Unit = {
+  id: 'split',
+  title: 'Split a Pair',
+  goal: 'Turn a pair into two separately played hands, each with its own wager and result.',
+  prerequisites: ['round-flow', 'wager-result'],
+  outcomes: ['split', 'split-hands'],
+  requiredChecks: ['split-count-check'],
+  steps: [
+    {
+      id: 'intro',
+      type: 'explain',
+      title: 'Splitting a pair',
+      body:
+        'When your first two cards are a pair, you can Split them into two hands. A second wager ' +
+        'equal to your first is placed, and each hand is then played and settled on its own.',
+    },
+    {
+      id: 'split-wager-check',
+      type: 'question',
+      outcomeId: 'split',
+      prompt: 'When you Split a pair, what happens to your wager?',
+      choices: [
+        { value: 'second-wager', label: 'A second, equal wager is added' },
+        { value: 'no-change', label: 'Nothing changes; one wager covers both' },
+      ],
+      answer: { kind: 'literal', value: 'second-wager' },
+      correct: 'Right — each split hand carries its own equal wager.',
+      incorrect: 'Split creates two hands, each with its own wager and result.',
+    },
+    {
+      id: 'split-hand',
+      type: 'hand',
+      outcomeId: 'split-hands',
+      title: 'Split the pair',
+      intro: 'Your first two cards are a pair. Choose Split, then play each hand to the end.',
+      setup: { kind: 'arranged', openings: OPENINGS.pairs },
+      requestedAction: 'split',
+      teach: 'Split makes two separate hands; each is played and settled on its own.',
+    },
+    {
+      id: 'split-count-check',
+      type: 'question',
+      outcomeId: 'split-hands',
+      prompt: 'How many player hands are being played after this Split?',
+      choices: [
+        { value: '2', label: '2 hands' },
+        { value: '1', label: '1 hand' },
+      ],
+      answer: { kind: 'last_hand_count' },
+      correct: 'Right — the pair became two separately played hands.',
+      incorrect: 'Split creates two hands, each with its own wager and result.',
+    },
+    {
+      id: 'recap',
+      type: 'recap',
+      title: 'Split a Pair — done',
+      capabilities: [
+        { outcomeId: 'split', text: 'You can explain and use Split.' },
+        { outcomeId: 'split-hands', text: 'You can follow separately played split hands.' },
+      ],
+    },
+  ],
+};
+
+const COMPLETE_ROUND: Unit = {
+  id: 'complete-round',
+  title: 'Play a Full Round',
+  goal: 'Play a fresh hand through to settlement and read how it finished.',
+  prerequisites: [
+    'goal', 'hand-total', 'dealer-info', 'hit', 'stand', 'outcomes',
+    'wager-result', 'natural-blackjack', 'double', 'split', 'split-hands',
+  ],
+  outcomes: ['complete-round'],
+  requiredChecks: ['final-outcome-check'],
+  steps: [
+    {
+      id: 'intro',
+      type: 'explain',
+      title: 'A full round, start to finish',
+      body:
+        'This is a fresh hand from a real shoe — no arranged cards. Take your turn with the legal ' +
+        'choices offered, let the dealer finish, and then read how the hand settled.',
+    },
+    {
+      id: 'checkpoint-hand',
+      type: 'hand',
+      outcomeId: 'complete-round',
+      title: 'Play it out',
+      intro: 'Play this hand to the end using the choices offered.',
+      setup: { kind: 'live' },
+      teach: 'A completed round is settled by comparing the finished hands, after any bust.',
+    },
+    {
+      id: 'final-outcome-check',
+      type: 'question',
+      outcomeId: 'complete-round',
+      prompt: 'How did the completed hand settle?',
+      choices: [
+        { value: 'win', label: 'You won' },
+        { value: 'loss', label: 'You lost' },
+        { value: 'push', label: 'It pushed (a tie)' },
+        { value: 'blackjack', label: 'Blackjack' },
+      ],
+      answer: { kind: 'last_outcome', handIndex: 0 },
+      correct: 'Right — that matches the engine’s settled result.',
+      incorrect: 'Check for a bust first, then compare the completed player and dealer hands.',
+    },
+    {
+      id: 'recap',
+      type: 'recap',
+      title: 'Play a Full Round — done',
+      capabilities: [
+        { outcomeId: 'complete-round', text: 'You can complete and explain a full round.' },
+      ],
+    },
+  ],
+};
+
 export const BLACKJACK_BASICS: Subject = {
   id: 'blackjack-basics',
   title: 'Blackjack Basics',
@@ -431,5 +617,8 @@ export const BLACKJACK_BASICS: Subject = {
     HIT_AND_STAND,
     WIN_LOSE_PUSH,
     BLACKJACK_IS_SPECIAL,
+    DOUBLE,
+    SPLIT,
+    COMPLETE_ROUND,
   ],
 };

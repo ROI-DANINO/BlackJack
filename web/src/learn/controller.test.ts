@@ -3,10 +3,11 @@ import { initCoreForTest } from '../bridge/test-init';
 import { WasmTransport } from '../bridge/core-client';
 import type { CoreTransport } from '../bridge/transport';
 import type { Action } from '../bridge/types';
-import type { Subject, Unit } from './types';
+import type { HandStep, QuestionStep, Subject, Unit } from './types';
 import { LearnEngine } from './engine';
 import { LessonController } from './controller';
 import { OPENINGS } from './situations';
+import { BLACKJACK_BASICS } from './content/blackjack-basics';
 
 beforeAll(async () => { await initCoreForTest(); });
 
@@ -166,6 +167,119 @@ describe('LessonController — engine-backed hand steps', () => {
     c.answer('blackjack');
     expect(c.getState().attempts.at(-1)).toMatchObject({ correct: true, feedback: 'Yes — a natural.' });
     expect(c.getState().completed).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------------------
+// Full-subject end-to-end walk: every one of the nine BLACKJACK_BASICS units is played
+// through the REAL engine — arranged openings for Double/Split, a live shoe for the
+// checkpoint — with each question answered by the value the engine itself produces. This
+// is the first committed proof that units 5-8's engine-graded questions grade correct
+// against the core (win-lose-push outcome, blackjack payout +3000, double wager 4000,
+// split hand-count 2), not just that a walk can reach recap.
+// ---------------------------------------------------------------------------------------
+
+/** A controller bound to a real WasmTransport engine and the whole BLACKJACK_BASICS subject. */
+function subjectController(unit: Unit): LessonController {
+  return new LessonController(new LearnEngine(new WasmTransport()), BLACKJACK_BASICS, unit, {
+    seq: () => 0,
+    freshSeed: () => `checkpoint:${unit.id}`,
+  });
+}
+
+/** Compute the value the engine considers correct for a question step — literals directly,
+ *  hand_* via describeHand, and last_* by reading the live controller session/log. This mirrors
+ *  the controller's own resolveAnswer so a correct answer is derived from engine facts, never
+ *  hardcoded (last_outcome is a live result and MUST be read, not assumed). */
+function engineCorrectValue(step: QuestionStep, c: LessonController, engine: LearnEngine): string {
+  const rule = step.answer;
+  switch (rule.kind) {
+    case 'literal': return rule.value;
+    case 'hand_total': return String(engine.describeHand(rule.cards).best_total);
+    case 'hand_softness': return engine.describeHand(rule.cards).is_soft ? 'soft' : 'hard';
+    case 'hand_bust': return engine.describeHand(rule.cards).is_bust ? 'bust' : 'not_bust';
+    case 'last_outcome': return c.getState().session!.logs.at(-1)!.outcomes[rule.handIndex]!.result;
+    case 'last_wager': return String(c.getState().session!.logs.at(-1)!.outcomes[rule.handIndex]!.wager);
+    case 'last_bankroll_delta': return String(c.getState().session!.logs.at(-1)!.bankroll_delta);
+    case 'last_hand_count': return String(c.getState().session!.logs.at(-1)!.outcomes.length);
+  }
+}
+
+/** Drive a hand step to resolution: the requested action (if any) is the graded first
+ *  decision, then Stand out any remaining hands (a Split leaves a second hand to finish;
+ *  a live checkpoint plays free legal Stands). */
+function driveHandStep(c: LessonController, step: HandStep): void {
+  if (step.requestedAction) c.choose(step.requestedAction);
+  let guard = 0;
+  while (c.getState().session?.round?.status === 'player_turn' && guard++ < 40) {
+    c.choose('stand');
+  }
+}
+
+/** Walk one unit end to end through the controller, recording each answered value + whether
+ *  the engine graded it correct. Returns the final controller and the answer ledger. */
+function walkUnit(unit: Unit): { c: LessonController; answered: Map<string, { value: string; correct: boolean }> } {
+  const c = subjectController(unit);
+  const valueEngine = new LearnEngine(new WasmTransport());
+  const answered = new Map<string, { value: string; correct: boolean }>();
+  c.begin();
+  for (const step of unit.steps) {
+    expect(c.getState().step?.id).toBe(step.id);
+    if (step.type === 'explain') {
+      c.continue();
+    } else if (step.type === 'hand') {
+      driveHandStep(c, step);
+      expect(c.getState().awaitingContinue).toBe(true);
+      c.continue();
+    } else if (step.type === 'question') {
+      const value = engineCorrectValue(step, c, valueEngine);
+      c.answer(value);
+      const attempt = c.getState().attempts.at(-1)!;
+      expect(attempt.stepId).toBe(step.id);
+      expect(attempt.correct).toBe(true); // the engine grades the derived value correct
+      answered.set(step.id, { value, correct: attempt.correct === true });
+      c.continue();
+    }
+    // recap is terminal — nothing to advance past.
+  }
+  return { c, answered };
+}
+
+describe('LessonController — full BLACKJACK_BASICS end-to-end walk', () => {
+  for (const unit of BLACKJACK_BASICS.units) {
+    it(`walks "${unit.id}" through the real engine to its recap`, () => {
+      const { c, answered } = walkUnit(unit);
+      const final = c.getState();
+      expect(final.step?.type).toBe('recap');
+      expect(final.completed).toBe(true);
+      for (const id of unit.requiredChecks) {
+        expect(answered.get(id)?.correct).toBe(true);
+      }
+      const recap = unit.steps.at(-1)!;
+      if (recap.type !== 'recap') throw new Error('last step must be a recap');
+      expect(recap.capabilities.map((cap) => cap.outcomeId)).toEqual(unit.outcomes);
+    });
+  }
+
+  it('proves the engine-graded numeric answers for units 5-8 against the real core', () => {
+    const unitById = (id: string) => BLACKJACK_BASICS.units.find((u) => u.id === id)!;
+
+    // win-lose-push: outcome-check graded against the ACTUAL settled result (read, not assumed).
+    const wlp = walkUnit(unitById('win-lose-push')).answered.get('outcome-check')!;
+    expect(['win', 'loss', 'push', 'blackjack']).toContain(wlp.value);
+    expect(wlp.correct).toBe(true);
+
+    // blackjack-is-special: a natural pays 3:2 on the 2000-cent wager -> +3000-cent delta.
+    expect(walkUnit(unitById('blackjack-is-special')).answered.get('payout-check'))
+      .toEqual({ value: '3000', correct: true });
+
+    // double: the fixed 2000-cent wager doubled -> 4000, deterministic regardless of the drawn card.
+    expect(walkUnit(unitById('double')).answered.get('double-wager-check'))
+      .toEqual({ value: '4000', correct: true });
+
+    // split: the pair became two separately settled hands -> hand count 2.
+    expect(walkUnit(unitById('split')).answered.get('split-count-check'))
+      .toEqual({ value: '2', correct: true });
   });
 });
 
