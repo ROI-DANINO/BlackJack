@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
-sub_phase: blackjack-basics-build
+sub_phase: blackjack-basics-complete
 plan: docs/superpowers/plans/2026-07-11-blackjack-basics-learning-foundation.md
 spec: docs/superpowers/specs/2026-07-11-blackjack-basics-learning-foundation-design.md
-step: "Resume SDD Task 3: typed curriculum contracts and validation."
+step: "Blackjack Basics COMPLETE — 11 SDD tasks built+reviewed, feature QA PASS, merged to main (964efa1) and pushed. Next subject: design Strategy Table Fundamentals."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -22,6 +22,6 @@ sessions:
   - journal/ops/sessions/the-foundation-and-the-worktree-2026-07-11T2308.md
 detour: []
 blocking: null
-next: "In `.worktrees/blackjack-basics`, read `.superpowers/sdd/progress.md` and re-dispatch Task 3; Tasks 1-2 are already complete and reviewed."
-note: "Mid-build checkpoint in journal/ops/sessions/the-foundation-and-the-worktree-2026-07-11T2308.md: feature branch clean at `81ced34`; interrupted Task 3 left no partial files."
+next: "Start Strategy Table Fundamentals (next V2 subject) with a design/brainstorm pass — not yet scoped. Revisit the Hit-on-16 orientation moment there. Per ROADMAP; tasks.md gets task detail once its design is approved."
+note: "Blackjack Basics merged at main 964efa1 (merge of feat/blackjack-basics-learning-foundation) and pushed to origin. Feature QA run 2026-07-12-blackjack-basics-feature-qa (PASS); final whole-branch review merge-clean. Non-blocking backlog: QA-016 (prereqs as raw skill ids), QA-017 (display totals re-derived in feedback.ts — closes when best_total goes on the wire)."
 ---
