@@ -11,7 +11,7 @@
 
 import type { Action, SessionState } from '../bridge/types';
 import { BridgeError, CoreRuleError } from '../bridge/validate';
-import { roundFeedback } from '../drill/feedback';
+import { roundFeedback } from './feedback';
 import type { LearnEngine } from './engine';
 import type {
   Assistance, AttemptEngineContext, AttemptRecord, HandStep, LessonState, QuestionStep, Subject, Unit,

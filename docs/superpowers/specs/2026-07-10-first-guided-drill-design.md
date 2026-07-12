@@ -2,6 +2,10 @@
 
 ## Status
 
+**Superseded by** [`2026-07-11-blackjack-basics-learning-foundation-design.md`](2026-07-11-blackjack-basics-learning-foundation-design.md)
+(Task 9, 2026-07-12): the guided-drill prototype was retired and replaced by the Blackjack Basics
+learning foundation (`<Learn>` navigator + `<Lesson>` renderer). Retained for historical context.
+
 Approved design, reshaped 2026-07-10 after review of the original product notes and the V2 roadmap.
 This defines the first foundations subject as **2–3 short micro-units**, taught through **targeted
 situations that resolve on the real engine** — not fixed outcomes. It is not a Basic Strategy
