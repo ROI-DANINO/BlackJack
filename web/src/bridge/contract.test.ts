@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, it, expect } from 'vitest';
-import { parseCliOutput } from './validate';
-import type { SessionState } from './types';
+import { BridgeError, parseCliOutput } from './validate';
+import type { CoreCommand, SessionState } from './types';
 
 const FIX = new URL('../../../crates/blackjack-core/tests/fixtures/', import.meta.url);
 const read = (name: string) => readFileSync(new URL(name, FIX), 'utf8');
@@ -30,6 +30,29 @@ describe('wire contract vs Rust golden fixtures', () => {
     const out = parseCliOutput(read('response_hand_facts.json'));
     if (out.status !== 'ok' || out.response.type !== 'hand_facts') throw new Error('shape');
     expect(out.response.data).toEqual({ hard_total: 7, best_total: 17, is_soft: true, is_bust: false });
+  });
+
+  it('parses Rust strategy compatibility verdicts', () => {
+    const out = parseCliOutput(read('response_strategy_compatibility.json'));
+    if (out.status !== 'ok' || out.response.type !== 'strategy_compatibility') throw new Error('shape');
+    expect(out.response.data).toBe('compatible');
+  });
+
+  it('rejects malformed strategy compatibility verdicts', () => {
+    expect(() => parseCliOutput(JSON.stringify({
+      status: 'ok',
+      response: { type: 'strategy_compatibility', data: 'unknown_verdict' },
+    }))).toThrow(BridgeError);
+  });
+
+  it('keeps the strategy compatibility command in snake_case', () => {
+    const session = JSON.parse(read('session_resolved.json')) as SessionState;
+    const command = {
+      command: 'check_strategy_compatibility',
+      profile_id: 'h17',
+      session,
+    } satisfies CoreCommand;
+    expect(command).toMatchObject({ command: 'check_strategy_compatibility', profile_id: 'h17' });
   });
 
   it('covers every nested round/hand/dealer/log field name (guards nested drift)', () => {

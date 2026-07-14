@@ -29,6 +29,8 @@ export interface Ruleset {
 }
 
 export type Action = 'hit' | 'stand' | 'double' | 'split';
+export type StrategyProfileId = 'h17' | 's17';
+export type StrategyCompatibility = 'compatible' | 'profile_mismatch' | 'unsupported_ruleset';
 export type HandSource = 'initial' | 'split';
 export interface HandState {
   cards: Card[]; wager: number; is_complete: boolean; is_doubled: boolean; source: HandSource;
@@ -81,13 +83,15 @@ export type CoreCommand =
   | { command: 'legal_actions'; session: SessionState }
   | { command: 'apply_action'; session: SessionState; action: Action }
   | { command: 'reshuffle'; session: SessionState }
-  | { command: 'describe_hand'; cards: PresetCard[] };
+  | { command: 'describe_hand'; cards: PresetCard[] }
+  | { command: 'check_strategy_compatibility'; profile_id: StrategyProfileId; session: SessionState };
 
 // Core-produced responses. Adjacently tagged on "type"/"data".
 export type CoreResponse =
   | { type: 'session'; data: SessionState }
   | { type: 'actions'; data: Action[] }
-  | { type: 'hand_facts'; data: HandFacts };
+  | { type: 'hand_facts'; data: HandFacts }
+  | { type: 'strategy_compatibility'; data: StrategyCompatibility };
 
 // Envelope produced by dispatch_json / CliOutput.
 export type CliOutput =
