@@ -1,6 +1,6 @@
 use blackjack_core::{
     Action, Card, DealerSoft17, HandSource, HandState, Rank, Suit, dealer_must_hit, legal_actions,
-    score_hand, v1_h17_ruleset,
+    score_hand, v1_h17_ruleset, v1_s17_ruleset,
 };
 
 fn card(rank: Rank, id: &str) -> Card {
@@ -32,12 +32,16 @@ fn scores_soft_totals_blackjack_and_bust() {
 }
 
 #[test]
-fn supports_h17_default_and_s17_override() {
+fn canonical_s17_differs_only_in_id_and_dealer_soft_17() {
     let soft_17 = vec![card(Rank::Ace, "a"), card(Rank::Six, "six")];
-    let mut s17 = v1_h17_ruleset();
-    s17.dealer_soft_17 = DealerSoft17::Stand;
+    let h17 = v1_h17_ruleset();
+    let s17 = v1_s17_ruleset();
+    let mut expected_s17 = h17.clone();
+    expected_s17.id = "v1-modern-classic-s17-6d".to_string();
+    expected_s17.dealer_soft_17 = DealerSoft17::Stand;
 
-    assert!(dealer_must_hit(&soft_17, &v1_h17_ruleset()));
+    assert_eq!(s17, expected_s17);
+    assert!(dealer_must_hit(&soft_17, &h17));
     assert!(!dealer_must_hit(&soft_17, &s17));
 }
 

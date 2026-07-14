@@ -26,6 +26,13 @@ pub fn v1_h17_ruleset() -> Ruleset {
     }
 }
 
+pub fn v1_s17_ruleset() -> Ruleset {
+    let mut ruleset = v1_h17_ruleset();
+    ruleset.id = "v1-modern-classic-s17-6d".to_string();
+    ruleset.dealer_soft_17 = DealerSoft17::Stand;
+    ruleset
+}
+
 fn score_ranks<'a>(ranks: impl IntoIterator<Item = &'a Rank>, card_count: usize) -> HandScore {
     let ranks: Vec<Rank> = ranks.into_iter().cloned().collect();
     let hard_total = ranks.iter().map(rank_value).sum();

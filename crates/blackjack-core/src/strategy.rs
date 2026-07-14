@@ -1,4 +1,22 @@
 use crate::{Action, Card, HandSource, HandState, Ruleset, rules, score_hand};
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum StrategyProfile {
+    H17,
+    S17,
+}
+
+pub fn resolve_profile(ruleset: &Ruleset) -> Option<StrategyProfile> {
+    if ruleset == &crate::v1_h17_ruleset() {
+        Some(StrategyProfile::H17)
+    } else if ruleset == &crate::v1_s17_ruleset() {
+        Some(StrategyProfile::S17)
+    } else {
+        None
+    }
+}
 
 const HARD: [&str; 14] = [
     "HHHHHHHHHH",

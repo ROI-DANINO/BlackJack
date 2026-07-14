@@ -1,6 +1,6 @@
 use blackjack_core::{
-    Action, Card, HandSource, HandState, Rank, Ruleset, Suit, basic_strategy_action, legal_actions,
-    v1_h17_ruleset,
+    Action, Card, HandSource, HandState, Rank, Ruleset, StrategyProfile, Suit,
+    basic_strategy_action, legal_actions, resolve_profile, v1_h17_ruleset, v1_s17_ruleset,
 };
 
 const DEALER_UPCARDS: [Rank; 10] = [
@@ -298,4 +298,24 @@ fn rejects_an_unsupported_ruleset_id() {
         ),
         Err("basic strategy unavailable for ruleset: unsupported".to_string())
     );
+}
+
+#[test]
+fn resolves_only_exact_canonical_rulesets() {
+    assert_eq!(
+        resolve_profile(&v1_h17_ruleset()),
+        Some(StrategyProfile::H17)
+    );
+    assert_eq!(
+        resolve_profile(&v1_s17_ruleset()),
+        Some(StrategyProfile::S17)
+    );
+
+    let mut altered_decks = v1_h17_ruleset();
+    altered_decks.decks = 8;
+    assert_eq!(resolve_profile(&altered_decks), None);
+
+    let mut altered_id = v1_h17_ruleset();
+    altered_id.id = "v1-modern-classic-h17-8d".to_string();
+    assert_eq!(resolve_profile(&altered_id), None);
 }
