@@ -16,7 +16,7 @@ const DEALER_UPCARDS: [Rank; 10] = [
     Rank::Ace,
 ];
 
-const HARD: [&str; 14] = [
+const H17_HARD: [&str; 14] = [
     "HHHHHHHHHH",
     "HHHHHHHHHH",
     "HHHHHHHHHH",
@@ -32,17 +32,58 @@ const HARD: [&str; 14] = [
     "SSSSSSSSSS",
     "SSSSSSSSSS",
 ];
-const SOFT: [&str; 8] = [
+const H17_SOFT: [&str; 8] = [
     "HHHDDHHHHH",
     "HHHDDHHHHH",
     "HHDDDHHHHH",
     "HHDDDHHHHH",
     "HDDDDHHHHH",
     "XXXXXSSHHH",
-    "SSSSSXSSSS",
+    "SSSSXSSSSS",
     "SSSSSSSSSS",
 ];
-const PAIRS: [&str; 10] = [
+const H17_PAIRS: [&str; 10] = [
+    "PPPPPPHHHH",
+    "PPPPPPHHHH",
+    "HHHPPHHHHH",
+    "DDDDDDDDHH",
+    "PPPPPHHHHH",
+    "PPPPPPHHHH",
+    "PPPPPPPPPP",
+    "PPPPPSPPSS",
+    "SSSSSSSSSS",
+    "PPPPPPPPPP",
+];
+
+const S17_HARD: [&str; 14] = [
+    "HHHHHHHHHH",
+    "HHHHHHHHHH",
+    "HHHHHHHHHH",
+    "HHHHHHHHHH",
+    "HDDDDHHHHH",
+    "DDDDDDDDHH",
+    "DDDDDDDDDH",
+    "HHSSSHHHHH",
+    "SSSSSHHHHH",
+    "SSSSSHHHHH",
+    "SSSSSHHHHH",
+    "SSSSSHHHHH",
+    "SSSSSSSSSS",
+    "SSSSSSSSSS",
+];
+
+const S17_SOFT: [&str; 8] = [
+    "HHHDDHHHHH",
+    "HHHDDHHHHH",
+    "HHDDDHHHHH",
+    "HHDDDHHHHH",
+    "HDDDDHHHHH",
+    "SXXXXSSHHH",
+    "SSSSSSSSSS",
+    "SSSSSSSSSS",
+];
+
+const S17_PAIRS: [&str; 10] = [
     "PPPPPPHHHH",
     "PPPPPPHHHH",
     "HHHPPHHHHH",
@@ -89,12 +130,17 @@ fn expected_action(source_move: char) -> Action {
     }
 }
 
-fn recommend(ranks: &[Rank], dealer_rank: Rank, legal_actions: &[Action]) -> Action {
+fn recommend(
+    ranks: &[Rank],
+    dealer_rank: Rank,
+    ruleset: &Ruleset,
+    legal_actions: &[Action],
+) -> Action {
     let hand = initial_hand(ranks);
     basic_strategy_action(
         &hand,
         &card(dealer_rank, "dealer-upcard"),
-        &v1_h17_ruleset(),
+        ruleset,
         legal_actions,
     )
     .expect("supported ruleset should return a result")
@@ -102,7 +148,7 @@ fn recommend(ranks: &[Rank], dealer_rank: Rank, legal_actions: &[Action]) -> Act
 }
 
 #[test]
-fn recommends_every_hard_total_source_cell() {
+fn recommends_every_h17_hard_source_cell() {
     let hands = [
         [Rank::Two, Rank::Three],
         [Rank::Two, Rank::Four],
@@ -120,12 +166,13 @@ fn recommends_every_hard_total_source_cell() {
         [Rank::Eight, Rank::Ten],
     ];
 
-    for (row, ranks) in HARD.iter().zip(hands) {
+    let ruleset = v1_h17_ruleset();
+    for (row, ranks) in H17_HARD.iter().zip(hands) {
         let hand = initial_hand(&ranks);
-        let legal = legal_actions(&hand, &v1_h17_ruleset(), 1, 100);
+        let legal = legal_actions(&hand, &ruleset, 1, 100);
         for (dealer_rank, source_move) in DEALER_UPCARDS.iter().cloned().zip(row.chars()) {
             assert_eq!(
-                recommend(&ranks, dealer_rank.clone(), &legal),
+                recommend(&ranks, dealer_rank.clone(), &ruleset, &legal),
                 expected_action(source_move),
                 "hard hand {:?} against dealer {:?}",
                 ranks,
@@ -136,7 +183,7 @@ fn recommends_every_hard_total_source_cell() {
 }
 
 #[test]
-fn recommends_every_soft_total_source_cell() {
+fn recommends_every_h17_soft_source_cell() {
     let hands = [
         [Rank::Ace, Rank::Two],
         [Rank::Ace, Rank::Three],
@@ -148,12 +195,13 @@ fn recommends_every_soft_total_source_cell() {
         [Rank::Ace, Rank::Nine],
     ];
 
-    for (row, ranks) in SOFT.iter().zip(hands) {
+    let ruleset = v1_h17_ruleset();
+    for (row, ranks) in H17_SOFT.iter().zip(hands) {
         let hand = initial_hand(&ranks);
-        let legal = legal_actions(&hand, &v1_h17_ruleset(), 1, 100);
+        let legal = legal_actions(&hand, &ruleset, 1, 100);
         for (dealer_rank, source_move) in DEALER_UPCARDS.iter().cloned().zip(row.chars()) {
             assert_eq!(
-                recommend(&ranks, dealer_rank.clone(), &legal),
+                recommend(&ranks, dealer_rank.clone(), &ruleset, &legal),
                 expected_action(source_move),
                 "soft hand {:?} against dealer {:?}",
                 ranks,
@@ -164,7 +212,7 @@ fn recommends_every_soft_total_source_cell() {
 }
 
 #[test]
-fn recommends_every_pair_source_cell() {
+fn recommends_every_h17_pair_source_cell() {
     let ranks = [
         Rank::Two,
         Rank::Three,
@@ -178,15 +226,112 @@ fn recommends_every_pair_source_cell() {
         Rank::Ace,
     ];
 
-    for (row, rank) in PAIRS.iter().zip(ranks) {
+    let ruleset = v1_h17_ruleset();
+    for (row, rank) in H17_PAIRS.iter().zip(ranks) {
         let hand_ranks = [rank.clone(), rank];
         let hand = initial_hand(&hand_ranks);
-        let legal = legal_actions(&hand, &v1_h17_ruleset(), 1, 100);
+        let legal = legal_actions(&hand, &ruleset, 1, 100);
         for (dealer_rank, source_move) in DEALER_UPCARDS.iter().cloned().zip(row.chars()) {
             assert_eq!(
-                recommend(&hand_ranks, dealer_rank.clone(), &legal),
+                recommend(&hand_ranks, dealer_rank.clone(), &ruleset, &legal),
                 expected_action(source_move),
                 "pair {:?} against dealer {:?}",
+                hand_ranks,
+                dealer_rank,
+            );
+        }
+    }
+}
+
+#[test]
+fn recommends_every_s17_hard_source_cell() {
+    let hands = [
+        [Rank::Two, Rank::Three],
+        [Rank::Two, Rank::Four],
+        [Rank::Two, Rank::Five],
+        [Rank::Two, Rank::Six],
+        [Rank::Two, Rank::Seven],
+        [Rank::Two, Rank::Eight],
+        [Rank::Two, Rank::Nine],
+        [Rank::Two, Rank::Ten],
+        [Rank::Three, Rank::Ten],
+        [Rank::Four, Rank::Ten],
+        [Rank::Five, Rank::Ten],
+        [Rank::Six, Rank::Ten],
+        [Rank::Seven, Rank::Ten],
+        [Rank::Eight, Rank::Ten],
+    ];
+
+    let ruleset = v1_s17_ruleset();
+    for (row, ranks) in S17_HARD.iter().zip(hands) {
+        let hand = initial_hand(&ranks);
+        let legal = legal_actions(&hand, &ruleset, 1, 100);
+        for (dealer_rank, source_move) in DEALER_UPCARDS.iter().cloned().zip(row.chars()) {
+            assert_eq!(
+                recommend(&ranks, dealer_rank.clone(), &ruleset, &legal),
+                expected_action(source_move),
+                "S17 hard hand {:?} against dealer {:?}",
+                ranks,
+                dealer_rank,
+            );
+        }
+    }
+}
+
+#[test]
+fn recommends_every_s17_soft_source_cell() {
+    let hands = [
+        [Rank::Ace, Rank::Two],
+        [Rank::Ace, Rank::Three],
+        [Rank::Ace, Rank::Four],
+        [Rank::Ace, Rank::Five],
+        [Rank::Ace, Rank::Six],
+        [Rank::Ace, Rank::Seven],
+        [Rank::Ace, Rank::Eight],
+        [Rank::Ace, Rank::Nine],
+    ];
+
+    let ruleset = v1_s17_ruleset();
+    for (row, ranks) in S17_SOFT.iter().zip(hands) {
+        let hand = initial_hand(&ranks);
+        let legal = legal_actions(&hand, &ruleset, 1, 100);
+        for (dealer_rank, source_move) in DEALER_UPCARDS.iter().cloned().zip(row.chars()) {
+            assert_eq!(
+                recommend(&ranks, dealer_rank.clone(), &ruleset, &legal),
+                expected_action(source_move),
+                "S17 soft hand {:?} against dealer {:?}",
+                ranks,
+                dealer_rank,
+            );
+        }
+    }
+}
+
+#[test]
+fn recommends_every_s17_pair_source_cell() {
+    let ranks = [
+        Rank::Two,
+        Rank::Three,
+        Rank::Four,
+        Rank::Five,
+        Rank::Six,
+        Rank::Seven,
+        Rank::Eight,
+        Rank::Nine,
+        Rank::Ten,
+        Rank::Ace,
+    ];
+
+    let ruleset = v1_s17_ruleset();
+    for (row, rank) in S17_PAIRS.iter().zip(ranks) {
+        let hand_ranks = [rank.clone(), rank];
+        let hand = initial_hand(&hand_ranks);
+        let legal = legal_actions(&hand, &ruleset, 1, 100);
+        for (dealer_rank, source_move) in DEALER_UPCARDS.iter().cloned().zip(row.chars()) {
+            assert_eq!(
+                recommend(&hand_ranks, dealer_rank.clone(), &ruleset, &legal),
+                expected_action(source_move),
+                "S17 pair {:?} against dealer {:?}",
                 hand_ranks,
                 dealer_rank,
             );
@@ -200,6 +345,7 @@ fn falls_back_when_recommended_actions_are_unavailable() {
         recommend(
             &[Rank::Ace, Rank::Six],
             Rank::Three,
+            &v1_h17_ruleset(),
             &[Action::Hit, Action::Stand]
         ),
         Action::Hit
@@ -208,6 +354,7 @@ fn falls_back_when_recommended_actions_are_unavailable() {
         recommend(
             &[Rank::Ace, Rank::Seven],
             Rank::Two,
+            &v1_h17_ruleset(),
             &[Action::Hit, Action::Stand]
         ),
         Action::Stand
@@ -216,6 +363,7 @@ fn falls_back_when_recommended_actions_are_unavailable() {
         recommend(
             &[Rank::Eight, Rank::Eight],
             Rank::Ten,
+            &v1_h17_ruleset(),
             &[Action::Hit, Action::Stand]
         ),
         Action::Hit
@@ -224,6 +372,7 @@ fn falls_back_when_recommended_actions_are_unavailable() {
         recommend(
             &[Rank::Ace, Rank::Ace],
             Rank::Ten,
+            &v1_h17_ruleset(),
             &[Action::Hit, Action::Stand]
         ),
         Action::Hit
@@ -232,6 +381,7 @@ fn falls_back_when_recommended_actions_are_unavailable() {
         recommend(
             &[Rank::Ten, Rank::Queen],
             Rank::Six,
+            &v1_h17_ruleset(),
             &[Action::Hit, Action::Stand, Action::Double, Action::Split],
         ),
         Action::Stand
@@ -283,11 +433,11 @@ fn recommends_stand_for_split_ace_ten_with_legal_actions() {
 }
 
 #[test]
-fn rejects_an_unsupported_ruleset_id() {
+fn rejects_an_unsupported_altered_ruleset() {
     let hand = initial_hand(&[Rank::Ten, Rank::Seven]);
     let legal = legal_actions(&hand, &v1_h17_ruleset(), 1, 100);
     let mut unsupported: Ruleset = v1_h17_ruleset();
-    unsupported.id = "unsupported".to_string();
+    unsupported.decks = 8;
 
     assert_eq!(
         basic_strategy_action(
@@ -296,7 +446,7 @@ fn rejects_an_unsupported_ruleset_id() {
             &unsupported,
             &legal,
         ),
-        Err("basic strategy unavailable for ruleset: unsupported".to_string())
+        Err("basic strategy unavailable for ruleset: v1-modern-classic-h17-6d".to_string())
     );
 }
 
