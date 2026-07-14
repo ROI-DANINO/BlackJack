@@ -193,16 +193,27 @@ encoded as `X` to retain the source's stand fallback.
 [Wizard of Odds' 4-Deck to 8-Deck Blackjack Strategy](https://wizardofodds.com/games/blackjack/strategy/4-decks/),
 captured 2026-07-15, is the independent source named by the prior H17 oracle design. It supplies
 separate H17/S17 charts and text for the S17 base strategy. Its S17 text confirms the hard, soft,
-and pair rules above; its H17 modifications name exactly the three non-surrender differences found
-by the direct 320-cell comparison with the existing verified H17 rows:
+and pair rules above; its H17 modifications name the source differences below.
+
+#### Existing H17 implementation transcription defect
+
+The current Rust H17 `SOFT` A,8 row is `SSSSSXSSSS`, which puts `X` at dealer 7. That is a
+pre-existing implementation transcription defect, not an S17 source difference. The configured
+[BlackjackInfo H17 engine](https://www.blackjackinfo.com/blackjack-basic-strategy-engine/?das=yes&dbl=all&numdecks=6&peek=yes&soft17=h17&surr=no),
+captured 2026-07-15, renders A,8 as `S S S S DS S S S S S`; the verified engine row is therefore
+`SSSSXSSSSS` (`X` at dealer 6). Wizard of Odds independently states the H17 modification as
+double soft 19 vs 6. This design records the required correction; it does not alter Rust code.
+
+The three H17-to-S17 source differences are measured against that **corrected H17 source row**,
+not against the current erroneous implementation row:
 
 - hard 11 vs A: H17 `D` → S17 `H`;
 - soft 18 (A,7) vs 2: H17 `X` (double, otherwise stand) → S17 `S`;
 - soft 19 (A,8) vs 6: H17 `X` (double, otherwise stand) → S17 `S`.
 
-All other 317 cells match the H17 table. In particular, all 100 pair cells match. The S17 table is
-therefore frozen for this exact canonical rule vector; it must not be reused for a ruleset that
-differs in any field.
+All other 317 cells match the corrected H17 source table. In particular, all 100 pair cells match.
+The S17 table is therefore frozen for this exact canonical rule vector; it must not be reused for a
+ruleset that differs in any field.
 
 ## Verification
 
