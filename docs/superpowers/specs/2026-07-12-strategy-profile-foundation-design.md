@@ -138,20 +138,71 @@ curriculum and the engine.
 - Units that declare no `profileId` (all current Blackjack Basics units) are unaffected and keep
   starting sessions exactly as they do now.
 
-## S17 Table Provenance (Open Until Verified)
+## S17 Table Provenance (Verified 2026-07-15)
 
-The S17 chart cells are **hypotheses until verified**. Before the S17 profile becomes a default,
-the rules-researcher agent verifies the complete S17 table — every hard, soft, and pair cell —
-against a cited source for the **exact** canonical configuration: 6 deck, DAS, no surrender, dealer
-stands on soft 17. Provenance is recorded alongside the H17 chart's provenance.
+The canonical S17 source is [BlackjackInfo's Basic Strategy
+Engine](https://www.blackjackinfo.com/blackjack-basic-strategy-engine/?das=yes&dbl=all&numdecks=6&peek=yes&soft17=s17&surr=no),
+captured 2026-07-15. Its rendered heading reads **"6 decks, S17, DAS, No Surrender, Peek"**:
+dealer stands on soft 17; six decks; double on any first two cards; double after split; no
+surrender; dealer peek. This is exactly the `v1-modern-classic-s17-6d` rule vector.
 
-Expected differences from H17, stated as hypotheses for the researcher to confirm or correct (the
-engine has no surrender, so surrender-only differences do not apply):
+The column order for every row below is `2, 3, 4, 5, 6, 7, 8, 9, T, A`. Engine codes are `H`
+(hit), `S` (stand), `D` (double, otherwise hit), `X` (double, otherwise stand), and `P` (split).
+They are a direct transcription of the source's `H`, `S`, `D`, `DS`, and `P` legend; `DS` is
+encoded as `X` to retain the source's stand fallback.
 
-- Hard 11 vs Ace: H17 Double → S17 Hit.
-- Soft 19 (A,8) vs 6: H17 Double (stand fallback) → S17 Stand.
+### Complete S17 transcription
 
-The researcher confirms the full differing-cell set; these two are not assumed complete.
+| Section | Row | Source cells in dealer-column order | Engine row |
+| --- | --- | --- | --- |
+| Hard | 5 | H H H H H H H H H H | `HHHHHHHHHH` |
+| Hard | 6 | H H H H H H H H H H | `HHHHHHHHHH` |
+| Hard | 7 | H H H H H H H H H H | `HHHHHHHHHH` |
+| Hard | 8 | H H H H H H H H H H | `HHHHHHHHHH` |
+| Hard | 9 | H D D D D H H H H H | `HDDDDHHHHH` |
+| Hard | 10 | D D D D D D D D H H | `DDDDDDDDHH` |
+| Hard | 11 | D D D D D D D D D H | `DDDDDDDDDH` |
+| Hard | 12 | H H S S S H H H H H | `HHSSSHHHHH` |
+| Hard | 13 | S S S S S H H H H H | `SSSSSHHHHH` |
+| Hard | 14 | S S S S S H H H H H | `SSSSSHHHHH` |
+| Hard | 15 | S S S S S H H H H H | `SSSSSHHHHH` |
+| Hard | 16 | S S S S S H H H H H | `SSSSSHHHHH` |
+| Hard | 17 | S S S S S S S S S S | `SSSSSSSSSS` |
+| Hard | 18+ | S S S S S S S S S S | `SSSSSSSSSS` |
+| Soft | A,2 | H H H D D H H H H H | `HHHDDHHHHH` |
+| Soft | A,3 | H H H D D H H H H H | `HHHDDHHHHH` |
+| Soft | A,4 | H H D D D H H H H H | `HHDDDHHHHH` |
+| Soft | A,5 | H H D D D H H H H H | `HHDDDHHHHH` |
+| Soft | A,6 | H D D D D H H H H H | `HDDDDHHHHH` |
+| Soft | A,7 | S DS DS DS DS S S H H H | `SXXXXSSHHH` |
+| Soft | A,8 | S S S S S S S S S S | `SSSSSSSSSS` |
+| Soft | A,9 | S S S S S S S S S S | `SSSSSSSSSS` |
+| Pair | 2,2 | P P P P P P H H H H | `PPPPPPHHHH` |
+| Pair | 3,3 | P P P P P P H H H H | `PPPPPPHHHH` |
+| Pair | 4,4 | H H H P P H H H H H | `HHHPPHHHHH` |
+| Pair | 5,5 | D D D D D D D D H H | `DDDDDDDDHH` |
+| Pair | 6,6 | P P P P P H H H H H | `PPPPPHHHHH` |
+| Pair | 7,7 | P P P P P P H H H H | `PPPPPPHHHH` |
+| Pair | 8,8 | P P P P P P P P P P | `PPPPPPPPPP` |
+| Pair | 9,9 | P P P P P S P P S S | `PPPPPSPPSS` |
+| Pair | T,T | S S S S S S S S S S | `SSSSSSSSSS` |
+| Pair | A,A | P P P P P P P P P P | `PPPPPPPPPP` |
+
+### Independent check and confirmed H17-to-S17 differences
+
+[Wizard of Odds' 4-Deck to 8-Deck Blackjack Strategy](https://wizardofodds.com/games/blackjack/strategy/4-decks/),
+captured 2026-07-15, is the independent source named by the prior H17 oracle design. It supplies
+separate H17/S17 charts and text for the S17 base strategy. Its S17 text confirms the hard, soft,
+and pair rules above; its H17 modifications name exactly the three non-surrender differences found
+by the direct 320-cell comparison with the existing verified H17 rows:
+
+- hard 11 vs A: H17 `D` → S17 `H`;
+- soft 18 (A,7) vs 2: H17 `X` (double, otherwise stand) → S17 `S`;
+- soft 19 (A,8) vs 6: H17 `X` (double, otherwise stand) → S17 `S`.
+
+All other 317 cells match the H17 table. In particular, all 100 pair cells match. The S17 table is
+therefore frozen for this exact canonical rule vector; it must not be reused for a ruleset that
+differs in any field.
 
 ## Verification
 
