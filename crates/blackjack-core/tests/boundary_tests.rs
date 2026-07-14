@@ -1,21 +1,42 @@
 use blackjack_core::{
     Action, CoreCommand, CoreResponse, OutcomeResult, PresetCard, Rank, RoundStatus, Suit,
-    handle_command,
+    dispatch_json, handle_command, v1_h17_ruleset, v1_s17_ruleset,
 };
+use serde_json::{Value, json};
 
 fn start_session(seed: &str) -> blackjack_core::SessionState {
+    start_session_with_ruleset(seed, None)
+}
+
+fn start_session_with_ruleset(
+    seed: &str,
+    ruleset: Option<blackjack_core::Ruleset>,
+) -> blackjack_core::SessionState {
     match handle_command(CoreCommand::StartSession {
         seed: seed.to_string(),
         bankroll: 2000,
         default_bet: 50,
-        ruleset: None,
+        ruleset,
     })
     .expect("session")
     {
         CoreResponse::Session(session) => *session,
         CoreResponse::Actions(_) => panic!("expected session"),
         CoreResponse::HandFacts(_) => panic!("expected session"),
+        CoreResponse::StrategyCompatibility(_) => panic!("expected session"),
     }
+}
+
+fn strategy_compatibility_json(profile_id: &str, session: blackjack_core::SessionState) -> Value {
+    serde_json::from_str(&dispatch_json(
+        &json!({
+            "command": "check_strategy_compatibility",
+            "profile_id": profile_id,
+            "session": session,
+        })
+        .to_string(),
+    ))
+    .expect("JSON envelope")
 }
 
 fn start_round(session: blackjack_core::SessionState) -> blackjack_core::SessionState {
@@ -23,6 +44,7 @@ fn start_round(session: blackjack_core::SessionState) -> blackjack_core::Session
         CoreResponse::Session(session) => *session,
         CoreResponse::Actions(_) => panic!("expected session"),
         CoreResponse::HandFacts(_) => panic!("expected session"),
+        CoreResponse::StrategyCompatibility(_) => panic!("expected session"),
     }
 }
 
@@ -31,6 +53,7 @@ fn legal_actions(session: blackjack_core::SessionState) -> Vec<Action> {
         CoreResponse::Actions(actions) => actions,
         CoreResponse::Session(_) => panic!("expected actions"),
         CoreResponse::HandFacts(_) => panic!("expected actions"),
+        CoreResponse::StrategyCompatibility(_) => panic!("expected actions"),
     }
 }
 
@@ -129,4 +152,40 @@ fn json_boundary_preserves_natural_blackjack_payout_in_session_log() {
     assert_eq!(log.bankroll_delta, 75);
     assert_eq!(log.bankroll_after, 2075);
     assert_eq!(session.bankroll, 2075);
+}
+
+#[test]
+fn strategy_compatibility_accepts_matching_h17_profile() {
+    let response = strategy_compatibility_json(
+        "h17",
+        start_session_with_ruleset("compat-h17", Some(v1_h17_ruleset())),
+    );
+
+    assert_eq!(response["status"], "ok");
+    assert_eq!(response["response"]["type"], "strategy_compatibility");
+    assert_eq!(response["response"]["data"], "compatible");
+}
+
+#[test]
+fn strategy_compatibility_rejects_other_verified_profile() {
+    let response = strategy_compatibility_json(
+        "h17",
+        start_session_with_ruleset("compat-s17", Some(v1_s17_ruleset())),
+    );
+
+    assert_eq!(response["status"], "ok");
+    assert_eq!(response["response"]["data"], "profile_mismatch");
+}
+
+#[test]
+fn strategy_compatibility_rejects_unverified_altered_ruleset() {
+    let mut altered_ruleset = v1_h17_ruleset();
+    altered_ruleset.penetration_percent = 70;
+    let response = strategy_compatibility_json(
+        "h17",
+        start_session_with_ruleset("compat-altered", Some(altered_ruleset)),
+    );
+
+    assert_eq!(response["status"], "ok");
+    assert_eq!(response["response"]["data"], "unsupported_ruleset");
 }

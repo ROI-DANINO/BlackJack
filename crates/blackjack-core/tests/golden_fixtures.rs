@@ -1,5 +1,6 @@
 use blackjack_core::{
-    Action, CoreResponse, RoundStatus, apply_action, dispatch_json, start_round, start_session,
+    Action, CoreCommand, CoreResponse, RoundStatus, StrategyProfile, apply_action, dispatch_json,
+    start_round, start_session,
 };
 use std::fs;
 
@@ -50,6 +51,18 @@ fn actions_response_shape_is_stable() {
 fn response_hand_facts_fixture_is_stable() {
     let cmd = r#"{"command":"describe_hand","cards":[{"rank":"ace","suit":"spades"},{"rank":"six","suit":"hearts"}]}"#;
     check_or_write("response_hand_facts.json", &dispatch_json(cmd));
+}
+
+#[test]
+fn response_strategy_compatibility_fixture_is_stable() {
+    let session = start_session("compatibility-golden", 100000, 2000, None).unwrap();
+    let command = CoreCommand::CheckStrategyCompatibility {
+        profile_id: StrategyProfile::H17,
+        session,
+    };
+    let json = dispatch_json(&serde_json::to_string(&command).unwrap());
+
+    check_or_write("response_strategy_compatibility.json", &json);
 }
 
 /// A full SessionState played to resolution, serialized RAW (not enveloped) so the TS

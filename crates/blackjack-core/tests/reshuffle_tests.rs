@@ -142,5 +142,6 @@ fn reshuffle_command_round_trips_through_boundary() {
         }
         CoreResponse::Actions(_) => panic!("expected session response"),
         CoreResponse::HandFacts(_) => panic!("expected session response"),
+        CoreResponse::StrategyCompatibility(_) => panic!("expected session response"),
     }
 }

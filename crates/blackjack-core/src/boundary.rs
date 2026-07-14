@@ -1,8 +1,17 @@
 use crate::{
-    Action, HandFacts, PresetCard, Ruleset, SessionState, apply_action, current_legal_actions,
-    describe_hand, reshuffle_shoe, start_round, start_session, start_session_with_prefix,
+    Action, HandFacts, PresetCard, Ruleset, SessionState, StrategyProfile, apply_action,
+    current_legal_actions, describe_hand, reshuffle_shoe, resolve_profile, start_round,
+    start_session, start_session_with_prefix,
 };
 use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum StrategyCompatibility {
+    Compatible,
+    ProfileMismatch,
+    UnsupportedRuleset,
+}
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(tag = "command", rename_all = "snake_case")]
@@ -37,6 +46,10 @@ pub enum CoreCommand {
     DescribeHand {
         cards: Vec<PresetCard>,
     },
+    CheckStrategyCompatibility {
+        profile_id: StrategyProfile,
+        session: SessionState,
+    },
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -45,6 +58,7 @@ pub enum CoreResponse {
     Session(Box<SessionState>),
     Actions(Vec<Action>),
     HandFacts(HandFacts),
+    StrategyCompatibility(StrategyCompatibility),
 }
 
 pub fn handle_command(command: CoreCommand) -> Result<CoreResponse, String> {
@@ -78,6 +92,19 @@ pub fn handle_command(command: CoreCommand) -> Result<CoreResponse, String> {
             reshuffle_shoe(&mut session).map(|()| CoreResponse::Session(Box::new(session)))
         }
         CoreCommand::DescribeHand { cards } => Ok(CoreResponse::HandFacts(describe_hand(&cards))),
+        CoreCommand::CheckStrategyCompatibility {
+            profile_id,
+            session,
+        } => {
+            let compatibility = match resolve_profile(&session.ruleset) {
+                Some(session_profile) if session_profile == profile_id => {
+                    StrategyCompatibility::Compatible
+                }
+                Some(_) => StrategyCompatibility::ProfileMismatch,
+                None => StrategyCompatibility::UnsupportedRuleset,
+            };
+            Ok(CoreResponse::StrategyCompatibility(compatibility))
+        }
     }
 }
 
