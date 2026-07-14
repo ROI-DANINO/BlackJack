@@ -43,11 +43,11 @@ Consumes: the approved canonical rule vector.
 
 Produces: complete reviewed S17 transcription: 14 hard, 8 soft, 10 pair rows; dealer columns 2,3,4,5,6,7,8,9,T,A; engine codes H/S/D/X/P.
 
-- [ ] Step 1: Open BlackjackInfo Basic Strategy Engine with numdecks=6, soft17=s17, dbl=all, das=yes, surr=no, and peek=yes. Confirm the heading shows six decks, S17, DAS, and no surrender; record final URL and capture date.
-- [ ] Step 2: Transcribe all cells, including hard 5-8 and 18+, into engine codes. Compare every row against the independent source named by the prior oracle design. Resolve any discrepancy before code; never infer a cell from H17.
-- [ ] Step 3: Replace the design open-provenance section with URL, date, exact rules, all rows, independent check, and complete confirmed H17-to-S17 difference set.
-- [ ] Step 4: Run git diff --check and review the design diff. Expected: no missing row or unsupported hypothesis.
-- [ ] Step 5: Commit with message: docs: verify S17 strategy table provenance.
+- [x] Step 1: Open BlackjackInfo Basic Strategy Engine with numdecks=6, soft17=s17, dbl=all, das=yes, surr=no, and peek=yes. Confirm the heading shows six decks, S17, DAS, and no surrender; record final URL and capture date.
+- [x] Step 2: Transcribe all cells, including hard 5-8 and 18+, into engine codes. Compare every row against the independent source named by the prior oracle design. Resolve any discrepancy before code; never infer a cell from H17.
+- [x] Step 3: Replace the design open-provenance section with URL, date, exact rules, all rows, independent check, and complete confirmed H17-to-S17 difference set.
+- [x] Step 4: Run git diff --check and review the design diff. Expected: no missing row or unsupported hypothesis.
+- [x] Step 5: Commit with message: docs: verify S17 strategy table provenance.
 
 ### Task 2: Add canonical S17 rules and exact profile resolution
 
@@ -79,7 +79,7 @@ Produces: profile-selected lookup and exhaustive source-cell proof for both prof
 
 - [ ] Step 1: Change test recommend() helper to receive a Ruleset. Run every hard, soft, and pair row against both canonical rulesets; retain natural-blackjack, no-action, split-21, ten-value, unavailable Double, and unavailable Split tests.
 - [ ] Step 2: Run cargo test -p blackjack-core --test strategy_tests recommends_every_s17 -- --nocapture. Expected: fail because the current H17 id gate rejects S17.
-- [ ] Step 3: Move the tables under an exhaustive StrategyProfile tables() match. Resolve first; if None, keep the present basic strategy unavailable error. Share chart parsing, pair fallback, and legal-action fallback. Encode the exact Task-1 rows, never a difference patch.
+- [ ] Step 3: Move the tables under an exhaustive StrategyProfile tables() match. Resolve first; if None, keep the present basic strategy unavailable error. Share chart parsing, pair fallback, and legal-action fallback. Encode the exact Task-1 rows, never a difference patch. Correct the discovered H17 soft-19 row from `SSSSSXSSSS` to source-verified `SSSSXSSSSS` (double-or-stand only against dealer 6); this is a pre-existing transcription defect, not a profile behavior change.
 - [ ] Step 4: Run cargo test -p blackjack-core --test strategy_tests and cargo test -p blackjack-core. Expected: PASS, with 320 tested cells per profile.
 - [ ] Step 5: Commit: feat(core): select basic strategy by verified profile.
 
@@ -158,7 +158,7 @@ Produces: scoped PASS/FAIL verdict, coverage commit references, triaged findings
 
 ## Plan self-review
 
-- Tasks 1-3 cover provenance, both canonical rulesets, exact resolution, and source cells.
+- Tasks 1-3 cover provenance, both canonical rulesets, exact resolution, all source cells, and the discovered H17 soft-19 transcription correction.
 - Tasks 4-6 preserve Rust authority across the wire and exercise compatible, mismatch, unsupported, and profile-less paths.
 - Task 7 closes ledger-driven feature QA.
 - No task creates a generic platform, grading, curriculum content, persistence, or shell changes.
