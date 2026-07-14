@@ -23,10 +23,15 @@
 - [x] **Task 11: Feature QA and ledger reconciliation** - `7bfbd7e` (all deterministic gates,
       Player Experience PASS, ledger reconciled); final whole-branch review merge-clean.
 
-## Next phase — not yet scoped
+## In progress — Strategy Profile Foundation
 
-Strategy Table Fundamentals (next V2 subject) gets its task detail here once its design/brainstorm
-pass lands. Until then this section stays empty of task detail (see `ROADMAP.md`).
+Implementation plan: `docs/superpowers/plans/2026-07-15-strategy-profile-foundation.md`.
+
+- [ ] **Task 1: Verify and freeze S17 source table** — required research/provenance gate before code.
+- [ ] **Tasks 2-3: Core profiles and verified chart lookup** — canonical S17 ruleset, full-struct resolution, exhaustive source-cell tests.
+- [ ] **Tasks 4-5: Authoritative compatibility wire contract** — Rust verdict plus validated TypeScript bridge.
+- [ ] **Task 6: Lesson lifecycle gate** — declared-profile compatibility gate; profile-less regression coverage.
+- [ ] **Task 7: Scoped feature QA and ledger reconciliation** — gate this slice before completion.
 
 ## Ideas
 
