@@ -61,11 +61,11 @@ Consumes: verified profile ids and Ruleset PartialEq.
 
 Produces: v1_s17_ruleset(), public StrategyProfile::H17/S17, and resolve_profile(&Ruleset) -> Option<StrategyProfile>.
 
-- [ ] Step 1: Write failing tests: exact H17 resolves H17, exact S17 resolves S17, H17 with decks changed to eight resolves None, and H17 id changed resolves None. Assert S17 differs from H17 only in id and dealer_soft_17; a soft 17 does not hit under S17.
-- [ ] Step 2: Run cargo test -p blackjack-core --test strategy_tests resolves_only_exact_canonical_rulesets -- --exact. Expected: compilation failure before the API exists.
-- [ ] Step 3: Clone v1_h17_ruleset into v1_s17_ruleset changing only id to v1-modern-classic-s17-6d and dealer_soft_17 to Stand. Derive Clone, Copy, Debug, Eq, PartialEq, serde Deserialize, and serde Serialize on the snake-case StrategyProfile enum. Implement resolve_profile by comparison against complete canonical Ruleset values, returning None otherwise.
-- [ ] Step 4: Run cargo test -p blackjack-core --test strategy_tests and cargo test -p blackjack-core --test rules_tests. Expected: PASS, including id and non-id alteration rejection.
-- [ ] Step 5: Commit: feat(core): add canonical strategy profiles.
+- [x] Step 1: Write failing tests: exact H17 resolves H17, exact S17 resolves S17, H17 with decks changed to eight resolves None, and H17 id changed resolves None. Assert S17 differs from H17 only in id and dealer_soft_17; a soft 17 does not hit under S17.
+- [x] Step 2: Run cargo test -p blackjack-core --test strategy_tests resolves_only_exact_canonical_rulesets -- --exact. Expected: compilation failure before the API exists.
+- [x] Step 3: Clone v1_h17_ruleset into v1_s17_ruleset changing only id to v1-modern-classic-s17-6d and dealer_soft_17 to Stand. Derive Clone, Copy, Debug, Eq, PartialEq, serde Deserialize, and serde Serialize on the snake-case StrategyProfile enum. Implement resolve_profile by comparison against complete canonical Ruleset values, returning None otherwise.
+- [x] Step 4: Run cargo test -p blackjack-core --test strategy_tests and cargo test -p blackjack-core --test rules_tests. Expected: PASS, including id and non-id alteration rejection.
+- [x] Step 5: Commit: feat(core): add canonical strategy profiles.
 
 ### Task 3: Select the verified chart by profile and prove every cell
 
