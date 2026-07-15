@@ -2,6 +2,7 @@ node_modules/
 dist/
 dist-breakit/
 dist-prodcheck/
+dist-qa-drill/
 dist-qa-rules/
 dist-qa-flow/
 dist-qa-learn/

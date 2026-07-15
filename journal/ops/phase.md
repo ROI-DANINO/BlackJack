@@ -24,8 +24,9 @@ sessions:
   - journal/ops/sessions/the-profiles-and-the-proof-2026-07-15T0326.md
   - journal/ops/sessions/the-inbox-and-the-compass-2026-07-15T0521.md
   - journal/ops/sessions/the-board-and-the-baton-2026-07-15T0929.md
+  - journal/ops/sessions/the-bun-and-the-boundary-2026-07-16T0157.md
 detour: []
 blocking: null
-next: "Choose the first learner-visible objective and sequence: hand classification, row/column table navigation, then table-open application."
-note: "Milestone close: journal/ops/sessions/the-board-and-the-baton-2026-07-15T0929.md archived the completed Agent Kanban rollout, cleared the research detour, and restored Strategy Table Fundamentals design with STF-01 active."
+next: "Before STF card plumbing, brainstorm the pedagogy loop + tutor/coach model (upstream of STF-02/03); then fix the duplicate STF-04 Ready copy and the likely-backwards STF-02<->STF-03 dependency edge."
+note: "Mid-work checkpoint: journal/ops/sessions/the-bun-and-the-boundary-2026-07-16T0157.md evaluated Bun (Fable-5 spike) and deferred it on all surfaces, reserving it only as a named future backend-runtime candidate (decisions.md + ROADMAP). Housekeeping: removed the test-bun worktree/branch, gitignored dist-qa-drill, committed the prior STF-01/STF-04 board reconciliation + approved STF lesson-1 spec. STF milestone remains closed (the-board-and-the-baton); no STF cards moved."
 ---

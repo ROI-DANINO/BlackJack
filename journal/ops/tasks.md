@@ -88,6 +88,27 @@
 
 ## Active
 
+## Verification
+
+## Blocked
+
+## Done
+
+### STF-04 — Reconcile the early Hit-on-16 lesson moment
+- Type: research
+- Mode: read
+- Owner: orchestrator
+- Depends on: STF-01
+- Source: `docs/specs/product-vision.md`
+- Outcome: The earlier bust-risk interaction is explicitly contextualized so learners do not mistake it for Basic Strategy advice.
+- Next: Apply the approved one-string edit when the STF lesson is built (deferred write; linked from STF-05 or a small fix card).
+- Load: `web/src/learn/content/blackjack-basics.ts`, `web/src/learn/situations.ts`, `docs/specs/product-vision.md`, `docs/specs/research-brief.md`
+- Workspace: repository root
+- Done when: The design records approved wording/placement that preserves the original teaching goal without strategy contradiction.
+- Gate: user-approval
+- Evidence: Finding — all three `OPENINGS.stiffHands` examples (16v6, 15v5, 16v4) are Basic-Strategy STAND hands; the Hit unit instructs "choose Hit," a direct contradiction. Path A approved by user 2026-07-15: keep dealt hands, edit one `hit-hand` intro string to disclaim strategy + forward-reference STF; 16v6 becomes a deliberate callback. Approved wording/placement recorded in `docs/superpowers/specs/2026-07-15-strategy-table-fundamentals-lesson1-design.md` (Cross-Lesson Continuity).
+- Updated: 2026-07-15T10:06:50+03:00
+
 ### STF-01 — Choose the first learner-visible objective and sequence
 - Type: design
 - Mode: write
@@ -95,16 +116,10 @@
 - Depends on: none
 - Source: `ROADMAP.md`
 - Outcome: The first Strategy Table Fundamentals lesson has an approved mechanics-first objective and sequence from hand classification through table-open application.
-- Next: Choose the first learner-visible objective and sequence: hand classification, row/column table navigation, then table-open application.
+- Next: STF-02/STF-03/STF-04 design against this objective; STF-05 synthesizes the feature design.
 - Load: `ROADMAP.md`, `docs/specs/product-vision.md`, `docs/specs/learning-mastery-and-scoring.md`, `web/src/learn/types.ts`
 - Workspace: repository root
 - Done when: The learner objective, ordered steps, exclusions, and success evidence are explicitly approved.
 - Gate: user-approval
-- Evidence: Agent Kanban detour closed; this was the preserved product next action.
-- Updated: 2026-07-15T09:29:00+03:00
-
-## Verification
-
-## Blocked
-
-## Done
+- Evidence: Approved design written to `docs/superpowers/specs/2026-07-15-strategy-table-fundamentals-lesson1-design.md` (objective, 8-step sequence, adaptive checkpoint grading, exclusions, success evidence). Fable 5 two-hat review folded in; user approved 2026-07-15. Downstream deltas recorded for STF-02/03/04/05.
+- Updated: 2026-07-15T10:06:50+03:00
