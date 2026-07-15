@@ -30,6 +30,13 @@ dependency, database, service, or application-code changes.
 - Keep `journal/memory/` local-private; memory updates are not part of tracked commits.
 - Never stage `web/dist-qa-drill/` or any path not named in a task's staging allowlist.
 
+### Execution amendment: immutable source whitespace
+
+The pre-move/hash gate found four trailing-space lines in the raw originals: cloud lines 6 and 12,
+research line 8, and learning line 12. Preserve those bytes. `git diff --check` applies to authored
+documents; the archived originals pass through the recorded four warnings only when their byte counts
+and SHA-256 hashes still match the manifest.
+
 ---
 
 ## File Map
@@ -249,7 +256,9 @@ empty. Manually confirm no material claim is omitted or represented by more than
 
 ```bash
 git add docs/imports/2026-07-15-v2-future-guidance
-git diff --cached --check
+git diff --cached --check -- docs/imports/2026-07-15-v2-future-guidance/INDEX.md
+test "$(git diff --cached --check -- docs/imports/2026-07-15-v2-future-guidance/v2_*.md \
+  2>&1 | rg -c 'trailing whitespace')" -eq 4
 git diff --cached --name-only
 git commit -m "docs: archive V2 future guidance"
 ```
@@ -438,7 +447,10 @@ spec/plan/QA references still resolve.
 
 ```bash
 rg -n '\[[^]]+\]\([^)]*\.md[^)]*\)' README.md ROADMAP.md PROGRESS.md docs journal/docs-map.md
-git diff --check HEAD~4..HEAD
+git diff --check HEAD~4..HEAD -- . \
+  ':(exclude)docs/imports/2026-07-15-v2-future-guidance/v2_cloud_architecture_strategy.md' \
+  ':(exclude)docs/imports/2026-07-15-v2-future-guidance/v2_just_in_time_research_compass.md' \
+  ':(exclude)docs/imports/2026-07-15-v2-future-guidance/v2_learning_roadmap_expanded.md'
 git status --short
 ```
 

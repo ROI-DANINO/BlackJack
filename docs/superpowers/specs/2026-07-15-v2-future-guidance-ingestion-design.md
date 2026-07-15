@@ -264,7 +264,9 @@ The documentation implementation is complete only when:
 8. current state agrees across `active.md`, phase, tasks, progress, roadmap, and README;
 9. docs-map and Markdown links resolve;
 10. the staged path list matches the implementation plan's allowlist and excludes unrelated changes;
-11. `git diff --check` passes;
+11. `git diff --check` passes for authored documents; immutable archived originals may retain only
+    whitespace findings recorded in their import index when their byte counts and SHA-256 hashes
+    match the pre-move manifest;
 12. a focused review finds no raw directive promoted without evidence and no useful future guidance
     left only in the archive.
 
