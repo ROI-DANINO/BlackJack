@@ -24,7 +24,8 @@ not replacements for historical milestone names, phase identifiers, specs, commi
 - **T1 Core — blackjack truth:** ordered-shoe simulation, rules, settlement, replayable logs,
   ruleset-matched strategy, later counting truth, and table/machine variants. The simulator and
   verified H17/S17 strategy profiles are mature; future work is activated by learning or realism
-  consumers.
+  consumers. One overdue boundary-hardening item remains: extend WASM freshness coverage to
+  `Cargo.lock`/`build-wasm.sh` and prove native↔built-WASM parity with the next wire-changing slice.
 - **T2 Learning — architecture and pedagogy:** typed curriculum, deterministic lesson flow,
   engine-owned grading, feedback, practice, mastery, and later counting instruction. Blackjack
   Foundations and the Strategy Profile Foundation are complete. The next product slice is the first

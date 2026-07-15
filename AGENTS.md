@@ -29,7 +29,11 @@ Build a Duolingo-like blackjack training game that feels approachable while mode
 - Rust/WASM is a first-class candidate for the simulator core when correctness, speed, Monte Carlo volume, or portable deterministic execution matters.
 - Default V1 storage is in-memory state. Add browser storage, SQLite, Postgres, or another database only when persistence, sync, history, analytics, accounts, or multi-device use becomes a real requirement.
 - Keep the simulator core UI-independent; UI code should call engine APIs, not own blackjack rules.
-- Research-driven development trigger: before choosing a new language, runtime, database, paid service, or cross-language boundary, write down the task it serves, the alternatives considered, and why the simpler current path no longer holds.
+- Research-driven development trigger: before choosing a new language, runtime, database, paid
+  service, generated artifact, or cross-language/cross-target boundary, complete the six-field Tool
+  & Runtime Admission Protocol in `docs/specs/stack-boundaries.md` (active consumer, alternatives,
+  why the simpler path fails, serializable boundary, freshness/determinism evidence where relevant,
+  and exit condition).
 - Do not make stack decisions permanent by accident. Prefer small boundaries and serializable data shapes so TypeScript, Python, Rust/WASM, and future backend tools can plug in without rewriting the product core.
 - Before writing the simulator core, run a short stack spike comparing TypeScript, Rust/WASM, and Python roles for the V1 engine boundary.
 

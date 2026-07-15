@@ -45,7 +45,9 @@ Implementation plan: `docs/superpowers/plans/2026-07-15-strategy-profile-foundat
 - [ ] Define the smallest content/state surface the lesson needs, including how the verified profile
       and addressable strategy-table data are presented without moving strategy truth into TypeScript.
 - [ ] Define the smallest engine-owned grading API and its Rust/TypeScript contract; retain the
-      profile compatibility gate and verdict-versus-hand-outcome separation.
+      profile compatibility gate and verdict-versus-hand-outcome separation. Its implementation plan
+      must also close the overdue boundary hardening: watch `Cargo.lock`/`build-wasm.sh` for stale
+      artifacts and prove native↔built-WASM parity over deterministic vectors.
 - [ ] Reconcile the Blackjack Foundations "try Hit to feel bust risk" moment with the later strategy
       recommendation so the product does not teach it as Basic Strategy advice.
 - [ ] Write the feature design with its scoped learning/Player Experience QA boundary before an

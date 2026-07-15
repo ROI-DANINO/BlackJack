@@ -208,7 +208,7 @@ Use this complete ID ledger:
 
 ```text
 CLOUD-01 client-side Rust/WASM compute posture
-CLOUD-02 future login/progress/cross-device sync
+CLOUD-02 future profiles/progress/streaks/cross-device sync, with streaks deferred
 CLOUD-03 Supabase/Firebase as candidates only
 CLOUD-04 direct backend access from Learning/UI rejected
 CLOUD-05 offline queue/conflict resolution deferred
@@ -225,8 +225,8 @@ RESEARCH-04 learning-path QA already covered
 RESEARCH-05 curriculum separated from React already covered
 RESEARCH-06 remote curriculum/admin tooling deferred
 RESEARCH-07 external-beta telemetry research
-LEARNING-01 Duolingo-like short loop/game feel already covered
-LEARNING-02 web-first/mobile-later sequence
+LEARNING-01 short loop/coherent shell accepted; exact navigation/Stats/Lives/modal/sound deferred
+LEARNING-02 web-first/mobile-later accepted; mandatory shared codebase rejected
 LEARNING-03 mobile-runtime WASM admission spike
 LEARNING-04 define learning state before presentation, qualified by live implementation
 LEARNING-05 Rust/TypeScript/presentation ownership already covered
@@ -381,7 +381,8 @@ git commit -m "docs: fold V2 future guidance"
 Record Blackjack Basics and Strategy Profile Foundation as complete. State that the next product
 action is designing the first learner-visible Strategy Table Fundamentals lesson and the smallest
 engine-owned grading API it needs. Remove claims that V2 is only beginning with the first guided
-drill.
+drill. Record the overdue `Cargo.lock`/`build-wasm.sh` freshness and native↔built-WASM parity work
+against that next wire-changing slice without implementing runtime changes in this documentation pass.
 
 - [ ] **Step 2: Finish phase and task reconciliation**
 

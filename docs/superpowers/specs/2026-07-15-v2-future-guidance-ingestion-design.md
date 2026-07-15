@@ -73,7 +73,7 @@ rejected details remain visible in the import index without becoming current tas
 | Claim group | Disposition | Destination / treatment |
 |---|---|---|
 | Client-side Rust/WASM makes the trainer inexpensive to host | Covered | Existing WASM and client-authority decisions; no duplicate prose. |
-| Future hosted product provides login, progress persistence, and cross-device sync | Accepted + Covered | Surface the approved posture in `ROADMAP.md` and `docs/architecture.md`. |
+| Future hosted product provides profiles, progress, streaks, and cross-device sync | Accepted + Covered + Deferred | Surface the approved account/progress/sync posture in `ROADMAP.md` and `docs/architecture.md`; streaks remain a later T3 progression candidate, not an approved mechanic. |
 | Reserve a `ProgressStore` port and versioned progress records before persistence | Accepted + Covered | The ADR approves this reserve-now seam, but the code has neither a `ProgressStore` nor a versioned progress record. Record the outstanding implementation obligation explicitly in `ROADMAP.md`; this documentation pass does not close it, and no durable-progress feature may start without resolving it. |
 | Adopt Supabase or Firebase | Deferred | Candidate services only. Research and run the Tool & Runtime Admission Protocol when hosted auth/sync becomes active. |
 | Learning/UI code writes directly to a backend | Rejected | Provider access must stay behind a progress/sync boundary; controllers and React remain provider-agnostic. |
@@ -100,8 +100,8 @@ rejected details remain visible in the import index without becoming current tas
 
 | Claim group | Disposition | Destination / treatment |
 |---|---|---|
-| Duolingo-like short loop and premium game feel | Covered | Existing product vision and learning direction. |
-| Web first, mobile later | Accepted + Covered | Make the platform sequence explicit in `product-vision.md` and `ROADMAP.md`. |
+| Duolingo-like short loop, coherent shell, and prescribed navigation/Stats/Lives/modal/sound details | Accepted + Covered + Deferred | Fold only the durable game-feel/app-shell direction; exact shell layout and sensory/gamification mechanics wait for scoped T3 design and accessibility evidence. |
+| Web first, mobile later, with one mandatory shared codebase | Accepted + Covered + Rejected | Make the platform sequence explicit in `product-vision.md` and `ROADMAP.md`; reject a mandatory shared codebase as a premature runtime constraint. |
 | Prove WASM in Expo/Metro before mobile UI | Deferred | A mobile-runtime admission spike when mobile work begins; current browser WASM is already proven. |
 | Define learning state before presentation | Covered + Qualified | A headless deterministic controller exists; future UI consumes semantic state without waiting for speculative completeness. |
 | Rust owns rules; TypeScript owns learning; presentation stays thin | Covered | Existing architecture. |
@@ -195,6 +195,8 @@ authoritative resume context and merged code:
 - the next product action is the first learner-visible Strategy Table Fundamentals lesson and its
   smallest grading API;
 - completed strategy-profile tasks are not left marked in progress;
+- the overdue WASM freshness/parity hardening is recorded against the next wire-changing grading
+  slice rather than falsely treated as complete or implemented in this documentation pass;
 - future platform work lives in the roadmap/research brief, not current tasks.
 
 Preserve the existing local phase edit and finish its stale `step`/note reconciliation rather than

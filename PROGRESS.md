@@ -29,6 +29,9 @@
 - **Strategy Table Fundamentals design**: define the first learner-visible lesson—hand classification
   and table navigation—and the smallest engine-owned grading API it needs, without making the first
   experience memorization-first.
+- **Boundary hardening carried into that design**: the next Core wire change must extend the WASM
+  freshness guard to `Cargo.lock`/`build-wasm.sh` and add real native↔built-WASM parity evidence;
+  this was scheduled with the completed profile slice but did not land.
 
 ## Open questions
 - What should the first Strategy Table Fundamentals lesson teach first: hand classification, row/column lookup, or table-open practice?
