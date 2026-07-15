@@ -3,21 +3,6 @@
 
 ## Ready
 
-### AK-03 — Update and verify codex-next
-- Type: chore
-- Mode: write
-- Owner: unclaimed
-- Depends on: AK-02
-- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 3
-- Outcome: Marked next updates board plus bridge atomically; legacy next is unchanged.
-- Next: Read the next RED report and add the conditional two-file contract.
-- Load: `/home/roking/.codex/skills/codex-next/SKILL.md`, `/home/roking/.codex/skills/codex-next/agents/openai.yaml`, `/tmp/agent-kanban-evals/results/baseline-next.md`
-- Workspace: `main`
-- Done when: Marked next changes exactly tasks.md plus next.md, legacy next changes only next.md, and the skill folder validates.
-- Gate: code-review
-- Evidence: pending
-- Updated: 2026-07-15T06:21:15+03:00
-
 ### AK-04 — Update and verify codex-end
 - Type: chore
 - Mode: write
@@ -50,22 +35,22 @@
 
 ## Active
 
-## Verification
-
-### AK-02 — Update and verify codex-start
+### AK-03 — Update and verify codex-next
 - Type: chore
 - Mode: write
 - Owner: orchestrator
-- Depends on: AK-01
-- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 2
-- Outcome: Marked start validates and resumes from the board; legacy start is unchanged.
-- Next: Review `.superpowers/sdd/task-2-global.diff` against Task 2 and the two GREEN reports.
-- Load: `/home/roking/.codex/skills/codex-start/SKILL.md`, `/home/roking/.codex/skills/codex-start/agents/openai.yaml`, `.superpowers/sdd/task-2-global.diff`, `/tmp/agent-kanban-evals/results/green-start-marked.md`, `/tmp/agent-kanban-evals/results/green-start-legacy.md`
+- Depends on: AK-02
+- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 3
+- Outcome: Marked next updates board plus bridge atomically; legacy next is unchanged.
+- Next: Add and verify the conditional two-file contract in codex-next.
+- Load: `/home/roking/.codex/skills/codex-next/SKILL.md`, `/home/roking/.codex/skills/codex-next/agents/openai.yaml`, `/tmp/agent-kanban-evals/results/baseline-next.md`
 - Workspace: `main`
-- Done when: Marked and legacy fresh-agent scenarios pass, the fixture stays read-only, and the skill folder validates.
+- Done when: Marked next changes exactly tasks.md plus next.md, legacy next changes only next.md, and the skill folder validates.
 - Gate: code-review
-- Evidence: Quick validator passed; marked and legacy GREEN reports at `/tmp/agent-kanban-evals/results/green-start-marked.md` and `/tmp/agent-kanban-evals/results/green-start-legacy.md`; fixtures byte-clean; old/new SHA-256 hashes and recursive global diff recorded in `.superpowers/sdd/task-2-report.md` and `.superpowers/sdd/task-2-global.diff`.
-- Updated: 2026-07-15T06:35:51+03:00
+- Evidence: AK-02 approved; next baseline gap recorded in `/tmp/agent-kanban-evals/results/baseline-next.md`.
+- Updated: 2026-07-15T06:40:29+03:00
+
+## Verification
 
 ## Blocked
 
@@ -85,3 +70,18 @@
 - Gate: code-review
 - Evidence: Commits `1bd8657`, `eb2d5cb`; independent Task 1 review approved with no findings.
 - Updated: 2026-07-15T06:27:48+03:00
+
+### AK-02 — Update and verify codex-start
+- Type: chore
+- Mode: write
+- Owner: orchestrator
+- Depends on: AK-01
+- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 2
+- Outcome: Marked start validates and resumes from the board; legacy start is unchanged.
+- Next: Complete.
+- Load: `/home/roking/.codex/skills/codex-start/SKILL.md`, `/home/roking/.codex/skills/codex-start/agents/openai.yaml`, `.superpowers/sdd/task-2-global.diff`, `/tmp/agent-kanban-evals/results/green-start-marked.md`, `/tmp/agent-kanban-evals/results/green-start-legacy.md`
+- Workspace: `main`
+- Done when: Marked and legacy fresh-agent scenarios pass, the fixture stays read-only, and the skill folder validates.
+- Gate: code-review
+- Evidence: Board commit `4c9bdc1`; personal-skill hashes and GREEN reports in `.superpowers/sdd/task-2-report.md`; independent Task 2 review approved with no findings.
+- Updated: 2026-07-15T06:40:29+03:00
