@@ -26,115 +26,85 @@
 
 ## Ready
 
+### STF-02 — Define the lesson content and state surface
+- Type: design
+- Mode: write
+- Owner: unclaimed
+- Depends on: STF-01
+- Source: `ROADMAP.md`
+- Outcome: The lesson's smallest content/state contract presents verified-profile and addressable strategy-table data without moving strategy truth into TypeScript.
+- Next: Map the approved learner sequence onto the existing learning contracts and Rust strategy source.
+- Load: `web/src/learn/types.ts`, `web/src/learn/content/blackjack-basics.ts`, `crates/blackjack-core/src/strategy.rs`
+- Workspace: repository root
+- Done when: The design names every required content/state field, its owner, and why no smaller surface works.
+- Gate: code-review
+- Evidence: pending
+- Updated: 2026-07-15T09:29:00+03:00
+
+### STF-03 — Define the engine-owned grading boundary
+- Type: design
+- Mode: write
+- Owner: unclaimed
+- Depends on: STF-02
+- Source: `docs/specs/stack-boundaries.md`
+- Outcome: A smallest Rust-owned grading API is specified with profile compatibility, verdict-versus-outcome separation, WASM freshness, and native↔built-WASM parity evidence.
+- Next: Define request/response shapes and deterministic parity vectors at the Rust/TypeScript boundary.
+- Load: `crates/blackjack-core/src/strategy.rs`, `web/src/bridge/types.ts`, `web/src/learn/engine.ts`, `docs/specs/stack-boundaries.md`
+- Workspace: repository root
+- Done when: The API contract, ownership, error cases, freshness guard, and parity proof are explicit enough to plan without inventing behavior.
+- Gate: code-review
+- Evidence: pending
+- Updated: 2026-07-15T09:29:00+03:00
+
+### STF-04 — Reconcile the early Hit-on-16 lesson moment
+- Type: research
+- Mode: read
+- Owner: unclaimed
+- Depends on: STF-01
+- Source: `docs/specs/product-vision.md`
+- Outcome: The earlier bust-risk interaction is explicitly contextualized so learners do not mistake it for Basic Strategy advice.
+- Next: Compare the Blackjack Foundations wording with the later strategy recommendation and draft the smallest clarification.
+- Load: `web/src/learn/content/blackjack-basics.ts`, `docs/specs/product-vision.md`, `docs/specs/research-brief.md`
+- Workspace: repository root
+- Done when: The design records approved wording/placement that preserves the original teaching goal without strategy contradiction.
+- Gate: user-approval
+- Evidence: pending
+- Updated: 2026-07-15T09:29:00+03:00
+
+### STF-05 — Write the Strategy Table Fundamentals feature design
+- Type: design
+- Mode: write
+- Owner: unclaimed
+- Depends on: STF-02, STF-03, STF-04
+- Source: `docs/specs/qa-playtest-process.md`
+- Outcome: One approved feature design integrates learner sequence, content/state ownership, grading boundary, wording reconciliation, and scoped learning/Player Experience QA.
+- Next: Synthesize the approved card outcomes into the feature design and its QA boundary.
+- Load: `journal/ops/tasks.md`, `docs/specs/product-vision.md`, `docs/specs/qa-playtest-process.md`, `docs/specs/stack-boundaries.md`
+- Workspace: repository root
+- Done when: The feature design is approved and is detailed enough for a separate implementation plan.
+- Gate: user-approval
+- Evidence: pending
+- Updated: 2026-07-15T09:29:00+03:00
+
 ## Active
+
+### STF-01 — Choose the first learner-visible objective and sequence
+- Type: design
+- Mode: write
+- Owner: orchestrator
+- Depends on: none
+- Source: `ROADMAP.md`
+- Outcome: The first Strategy Table Fundamentals lesson has an approved mechanics-first objective and sequence from hand classification through table-open application.
+- Next: Choose the first learner-visible objective and sequence: hand classification, row/column table navigation, then table-open application.
+- Load: `ROADMAP.md`, `docs/specs/product-vision.md`, `docs/specs/learning-mastery-and-scoring.md`, `web/src/learn/types.ts`
+- Workspace: repository root
+- Done when: The learner objective, ordered steps, exclusions, and success evidence are explicitly approved.
+- Gate: user-approval
+- Evidence: Agent Kanban detour closed; this was the preserved product next action.
+- Updated: 2026-07-15T09:29:00+03:00
 
 ## Verification
 
 ## Blocked
 
 ## Done
-
-### AK-01 — Adopt board contract and capture RED baselines
-- Type: docs
-- Mode: write
-- Owner: orchestrator
-- Depends on: none
-- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 1
-- Outcome: Marked board, authority docs, and captured RED evidence exist.
-- Next: Complete.
-- Load: `journal/ops/tasks.md`, `AGENTS.md`, `journal/docs-map.md`, `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Workspace: `main`
-- Done when: The marker, five lanes, five valid cards, authority row, agent contract, and three honest RED reports exist.
-- Gate: code-review
-- Evidence: Commits `1bd8657`, `eb2d5cb`; independent Task 1 review approved with no findings.
-- Updated: 2026-07-15T06:27:48+03:00
-
-### AK-02 — Update and verify codex-start
-- Type: chore
-- Mode: write
-- Owner: orchestrator
-- Depends on: AK-01
-- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 2
-- Outcome: Marked start validates and resumes from the board; legacy start is unchanged.
-- Next: Complete.
-- Load: `$CODEX_HOME/skills/codex-start/SKILL.md`, `$CODEX_HOME/skills/codex-start/agents/openai.yaml`, `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Workspace: `main`
-- Done when: Marked and legacy fresh-agent scenarios pass, the fixture stays read-only, and the skill folder validates.
-- Gate: code-review
-- Evidence: Board commit `4c9bdc1`; final skill hashes and marked/legacy PASS are recorded in `journal/qa/runs/2026-07-15-agent-kanban/report.md`; independent Task 2 review approved.
-- Updated: 2026-07-15T06:40:29+03:00
-
-### AK-03 — Update and verify codex-next
-- Type: chore
-- Mode: write
-- Owner: orchestrator
-- Depends on: AK-02
-- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 3
-- Outcome: Marked next updates board plus bridge atomically; legacy next is unchanged.
-- Next: Complete.
-- Load: `$CODEX_HOME/skills/codex-next/SKILL.md`, `$CODEX_HOME/skills/codex-next/agents/openai.yaml`, `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Workspace: `main`
-- Done when: Marked next changes exactly tasks.md plus next.md, legacy next changes only next.md, and the skill folder validates.
-- Gate: code-review
-- Evidence: Board commit `6fb58ee`; final skill hashes and marked/legacy PASS are recorded in `journal/qa/runs/2026-07-15-agent-kanban/report.md`; independent Task 3 review approved.
-- Updated: 2026-07-15T06:50:35+03:00
-
-### AK-04 — Update and verify codex-end
-- Type: chore
-- Mode: write
-- Owner: orchestrator
-- Depends on: AK-03
-- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 4
-- Outcome: Marked end archives and reconciles cards; legacy end is unchanged.
-- Next: Complete.
-- Load: `$CODEX_HOME/skills/codex-end/SKILL.md`, `$CODEX_HOME/skills/codex-end/agents/openai.yaml`, `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Workspace: `main`
-- Done when: Marked end preserves an exact pre-update archive and legal transition, legacy end retains checklist behavior, and the skill folder validates.
-- Gate: code-review
-- Evidence: Board commit `1fb9376`; clean marked codex-end run `b9be56f`; legacy run `10f7d7a`; independent Task 4 re-review approved with no findings.
-- Updated: 2026-07-15T07:32:09+03:00
-
-### AK-06 — Restore the marked board policy contract
-- Type: fix
-- Mode: write
-- Owner: orchestrator
-- Depends on: AK-04
-- Source: `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Outcome: Marked boards state the exact local schema, movement, blocking, and two-cap WIP policy that the global skills validate.
-- Next: Complete.
-- Load: `journal/ops/tasks.md`, `docs/superpowers/specs/2026-07-15-agent-kanban-tasks-design.md`, `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Workspace: `feat/agent-kanban`
-- Done when: The live board and marked fixture template carry the policy, and a clean fresh start reports both WIP caps read-only.
-- Gate: code-review
-- Evidence: Commit `f7043a6`; template `833d1f2`; policy spike reported both WIP caps read-only; independent AK-06 review approved with no findings.
-- Updated: 2026-07-15T08:29:07+03:00
-
-### AK-05 — Run cross-skill conformance and feature QA
-- Type: qa
-- Mode: write
-- Owner: orchestrator
-- Depends on: AK-06
-- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 5
-- Outcome: Cross-skill fixtures, real read-only start, hashes, smoke tests, and ledger pass.
-- Next: Complete; run the real codex-end milestone close after whole-change review.
-- Load: `journal/qa/runs/2026-07-15-agent-kanban/report.md`, `journal/qa/ledger.md`, `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md`
-- Workspace: `feat/agent-kanban`
-- Done when: Marked and legacy lifecycle runs, real read-only start, skill hashes, product smoke, QA report, and ledger all pass.
-- Gate: feature-qa
-- Evidence: Commit `51be265`; 80 Rust / 217 web / full QA PASS; real start read-only/no drift; independent Task 5 feature-QA review approved with no findings; execution variance accepted as bounded and disclosed.
-- Updated: 2026-07-15T08:57:49+03:00
-
-### AK-07 — Complete movement policy and gate coverage
-- Type: fix
-- Mode: write
-- Owner: orchestrator
-- Depends on: AK-06
-- Source: `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Outcome: The board and mutating skills require every transition precondition, and focused fixtures prove Ready entry plus Done success/refusal.
-- Next: Complete.
-- Load: `journal/ops/tasks.md`, `docs/superpowers/specs/2026-07-15-agent-kanban-tasks-design.md`, `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Workspace: `feat/agent-kanban`
-- Done when: Local/template policies and codex-next/end enforce exact preconditions; Ready entry, Done success, and unmet-Done refusal all pass.
-- Gate: code-review
-- Evidence: Commits `1f221be`, `6a4c05f`; focused report `25845d5f...` proves Ready entry, Done success, and unmet-Done refusal; independent review approved after portability fix.
-- Updated: 2026-07-15T09:22:52+03:00
