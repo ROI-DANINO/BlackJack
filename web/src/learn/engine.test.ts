@@ -49,4 +49,16 @@ describe('LearnEngine profile-bound sessions', () => {
     });
     expect(engine.checkStrategyCompatibility('h17', session)).toBe('compatible');
   });
+
+  it('starts an explicit canonical S17 session and returns Rust compatibility unchanged', () => {
+    const engine = new LearnEngine(new WasmTransport());
+    const session = engine.startLiveForProfile('s17', 'profiled-s17');
+    expect(session.ruleset).toEqual({
+      id: 'v1-modern-classic-s17-6d', decks: 6, penetration_percent: 75,
+      dealer_soft_17: 'stand', blackjack_payout: 1.5, max_split_hands: 4,
+      double_after_split: true, resplit_aces: false, split_aces_receive_one_card: true,
+      insurance_auto_decline: true,
+    });
+    expect(engine.checkStrategyCompatibility('s17', session)).toBe('compatible');
+  });
 });

@@ -210,6 +210,16 @@ describe('LessonController — declared strategy profile gate', () => {
     for (const command of starts) expect(command.ruleset).toEqual(H17_RULESET);
   });
 
+  it('renders step zero for a matching S17 declaration through the actual WASM transport', () => {
+    const c = newController(declared(buildUnit(), 's17'));
+
+    c.begin();
+
+    expect(c.getState()).toMatchObject({
+      stepIndex: 0, step: { id: 'intro', type: 'explain' }, fatal: null,
+    });
+  });
+
   it('refuses an S17 declaration against an explicit H17 probe before any step or action can render', () => {
     const transport = new RewritingWasmTransport((command) => {
       if (command.command === 'start_session' && command.ruleset !== null) {
