@@ -42,6 +42,9 @@ no web application files changed.
 - Duplicate-ID `$codex-next` and `$codex-end` both refused atomically with no partial writes.
 - Blocked, interrupted, remediation, and milestone carry-forward paths all followed legal moves;
   carry-forward preserved the outgoing board and did not expand dependent/future work.
+- `green-entry-and-done.md`: PASS — Ready→Active changed only board plus bridge; a fully evidenced
+  Verification card reached Done with an exact pre-update archive; a gate-passed card with unmet
+  `Done when` remained in Verification. Report SHA-256: `25845d5fec44b9bd1ccd6eb474ff1f1d61ae4563c2df095ecd42bbb2205ba79f`.
 - Execution-mode variance: at the user's request to prioritize speed after the earlier nested
   fanout, the resumed QA implementer ran the final four isolated transition fixtures directly.
   These four cases use deterministic hashes/file-set assertions and are not claimed as fresh-agent
@@ -61,8 +64,8 @@ no web application files changed.
 - Validator: `codex-next` — `Skill is valid!`
 - Validator: `codex-end` — `Skill is valid!`
 - `codex-start/SKILL.md`: `7f9e5674cca3c7e0265e0ec6d1ae98606a20d4f45f26b1eff1b8453dd3df93d5`
-- `codex-next/SKILL.md`: `f00a780a67ce550a1583ae4696e84397b2be9fa8bfca46be9c13d614a7196483`
-- `codex-end/SKILL.md`: `21e695a037291edd54ca8c8d9de57268d7c26eb749901828298990aee590c246`
+- `codex-next/SKILL.md`: `ce7619238309886242a4fdf579b47875cd990f8d3d3f38833fce71818482e081`
+- `codex-end/SKILL.md`: `d6c4caa77c56ff9b208b70f4ceba56b27e12a84c919d3c47c14fe063b244d3e0`
 - `codex-start/agents/openai.yaml`: `b1db2413585df5ea6c87bd37e0bf6d2317788330b3aef4c3d86a64e9213a89ff`
 - `codex-next/agents/openai.yaml`: `b10d00a2809c87123a1f2e72900740d8647a9231f3eba62d2882d5cd605fa3a9`
 - `codex-end/agents/openai.yaml`: `a49f4ad9a2e3c98905765fb99700f44fa726c689361001421fabdf774b88a56e`
@@ -82,9 +85,13 @@ no web application files changed.
 
 ## Findings
 
-None.
+- `QA-018` (major, agent workflow): whole-change review found that the local movement policy and
+  mutating skills did not require demonstrable `Done when` satisfaction, and QA had not covered
+  Ready entry or gated Done success/refusal. **Verified fixed** in `1f221be`, portability cleanup
+  `6a4c05f`, board close `f12d580`; focused report `green-entry-and-done.md` passed all three cases.
 
 ## Verdict
 
-PASS. Every marked invariant, legacy regression, skill validation, legal transition, real-start
-read-only check, and required smoke command passed.
+PASS. Every marked invariant, legacy regression, skill validation, legal transition (including
+Ready entry and gated Done success/refusal), real-start read-only check, and required smoke command
+passed. QA-018 is verified closed.
