@@ -1,9 +1,9 @@
 ---
 phase: research
 sub_phase: strategy-table-fundamentals-design
-plan: null
+plan: docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md
 spec: docs/superpowers/specs/2026-07-15-agent-kanban-tasks-design.md
-step: "Review the approved Agent Kanban design, then write its implementation plan."
+step: "Review the Agent Kanban implementation plan, then execute it task by task."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -27,6 +27,6 @@ detour:
   - phase: v2-learning-foundations
     step: "Design the first learner-visible Strategy Table Fundamentals lesson (hand classification/table navigation) and the smallest engine-owned grading API it needs."
 blocking: null
-next: "Review docs/superpowers/specs/2026-07-15-agent-kanban-tasks-design.md; after approval, write the implementation plan."
-note: "Research detour: the approved design enhances journal/ops/tasks.md into an orchestrator-written Agent Kanban and conditionally integrates it with codex-start/codex-next/codex-end. The parked Strategy Table Fundamentals step remains in detour."
+next: "Choose subagent-driven or inline execution for docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md."
+note: "Research detour: the approved Agent Kanban design now has a five-task implementation plan covering the tracked board contract, RED/GREEN validation of each global skill, cross-skill feature QA, and close handoff. The parked Strategy Table Fundamentals step remains in detour."
 ---
