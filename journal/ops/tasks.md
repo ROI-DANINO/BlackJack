@@ -25,26 +25,24 @@
 
 ## Active
 
-## Verification
-
-## Blocked
-
 ### AK-05 — Run cross-skill conformance and feature QA
 - Type: qa
-- Mode: read
+- Mode: write
 - Owner: orchestrator
 - Depends on: AK-06
 - Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 5
 - Outcome: Cross-skill fixtures, real read-only start, hashes, smoke tests, and ledger pass.
-- Next: Resume the four legal transitions after AK-06 passes review and the clean WIP rerun passes.
+- Next: Run the four legal transition cases, real read-only start, product smoke, and QA reconciliation.
 - Load: `journal/ops/tasks.md`, `journal/qa/ledger.md`, `docs/specs/qa-playtest-process.md`, `/tmp/agent-kanban-evals/results/`
 - Workspace: `feat/agent-kanban`
 - Done when: Marked and legacy lifecycle runs, real read-only start, skill hashes, product smoke, QA report, and ledger all pass.
 - Gate: feature-qa
-- Evidence: Marked and legacy lifecycles passed; eight clean invariant cases and duplicate next/end refusals passed; clean WIP run exposed missing local policy.
-- Updated: 2026-07-15T08:23:52+03:00
-- Blocked by: The updated reusable marked template still needs its clean two-cap WIP rerun.
-- Unblock when: A clean fresh start from template commit `833d1f2` reports both WIP caps read-only.
+- Evidence: Marked/legacy lifecycles, nine invariant cases, duplicate mutation refusals, and fixed two-cap WIP rerun pass; policy fix `f7043a6` approved.
+- Updated: 2026-07-15T08:29:07+03:00
+
+## Verification
+
+## Blocked
 
 ## Done
 
