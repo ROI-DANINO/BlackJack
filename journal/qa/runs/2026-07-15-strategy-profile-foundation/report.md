@@ -1,15 +1,17 @@
 # Strategy Profile Foundation — Feature QA
 
 - **Verdict:** PASS
-- **Code evaluated:** `84953ed` (`feat(learn): gate profile-declared lessons by ruleset`)
+- **Code evaluated:** `d162352` (`test(learn): prove positive S17 profile gate`)
 - **Scope baseline:** `8952828`
 - **Finding status:** no new findings; existing backlog is unchanged.
 
 ## Scope
 
-`git diff --name-status 8952828..84953ed` changed `crates/blackjack-core/`,
-`web/src/bridge/`, `web/src/learn/`, and QA-report plumbing. It did not change
-`web/src/app/`.
+`git diff --name-status 8952828..d162352` changed `crates/blackjack-core/`,
+`web/src/bridge/`, `web/src/learn/`, and QA-report plumbing. Final code commit `d162352`
+adds positive S17 profile-gate tests in the learning engine/controller. The commands below ran
+from `6df126f`, a documentation-only descendant: `git diff --name-status d162352..6df126f --
+web crates` is empty. `web/src/app/` did not change.
 
 - **Deep:** engine rules/math, bridge/wire, and Blackjack Basics learning.
 - **Smoke:** payout, round/state flow, and robustness, whose feature behavior did not change.
@@ -23,7 +25,8 @@
 | `cargo fmt --all -- --check` | PASS |
 | `cargo clippy -p blackjack-core -- -D warnings` | PASS |
 | `cargo test -p blackjack-core` | PASS — 92 tests |
-| `npm --prefix web run test` | PASS — 22 files, 215 tests |
+| `npm --prefix web run test -- learn/engine.test.ts learn/controller.test.ts` | PASS — 2 files, 34 tests |
+| `npm --prefix web run test` | PASS — 22 files, 217 tests |
 | `npm --prefix web run qa` | PASS — rules, flow, breakit, learn |
 
 The web test preflight and every QA role ran `scripts/check-wasm-fresh.sh`. All passed with
@@ -42,17 +45,16 @@ the current WASM artifact, so no `build:wasm` recovery was necessary.
 
 ## Profile-gate lifecycle
 
-Focused real-WASM evidence was re-run with:
+Focused real-WASM evidence, including the final positive S17 cases, was re-run with:
 
 ```sh
-npm --prefix web run test -- learn/controller.test.ts
+npm --prefix web run test -- learn/engine.test.ts learn/controller.test.ts
 ```
 
-It passed 27/27 tests. `web/src/learn/controller.test.ts` initializes the real WASM module in
+It passed 34/34 tests (six engine and 28 controller tests). `web/src/learn/controller.test.ts` initializes the real WASM module in
 `beforeAll` and routes `RewritingWasmTransport` calls through `WasmTransport`.
 
-- `starts a matching H17 declaration before rendering step zero and keeps H17 for an arranged hand`:
-  compatible result reaches a renderable step.
+- matching H17 and S17 declarations reach renderable steps through the real WASM transport.
 - `refuses an S17 declaration against an explicit H17 probe before any step or action can render`:
   `profile_mismatch` is fatal before render.
 - `refuses an altered known-id ruleset before any step or action can render`:
@@ -64,4 +66,5 @@ It passed 27/27 tests. `web/src/learn/controller.test.ts` initializes the real W
 
 The profile foundation preserves Rust as the compatibility authority, carries its validated
 verdict through the bridge, gates declared lessons safely before rendering, and leaves the
-profile-less Blackjack Basics path playable. Feature QA is PASS; no `QA-NNN` was created.
+profile-less Blackjack Basics path playable. This PASS is certified through final code commit
+`d162352`; no `QA-NNN` was created.

@@ -3,9 +3,9 @@
 > QA script-suite role `flow`. Spec: `docs/specs/2026-07-10-qa-script-suite.md`.
 
 - **Verdict:** PASS
-- Started: 2026-07-15T00:06:16.677Z
-- Finished: 2026-07-15T00:06:34.540Z
-- Commit: `84953ed`
+- Started: 2026-07-15T00:20:16.994Z
+- Finished: 2026-07-15T00:20:33.843Z
+- Commit: `6df126f`
 - Chromium: 149.0.7827.55
 - Base URL: http://localhost:4321/
 - Snapshots captured: 273

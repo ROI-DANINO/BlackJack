@@ -206,6 +206,10 @@
         },
         {
           "stepId": "final-outcome-check",
+          "correct": false
+        },
+        {
+          "stepId": "final-outcome-check",
           "correct": true
         }
       ]

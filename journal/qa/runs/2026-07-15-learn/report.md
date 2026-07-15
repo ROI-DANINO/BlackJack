@@ -3,9 +3,9 @@
 > QA script-suite role `learn`. Spec: `docs/superpowers/specs/2026-07-11-blackjack-basics-learning-foundation-design.md`.
 
 - **Verdict:** PASS
-- Started: 2026-07-15T00:07:20.886Z
-- Finished: 2026-07-15T00:07:34.533Z
-- Commit: `84953ed`
+- Started: 2026-07-15T00:21:14.880Z
+- Finished: 2026-07-15T00:21:31.741Z
+- Commit: `6df126f`
 - Chromium: 149.0.7827.55
 - Base URL: http://localhost:4325/
 - Units completed: 9/9
@@ -23,7 +23,7 @@
 - Blackjack Is Special: 5 steps, 5 attempts, required checks [natural-check, payout-check], 1 arranged hands, 0 live hands.
 - Double Down: 5 steps, 4 attempts, required checks [double-wager-check], 1 arranged hands, 0 live hands.
 - Split a Pair: 5 steps, 4 attempts, required checks [split-count-check], 1 arranged hands, 0 live hands.
-- Play a Full Round: 4 steps, 2 attempts, required checks [final-outcome-check], 0 arranged hands, 1 live hands.
+- Play a Full Round: 4 steps, 3 attempts, required checks [final-outcome-check], 0 arranged hands, 1 live hands.
 
 ## Checks
 
