@@ -3,21 +3,6 @@
 
 ## Ready
 
-### AK-02 — Update and verify codex-start
-- Type: chore
-- Mode: write
-- Owner: unclaimed
-- Depends on: AK-01
-- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 2
-- Outcome: Marked start validates and resumes from the board; legacy start is unchanged.
-- Next: Read the start RED report and add the smallest marked-board branch.
-- Load: `/home/roking/.codex/skills/codex-start/SKILL.md`, `/home/roking/.codex/skills/codex-start/agents/openai.yaml`, `/tmp/agent-kanban-evals/results/baseline-start.md`
-- Workspace: `main`
-- Done when: Marked and legacy fresh-agent scenarios pass, the fixture stays read-only, and the skill folder validates.
-- Gate: code-review
-- Evidence: pending
-- Updated: 2026-07-15T06:21:15+03:00
-
 ### AK-03 — Update and verify codex-next
 - Type: chore
 - Mode: write
@@ -65,7 +50,26 @@
 
 ## Active
 
+### AK-02 — Update and verify codex-start
+- Type: chore
+- Mode: write
+- Owner: orchestrator
+- Depends on: AK-01
+- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 2
+- Outcome: Marked start validates and resumes from the board; legacy start is unchanged.
+- Next: Add and verify the smallest marked-board branch in codex-start.
+- Load: `/home/roking/.codex/skills/codex-start/SKILL.md`, `/home/roking/.codex/skills/codex-start/agents/openai.yaml`, `/tmp/agent-kanban-evals/results/baseline-start.md`
+- Workspace: `main`
+- Done when: Marked and legacy fresh-agent scenarios pass, the fixture stays read-only, and the skill folder validates.
+- Gate: code-review
+- Evidence: Task 1 approved; baseline gap recorded in `/tmp/agent-kanban-evals/results/baseline-start.md`.
+- Updated: 2026-07-15T06:27:48+03:00
+
 ## Verification
+
+## Blocked
+
+## Done
 
 ### AK-01 — Adopt board contract and capture RED baselines
 - Type: docs
@@ -74,14 +78,10 @@
 - Depends on: none
 - Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 1
 - Outcome: Marked board, authority docs, and captured RED evidence exist.
-- Next: Review the three RED reports, then update codex-start.
+- Next: Complete.
 - Load: `journal/ops/tasks.md`, `AGENTS.md`, `journal/docs-map.md`, `/tmp/agent-kanban-evals/results/baseline-start.md`, `/tmp/agent-kanban-evals/results/baseline-next.md`, `/tmp/agent-kanban-evals/results/baseline-end.md`
 - Workspace: `main`
 - Done when: The marker, five lanes, five valid cards, authority row, agent contract, and three honest RED reports exist.
 - Gate: code-review
-- Evidence: `/tmp/agent-kanban-evals/results/baseline-{start,next,end}.md`; board contract checks passed; commit pending
-- Updated: 2026-07-15T06:21:15+03:00
-
-## Blocked
-
-## Done
+- Evidence: Commits `1bd8657`, `eb2d5cb`; independent Task 1 review approved with no findings.
+- Updated: 2026-07-15T06:27:48+03:00
