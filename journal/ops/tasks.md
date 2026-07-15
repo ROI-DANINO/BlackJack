@@ -76,7 +76,7 @@
 - Workspace: `main`
 - Done when: Marked and legacy fresh-agent scenarios pass, the fixture stays read-only, and the skill folder validates.
 - Gate: code-review
-- Evidence: Board commit `4c9bdc1`; personal-skill hashes and GREEN reports in `.superpowers/sdd/task-2-report.md`; independent Task 2 review approved with no findings.
+- Evidence: Board commit `4c9bdc1`; final skill hashes and marked/legacy PASS are recorded in `journal/qa/runs/2026-07-15-agent-kanban/report.md`; independent Task 2 review approved.
 - Updated: 2026-07-15T06:40:29+03:00
 
 ### AK-03 — Update and verify codex-next
@@ -91,7 +91,7 @@
 - Workspace: `main`
 - Done when: Marked next changes exactly tasks.md plus next.md, legacy next changes only next.md, and the skill folder validates.
 - Gate: code-review
-- Evidence: Board commit `6fb58ee`; personal-skill hashes and GREEN reports in `.superpowers/sdd/task-3-report.md`; independent Task 3 review approved with no findings.
+- Evidence: Board commit `6fb58ee`; final skill hashes and marked/legacy PASS are recorded in `journal/qa/runs/2026-07-15-agent-kanban/report.md`; independent Task 3 review approved.
 - Updated: 2026-07-15T06:50:35+03:00
 
 ### AK-04 — Update and verify codex-end
