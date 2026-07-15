@@ -24,13 +24,17 @@ web crates` is empty. `web/src/app/` did not change.
 |---|---|
 | `cargo fmt --all -- --check` | PASS |
 | `cargo clippy -p blackjack-core -- -D warnings` | PASS |
-| `cargo test -p blackjack-core` | PASS — 92 tests |
+| `cargo test -p blackjack-core` | PASS — 80 tests |
 | `npm --prefix web run test -- learn/engine.test.ts learn/controller.test.ts` | PASS — 2 files, 34 tests |
 | `npm --prefix web run test` | PASS — 22 files, 217 tests |
 | `npm --prefix web run qa` | PASS — rules, flow, breakit, learn |
 
 The web test preflight and every QA role ran `scripts/check-wasm-fresh.sh`. All passed with
 the current WASM artifact, so no `build:wasm` recovery was necessary.
+
+Correction (2026-07-15): the Rust total was originally reported as 92. A fresh
+`cargo test -p blackjack-core -- --list` recount confirmed 80 tests; the recorded PASS verdict is
+unchanged.
 
 ## Browser-pack evidence
 

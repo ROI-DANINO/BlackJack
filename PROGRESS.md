@@ -22,7 +22,7 @@
   driven browser QA.
 - **Strategy Profile Foundation shipped and feature-QA passed** (`5bbc0b4`): verified H17/S17
   strategy profiles, engine-owned full-ruleset compatibility, a guarded Rust/TypeScript wire contract,
-  and lesson lifecycle enforcement. Latest close evidence: 92 Rust tests, 217 web tests, and full QA
+  and lesson lifecycle enforcement. Latest close evidence: 80 Rust tests, 217 web tests, and full QA
   pack PASS.
 
 ## In progress

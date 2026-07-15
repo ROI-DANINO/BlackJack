@@ -35,7 +35,7 @@ Implementation plan: `docs/superpowers/plans/2026-07-15-strategy-profile-foundat
       TypeScript validation, and contract tests.
 - [x] **Task 6: Lesson lifecycle gate** — declared-profile compatibility enforcement with
       profile-less regression coverage.
-- [x] **Task 7: Scoped feature QA and ledger reconciliation** — 92 Rust tests, 217 web tests, and
+- [x] **Task 7: Scoped feature QA and ledger reconciliation** — 80 Rust tests, 217 web tests, and
       the full QA pack passed.
 
 ## In progress — Strategy Table Fundamentals design
