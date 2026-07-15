@@ -20,6 +20,8 @@
 
 ## Active
 
+## Verification
+
 ### AK-04 — Update and verify codex-end
 - Type: chore
 - Mode: write
@@ -27,15 +29,13 @@
 - Depends on: AK-03
 - Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 4
 - Outcome: Marked end archives and reconciles cards; legacy end is unchanged.
-- Next: Add marker validation and legal board transitions while preserving archive ordering.
-- Load: `/home/roking/.codex/skills/codex-end/SKILL.md`, `/home/roking/.codex/skills/codex-end/agents/openai.yaml`, `/tmp/agent-kanban-evals/results/baseline-end.md`
+- Next: Review the codex-end marked and legacy rollout evidence.
+- Load: `/home/roking/.codex/skills/codex-end/SKILL.md`, `/home/roking/.codex/skills/codex-end/agents/openai.yaml`, `.superpowers/sdd/task-4-global.diff`, `/tmp/agent-kanban-evals/results/green-end-marked.md`, `/tmp/agent-kanban-evals/results/green-end-legacy.md`
 - Workspace: `main`
 - Done when: Marked end preserves an exact pre-update archive and legal transition, legacy end retains checklist behavior, and the skill folder validates.
 - Gate: code-review
-- Evidence: AK-03 approved; end baseline already proves archive ordering but lacks validation/legal-transition guarantees.
-- Updated: 2026-07-15T06:50:35+03:00
-
-## Verification
+- Evidence: Validator passed at 204 lines; marked fixture commit `bbaafea` with exact archive SHA-256 `ab833969...3e86`; legacy fixture commit `10f7d7a` with exact archive SHA-256 `9bc9dad8...af1e`; focused assertions passed; skill hashes and GREEN reports in `.superpowers/sdd/task-4-report.md`.
+- Updated: 2026-07-15T07:19:17+03:00
 
 ## Blocked
 
