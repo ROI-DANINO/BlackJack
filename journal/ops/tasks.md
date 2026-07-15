@@ -25,6 +25,8 @@
 
 ## Active
 
+## Verification
+
 ### AK-05 — Run cross-skill conformance and feature QA
 - Type: qa
 - Mode: write
@@ -32,15 +34,13 @@
 - Depends on: AK-06
 - Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 5
 - Outcome: Cross-skill fixtures, real read-only start, hashes, smoke tests, and ledger pass.
-- Next: Run the four legal transition cases, real read-only start, product smoke, and QA reconciliation.
-- Load: `journal/ops/tasks.md`, `journal/qa/ledger.md`, `docs/specs/qa-playtest-process.md`, `/tmp/agent-kanban-evals/results/`
+- Next: Review the AK-05 feature-QA evidence, then run codex-end to close the Agent Kanban detour.
+- Load: `journal/qa/runs/2026-07-15-agent-kanban/report.md`, `journal/qa/ledger.md`, `.superpowers/sdd/task-5-report.md`, `/tmp/agent-kanban-evals/results/`
 - Workspace: `feat/agent-kanban`
 - Done when: Marked and legacy lifecycle runs, real read-only start, skill hashes, product smoke, QA report, and ledger all pass.
 - Gate: feature-qa
-- Evidence: Marked/legacy lifecycles, nine invariant cases, duplicate mutation refusals, and fixed two-cap WIP rerun pass; policy fix `f7043a6` approved.
-- Updated: 2026-07-15T08:29:07+03:00
-
-## Verification
+- Evidence: Feature QA PASS in `journal/qa/runs/2026-07-15-agent-kanban/report.md`; commit `51be265`; marked lifecycle `5861adff`; legacy lifecycle `68492580`; negative/refusal/transition matrix `a92f8d0c`; real-start `98d9f413`; validators 3/3; smoke 80 Rust / 217 web / rules+flow+breakit+learn PASS; no findings.
+- Updated: 2026-07-15T08:52:04+03:00
 
 ## Blocked
 
