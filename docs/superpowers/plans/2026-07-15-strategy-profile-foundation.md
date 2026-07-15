@@ -77,11 +77,11 @@ Consumes: Task-1 S17 transcription and Task-2 resolver.
 
 Produces: profile-selected lookup and exhaustive source-cell proof for both profiles.
 
-- [ ] Step 1: Change test recommend() helper to receive a Ruleset. Run every hard, soft, and pair row against both canonical rulesets; retain natural-blackjack, no-action, split-21, ten-value, unavailable Double, and unavailable Split tests.
-- [ ] Step 2: Run cargo test -p blackjack-core --test strategy_tests recommends_every_s17 -- --nocapture. Expected: fail because the current H17 id gate rejects S17.
-- [ ] Step 3: Move the tables under an exhaustive StrategyProfile tables() match. Resolve first; if None, keep the present basic strategy unavailable error. Share chart parsing, pair fallback, and legal-action fallback. Encode the exact Task-1 rows, never a difference patch. Correct the discovered H17 soft-19 row from `SSSSSXSSSS` to source-verified `SSSSXSSSSS` (double-or-stand only against dealer 6); this is a pre-existing transcription defect, not a profile behavior change.
-- [ ] Step 4: Run cargo test -p blackjack-core --test strategy_tests and cargo test -p blackjack-core. Expected: PASS, with 320 tested cells per profile.
-- [ ] Step 5: Commit: feat(core): select basic strategy by verified profile.
+- [x] Step 1: Change test recommend() helper to receive a Ruleset. Run every hard, soft, and pair row against both canonical rulesets; retain natural-blackjack, no-action, split-21, ten-value, unavailable Double, and unavailable Split tests.
+- [x] Step 2: Run cargo test -p blackjack-core --test strategy_tests recommends_every_s17 -- --nocapture. Expected: fail because the current H17 id gate rejects S17.
+- [x] Step 3: Move the tables under an exhaustive StrategyProfile tables() match. Resolve first; if None, keep the present basic strategy unavailable error. Share chart parsing, pair fallback, and legal-action fallback. Encode the exact Task-1 rows, never a difference patch. Correct the discovered H17 soft-19 row from `SSSSSXSSSS` to source-verified `SSSSXSSSSS` (double-or-stand only against dealer 6); this is a pre-existing transcription defect, not a profile behavior change.
+- [x] Step 4: Run cargo test -p blackjack-core --test strategy_tests and cargo test -p blackjack-core. Expected: PASS, with 320 tested cells per profile.
+- [x] Step 5: Commit: feat(core): select basic strategy by verified profile.
 
 ### Task 4: Add Rust authoritative compatibility verdict
 
@@ -95,11 +95,11 @@ Consumes: StrategyProfile, resolve_profile, SessionState.ruleset.
 
 Produces: check_strategy_compatibility command and compatible, profile_mismatch, unsupported_ruleset responses.
 
-- [ ] Step 1: Write failing tests using canonical H17 session, canonical S17 session, and a valid altered-ruleset session. Assert all three response variants and an ok JSON envelope of type strategy_compatibility.
-- [ ] Step 2: Add CoreCommand::CheckStrategyCompatibility { profile_id: StrategyProfile, session: SessionState }; add serde snake-case StrategyCompatibility. In handle_command, resolve session.ruleset: equal is compatible, other known profile is mismatch, None is unsupported. Do not accept a client ruleset or provide a resolver query.
-- [ ] Step 3: Extend golden_fixtures.rs to generate a compatible response fixture from Rust, rather than hand authoring it.
-- [ ] Step 4: Run cargo test -p blackjack-core --test boundary_tests and cargo test -p blackjack-core --test golden_fixtures. Expected: PASS.
-- [ ] Step 5: Commit: feat(core): expose strategy compatibility verdict.
+- [x] Step 1: Write failing tests using canonical H17 session, canonical S17 session, and a valid altered-ruleset session. Assert all three response variants and an ok JSON envelope of type strategy_compatibility.
+- [x] Step 2: Add CoreCommand::CheckStrategyCompatibility { profile_id: StrategyProfile, session: SessionState }; add serde snake-case StrategyCompatibility. In handle_command, resolve session.ruleset: equal is compatible, other known profile is mismatch, None is unsupported. Do not accept a client ruleset or provide a resolver query.
+- [x] Step 3: Extend golden_fixtures.rs to generate a compatible response fixture from Rust, rather than hand authoring it.
+- [x] Step 4: Run cargo test -p blackjack-core --test boundary_tests and cargo test -p blackjack-core --test golden_fixtures. Expected: PASS.
+- [x] Step 5: Commit: feat(core): expose strategy compatibility verdict.
 
 ### Task 5: Make TypeScript a validated passive consumer
 
@@ -112,10 +112,10 @@ Consumes: Task-4 command, response, fixture.
 
 Produces: StrategyProfileId h17/s17, StrategyCompatibility literals, and malformed verdict rejection.
 
-- [ ] Step 1: Add failing fixture test for an ok strategy_compatibility compatible response. Add negative data maybe test that must throw BridgeError.
-- [ ] Step 2: Add the command using profile_id/session and response union. Extend parseCliOutput so the response is accepted only when data is compatible, profile_mismatch, or unsupported_ruleset. Do not add any TS ruleset-to-profile helper.
-- [ ] Step 3: Run npm --prefix web run test -- bridge/contract.test.ts and npm --prefix web run test. Expected: PASS.
-- [ ] Step 4: Commit: feat(web): carry strategy compatibility verdict.
+- [x] Step 1: Add failing fixture test for an ok strategy_compatibility compatible response. Add negative data maybe test that must throw BridgeError.
+- [x] Step 2: Add the command using profile_id/session and response union. Extend parseCliOutput so the response is accepted only when data is compatible, profile_mismatch, or unsupported_ruleset. Do not add any TS ruleset-to-profile helper.
+- [x] Step 3: Run npm --prefix web run test -- bridge/contract.test.ts and npm --prefix web run test. Expected: PASS.
+- [x] Step 4: Commit: feat(web): carry strategy compatibility verdict.
 
 ### Task 6: Gate declared-profile lessons before render
 
@@ -133,12 +133,12 @@ Consumes: Task-5 bridge literals and verdict.
 
 Produces: optional Unit.profileId, authoring validation, explicit canonical session setup, fatal no-render mismatch/unsupported path.
 
-- [ ] Step 1: Add failing tests: invalid runtime profile declaration reports unit basics: unknown strategy profile: bad; matching H17 reaches step zero; declared S17 against explicit H17 gives fatal and null step; altered known-id ruleset gives unsupported fatal; profile-less Blackjack Basics starts with ruleset null and remains playable.
-- [ ] Step 2: Add profileId?: StrategyProfileId to Unit; validate literal membership only.
-- [ ] Step 3: Preserve startArranged/startLive defaults. Add adapter methods whose explicit profile argument selects a closed canonical Ruleset payload for every declared-profile arranged or live session, plus checkStrategyCompatibility(profileId, session), returning Rust’s verdict unchanged.
-- [ ] Step 4: At begin(), profile-less keeps enterStep(0). A declared profile starts one explicit probe session, checks compatibility, and enters step zero only when compatible. Every later hand-step session for that unit uses the same explicit profile argument. Mismatch and unsupported set an actionable LessonState.fatal before any step, legal action, render, or grading path. Reuse fatal; do not change current curriculum content.
-- [ ] Step 5: Run npm --prefix web run test -- learn/validate.test.ts learn/engine.test.ts learn/controller.test.ts learn/content/blackjack-basics.test.ts and npm --prefix web run test. Expected: PASS.
-- [ ] Step 6: Commit: feat(learn): gate profile-declared lessons by ruleset.
+- [x] Step 1: Add failing tests: invalid runtime profile declaration reports unit basics: unknown strategy profile: bad; matching H17 reaches step zero; declared S17 against explicit H17 gives fatal and null step; altered known-id ruleset gives unsupported fatal; profile-less Blackjack Basics starts with ruleset null and remains playable.
+- [x] Step 2: Add profileId?: StrategyProfileId to Unit; validate literal membership only.
+- [x] Step 3: Preserve startArranged/startLive defaults. Add adapter methods whose explicit profile argument selects a closed canonical Ruleset payload for every declared-profile arranged or live session, plus checkStrategyCompatibility(profileId, session), returning Rust’s verdict unchanged.
+- [x] Step 4: At begin(), profile-less keeps enterStep(0). A declared profile starts one explicit probe session, checks compatibility, and enters step zero only when compatible. Every later hand-step session for that unit uses the same explicit profile argument. Mismatch and unsupported set an actionable LessonState.fatal before any step, legal action, render, or grading path. Reuse fatal; do not change current curriculum content.
+- [x] Step 5: Run npm --prefix web run test -- learn/validate.test.ts learn/engine.test.ts learn/controller.test.ts learn/content/blackjack-basics.test.ts and npm --prefix web run test. Expected: PASS.
+- [x] Step 6: Commit: feat(learn): gate profile-declared lessons by ruleset.
 
 ### Task 7: Close scoped feature QA and reconcile ledger
 
@@ -150,11 +150,11 @@ Consumes: final code and deterministic evidence.
 
 Produces: scoped PASS/FAIL verdict, coverage commit references, triaged findings.
 
-- [ ] Step 1: Compare git diff 8952828..HEAD for crates, web/src/learn, and web/src/bridge. Deep-test engine, UI/wire, and Blackjack Basics learning; smoke-test proven payment/flow. Skip PX unless web/src/app changes.
-- [ ] Step 2: Run cargo fmt --all -- --check; cargo clippy -p blackjack-core -- -D warnings; cargo test -p blackjack-core; npm --prefix web run test; npm --prefix web run qa. Expected: all zero. If Rust makes the WASM freshness guard fail, run npm --prefix web run build:wasm then rerun the blocked check.
-- [ ] Step 3: Using actual WASM transport, record compatible to renderable, mismatch to pre-render fatal, unsupported to pre-render fatal, and profile-less Basics still playable.
-- [ ] Step 4: Write commands, SHA, deep/smoke scope, focused evidence, findings, and verdict. Update changed ledger rows to final passing commit; create QA-NNN only for a real finding.
-- [ ] Step 5: Commit: test(qa): close strategy profile foundation.
+- [x] Step 1: Compare git diff 8952828..HEAD for crates, web/src/learn, and web/src/bridge. Deep-test engine, UI/wire, and Blackjack Basics learning; smoke-test proven payment/flow. Skip PX unless web/src/app changes.
+- [x] Step 2: Run cargo fmt --all -- --check; cargo clippy -p blackjack-core -- -D warnings; cargo test -p blackjack-core; npm --prefix web run test; npm --prefix web run qa. Expected: all zero. If Rust makes the WASM freshness guard fail, run npm --prefix web run build:wasm then rerun the blocked check.
+- [x] Step 3: Using actual WASM transport, record compatible to renderable, mismatch to pre-render fatal, unsupported to pre-render fatal, and profile-less Basics still playable.
+- [x] Step 4: Write commands, SHA, deep/smoke scope, focused evidence, findings, and verdict. Update changed ledger rows to final passing commit; create QA-NNN only for a real finding.
+- [x] Step 5: Commit: test(qa): close strategy profile foundation.
 
 ## Plan self-review
 
