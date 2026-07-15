@@ -8,6 +8,26 @@ Do not rely only on model memory for blackjack rules, tables, or casino machine 
 The project should begin with a small number of foundational research checks, then do
 additional research per feature.
 
+## Just-in-time cross-cutting research
+
+Cross-cutting questions are researched when a named product consumer becomes active, not as a
+speculative platform program. The active design records the evidence, alternatives, and decision;
+new tools/runtimes also pass the Tool & Runtime Admission Protocol.
+
+| Trigger / consumer | Questions to resolve before implementation |
+|---|---|
+| Visual-system work begins | Accessible color/contrast, non-color cues, shape/icon semantics, motion feedback, and reduced-motion behavior. |
+| First durable learning progress | Stable learner identity, record ownership, storage semantics, `ProgressStore` boundary, schema versioning, migration, and recovery. |
+| Mobile-runtime work begins | Rust/WASM packaging in the candidate runtime, lifecycle suspension, atomic serialization/restore, offline behavior, and update delivery. |
+| Curriculum must publish independently of app releases | Payload integrity, schema compatibility, provenance, rollback, caching, and authoring/admin workflow. |
+| External beta creates observable learning questions | Event purpose/taxonomy, consent and privacy, retention, batching, offline/failure behavior, and how instrumentation avoids distorting the learning experience. |
+| Competitive multiplayer, leaderboards, or certified mastery | Client/server authority, deterministic replay validation, redacted client state, seed/shoe secrecy, abuse model, and trustworthy result submission. |
+| Cross-device sync becomes active | Conflict semantics, ordering, offline queue behavior, idempotency, and user-visible recovery from divergent progress. |
+
+Supabase, Firebase, AsyncStorage, Expo/Metro, WebSockets/WebRTC, and analytics products are examples
+from source notes, not approved solutions. They remain candidates until their trigger fires and the
+corresponding research/admission cycle compares them against the simpler current path.
+
 ## Initial Research Findings
 ### Basic Strategy Depends On Ruleset
 Basic Strategy is not one universal table. It changes according to deck count, H17/S17,

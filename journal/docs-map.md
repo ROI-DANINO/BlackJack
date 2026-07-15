@@ -55,8 +55,11 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | docs/imports/initial-product-notes/ | Indexed original pre-init source notes and their folded destinations. |
 | docs/imports/v2-research-2026-07-11/ | Indexed V2 research imports, dispositions, and folded destinations; not authoritative over owned docs. |
 | docs/imports/2026-07-12-operating-model-research/ | Indexed operating-model research import (source note + claim-level dispositions); folded into the foundation spec. |
+| docs/imports/2026-07-15-v2-future-guidance/ | Indexed V2 future-guidance imports, byte manifest, claim-level dispositions, and folded destinations; provenance only. |
+| docs/architecture.md | Runtime/product-state ownership, live cross-layer seams, hosted-product posture, and provider-neutral application boundaries. |
 | docs/specs/product-vision.md | Product north star, product feel, learning philosophy, and what makes the simulator different. |
-| docs/specs/research-brief.md | Research anchors and open research questions for rules, strategy tables, and casino machine behavior. |
+| docs/specs/stack-boundaries.md | Tool & Runtime Admission Protocol and the current admitted stack/boundary results. |
+| docs/specs/research-brief.md | Domain research anchors plus cross-cutting just-in-time research triggers and open questions. |
 | docs/specs/learning-mastery-and-scoring.md | Future V2+ learning, mastery, hinting, scoring, and simulated-player design notes. |
 | docs/specs/qa-playtest-process.md | The AI playtest QA process: agent pack, session protocols, scoping rules, run mechanics. |
 | journal/qa/ledger.md | QA coverage state (area × last-passed commit) + findings register. Read before scoping any QA run. |

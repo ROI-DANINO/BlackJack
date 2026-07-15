@@ -40,6 +40,18 @@ The learning controller may ask the engine to evaluate and resolve a decision, b
 recreate legality or strategy. Transient presentation details do not enter engine or learning
 records.
 
+### Learning to product boundary
+
+`LessonState` is the intended sole semantic surface from Learning to the product shell. Presentation
+code should render learning-owned objectives, progress, feedback intent, and hand projections rather
+than inspect Rust-owned round/session structures directly.
+
+The current implementation has one documented exception: `web/src/app/Lesson.tsx` dereferences the
+raw `SessionState` embedded in `LessonState` to render dealer/player hands and round status. The first
+real Strategy Table or visual-shell consumer that needs this information must define the smallest
+Learning-owned semantic projection and move the renderer toward it. This is a live gap, not a reason
+to invent a speculative view-model framework now.
+
 ## Simulation invariants
 
 - A shoe is assembled before a hand begins, shuffled once into an ordered sequence, and dealt from
@@ -55,6 +67,29 @@ records.
 V1 session state is in memory. The web application can export local history as JSONL; it is not a
 product database, account system, or sync layer. See [data/history/README.md](../data/history/README.md)
 for the exported-data surface.
+
+Learning attempts are also in-memory serializable records today. There is no `ProgressStore`, stable
+learner identity, or versioned progress-record envelope in the current code. The approved future seam
+remains an outstanding implementation obligation: decide the stable learner/account key before the
+first durable `AttemptRecord` write, put persistence behind a `ProgressStore`-style application port,
+and version the outer progress record. That seam must land before or as the first step of durable
+progress work; this documentation does not mark it implemented.
+
+## Hosted product posture
+
+Ordinary training remains client-authoritative. Rust/WASM runs the game locally and the browser owns
+the serializable `SessionState`; a future hosted B2C product initially adds accounts, progress
+storage, and cross-device sync rather than moving normal game execution to a server.
+
+Persistence, sync, analytics, and other third-party providers must sit behind application ports.
+React components and `LessonController` consume product-facing interfaces and cannot contain direct
+provider/database calls. No provider is selected until an active feature passes the Tool & Runtime
+Admission Protocol.
+
+Server game authority activates only when a competitive or certified requirement makes client trust
+insufficient—for example multiplayer, leaderboards, or certified mastery. That later design must
+research replay validation, client projections, seed/shoe secrecy, and abuse handling. It is not the
+architecture of the ordinary single-player trainer.
 
 ## Further reading
 

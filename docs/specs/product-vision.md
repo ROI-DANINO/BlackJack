@@ -26,9 +26,26 @@ The product should eventually feel like:
 - not an academic simulator with boring UI;
 - not a gambling product centered on chips, bankroll, or casino fantasy.
 
-V1 is more technical because it builds the foundations, but the project must not drift into
-a dry debugging tool. The long-term vision is a fun learning game with strong simulation
+Early milestones are more technical because they build the foundations, but the project must not
+drift into a dry debugging tool. The long-term vision is a fun learning game with strong simulation
 accuracy.
+
+## Platform and Experience Direction
+
+Ship and prove the learning product on the web first. Mobile is a later product surface, not a
+preselected framework or a requirement to make every current implementation cross-platform. When
+mobile becomes active, choose its runtime against the real WASM, lifecycle, accessibility, and
+delivery constraints through the project's admission process.
+
+The product should grow into one coherent app-shell and game experience rather than a collection of
+disconnected simulator and lesson screens. Navigation, learning progress, Free Play, and feedback
+should feel like parts of the same training product even when their implementation slices land at
+different times.
+
+Success, failure, and instructional feedback must remain understandable without color alone. Use
+text, shape, iconography, and other accessible cues as appropriate, and design motion so future
+reduced-motion needs can be respected. Detailed visual rules belong to the visual-system design and
+research cycle, not this north-star document.
 
 ## Main Modes
 ### Learning Path

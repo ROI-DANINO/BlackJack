@@ -1,7 +1,8 @@
 # Roadmap
 
 > Destination, phases, milestones, exit criteria.
-> Structure: versions -> milestones -> phases -> tasks. Only the active phase gets detailed tasks.
+> Forward planning uses three continuing product tracks. V1/V2/V3 remain below as historical
+> milestone labels and phase/QA lineage; only the active phase gets detailed tasks.
 > QA gates: every feature ships with a scoped feature QA; every milestone below closes with a
 > milestone QA pack run before the next phase starts (`docs/specs/qa-playtest-process.md`).
 
@@ -11,6 +12,42 @@ An approachable blackjack training game with accurate shoe simulation, Free Play
 The product is a training app with gameplay, not a gambling app or an academic simulator.
 Free Play deals from the real shoe; learning layers can add hints, feedback, and reports
 around the hand, but they should not rig card flow for lessons.
+
+Delivery is web-first. Mobile is a later product surface, activated only after the web learning
+experience proves useful and a mobile runtime passes the Tool & Runtime Admission Protocol.
+
+## Continuing Product Tracks
+
+The tracks mature independently and continue for the life of the product. They are a planning lens,
+not replacements for historical milestone names, phase identifiers, specs, commits, or QA records.
+
+- **T1 Core — blackjack truth:** ordered-shoe simulation, rules, settlement, replayable logs,
+  ruleset-matched strategy, later counting truth, and table/machine variants. The simulator and
+  verified H17/S17 strategy profiles are mature; future work is activated by learning or realism
+  consumers.
+- **T2 Learning — architecture and pedagogy:** typed curriculum, deterministic lesson flow,
+  engine-owned grading, feedback, practice, mastery, and later counting instruction. Blackjack
+  Foundations and the Strategy Profile Foundation are complete. The next product slice is the first
+  learner-visible Strategy Table Fundamentals lesson and its smallest grading API.
+- **T3 Visual Shell — product experience:** coherent app navigation, onboarding, game feel,
+  accessible feedback, responsive presentation, and later mobile delivery. This track has not begun;
+  libraries and runtimes remain undecided until an active consumer justifies them.
+
+### Need-activated platform capabilities
+
+| Capability | Activation trigger | Guardrail / current status |
+|---|---|---|
+| Local durable progress | The first requirement that completion survive reload. | Before the first durable `AttemptRecord` write, decide the stable learner identity and implement the approved `ProgressStore` port plus a versioned progress envelope. That seam is approved but not implemented. |
+| Accounts and cross-device sync | Learners need progress on more than one device. | Ordinary training remains client-authoritative; research identity, storage, migration, offline, and conflict semantics before selecting a provider. |
+| Product observability | External beta creates concrete learning or drop-off questions. | Research event purpose, consent/privacy, retention, batching, and offline failure before adding telemetry. |
+| Independently published curriculum | Content must ship without an application release. | Research integrity, schema compatibility, rollback, and provenance before remote payloads/admin tooling. |
+| Mobile runtime | Mobile becomes an active product slice after the web path is proven. | Run an admission spike for WASM packaging, lifecycle suspension/restore, offline behavior, and update delivery; no framework is selected today. |
+| Competitive/certified authority | Leaderboards, multiplayer, or certified mastery require anti-cheat guarantees. | Research authority, replay validation, seed/shoe secrecy, and abuse handling; ordinary trainer play stays in browser WASM. |
+
+## Historical Milestone Record
+
+The established milestone sections remain intact so completed scope, active exit criteria, and QA
+evidence retain their original names and references.
 
 ## V1 — Simulation Foundations
 - [x] Free Play skeleton — exit criteria MET (2026-07-09): one player plays complete rounds vs a dealer from a seeded 6-deck shoe with cut card / penetration, legal actions, outcomes, logs, and shoe continuity (auto-reshuffle). Playable in-browser via WASM with JSONL history + per-hand notes.
@@ -32,11 +69,14 @@ Non-goals:
   immediate or delayed feedback that keeps decision quality separate from hand outcome.
 
 V2 ships two ordered, replayable subjects:
-- **Blackjack Foundations** — teaches hit/stand first, then double and split, using short
+- [x] **Blackjack Foundations** — teaches hit/stand first, then double and split, using short
   guided simulations with concise explanations.
-- **Strategy Table Fundamentals** — teaches hand classification and table navigation, then
+- [ ] **Strategy Table Fundamentals** — teaches hand classification and table navigation, then
   table-open guided practice and checkpoints. The table remains user-toggleable; no-table
   testing and realistic pace are later mastery work.
+
+The shared **Strategy Profile Foundation** required by the second subject is complete: H17/S17
+strategy truth is verified and lessons can gate against the active ruleset (`5bbc0b4`).
 
 Build the learning loop in this order: verify and encode one ruleset-matched strategy source;
 ship one guided drill loop; add brief feedback and targeted repetition; add persisted progress

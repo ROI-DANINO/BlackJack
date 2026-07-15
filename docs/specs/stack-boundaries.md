@@ -1,74 +1,102 @@
-# Stack Boundaries
+# Tool & Runtime Admission Protocol
 
-> Status: decided by V1 stack spike. Scope: language/runtime boundaries before simulator code.
+> Status: approved 2026-07-12. The Rust/TypeScript/Python roster below is the protocol's current
+> result, not a permanent language lock.
 
-## Position
+## Purpose
 
-Blackjack training is simulation-heavy. Do not let the first UI implementation accidentally
-make the whole project TypeScript forever.
+Choose the simplest toolchain that satisfies the active product task while protecting the properties
+that are expensive to recover later: blackjack authority, plain serializable boundaries, generated-
+artifact freshness, and cross-target determinism.
 
-Use a polyglot-by-task stack:
+This protocol is not a registry, technology catalogue, or permission to add speculative layers. A
+new runtime, database, managed service, generated artifact, or cross-target boundary is admitted only
+for a concrete consumer. If the current path still works simply, keep it.
 
-- TypeScript for browser UI, interaction state, and thin app orchestration.
-- Python for research, strategy-table generation, data processing, analytics, notebooks, and audits.
-- Rust/WASM as a first-class simulator-core candidate when correctness, speed, Monte Carlo
-  volume, or deterministic portable execution matters.
-- No database for V1 unless persistence becomes part of the active phase.
+## Admission trigger and gate
 
-## V1 Stack Spike Result
+Run the gate before choosing any new:
 
-Local toolchains are available for Node, Rust, and Python. No WASM helper is installed yet.
+- language or application runtime;
+- database, durable store, or hosted/managed service;
+- compiled, transpiled, or generated delivery artifact; or
+- cross-language, cross-process, or cross-target boundary.
 
-Decision:
+The active design or implementation plan must record all six fields:
 
-- Rust owns the simulator core: cards, shoe, shuffle, ruleset, round flow, betting, settlement,
-  and log generation.
-- TypeScript owns the browser UI and calls the simulator through a narrow app boundary.
-- Python owns research/data work: strategy-table generation, validation scripts, analytics, and
-  notebooks. Python does not become the app runtime.
-- V1 storage stays in memory. Persisted history waits until it is part of the active phase.
-- WASM is the intended browser bridge, but the first Rust core can expose the same JSON-shaped
-  command/state boundary through Rust tests or a CLI before WASM tooling is added.
+1. **Active task and consumer** — the exact product/research job the tool serves now.
+2. **Alternatives considered** — including the current stack and a no-new-tool option.
+3. **Why the simpler current path no longer works** — concrete evidence or measured retrofit cost,
+   not preference or hypothetical scale.
+4. **Serializable boundary shape** — the data/actions crossing the boundary and which side owns
+   truth; no hidden shared/native state.
+5. **Freshness and determinism evidence where relevant** — generated/compiled artifacts need a
+   freshness guard; cross-target execution needs parity evidence when behavior must match.
+6. **Exit or retirement condition** — the evidence that would remove, replace, or consolidate the
+   tool later.
 
-Why:
+No additional protocol is created merely because a new candidate appears. Normal design, review,
+verification, and feature QA remain the execution loop.
 
-- The simulator is the durable product core and will likely need high-volume deterministic runs.
-- Starting the core in Rust avoids a later rewrite from a TypeScript engine once counting,
-  Monte Carlo, EV, or casino-like training loads arrive.
-- Keeping the boundary as plain serializable state/actions keeps the UI simple and lets Python
-  consume logs without binding to Rust internals.
+## Current admitted results
 
-## Decision Rule
+### Rust and WebAssembly
 
-Choose the simplest stack that satisfies the active phase, but keep simulator state and logs as
-plain serializable data so another language can consume or replace a layer later.
+Rust owns the durable simulator core: cards and deck identity, ordered shoes, seeded shuffle,
+penetration, rulesets, legal actions, round flow, exact-money settlement, replayable logs, hand facts,
+and ruleset-matched Basic Strategy. WASM delivers that same core to the browser because deterministic
+portable execution and later high-volume simulation justify it.
 
-Add a new runtime, database, or service only when a written task explains:
+The generated browser bridge is not tracked. Core changes must rebuild it, and freshness/parity
+checks belong to any slice that changes this boundary.
 
-- the job it performs;
-- alternatives considered;
-- why the current simpler path no longer holds;
-- how data crosses the boundary.
+### TypeScript and React
 
-## Boundary Shape
+TypeScript owns browser interaction, lightweight application state, learning contracts/controllers,
+and bridge validation. React renders product state and submits actions; it does not own or recreate
+blackjack rules, legality, totals, settlement, or strategy truth.
 
-Core commands:
+### Python
 
-- `start_session(seed, ruleset, bankroll, default_bet) -> session_state`
-- `start_round(session_state, bet) -> session_state`
-- `legal_actions(session_state) -> action[]`
-- `apply_action(session_state, action) -> session_state`
+Python is admitted for research scripts, strategy-table generation/verification, data processing,
+analytics, audits, and notebooks. It is not a production application runtime today.
 
-Shared data:
+### Storage and hosted services
 
-- `session_state`
-- `round_state`
-- `card { card_id, deck_id, rank, suit }`
-- `ruleset`
-- `action`
-- `round_log`
-- `outcome`
-- `bankroll_delta`
+Current product state is in memory. Local JSONL history export is a lossless user/dev artifact, not a
+database or sync system. No database, account provider, BaaS, telemetry service, or mobile framework
+has been admitted. The approved `ProgressStore`/versioned-record seam remains unimplemented and must
+be addressed by the first durable-progress slice.
 
-The UI should never infer blackjack rules from display state. It renders state and submits
-commands.
+## Current boundary shape
+
+The engine exposes one stateless JSON entry point, `dispatch_json(input) -> output`. Each command
+carries the complete state it needs; the core holds no ambient session.
+
+Current command variants:
+
+- `start_session`
+- `start_session_with_prefix`
+- `start_round`
+- `legal_actions`
+- `apply_action`
+- `reshuffle`
+- `describe_hand`
+- `check_strategy_compatibility`
+
+Current response variants:
+
+- `session`
+- `actions`
+- `hand_facts`
+- `strategy_compatibility`
+
+The envelope and shared state are plain serializable data mirrored by hand-authored TypeScript types,
+Rust-emitted golden fixtures, runtime validation, and compile-time contract tests. Every new wire
+variant must extend that evidence in its own feature plan.
+
+## Revising a current result
+
+The current roster may change whenever an active task passes the gate. A later mobile runtime,
+database, managed provider, or server boundary is therefore possible without treating today's stack
+as permanent—but none becomes a decision merely by appearing in research or an import archive.
