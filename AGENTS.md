@@ -37,6 +37,13 @@ Build a Duolingo-like blackjack training game that feels approachable while mode
 - Do not make stack decisions permanent by accident. Prefer small boundaries and serializable data shapes so TypeScript, Python, Rust/WASM, and future backend tools can plug in without rewriting the product core.
 - Before writing the simulator core, run a short stack spike comparing TypeScript, Rust/WASM, and Python roles for the V1 engine boundary.
 
+## Agent Kanban
+- When `journal/ops/tasks.md` contains `<!-- agent-kanban:v1 -->`, it is the current-phase execution
+  authority. Only the root/orchestrating agent edits it.
+- Delegated agents may read cards but must return `Card`, `Result`, `Evidence`, `Next`, `Files`, and
+  `Blocker`; they never claim, move, or edit cards directly.
+- Finish started work before pulling new work. Respect the board's WIP and transition policies.
+
 ## Current phase
 See `journal/ops/phase.md`. Only the current phase gets detailed tasks
 (`journal/ops/tasks.md`); future phases stay in `ROADMAP.md`.

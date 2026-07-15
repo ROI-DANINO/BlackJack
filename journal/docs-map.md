@@ -45,7 +45,7 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | ROADMAP.md | Destination, phase list, milestones, exit criteria. |
 | PROGRESS.md | What is done / in progress now; open questions. |
 | journal/ops/phase.md | Machine-readable current phase state. |
-| journal/ops/tasks.md | Tasks for the current phase only. |
+| journal/ops/tasks.md | Agent Kanban for executable current-phase cards, priority, assignment, live state, and evidence. |
 | journal/context/active.md | Resume context for codex-start. |
 | journal/ops/sessions/ | codex-end handoff files (history). |
 | journal/context/next.md | Cheap cross-chat bridge (`codex-next`); consumed + reset by `codex-end`. |
