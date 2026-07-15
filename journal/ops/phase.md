@@ -3,7 +3,7 @@ phase: research
 sub_phase: strategy-table-fundamentals-design
 plan: docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md
 spec: docs/superpowers/specs/2026-07-15-agent-kanban-tasks-design.md
-step: "Run the four legal transition cases, real read-only start, product smoke, and QA reconciliation."
+step: "Review AK-05 feature-QA evidence, then run codex-end to close the Agent Kanban detour."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -27,6 +27,6 @@ detour:
   - phase: v2-learning-foundations
     step: "Design the first learner-visible Strategy Table Fundamentals lesson (hand classification/table navigation) and the smallest engine-owned grading API it needs."
 blocking: null
-next: "Run the four legal transition cases, real read-only start, product smoke, and QA reconciliation."
-note: "Research detour: Agent Kanban rollout tasks and the linked local-policy fix passed review; AK-05 feature QA is completing transition, real-start, smoke, and ledger evidence. The parked Strategy Table Fundamentals step remains in detour."
+next: "After AK-05 passes review, run codex-end; it should archive the completed board, pop the detour, and resume Strategy Table Fundamentals design."
+note: "Research detour: Agent Kanban rollout feature QA passed; AK-05 awaits review before the real codex-end milestone close. The parked Strategy Table Fundamentals step remains unchanged in detour."
 ---
