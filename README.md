@@ -15,8 +15,10 @@ The simulator deals from a seeded, ordered shoe rather than generating cards one
 retain stable identities and deck origins, the shoe respects cut-card penetration, and Free Play
 automatically starts a fresh shoe when needed.
 
-Basic Strategy is also available to the engine as a ruleset-matched oracle. The next product step
-is turning that accurate advice into a small guided learning drill.
+The Learn path now includes nine Blackjack Foundations units driven by the real engine. Basic
+Strategy is engine-owned through verified H17 and S17 profiles, and lessons are rejected when their
+declared profile does not match the active ruleset. The next product step is the first learner-
+visible Strategy Table Fundamentals lesson and the smallest grading API it needs.
 
 ## Quick start
 
@@ -47,12 +49,13 @@ penetration. Basic Strategy recommendations are specific to this ruleset.
 - [Architecture](docs/architecture.md) — Rust, WASM, and TypeScript ownership boundaries.
 - [Product vision](docs/specs/product-vision.md) — the training product’s north star.
 - [Roadmap](ROADMAP.md) — completed work, active phase, and future milestones.
-- [Stack boundaries](docs/specs/stack-boundaries.md) — why the core and UI use different tools.
+- [Stack boundaries](docs/specs/stack-boundaries.md) — how tools/runtimes are admitted and which
+  boundaries are active today.
 - [QA playtest process](docs/specs/qa-playtest-process.md) — how feature and milestone quality is
   checked.
 
 ## Project status
 
-V1 Simulation Foundations is complete and QA-passed. V2 Learning Foundations is active, beginning
-with one small, immediate-feedback guided drill powered by the Basic Strategy oracle. See the
-[roadmap](ROADMAP.md) for the current scope.
+V1 Simulation Foundations is complete and QA-passed. V2 Learning Foundations is active: Blackjack
+Foundations and the Strategy Profile Foundation are complete, and Strategy Table Fundamentals is the
+next learning slice. See the [roadmap](ROADMAP.md) for the current scope.

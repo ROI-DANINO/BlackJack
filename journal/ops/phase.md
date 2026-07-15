@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
-sub_phase: strategy-profile-foundation-plan-written
+sub_phase: strategy-profile-foundation-complete
 plan: docs/superpowers/plans/2026-07-15-strategy-profile-foundation.md
 spec: docs/superpowers/specs/2026-07-12-strategy-profile-foundation-design.md
-step: "Strategy Profile Foundation implementation plan written. Next: execute Task 1, verified full 6D S17/DAS/no-surrender strategy-table research and provenance; it is the hard dependency before engine work. Blackjack Basics remains complete/merged (964efa1); its design/plan at docs/superpowers/{specs,plans}/2026-07-11-blackjack-basics-learning-foundation*."
+step: "Strategy Profile Foundation is complete at 5bbc0b4. Next: design the first learner-visible Strategy Table Fundamentals lesson (hand classification/table navigation) and the smallest engine-owned grading API it needs."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -21,8 +21,9 @@ sessions:
   - journal/ops/sessions/the-fold-and-the-footnote-2026-07-11T2026.md
   - journal/ops/sessions/the-foundation-and-the-worktree-2026-07-11T2308.md
   - journal/ops/sessions/the-lens-and-the-north-star-2026-07-12T1745.md
+  - journal/ops/sessions/the-profiles-and-the-proof-2026-07-15T0326.md
 detour: []
 blocking: null
-next: "Execute Task 1 of docs/superpowers/plans/2026-07-15-strategy-profile-foundation.md: verify and record the full 6D S17/DAS/no-surrender table before encoding it. Then execute Tasks 2-7 in order. Revisit the Hit-on-16 orientation moment when the first actual strategy lesson is designed (next slice, per the design's Next Design Boundary)."
-note: "Strategy Profile Foundation design approved 2026-07-12 (spec: docs/superpowers/specs/2026-07-12-strategy-profile-foundation-design.md). Scope: StrategyProfile enum (H17+S17), v1_s17_ruleset (dealer Stand-on-soft-17, playable — dealer core already supports it), full-struct-equality resolve_profile, CheckStrategyCompatibility boundary verdict, TS Unit.profileId + lifecycle gate; grading deferred off-wire; S17 cells are hypotheses pending researcher verification+provenance. Blackjack Basics backlog still open: QA-016 (prereqs as raw skill ids), QA-017 (display totals re-derived in feedback.ts — closes when best_total goes on the wire). 2026-07-12 the-lens-and-the-north-star (mid-work detour, merged b596190): operating-model _inbox note folded → docs/superpowers/specs/2026-07-12-foundation-and-tracks-design.md (+4 decisions, provenance INDEX at docs/imports/2026-07-12-operating-model-research/, inbox closed); cloud posture resolved (client-authoritative persistence+sync, B2C, auth=login, server-authority deferred-reserved); manifest re-tuned; AGENTS.md Rule 0 + no-protocol-without-evidence. Follow-ups: deliverable A (posture memo + stack Admission Protocol) / B (protocol+inbox 1-pager) + ROADMAP three-tracks reframe."
+next: "Design the first Strategy Table Fundamentals lesson: hand classification/table navigation and the smallest grading API it needs. Revisit the Hit-on-16 orientation moment there."
+note: "Strategy Profile Foundation merged and feature-QA passed at 5bbc0b4: verified H17/S17 profiles, full-ruleset engine compatibility, guarded Rust/TypeScript contract, Unit.profileId lifecycle gate; 92 Rust + 217 web tests and the full QA pack passed. QA-016 (raw prerequisite ids) and QA-017 (TypeScript display totals) remain ledger-tracked. The 2026-07-15 future-guidance ingestion archived three evidence notes and folded the continuing-track roadmap, client-authoritative hosted posture, Tool & Runtime Admission Protocol, accessibility/platform principles, and just-in-time research triggers into owned docs. Named technologies remain candidates; the approved ProgressStore/versioned-progress seam is not implemented."
 ---

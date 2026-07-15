@@ -14,10 +14,21 @@
 - **V1 Free Play polish scoped and shipped**: any two 10-value cards can split through the shared core legal-action rule; the table shows per-hand win/loss/push/blackjack outcomes after resolution; dealer-ace insurance auto-decline is visible instead of silent.
 - **V1 QA gate cleared**: the targeted browser re-test verified QA-001/003/004/005/007/009; the ledger records GO for V2.
 - **Basic Strategy oracle shipped and feature-QA passed**: the V1-ruleset oracle is Rust-owned, ruleset-keyed, and covered across the verified source chart.
-- **First V2 guided drill shipped and feature-QA passed**: "Get to Know Blackjack" teaches table reading, blackjack vs 21, Hit/Stand, Double, Split, and reactive outcomes through real engine hands. `qa:drill` is now part of the Tier-1 QA gate; full feature QA passed 2026-07-11 with `QA-015` fixed and verified.
+- **First V2 guided-drill prototype shipped, feature-QA passed, and was later retired cleanly**:
+  "Get to Know Blackjack" proved the engine-backed lesson loop before Blackjack Foundations replaced
+  it; `qa:learn` now owns learning-path QA.
+- **Blackjack Foundations shipped and feature-QA passed** (`964efa1`): nine complete-beginner units,
+  deterministic engine-backed lesson flow, typed content-as-data, functional Learn UI, and ledger-
+  driven browser QA.
+- **Strategy Profile Foundation shipped and feature-QA passed** (`5bbc0b4`): verified H17/S17
+  strategy profiles, engine-owned full-ruleset compatibility, a guarded Rust/TypeScript wire contract,
+  and lesson lifecycle enforcement. Latest close evidence: 92 Rust tests, 217 web tests, and full QA
+  pack PASS.
 
 ## In progress
-- **V2 Strategy Table Fundamentals design**: next slice is deciding the first table-navigation lesson and how it uses the verified Basic Strategy oracle without making the first experience memorization-first.
+- **Strategy Table Fundamentals design**: define the first learner-visible lesson—hand classification
+  and table navigation—and the smallest engine-owned grading API it needs, without making the first
+  experience memorization-first.
 
 ## Open questions
 - What should the first Strategy Table Fundamentals lesson teach first: hand classification, row/column lookup, or table-open practice?

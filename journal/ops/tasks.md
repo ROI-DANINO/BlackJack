@@ -23,23 +23,30 @@
 - [x] **Task 11: Feature QA and ledger reconciliation** - `7bfbd7e` (all deterministic gates,
       Player Experience PASS, ledger reconciled); final whole-branch review merge-clean.
 
-## In progress — Strategy Profile Foundation
+## Complete — Strategy Profile Foundation ✅ (merged to main `5bbc0b4`)
 
 Implementation plan: `docs/superpowers/plans/2026-07-15-strategy-profile-foundation.md`.
 
-- [ ] **Task 1: Verify and freeze S17 source table** — required research/provenance gate before code.
-- [ ] **Tasks 2-3: Core profiles and verified chart lookup** — canonical S17 ruleset, full-struct resolution, exhaustive source-cell tests.
-- [ ] **Tasks 4-5: Authoritative compatibility wire contract** — Rust verdict plus validated TypeScript bridge.
-- [ ] **Task 6: Lesson lifecycle gate** — declared-profile compatibility gate; profile-less regression coverage.
-- [ ] **Task 7: Scoped feature QA and ledger reconciliation** — gate this slice before completion.
+- [x] **Task 1: Verify and freeze the complete S17 source table** — provenance and independent
+      cross-check recorded before encoding.
+- [x] **Tasks 2-3: Core profiles and verified chart lookup** — canonical H17/S17 rulesets,
+      full-struct resolution, and exhaustive source-cell coverage.
+- [x] **Tasks 4-5: Authoritative compatibility wire contract** — Rust verdict, golden fixtures,
+      TypeScript validation, and contract tests.
+- [x] **Task 6: Lesson lifecycle gate** — declared-profile compatibility enforcement with
+      profile-less regression coverage.
+- [x] **Task 7: Scoped feature QA and ledger reconciliation** — 92 Rust tests, 217 web tests, and
+      the full QA pack passed.
 
-## Ideas
+## In progress — Strategy Table Fundamentals design
 
-- Future unit selection may test skipped prerequisites; do not add skip tests or persistence in
-  this feature.
-- Revisit the Hit-on-16 orientation moment when Strategy Table Fundamentals begins.
-- Strategy Table Fundamentals remains the next subject after Blackjack Basics feature QA passes.
-- Foundation & Tracks follow-ups (from 2026-07-12 fold, `docs/superpowers/specs/2026-07-12-foundation-and-tracks-design.md`):
-  deliverable A (posture & decisions memo + reframe `stack-boundaries.md` → Tool & Runtime Admission Protocol + AGENTS.md stack-section cleanup);
-  deliverable B (protocol-system + inbox-ingestion 1-pager); ROADMAP three-tracks + cloud north-star reframe.
-- Cloud reserve-now seams (when persistence lands): decide the stable identity/account key BEFORE the first durable `AttemptRecord` write; define the `ProgressStore` port (in-memory impl only); add `schema_version` to progress records.
+- [ ] Choose the first learner-visible objective and sequence: hand classification, row/column table
+      navigation, then table-open application without starting memorization-first.
+- [ ] Define the smallest content/state surface the lesson needs, including how the verified profile
+      and addressable strategy-table data are presented without moving strategy truth into TypeScript.
+- [ ] Define the smallest engine-owned grading API and its Rust/TypeScript contract; retain the
+      profile compatibility gate and verdict-versus-hand-outcome separation.
+- [ ] Reconcile the Blackjack Foundations "try Hit to feel bust risk" moment with the later strategy
+      recommendation so the product does not teach it as Basic Strategy advice.
+- [ ] Write the feature design with its scoped learning/Player Experience QA boundary before an
+      implementation plan is created.
