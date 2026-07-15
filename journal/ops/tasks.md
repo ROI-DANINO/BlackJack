@@ -30,21 +30,6 @@
 
 ## Verification
 
-### AK-07 — Complete movement policy and gate coverage
-- Type: fix
-- Mode: write
-- Owner: orchestrator
-- Depends on: AK-06
-- Source: `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Outcome: The board and mutating skills require every transition precondition, and focused fixtures prove Ready entry plus Done success/refusal.
-- Next: Review the policy/skill patch and focused transition evidence.
-- Load: `journal/ops/tasks.md`, `docs/superpowers/specs/2026-07-15-agent-kanban-tasks-design.md`, `journal/qa/runs/2026-07-15-agent-kanban/report.md`
-- Workspace: `feat/agent-kanban`
-- Done when: Local/template policies and codex-next/end enforce exact preconditions; Ready entry, Done success, and unmet-Done refusal all pass.
-- Gate: code-review
-- Evidence: Focused report `25845d5f...`: Ready→Active changed only board+bridge; Done success archived exactly at `bd5a37b`; unmet Done when remained Verification at `cb0caee`; next/end validators pass.
-- Updated: 2026-07-15T09:16:30+03:00
-
 ## Blocked
 
 ## Done
@@ -138,3 +123,18 @@
 - Gate: feature-qa
 - Evidence: Commit `51be265`; 80 Rust / 217 web / full QA PASS; real start read-only/no drift; independent Task 5 feature-QA review approved with no findings; execution variance accepted as bounded and disclosed.
 - Updated: 2026-07-15T08:57:49+03:00
+
+### AK-07 — Complete movement policy and gate coverage
+- Type: fix
+- Mode: write
+- Owner: orchestrator
+- Depends on: AK-06
+- Source: `journal/qa/runs/2026-07-15-agent-kanban/report.md`
+- Outcome: The board and mutating skills require every transition precondition, and focused fixtures prove Ready entry plus Done success/refusal.
+- Next: Complete.
+- Load: `journal/ops/tasks.md`, `docs/superpowers/specs/2026-07-15-agent-kanban-tasks-design.md`, `journal/qa/runs/2026-07-15-agent-kanban/report.md`
+- Workspace: `feat/agent-kanban`
+- Done when: Local/template policies and codex-next/end enforce exact preconditions; Ready entry, Done success, and unmet-Done refusal all pass.
+- Gate: code-review
+- Evidence: Commits `1f221be`, `6a4c05f`; focused report `25845d5f...` proves Ready entry, Done success, and unmet-Done refusal; independent review approved after portability fix.
+- Updated: 2026-07-15T09:22:52+03:00
