@@ -21,7 +21,8 @@ map in `journal/docs-map.md`.
 At completion, every meaningful source claim has a recorded disposition. Existing decisions are
 not duplicated. Useful future direction is findable in the authoritative document that owns it,
 with a concrete activation or research trigger where work is intentionally deferred. The original
-notes are preserved unchanged in a tracked import archive, and the raw inbox is empty.
+notes are preserved unchanged in a tracked import archive, and no files from this ingestion batch
+remain in the raw inbox.
 
 This pass also reconciles stale project-state surfaces discovered by the full-context audit. It does
 not implement cloud, mobile, persistence, telemetry, visual-shell, or curriculum features.
@@ -57,6 +58,11 @@ For every material claim, the import index records:
 claim -> disposition -> existing evidence or conflict -> destination -> activation/research trigger
 ```
 
+Each material claim receives one stable, source-scoped identifier (`CLOUD-01`, `RESEARCH-01`,
+`LEARNING-01`, and so on). Only claim-table rows count toward exact-once coverage; source-level
+summaries describe the files and may reference claim identifiers without duplicating their
+dispositions.
+
 Accepted content is written once. Covered content points to its existing owner. Deferred and
 rejected details remain visible in the import index without becoming current tasks.
 
@@ -68,6 +74,7 @@ rejected details remain visible in the import index without becoming current tas
 |---|---|---|
 | Client-side Rust/WASM makes the trainer inexpensive to host | Covered | Existing WASM and client-authority decisions; no duplicate prose. |
 | Future hosted product provides login, progress persistence, and cross-device sync | Accepted + Covered | Surface the approved posture in `ROADMAP.md` and `docs/architecture.md`. |
+| Reserve a `ProgressStore` port and versioned progress records before persistence | Accepted + Covered | The ADR approves this reserve-now seam, but the code has neither a `ProgressStore` nor a versioned progress record. Record the outstanding implementation obligation explicitly in `ROADMAP.md`; this documentation pass does not close it, and no durable-progress feature may start without resolving it. |
 | Adopt Supabase or Firebase | Deferred | Candidate services only. Research and run the Tool & Runtime Admission Protocol when hosted auth/sync becomes active. |
 | Learning/UI code writes directly to a backend | Rejected | Provider access must stay behind a progress/sync boundary; controllers and React remain provider-agnostic. |
 | Offline queue and conflict resolution | Deferred | Research when cross-device/offline sync becomes active; do not design a queue now. |
@@ -117,6 +124,10 @@ Reconcile the approved three-track model while preserving completed milestone hi
 
 Each deferred capability names its activation trigger. No implementation tasks are added.
 
+The track framing is a forward-looking product lens, not a history rewrite. Preserve V1/V2/V3 as
+historical milestone labels and retain their phase identifiers, exit evidence, commit references,
+spec/plan links, and QA lineage. Do not rename historical artifacts to fit the track vocabulary.
+
 ### `docs/specs/product-vision.md`
 
 Add only durable product direction missing today:
@@ -138,6 +149,10 @@ Add the already-approved cloud posture and provider-neutral boundary:
 - decide the stable learner identity before the first durable `AttemptRecord` write;
 - progress records are versioned;
 - server game authority activates only for competitive/certified requirements.
+
+State the live implementation gap explicitly: there is currently no `ProgressStore` port or
+versioned progress-record envelope. The approved reserve-now obligation remains open after this
+documentation pass and must be implemented before, or as the first step of, durable progress work.
 
 Record the current Learning->Shell exception honestly: `LessonState` is the intended sole product
 surface, but the current renderer still dereferences its embedded raw session. Its first real
@@ -192,7 +207,8 @@ overwriting unrelated work.
   triggers.
 - Explicitly register `docs/architecture.md` and `docs/specs/stack-boundaries.md` so their ownership
   is unambiguous.
-- Add one memory fact after successful ingestion.
+- Add one local-private memory fact after successful ingestion. `journal/memory/` is ignored and the
+  fact is not part of the tracked documentation commit.
 
 ## Archive Design
 
@@ -206,9 +222,14 @@ docs/imports/2026-07-15-v2-future-guidance/
   v2_learning_roadmap_expanded.md
 ```
 
-The three sources move unchanged from `_inbox`. `INDEX.md` records source-level and claim-level
-dispositions, conflicts, destinations, and named triggers. The archive is provenance, never an
-authority.
+The three sources move unchanged from `_inbox`. Before any private raw file becomes tracked, inspect
+it for credentials, secrets, personal information, and other content unsafe to track or publish. A
+finding blocks the move until it is resolved with the user; do not silently redact an archival
+original.
+Capture each approved source's path, byte count, and SHA-256 digest before moving it, then verify the
+tracked copy against that manifest. `INDEX.md` records source-level summaries plus exactly one
+disposition row per stable claim identifier, with conflicts, destinations, and named triggers. The
+archive is provenance, never an authority.
 
 The history-analysis relocation completed before this design remains in its existing
 `docs/imports/v2-research-2026-07-11/history/` batch; it is not folded into the new archive.
@@ -223,21 +244,28 @@ The history-analysis relocation completed before this design remains in its exis
 - No future task details in `journal/ops/tasks.md`.
 - Do not rewrite historical session records to pretend later decisions existed earlier.
 - Preserve unrelated working-tree changes, including generated QA output.
+- The implementation plan must name an explicit staging allowlist and inspect the staged diff before
+  every commit. The existing history relocation is a related prerequisite; unrelated generated or
+  user-owned changes remain unstaged.
 
 ## Verification
 
 The documentation implementation is complete only when:
 
-1. each material source claim appears exactly once in the import index with a disposition;
+1. each material source claim has one stable identifier and appears exactly once in an index
+   claim-table row with a disposition;
 2. each accepted claim has one authoritative owner and no contradictory duplicate;
 3. each deferred research item has a consumer/activation trigger;
 4. named technologies remain non-binding candidates;
-5. the archived files byte-match the inbox originals captured before the move;
-6. `_inbox` contains no files from this batch;
-7. current state agrees across `active.md`, phase, tasks, progress, roadmap, and README;
-8. docs-map and Markdown links resolve;
-9. `git diff --check` passes;
-10. a focused review finds no raw directive promoted without evidence and no useful future guidance
+5. the private-to-tracked safety review finds no credentials, secrets, personal information, or
+   other publication blocker in any archived source;
+6. the archived files' byte counts and SHA-256 digests match the pre-move manifest;
+7. `_inbox` contains no files from this batch;
+8. current state agrees across `active.md`, phase, tasks, progress, roadmap, and README;
+9. docs-map and Markdown links resolve;
+10. the staged path list matches the implementation plan's allowlist and excludes unrelated changes;
+11. `git diff --check` passes;
+12. a focused review finds no raw directive promoted without evidence and no useful future guidance
     left only in the archive.
 
 No feature QA or QA-ledger update is required because runtime behavior does not change.
