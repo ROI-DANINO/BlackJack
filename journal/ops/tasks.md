@@ -3,39 +3,24 @@
 
 ## Ready
 
+## Active
+
 ### AK-05 — Run cross-skill conformance and feature QA
 - Type: qa
 - Mode: write
-- Owner: unclaimed
+- Owner: orchestrator
 - Depends on: AK-04
 - Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 5
 - Outcome: Cross-skill fixtures, real read-only start, hashes, smoke tests, and ledger pass.
-- Next: Run all three validators, then execute marked and legacy lifecycle scenarios.
+- Next: Run all validators and marked/legacy lifecycle scenarios, then reconcile QA evidence.
 - Load: `journal/ops/tasks.md`, `journal/qa/ledger.md`, `docs/specs/qa-playtest-process.md`, `/tmp/agent-kanban-evals/results/`
 - Workspace: `main`
 - Done when: Marked and legacy lifecycle runs, real read-only start, skill hashes, product smoke, QA report, and ledger all pass.
 - Gate: feature-qa
-- Evidence: pending
-- Updated: 2026-07-15T06:21:15+03:00
-
-## Active
+- Evidence: AK-04 approved after clean codex-end provenance rerun `b9be56f`.
+- Updated: 2026-07-15T07:32:09+03:00
 
 ## Verification
-
-### AK-04 — Update and verify codex-end
-- Type: chore
-- Mode: write
-- Owner: orchestrator
-- Depends on: AK-03
-- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 4
-- Outcome: Marked end archives and reconciles cards; legacy end is unchanged.
-- Next: Review the codex-end marked and legacy rollout evidence.
-- Load: `/home/roking/.codex/skills/codex-end/SKILL.md`, `/home/roking/.codex/skills/codex-end/agents/openai.yaml`, `.superpowers/sdd/task-4-global.diff`, `/tmp/agent-kanban-evals/results/green-end-marked.md`, `/tmp/agent-kanban-evals/results/green-end-legacy.md`
-- Workspace: `main`
-- Done when: Marked end preserves an exact pre-update archive and legal transition, legacy end retains checklist behavior, and the skill folder validates.
-- Gate: code-review
-- Evidence: Validator passed at 204 lines; marked fixture commit `bbaafea` with exact archive SHA-256 `ab833969...3e86`; legacy fixture commit `10f7d7a` with exact archive SHA-256 `9bc9dad8...af1e`; focused assertions passed; skill hashes and GREEN reports in `.superpowers/sdd/task-4-report.md`.
-- Updated: 2026-07-15T07:19:17+03:00
 
 ## Blocked
 
@@ -85,3 +70,18 @@
 - Gate: code-review
 - Evidence: Board commit `6fb58ee`; personal-skill hashes and GREEN reports in `.superpowers/sdd/task-3-report.md`; independent Task 3 review approved with no findings.
 - Updated: 2026-07-15T06:50:35+03:00
+
+### AK-04 — Update and verify codex-end
+- Type: chore
+- Mode: write
+- Owner: orchestrator
+- Depends on: AK-03
+- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 4
+- Outcome: Marked end archives and reconciles cards; legacy end is unchanged.
+- Next: Complete.
+- Load: `/home/roking/.codex/skills/codex-end/SKILL.md`, `/home/roking/.codex/skills/codex-end/agents/openai.yaml`, `.superpowers/sdd/task-4-global.diff`, `/tmp/agent-kanban-evals/results/green-end-marked.md`, `/tmp/agent-kanban-evals/results/green-end-legacy.md`
+- Workspace: `main`
+- Done when: Marked end preserves an exact pre-update archive and legal transition, legacy end retains checklist behavior, and the skill folder validates.
+- Gate: code-review
+- Evidence: Board commit `1fb9376`; clean marked codex-end run `b9be56f`; legacy run `10f7d7a`; independent Task 4 re-review approved with no findings.
+- Updated: 2026-07-15T07:32:09+03:00
