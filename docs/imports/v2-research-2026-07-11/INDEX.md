@@ -1,7 +1,8 @@
 # V2 Research Import Index
 
 > Processed 2026-07-11. The tracked files preserve research provenance; they are not current
-> sources of truth. One source is local-only and explicitly marked as unavailable in Git clones.
+> sources of truth. The history analysis, initially retained as local-only, was added to this
+> archive on 2026-07-15 by owner direction.
 > Follow the destinations below and `journal/docs-map.md` for authoritative decisions.
 
 ## Disposition Labels
@@ -24,7 +25,7 @@
 | `research/v2-research-06-ux-foundations.md` | Accepted + Deferred | Decision-versus-outcome and responsible framing fold into `docs/specs/product-vision.md`; detailed UI states and visual work wait for their feature cycles. |
 | `research/v2-research-07-validation-and-qa-strategy.md` | Accepted + Deferred | Learning-integrity expectations fold into `docs/specs/qa-playtest-process.md`; feature scenarios and new scripts wait for Strategy Table Fundamentals. |
 | `research/v2-codebase-continuation-handoff.md` | Covered | The H17 oracle and first guided drill are shipped and feature-QA closed; its pre-implementation inspection tasks are obsolete. |
-| `_inbox/history-data-analysis-2026-07-09.md` | Covered + Deferred (local-only) | Original is gitignored and unavailable in Git clones; it remains in `journal/raw/_inbox/` on the owner's workspace. Local JSONL history is implemented; player-visible versus shoe-true count semantics fold into `docs/specs/research-brief.md` for future counting research. |
+| `history/history-data-analysis-2026-07-09.md` | Covered + Deferred | Original preserved in this tracked archive on 2026-07-15 after initially remaining local-only. Local JSONL history is implemented; player-visible versus shoe-true count semantics fold into `docs/specs/research-brief.md` for future counting research. |
 | `course-bundle/files.zip` | Archived | Original transport bundle retained for provenance; its readable members are indexed separately below. |
 | `course-bundle/how-to-teach.md` | Accepted + Rejected | Decision-versus-outcome, practice progression, misconception feedback, and spacing are folded; XP/leaderboards and dealer-bust-first sequencing are not accepted V2 decisions. |
 | `course-bundle/unit-1-basics.md` | Covered + Rejected | Foundations concepts are covered by the shipped guided drill; S17 and resplit-ace assumptions do not match the locked H17 baseline. |

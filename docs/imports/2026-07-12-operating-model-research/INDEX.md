@@ -22,5 +22,5 @@ Source note folded via the inbox-ingestion process. Original preserved here (tra
 **Close condition met:** every claim has a disposition; accepted material lives in one owned
 spec; provenance preserved here. **Reopen trigger:** none outstanding.
 
-> Also still in `journal/raw/_inbox/`: `history-data-analysis-2026-07-09.md` — owner-retained,
-> **processed** (folded at the V2 research stage); left in place by prior decision, not pending.
+> The separately processed `history-data-analysis-2026-07-09.md` was moved from the inbox into
+> `docs/imports/v2-research-2026-07-11/history/` on 2026-07-15 by owner direction.

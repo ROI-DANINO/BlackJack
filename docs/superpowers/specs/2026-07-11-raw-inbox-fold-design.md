@@ -8,6 +8,10 @@ the original sources into a tracked import archive. It changes documentation onl
 
 ## Execution Amendment
 
+> **Superseded 2026-07-15:** the owner later directed that the history analysis be moved to
+> `docs/imports/v2-research-2026-07-11/history/history-data-analysis-2026-07-09.md`. The text below
+> records the original execution decision and is retained as history.
+
 During execution, the owner approved retaining
 `journal/raw/_inbox/history-data-analysis-2026-07-09.md` as a local-only, gitignored source instead
 of moving it into the tracked archive. The tracked index records its disposition and the durable

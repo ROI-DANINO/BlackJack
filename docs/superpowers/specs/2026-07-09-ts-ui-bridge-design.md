@@ -3,7 +3,7 @@
 > Status: design (approved 2026-07-09). Scope: the first browser-playable Free Play surface
 > over the existing Rust simulator core. Follows the V1 spec
 > `docs/specs/v1-simulation-foundations.md` and the round-history analysis
-> `journal/raw/_inbox/history-data-analysis-2026-07-09.md`.
+> `docs/imports/v2-research-2026-07-11/history/history-data-analysis-2026-07-09.md`.
 
 ## Plain-language summary (read this first)
 

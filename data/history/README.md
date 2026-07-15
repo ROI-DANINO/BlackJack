@@ -37,5 +37,5 @@ header = df[df["type"] == "session_header"] # session metadata
 
 The file is kept **lossless** — derived columns (running/true count, optimal action, totals)
 are computed at analysis time, not baked in. See the design notes in
-`journal/raw/_inbox/history-data-analysis-2026-07-09.md` for grains, count semantics
+`docs/imports/v2-research-2026-07-11/history/history-data-analysis-2026-07-09.md` for grains, count semantics
 (shoe-true vs player-perceived), and what to compute where.

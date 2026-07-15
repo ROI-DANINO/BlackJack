@@ -63,7 +63,7 @@ Compact per-session decision/state notes (newest first).
   hands against the same CLI boundary (hides dealer hole card during `player_turn`, shows only
   engine-reported legal actions, handles EOF/Ctrl-C cleanly). Not a product surface — a dev tool.
 - **Round-history data design, via a resumed Opus 4.8 subagent** (read-only; output at
-  `journal/raw/_inbox/history-data-analysis-2026-07-09.md`):
+  `docs/imports/v2-research-2026-07-11/history/history-data-analysis-2026-07-09.md`):
   - Recommends JSON Lines, written by the harness (not the Rust core, which stays a pure
     stateless function) — one `session_header` line + one `round` line per resolved round,
     each carrying the existing `RoundLog` verbatim. Zero core changes needed for this.

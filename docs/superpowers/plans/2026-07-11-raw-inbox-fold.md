@@ -6,6 +6,10 @@
 
 ## Controller Amendments (2026-07-11 execution)
 
+> **Superseded in part 2026-07-15:** the owner later directed that the history analysis be moved
+> into `docs/imports/v2-research-2026-07-11/history/`. Amendment 3 and the old verification commands
+> remain below only as the record of how this completed plan originally ran.
+
 These owner-approved deviations override any conflicting task text below. Reviewers must
 check against these, not the original wording.
 
