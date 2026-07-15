@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
-sub_phase: strategy-profile-foundation-complete
-plan: docs/superpowers/plans/2026-07-15-strategy-profile-foundation.md
-spec: docs/superpowers/specs/2026-07-12-strategy-profile-foundation-design.md
-step: "Strategy Profile Foundation is complete at 5bbc0b4. Next: design the first learner-visible Strategy Table Fundamentals lesson (hand classification/table navigation) and the smallest engine-owned grading API it needs."
+sub_phase: strategy-table-fundamentals-design
+plan: docs/superpowers/plans/2026-07-15-v2-future-guidance-ingestion.md
+spec: docs/superpowers/specs/2026-07-15-v2-future-guidance-ingestion-design.md
+step: "Design the first learner-visible Strategy Table Fundamentals lesson (hand classification/table navigation) and the smallest engine-owned grading API it needs."
 prior_phase: v1-simulation-foundations
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -22,8 +22,9 @@ sessions:
   - journal/ops/sessions/the-foundation-and-the-worktree-2026-07-11T2308.md
   - journal/ops/sessions/the-lens-and-the-north-star-2026-07-12T1745.md
   - journal/ops/sessions/the-profiles-and-the-proof-2026-07-15T0326.md
+  - journal/ops/sessions/the-inbox-and-the-compass-2026-07-15T0521.md
 detour: []
 blocking: null
 next: "Design the first Strategy Table Fundamentals lesson: hand classification/table navigation and the smallest grading API it needs. Revisit the Hit-on-16 orientation moment there."
-note: "Strategy Profile Foundation merged and feature-QA passed at 5bbc0b4: verified H17/S17 profiles, full-ruleset engine compatibility, guarded Rust/TypeScript contract, Unit.profileId lifecycle gate; 80 Rust + 217 web tests and the full QA pack passed. QA-016 (raw prerequisite ids) and QA-017 (TypeScript display totals) remain ledger-tracked. Overdue boundary hardening (Cargo.lock/build-wasm.sh freshness plus native↔built-WASM parity) is carried into the next wire-changing grading slice. The 2026-07-15 future-guidance ingestion archived three evidence notes and folded the continuing-track roadmap, client-authoritative hosted posture, Tool & Runtime Admission Protocol, accessibility/platform principles, and just-in-time research triggers into owned docs. Named technologies remain candidates; the approved ProgressStore/versioned-progress seam is not implemented."
+note: "Milestone closed in journal/ops/sessions/the-inbox-and-the-compass-2026-07-15T0521.md: three future-guidance notes archived unchanged, 26 claims dispositioned, authoritative docs/current state reconciled, and subject-split plus whole-change reviews approved. Named technologies remain candidates; the approved ProgressStore/versioned-progress seam is not implemented. Overdue Cargo.lock/build-wasm.sh freshness and native↔built-WASM parity are carried into the next wire-changing grading slice."
 ---
