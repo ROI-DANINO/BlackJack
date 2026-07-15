@@ -50,6 +50,8 @@
 
 ## Active
 
+## Verification
+
 ### AK-02 — Update and verify codex-start
 - Type: chore
 - Mode: write
@@ -57,15 +59,13 @@
 - Depends on: AK-01
 - Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 2
 - Outcome: Marked start validates and resumes from the board; legacy start is unchanged.
-- Next: Add and verify the smallest marked-board branch in codex-start.
-- Load: `/home/roking/.codex/skills/codex-start/SKILL.md`, `/home/roking/.codex/skills/codex-start/agents/openai.yaml`, `/tmp/agent-kanban-evals/results/baseline-start.md`
+- Next: Review `.superpowers/sdd/task-2-global.diff` against Task 2 and the two GREEN reports.
+- Load: `/home/roking/.codex/skills/codex-start/SKILL.md`, `/home/roking/.codex/skills/codex-start/agents/openai.yaml`, `.superpowers/sdd/task-2-global.diff`, `/tmp/agent-kanban-evals/results/green-start-marked.md`, `/tmp/agent-kanban-evals/results/green-start-legacy.md`
 - Workspace: `main`
 - Done when: Marked and legacy fresh-agent scenarios pass, the fixture stays read-only, and the skill folder validates.
 - Gate: code-review
-- Evidence: Task 1 approved; baseline gap recorded in `/tmp/agent-kanban-evals/results/baseline-start.md`.
-- Updated: 2026-07-15T06:27:48+03:00
-
-## Verification
+- Evidence: Quick validator passed; marked and legacy GREEN reports at `/tmp/agent-kanban-evals/results/green-start-marked.md` and `/tmp/agent-kanban-evals/results/green-start-legacy.md`; fixtures byte-clean; old/new SHA-256 hashes and recursive global diff recorded in `.superpowers/sdd/task-2-report.md` and `.superpowers/sdd/task-2-global.diff`.
+- Updated: 2026-07-15T06:35:51+03:00
 
 ## Blocked
 
