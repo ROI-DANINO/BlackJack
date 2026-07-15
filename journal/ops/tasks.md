@@ -1,54 +1,87 @@
-# Tasks - Current Phase Only
+<!-- agent-kanban:v1 -->
+# Tasks — Agent Kanban
 
-> Only the current phase gets detailed tasks. Future work lives in `ROADMAP.md`.
+## Ready
 
-## Complete — V2 Blackjack Basics learning foundation ✅ (merged to main 964efa1, pushed)
+### AK-02 — Update and verify codex-start
+- Type: chore
+- Mode: write
+- Owner: unclaimed
+- Depends on: AK-01
+- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 2
+- Outcome: Marked start validates and resumes from the board; legacy start is unchanged.
+- Next: Read the start RED report and add the smallest marked-board branch.
+- Load: `/home/roking/.codex/skills/codex-start/SKILL.md`, `/home/roking/.codex/skills/codex-start/agents/openai.yaml`, `/tmp/agent-kanban-evals/results/baseline-start.md`
+- Workspace: `main`
+- Done when: Marked and legacy fresh-agent scenarios pass, the fixture stays read-only, and the skill folder validates.
+- Gate: code-review
+- Evidence: pending
+- Updated: 2026-07-15T06:21:15+03:00
 
-- [x] **Design the V2 learning foundation** - approved nine short complete-beginner units,
-      mechanics-first presentation, reusable contracts, and the engine/curriculum boundary.
-- [x] **Write the implementation plan** - 11 TDD tasks with per-task review and final feature QA.
-- [x] **Task 1: Rust-owned hand facts** - `bbb5cd7`; reviewed.
-- [x] **Task 2: WASM and TypeScript hand-facts contract** - `81ced34`; reviewed.
-- [x] **Task 3: Typed curriculum contracts and validation** - `6c84c26` (surfaced+fixed the
-      validator prereq→skill-id bug); reviewed.
-- [x] **Tasks 4-5: Learning runtime mechanics** - `5b75769`, `a09835b` (engine adapter,
-      deterministic controller, arranged/live hand steps, serializable situations); reviewed.
-- [x] **Tasks 6-7: Blackjack Basics curriculum** - `e6c0e21`, `ab2b5e7` (nine units + end-to-end
-      controller walk verifying every unit through the real engine); reviewed.
-- [x] **Tasks 8-9: Functional Learn UI and prototype retirement** - `d44f56a`, `7daf35c` (thin
-      Lesson/Learn renderers, ordered navigation, guided-drill fully removed, Free Play untouched);
-      reviewed.
-- [x] **Task 10: Learn browser QA role** - `e9ddc57`/`8952828` (`qa:learn` replaces `qa:drill`;
-      9/9 units, 0 violations); reviewed.
-- [x] **Task 11: Feature QA and ledger reconciliation** - `7bfbd7e` (all deterministic gates,
-      Player Experience PASS, ledger reconciled); final whole-branch review merge-clean.
+### AK-03 — Update and verify codex-next
+- Type: chore
+- Mode: write
+- Owner: unclaimed
+- Depends on: AK-02
+- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 3
+- Outcome: Marked next updates board plus bridge atomically; legacy next is unchanged.
+- Next: Read the next RED report and add the conditional two-file contract.
+- Load: `/home/roking/.codex/skills/codex-next/SKILL.md`, `/home/roking/.codex/skills/codex-next/agents/openai.yaml`, `/tmp/agent-kanban-evals/results/baseline-next.md`
+- Workspace: `main`
+- Done when: Marked next changes exactly tasks.md plus next.md, legacy next changes only next.md, and the skill folder validates.
+- Gate: code-review
+- Evidence: pending
+- Updated: 2026-07-15T06:21:15+03:00
 
-## Complete — Strategy Profile Foundation ✅ (merged to main `5bbc0b4`)
+### AK-04 — Update and verify codex-end
+- Type: chore
+- Mode: write
+- Owner: unclaimed
+- Depends on: AK-03
+- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 4
+- Outcome: Marked end archives and reconciles cards; legacy end is unchanged.
+- Next: Read the end RED report and add marked-board reconciliation to the shared close path.
+- Load: `/home/roking/.codex/skills/codex-end/SKILL.md`, `/home/roking/.codex/skills/codex-end/agents/openai.yaml`, `/tmp/agent-kanban-evals/results/baseline-end.md`
+- Workspace: `main`
+- Done when: Marked end preserves an exact pre-update archive and legal transition, legacy end retains checklist behavior, and the skill folder validates.
+- Gate: code-review
+- Evidence: pending
+- Updated: 2026-07-15T06:21:15+03:00
 
-Implementation plan: `docs/superpowers/plans/2026-07-15-strategy-profile-foundation.md`.
+### AK-05 — Run cross-skill conformance and feature QA
+- Type: qa
+- Mode: write
+- Owner: unclaimed
+- Depends on: AK-04
+- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 5
+- Outcome: Cross-skill fixtures, real read-only start, hashes, smoke tests, and ledger pass.
+- Next: Run all three validators, then execute marked and legacy lifecycle scenarios.
+- Load: `journal/ops/tasks.md`, `journal/qa/ledger.md`, `docs/specs/qa-playtest-process.md`, `/tmp/agent-kanban-evals/results/`
+- Workspace: `main`
+- Done when: Marked and legacy lifecycle runs, real read-only start, skill hashes, product smoke, QA report, and ledger all pass.
+- Gate: feature-qa
+- Evidence: pending
+- Updated: 2026-07-15T06:21:15+03:00
 
-- [x] **Task 1: Verify and freeze the complete S17 source table** — provenance and independent
-      cross-check recorded before encoding.
-- [x] **Tasks 2-3: Core profiles and verified chart lookup** — canonical H17/S17 rulesets,
-      full-struct resolution, and exhaustive source-cell coverage.
-- [x] **Tasks 4-5: Authoritative compatibility wire contract** — Rust verdict, golden fixtures,
-      TypeScript validation, and contract tests.
-- [x] **Task 6: Lesson lifecycle gate** — declared-profile compatibility enforcement with
-      profile-less regression coverage.
-- [x] **Task 7: Scoped feature QA and ledger reconciliation** — 80 Rust tests, 217 web tests, and
-      the full QA pack passed.
+## Active
 
-## Current — Strategy Table Fundamentals design
+## Verification
 
-- [ ] Choose the first learner-visible objective and sequence: hand classification, row/column table
-      navigation, then table-open application without starting memorization-first.
-- [ ] Define the smallest content/state surface the lesson needs, including how the verified profile
-      and addressable strategy-table data are presented without moving strategy truth into TypeScript.
-- [ ] Define the smallest engine-owned grading API and its Rust/TypeScript contract; retain the
-      profile compatibility gate and verdict-versus-hand-outcome separation. Its implementation plan
-      must also close the overdue boundary hardening: watch `Cargo.lock`/`build-wasm.sh` for stale
-      artifacts and prove native↔built-WASM parity over deterministic vectors.
-- [ ] Reconcile the Blackjack Foundations "try Hit to feel bust risk" moment with the later strategy
-      recommendation so the product does not teach it as Basic Strategy advice.
-- [ ] Write the feature design with its scoped learning/Player Experience QA boundary before an
-      implementation plan is created.
+### AK-01 — Adopt board contract and capture RED baselines
+- Type: docs
+- Mode: write
+- Owner: orchestrator
+- Depends on: none
+- Source: `docs/superpowers/plans/2026-07-15-agent-kanban-tasks.md` Task 1
+- Outcome: Marked board, authority docs, and captured RED evidence exist.
+- Next: Review the three RED reports, then update codex-start.
+- Load: `journal/ops/tasks.md`, `AGENTS.md`, `journal/docs-map.md`, `/tmp/agent-kanban-evals/results/baseline-start.md`, `/tmp/agent-kanban-evals/results/baseline-next.md`, `/tmp/agent-kanban-evals/results/baseline-end.md`
+- Workspace: `main`
+- Done when: The marker, five lanes, five valid cards, authority row, agent contract, and three honest RED reports exist.
+- Gate: code-review
+- Evidence: `/tmp/agent-kanban-evals/results/baseline-{start,next,end}.md`; board contract checks passed; commit pending
+- Updated: 2026-07-15T06:21:15+03:00
+
+## Blocked
+
+## Done
