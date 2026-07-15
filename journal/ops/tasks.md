@@ -27,21 +27,6 @@
 
 ## Verification
 
-### AK-06 — Restore the marked board policy contract
-- Type: fix
-- Mode: write
-- Owner: orchestrator
-- Depends on: AK-04
-- Source: `/tmp/agent-kanban-evals/results/green-negative-and-transitions.md`
-- Outcome: Marked boards state the exact local schema, movement, blocking, and two-cap WIP policy that the global skills validate.
-- Next: Review the local policy addition and the clean WIP policy-spike result.
-- Load: `journal/ops/tasks.md`, `docs/superpowers/specs/2026-07-15-agent-kanban-tasks-design.md`, `/tmp/agent-kanban-evals/results/green-negative-and-transitions.md`
-- Workspace: `feat/agent-kanban`
-- Done when: The live board and marked fixture template carry the policy, and a clean fresh start reports both WIP caps read-only.
-- Gate: code-review
-- Evidence: Failing clean WIP hash `f315fc6f...`; policy-only spike hash `13e25fd0...` reported started WIP `4 > 3` and started write-mode WIP `4 > 1`, with no edits.
-- Updated: 2026-07-15T08:23:52+03:00
-
 ## Blocked
 
 ### AK-05 — Run cross-skill conformance and feature QA
@@ -58,8 +43,8 @@
 - Gate: feature-qa
 - Evidence: Marked and legacy lifecycles passed; eight clean invariant cases and duplicate next/end refusals passed; clean WIP run exposed missing local policy.
 - Updated: 2026-07-15T08:23:52+03:00
-- Blocked by: AK-06 must restore the marked board's explicit local WIP policy.
-- Unblock when: AK-06 passes code review and a clean fresh start reports both WIP caps read-only.
+- Blocked by: The updated reusable marked template still needs its clean two-cap WIP rerun.
+- Unblock when: A clean fresh start from template commit `833d1f2` reports both WIP caps read-only.
 
 ## Done
 
@@ -122,3 +107,18 @@
 - Gate: code-review
 - Evidence: Board commit `1fb9376`; clean marked codex-end run `b9be56f`; legacy run `10f7d7a`; independent Task 4 re-review approved with no findings.
 - Updated: 2026-07-15T07:32:09+03:00
+
+### AK-06 — Restore the marked board policy contract
+- Type: fix
+- Mode: write
+- Owner: orchestrator
+- Depends on: AK-04
+- Source: `/tmp/agent-kanban-evals/results/green-negative-and-transitions.md`
+- Outcome: Marked boards state the exact local schema, movement, blocking, and two-cap WIP policy that the global skills validate.
+- Next: Complete.
+- Load: `journal/ops/tasks.md`, `docs/superpowers/specs/2026-07-15-agent-kanban-tasks-design.md`, `/tmp/agent-kanban-evals/results/green-negative-and-transitions.md`
+- Workspace: `feat/agent-kanban`
+- Done when: The live board and marked fixture template carry the policy, and a clean fresh start reports both WIP caps read-only.
+- Gate: code-review
+- Evidence: Commit `f7043a6`; template `833d1f2`; policy spike reported both WIP caps read-only; independent AK-06 review approved with no findings.
+- Updated: 2026-07-15T08:29:07+03:00
