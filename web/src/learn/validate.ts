@@ -44,6 +44,10 @@ export function validateSubject(subject: Subject): string[] {
       }
     }
 
+    if (unit.profileId !== undefined && unit.profileId !== 'h17' && unit.profileId !== 's17') {
+      messages.push(`unit ${unit.id}: unknown strategy profile: ${unit.profileId}`);
+    }
+
     for (const outcome of unit.outcomes) {
       if (!skillIds.has(outcome)) {
         messages.push(`unit ${unit.id}: unknown outcome: ${outcome}`);
@@ -95,4 +99,3 @@ export function validateSubject(subject: Subject): string[] {
 
   return messages;
 }
-

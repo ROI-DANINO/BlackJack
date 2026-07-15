@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { initCoreForTest } from '../bridge/test-init';
 import { WasmTransport } from '../bridge/core-client';
 import type { CoreTransport } from '../bridge/transport';
-import type { Action } from '../bridge/types';
+import type { Action, CoreCommand, Ruleset, StrategyProfileId } from '../bridge/types';
 import type { HandStep, QuestionStep, Subject, Unit } from './types';
 import { LearnEngine } from './engine';
 import { LessonController } from './controller';
@@ -15,6 +15,25 @@ class FakeTransport implements CoreTransport {
   constructor(private readonly reply: string) {}
   call(): string { return this.reply; }
 }
+
+class RewritingWasmTransport implements CoreTransport {
+  readonly commands: CoreCommand[] = [];
+
+  constructor(private readonly rewrite: (command: CoreCommand) => CoreCommand = (command) => command) {}
+
+  call(commandJson: string): string {
+    const command = JSON.parse(commandJson) as CoreCommand;
+    this.commands.push(command);
+    return new WasmTransport().call(JSON.stringify(this.rewrite(command)));
+  }
+}
+
+const H17_RULESET: Ruleset = {
+  id: 'v1-modern-classic-h17-6d', decks: 6, penetration_percent: 75,
+  dealer_soft_17: 'hit', blackjack_payout: 1.5, max_split_hands: 4,
+  double_after_split: true, resplit_aces: false, split_aces_receive_one_card: true,
+  insurance_auto_decline: true,
+};
 
 // The brief's illustrative unit uses `capabilities: ['Answered']`, a string array. The
 // committed RecapStep contract (web/src/learn/types.ts) requires
@@ -43,6 +62,10 @@ function newController(unit: Unit, transport: CoreTransport = new WasmTransport(
   return new LessonController(new LearnEngine(transport), buildSubject(unit), unit, {
     seq: () => 0, freshSeed: () => 'test-seed',
   });
+}
+
+function declared(unit: Unit, profileId: StrategyProfileId): Unit {
+  return { ...unit, profileId } as Unit;
 }
 
 /** A single-step unit whose only check is an arranged hand asking for `requestedAction`. */
@@ -167,6 +190,81 @@ describe('LessonController — engine-backed hand steps', () => {
     c.answer('blackjack');
     expect(c.getState().attempts.at(-1)).toMatchObject({ correct: true, feedback: 'Yes — a natural.' });
     expect(c.getState().completed).toBe(true);
+  });
+});
+
+describe('LessonController — declared strategy profile gate', () => {
+  it('starts a matching H17 declaration before rendering step zero and keeps H17 for an arranged hand', () => {
+    const transport = new RewritingWasmTransport();
+    const c = newController(declared(doubleHandUnit(), 'h17'), transport);
+
+    c.begin();
+
+    const state = c.getState();
+    expect(state.fatal).toBeNull();
+    expect(state.step?.id).toBe('double-hand');
+    expect(state.legalActions).toContain('double');
+    const starts = transport.commands.filter((command) =>
+      command.command === 'start_session' || command.command === 'start_session_with_prefix');
+    expect(starts).toHaveLength(2);
+    for (const command of starts) expect(command.ruleset).toEqual(H17_RULESET);
+  });
+
+  it('refuses an S17 declaration against an explicit H17 probe before any step or action can render', () => {
+    const transport = new RewritingWasmTransport((command) => {
+      if (command.command === 'start_session' && command.ruleset !== null) {
+        return { ...command, ruleset: H17_RULESET };
+      }
+      return command;
+    });
+    const c = newController(declared(buildUnit(), 's17'), transport);
+
+    c.begin();
+
+    const probe = transport.commands.find((command) => command.command === 'start_session');
+    expect(probe?.ruleset).toMatchObject({
+      id: 'v1-modern-classic-s17-6d', dealer_soft_17: 'stand',
+    });
+    expect(c.getState()).toMatchObject({
+      stepIndex: -1, step: null, session: null, legalActions: [], attempts: [],
+      fatal: 'strategy profile mismatch: lesson s17 does not match the active session',
+    });
+  });
+
+  it('refuses an altered known-id ruleset before any step or action can render', () => {
+    const transport = new RewritingWasmTransport((command) => {
+      if (command.command === 'start_session' && command.ruleset !== null) {
+        return { ...command, ruleset: { ...command.ruleset, penetration_percent: 70 } };
+      }
+      return command;
+    });
+    const c = newController(declared(buildUnit(), 'h17'), transport);
+
+    c.begin();
+
+    expect(c.getState()).toMatchObject({
+      stepIndex: -1, step: null, session: null, legalActions: [], attempts: [],
+      fatal: 'strategy profile unsupported: lesson h17 requires a verified canonical ruleset',
+    });
+  });
+
+  it('keeps profile-less Blackjack Basics on its null-ruleset path and playable', () => {
+    const transport = new RewritingWasmTransport();
+    const unit = BLACKJACK_BASICS.units.find((candidate) => candidate.id === 'complete-round')!;
+    const c = newController(unit, transport);
+
+    c.begin();
+
+    expect(c.getState().fatal).toBeNull();
+    expect(c.getState().step?.id).toBe('intro');
+    c.continue();
+    expect(c.getState().step?.id).toBe('checkpoint-hand');
+    expect(c.getState().session).not.toBeNull();
+    // A live opening can settle immediately; otherwise it offers engine-owned actions.
+    expect(c.getState().legalActions.length > 0 || c.getState().awaitingContinue).toBe(true);
+    const starts = transport.commands.filter((command) => command.command === 'start_session');
+    expect(starts).toHaveLength(1);
+    expect(starts[0]!.ruleset).toBeNull();
   });
 });
 

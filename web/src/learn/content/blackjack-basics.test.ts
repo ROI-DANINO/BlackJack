@@ -34,6 +34,10 @@ describe('BLACKJACK_BASICS — structural coverage', () => {
     expect(validateSubject(BLACKJACK_BASICS)).toEqual([]);
   });
 
+  it('keeps every current mechanics unit profile-less', () => {
+    expect(BLACKJACK_BASICS.units.every((unit) => unit.profileId === undefined)).toBe(true);
+  });
+
   it('declares all nine units in the exact locked order', () => {
     expect(BLACKJACK_BASICS.units.map((u) => u.id)).toEqual([
       'meet-blackjack', 'read-your-hand', 'round-flow', 'hit-and-stand',

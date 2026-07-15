@@ -62,6 +62,21 @@ export class LessonController {
 
   begin(): void {
     if (this.state.fatal || this.unit.steps.length === 0) return;
+    const profileId = this.unit.profileId;
+    if (profileId) {
+      try {
+        const probe = this.engine.startLiveForProfile(profileId, `lesson:${this.unit.id}:profile-probe`);
+        const compatibility = this.engine.checkStrategyCompatibility(profileId, probe);
+        if (compatibility !== 'compatible') {
+          this.set({ fatal: this.profileGateFatal(profileId, compatibility), error: null });
+          return;
+        }
+      } catch (e) {
+        if (e instanceof BridgeError) { this.set({ fatal: e.message }); return; }
+        if (e instanceof CoreRuleError) { this.set({ fatal: e.message }); return; }
+        throw e;
+      }
+    }
     this.enterStep(0);
   }
 
@@ -134,10 +149,14 @@ export class LessonController {
       if (step.setup.kind === 'arranged') {
         const openings = step.setup.openings;
         const prefix = openings[this.opts.seq() % openings.length]!;
-        const started = this.engine.startArranged(`lesson:${this.unit.id}:${step.id}`, prefix);
+        const started = this.unit.profileId
+          ? this.engine.startArrangedForProfile(this.unit.profileId, `lesson:${this.unit.id}:${step.id}`, prefix)
+          : this.engine.startArranged(`lesson:${this.unit.id}:${step.id}`, prefix);
         session = this.engine.startRound(started);
       } else {
-        const started = this.engine.startLive(this.opts.freshSeed());
+        const started = this.unit.profileId
+          ? this.engine.startLiveForProfile(this.unit.profileId, this.opts.freshSeed())
+          : this.engine.startLive(this.opts.freshSeed());
         session = this.engine.startRound(started);
       }
     } catch (e) {
@@ -340,6 +359,13 @@ export class LessonController {
 
   private computeCompleted(attempts: AttemptRecord[]): boolean {
     return this.unit.requiredChecks.every((id) => attempts.some((a) => a.stepId === id && a.correct === true));
+  }
+
+  private profileGateFatal(profileId: string, compatibility: 'profile_mismatch' | 'unsupported_ruleset'): string {
+    if (compatibility === 'profile_mismatch') {
+      return `strategy profile mismatch: lesson ${profileId} does not match the active session`;
+    }
+    return `strategy profile unsupported: lesson ${profileId} requires a verified canonical ruleset`;
   }
 
   private set(patch: Partial<LessonState>): void {

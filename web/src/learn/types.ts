@@ -1,7 +1,7 @@
 // Serializable curriculum contracts for the blackjack-basics learning foundation.
 // Consumes bridge types (Action, HandOutcome, PresetCard, SessionState) — never redefines them.
 
-import type { Action, HandOutcome, PresetCard, SessionState } from '../bridge/types';
+import type { Action, HandOutcome, PresetCard, SessionState, StrategyProfileId } from '../bridge/types';
 
 export type Skill = { id: string; title: string };
 export type Choice = { value: string; label: string };
@@ -33,7 +33,7 @@ export type LessonStep = ExplainStep | QuestionStep | HandStep | RecapStep;
 
 export type Unit = {
   id: string; title: string; goal: string; prerequisites: string[]; outcomes: string[];
-  requiredChecks: string[]; steps: LessonStep[];
+  requiredChecks: string[]; steps: LessonStep[]; profileId?: StrategyProfileId;
 };
 export type Subject = { id: string; title: string; skills: Skill[]; units: Unit[] };
 

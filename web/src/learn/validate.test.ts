@@ -80,6 +80,13 @@ describe('validateSubject', () => {
     expect(validateSubject(validSubject())).toEqual([]);
   });
 
+  it('rejects an unknown runtime strategy profile declaration', () => {
+    const subject = validSubject();
+    const unit = subject.units[0] as unknown as { profileId?: unknown };
+    unit.profileId = 'bad';
+    expect(validateSubject(subject)).toEqual(['unit basics: unknown strategy profile: bad']);
+  });
+
   it('rejects duplicate unit ids', () => {
     const subject = validSubject();
     subject.units = [validUnit(), validUnit()];
