@@ -1,6 +1,6 @@
 # Adaptive Learning Product and Activity Research
 
-> Status: evidence collection in progress.
+> Status: evidence review complete; awaiting user approval.
 > Scope: initial product/activity research for the local adaptive-learning mechanics proof.
 > Authority: research evidence only; adopted product behavior remains in approved owned designs.
 
@@ -394,41 +394,81 @@ Existing project directions cross-check:
 
 ## Coverage Gaps and Conflicting Evidence
 
-- **COVERAGE GAP — Product accessibility behavior:** The bounded official Duolingo and Brilliant
-  searches did not yield a product-specific keyboard, screen-reader, reduced-motion, or non-color
-  audit for the reviewed activity flows. `STD-001` and `STD-002` therefore define the transferable
-  baseline; product compliance is not assumed.
-- **COVERAGE GAP — Placement and skip-test mechanics:** Official sources describe progression,
-  personalization, and practice, but do not expose enough detail to compare deterministic placement
-  coverage, pass criteria, or failure routing.
-- **COVERAGE GAP — Production learner models:** No attributable public repository or official page
-  found in the bounded searches exposes either product's complete production mastery reducer,
-  exercise-selection algorithm, item calibration, or experiment-analysis implementation.
-- **COVERAGE GAP — Brilliant experimental strength:** `BRI-001` names active experiments in review
-  timing, composition, interleaving, automaticity, and set length, but publishes neither protocols
-  nor outcome estimates; those statements remain product behavior claims, not learning effects.
-- **COVERAGE GAP — Blackjack transfer:** The learning studies cover language, mathematics, general
-  digital learning, or psychometric simulation. They support bounded hypotheses, not numeric
-  mastery thresholds or guaranteed transfer to blackjack decisions.
-- **CONFLICT — Recommended session size:** Duolingo describes lessons of a few minutes
-  (`DUO-001`), while Brilliant recommends 15 minutes and also offers 2-minute practice
-  (`BRI-002`). This affects session presets, not a universal optimum; the proof must treat duration
-  and activity count as learner-selected, research-calibrated configuration.
-- **CONFLICT — First exposure:** Brilliant reports pretesting before procedure (`BRI-001`), while
-  worked-example evidence favors stronger novice guidance (`SCI-004`). This affects initial
-  assistance: a low-stakes attempt may diagnose prior knowledge, but must not strand a novice or
-  count a guess as mastery evidence.
-- **CONFLICT — Feedback timing:** Brilliant emphasizes instant custom feedback (`BRI-001`), while
-  digital-feedback evidence finds both immediate and delayed modes useful under different
-  conditions (`SCI-005`). This affects acquisition versus transfer modes; no single global timing
-  rule is justified.
-- **CONFLICT — Motivation and stopping:** Both products publish streak/competition mechanics
-  (`DUO-001`, `BRI-001`), while motivation evidence distinguishes autonomous from controlled
-  regulation (`SCI-007`). This affects session-end copy and rewards: the proof must not punish
-  stopping or use loss-framed pressure.
-- **CONFLICT — Mastery visibility:** Brilliant deliberately simplifies visible milestones while
-  acknowledging richer underlying relations (`BRI-001`); mastery research reports benefits plus
-  time and completion tradeoffs (`SCI-006`). This affects the state vocabulary and argues for
-  simple labels backed by auditable evidence rather than a visible pseudo-precise score.
+- **COVERAGE GAP — Product accessibility behavior.** Sources searched: `DUO-001`–`DUO-005`,
+  `BRI-001`–`BRI-005`, `STD-001`, and `STD-002`. Why insufficient: no reviewed product-specific
+  keyboard, screen-reader, reduced-motion, or non-color conformance audit was found. Affects:
+  `ALR-006`, `ALR-012`, `ALR-019`, and `ALR-036`–`ALR-041`. Blocks mechanics proof: **No** — the
+  standards and explicit feature-QA requirements supply a baseline, but competitor compliance is
+  not assumed and representative testing remains later work.
+- **COVERAGE GAP — Placement and skip-test mechanics.** Sources searched: `DUO-001`–`DUO-003`,
+  `BRI-001`, `BRI-004`, and `SCI-008`. Why insufficient: official sources name personalization or
+  starting-point behavior without exposing skill coverage, pass criteria, calibration, or failure
+  routing. Affects: `ALR-028`, `ALR-033`, and `ALR-034`. Blocks mechanics proof: **No** — the proof
+  uses deterministic, unassisted, coverage-complete rules and makes no psychometric-adaptivity claim.
+- **COVERAGE GAP — Production learner models.** Sources searched: `DUO-004`, `DUO-006`, `BRI-001`,
+  `BRI-004`, `TECH-001`, `TECH-002`, and bounded official-repository queries. Why insufficient: no
+  source exposes a complete production mastery reducer, exercise-selection algorithm, item
+  calibration, or experiment-analysis implementation. Affects: `ALR-020`–`ALR-025` and
+  `ALR-030`–`ALR-034`. Blocks mechanics proof: **No** — owned serializable evidence and a
+  deterministic reducer/planner are the approved simpler boundary.
+- **COVERAGE GAP — Brilliant experimental strength.** Sources searched: `BRI-001`, `BRI-002`, and
+  `BRI-004`. Why insufficient: Brilliant names experiments in review timing, composition,
+  interleaving, automaticity, and set length but publishes no protocols or outcome estimates.
+  Affects: `ALR-025`, `ALR-027`, `ALR-031`, and `ALR-032`. Blocks mechanics proof: **No** — these
+  values remain research-calibrated configuration rather than adopted competitor thresholds.
+- **COVERAGE GAP — Blackjack transfer and numeric calibration.** Sources searched: `SCI-001`–
+  `SCI-009` plus `DUO-006`. Why insufficient: the studies cover language, mathematics, general
+  digital learning, classrooms, or psychometric simulation rather than blackjack activity and
+  retention data. Affects: `ALR-025`, `ALR-027`, `ALR-031`, `ALR-032`, and `ALR-034`. Blocks
+  mechanics proof: **No** — the requirements adopt mechanisms but defer numeric thresholds and
+  require scoped feature QA and later observed-data calibration.
+- **CONFLICT — Recommended session size.** Evidence: Duolingo describes a few minutes (`DUO-001`),
+  while Brilliant recommends 15 minutes and offers 2-minute practice (`BRI-002`). Affects:
+  `ALR-025`, `ALR-027`–`ALR-029`. Resolution: learner-selected duration plus activity-count bounds,
+  with values treated as configuration. Blocks mechanics proof: **No**.
+- **CONFLICT — First exposure.** Evidence: Brilliant reports pretesting before procedure
+  (`BRI-001`), while worked-example evidence favors stronger novice guidance (`SCI-004`,
+  `SCI-009`). Affects: `ALR-001`, `ALR-007`, `ALR-026`, and `ALR-035`. Resolution: allow a
+  low-stakes diagnostic attempt, preserve it as such, and keep canonical guidance immediately
+  available; guesses do not become mastery evidence. Blocks mechanics proof: **No**.
+- **CONFLICT — Feedback timing.** Evidence: Brilliant emphasizes instant custom feedback
+  (`BRI-001`), while digital-feedback evidence supports both immediate and delayed modes depending
+  on context (`SCI-005`). Affects: `ALR-005`, `ALR-018`, and `ALR-031`. Resolution: immediate
+  correction for acquisition and configurable delayed review for transfer/assessment. Blocks
+  mechanics proof: **No**.
+- **CONFLICT — Motivation and stopping.** Evidence: both products publish streak or competition
+  mechanics (`DUO-001`, `BRI-001`), while motivation evidence distinguishes autonomous from
+  controlled regulation (`SCI-007`). Affects: `ALR-027`–`ALR-029`. Resolution: meaningful size
+  choice and neutral stop/resume; no loss-framed pressure or punishment. Blocks mechanics proof:
+  **No**.
+- **CONFLICT — Mastery visibility.** Evidence: Brilliant deliberately simplifies visible
+  milestones while acknowledging richer underlying relations (`BRI-001`); mastery research reports
+  benefits plus time and completion tradeoffs (`SCI-006`). Affects: `ALR-032`–`ALR-034`.
+  Resolution: simple visible states backed by reproducible evidence, with thresholds provisional.
+  Blocks mechanics proof: **No**.
 
 ## Recommendations Requiring User Approval
+
+1. **Approve the three initial activity contract families for the mechanics proof.** Recommended
+   disposition: adopt `ALR-001`–`ALR-024`, including deterministic truth, traceable first-response
+   evidence, ordered-shoe engine hands, and canonical fallback. Alternatives: reduce the proof to
+   multiple choice only, or defer assemble blocks and engine-backed hands to separate later proofs.
+2. **Approve learner-selected bounded sessions with neutral stop/resume.** Recommended disposition:
+   adopt `ALR-025`–`ALR-030` without fixing minute/count values yet. Alternatives: one fixed lesson
+   length, or allowing stop while discarding open goals and resume state.
+3. **Approve graded hints and retry semantics that never convert assisted success into independent
+   mastery evidence.** Recommended disposition: adopt `ALR-004`, `ALR-011`, `ALR-017`, `ALR-022`,
+   and `ALR-035`. Alternatives: answer-first help, no hints, or collapsing retry into the original
+   attempt.
+4. **Approve evidence-mode feedback timing.** Recommended disposition: adopt immediate canonical
+   correction for acquisition and delayed review for transfer/assessment as specified by
+   `ALR-005`, `ALR-018`, and `ALR-031`. Alternatives: immediate feedback everywhere, or delayed
+   feedback everywhere.
+5. **Approve deterministic mastery/progression and skip tests while deferring numeric calibration
+   and psychometric CAT.** Recommended disposition: adopt `ALR-031`–`ALR-034`; defer copied or fixed
+   thresholds and adaptive item selection. Alternatives: no skip tests, completion-based unlocks,
+   or beginning a calibrated assessment program before the proof has an item bank and practice data.
+6. **Approve accessibility as an activity-contract and feature-QA gate now.** Recommended
+   disposition: adopt `ALR-006`, `ALR-012`, `ALR-019`, and `ALR-036`–`ALR-041`. Alternatives: defer
+   accessibility until visual polish/mobile work, or apply only automated conformance checks without
+   interaction and learning-integrity playtests.
