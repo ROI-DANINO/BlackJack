@@ -50,13 +50,13 @@
 - Depends on: AL-01
 - Source: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`
 - Outcome: A focused evidence report and Tool & Runtime Admission record select the smallest durable browser-local ProgressStore implementation for the local-first proof.
-- Next: Execute Task 3 of `docs/superpowers/plans/2026-07-16-adaptive-learning-browser-storage-research.md` and freeze the provisional contract in a failing browser harness.
+- Next: Execute Task 4 of `docs/superpowers/plans/2026-07-16-adaptive-learning-browser-storage-research.md` and implement the two baselines plus three equal first-class candidates.
 - Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/specs/stack-boundaries.md`, `docs/architecture.md`, `docs/specs/research-brief.md`
 - Workspace: `.worktrees/al-r2-browser-storage`
 - Done when: Storage alternatives are compared against the active consumer, serialization and schema migration are explicit, determinism and failure behavior are tested, and the recommendation passes user approval.
 - Gate: user-approval
-- Evidence: Research plan `04a16b3`; user approved execution and parallel read-only evidence lanes on 2026-07-16; plan command correction `b28e40b`; clean baseline is Rust 80/80 and web 217/217; research record `a7e88f5` with 22 required headings; source register and seven-candidate suitability screen `cc6678c`, with native IndexedDB, `idb`, and Dexie advancing to equal benchmarks while OPFS and Cache Storage are rejected before benchmark.
-- Updated: 2026-07-16T06:39:00+03:00
+- Evidence: Research plan `04a16b3`; user approved execution and parallel read-only evidence lanes on 2026-07-16; plan command correction `b28e40b`; clean baseline is Rust 80/80 and web 217/217; research record `a7e88f5` with 22 required headings; source register and seven-candidate suitability screen `cc6678c`, with native IndexedDB, `idb`, and Dexie advancing to equal benchmarks while OPFS and Cache Storage are rejected before benchmark; typed contract and three-engine red harness `2acc6eb`, verified as exactly 15 rows and 210 intended failures in the pinned Playwright container after a passing independent harness review.
+- Updated: 2026-07-16T07:00:00+03:00
 
 ## Verification
 
