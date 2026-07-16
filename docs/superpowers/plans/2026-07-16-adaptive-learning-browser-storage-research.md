@@ -411,11 +411,10 @@ Run:
 ```bash
 npm install --prefix web/research/browser-storage --ignore-scripts
 npm --prefix web/research/browser-storage ls --depth=0
-web/node_modules/.bin/tsc -p web/research/browser-storage/tsconfig.json --noEmit
 git diff -- web/package.json web/package-lock.json
 ```
 
-Expected: the isolated package lock pins Dexie 4.4.4 and `idb` 8.0.3; strict type-checking passes; the final diff command prints nothing because the production web package is untouched.
+Expected: the isolated package lock pins Dexie 4.4.4 and `idb` 8.0.3; the final diff command prints nothing because the production web package is untouched. Strict type-checking runs after the harness inputs exist in Step 6.
 
 - [ ] **Step 3: Define the exact research types and gates**
 
@@ -546,6 +545,15 @@ declare global {
 7. write JSON plus a trailing newline to a sibling temporary file, then rename it atomically to `docs/superpowers/specs/evidence/2026-07-16-browser-storage/results.json`;
 8. exit nonzero when a full-benchmark candidate has a failed correctness gate; and
 9. always close pages, contexts, browsers, and the Vite child.
+
+After creating the harness files, run:
+
+```bash
+web/node_modules/.bin/tsc -p web/research/browser-storage/tsconfig.json --noEmit
+```
+
+Expected: strict type-checking passes against the actual contract, fixtures, suite, page, registry,
+and runner inputs.
 
 The runner must accept only these CLI filters:
 
