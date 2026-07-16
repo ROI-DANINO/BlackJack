@@ -3,7 +3,7 @@ phase: v2-learning-foundations
 sub_phase: adaptive-learning-storage-research
 plan: null
 spec: docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md
-step: "AL-R1 milestone closed — AL-R2 is the selected Ready research card."
+step: "AL-R2 active — design the independent browser-storage research plan."
 prior_phase: research
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md

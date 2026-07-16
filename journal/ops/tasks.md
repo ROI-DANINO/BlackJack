@@ -26,21 +26,6 @@
 
 ## Ready
 
-### AL-R2 — Research and admit browser-local learner progress storage
-- Type: research
-- Mode: write
-- Owner: unclaimed
-- Depends on: AL-01
-- Source: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`
-- Outcome: A focused evidence report and Tool & Runtime Admission record select the smallest durable browser-local ProgressStore implementation for the local-first proof.
-- Next: Write the independent browser-storage research plan and define its decision questions, benchmark evidence, migration boundary, and exit condition.
-- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/specs/stack-boundaries.md`, `docs/architecture.md`, `docs/specs/research-brief.md`
-- Workspace: repository root
-- Done when: Storage alternatives are compared against the active consumer, serialization and schema migration are explicit, determinism and failure behavior are tested, and the recommendation passes user approval.
-- Gate: user-approval
-- Evidence: pending
-- Updated: 2026-07-16T04:22:00+03:00
-
 ### AL-R3 — Research and admit the local AI planner and coach boundary
 - Type: research
 - Mode: write
@@ -57,6 +42,21 @@
 - Updated: 2026-07-16T04:22:00+03:00
 
 ## Active
+
+### AL-R2 — Research and admit browser-local learner progress storage
+- Type: research
+- Mode: write
+- Owner: orchestrator
+- Depends on: AL-01
+- Source: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`
+- Outcome: A focused evidence report and Tool & Runtime Admission record select the smallest durable browser-local ProgressStore implementation for the local-first proof.
+- Next: Write the independent browser-storage research plan and define its decision questions, benchmark evidence, migration boundary, and exit condition.
+- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/specs/stack-boundaries.md`, `docs/architecture.md`, `docs/specs/research-brief.md`
+- Workspace: repository root
+- Done when: Storage alternatives are compared against the active consumer, serialization and schema migration are explicit, determinism and failure behavior are tested, and the recommendation passes user approval.
+- Gate: user-approval
+- Evidence: pending
+- Updated: 2026-07-16T05:42:04+03:00
 
 ## Verification
 
