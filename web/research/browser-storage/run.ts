@@ -117,8 +117,8 @@ async function evaluateHarnessPage(
 ): Promise<BrowserSuiteResult> {
   const page = await context.newPage();
   try {
-    if (barrier !== undefined) await page.exposeFunction('__researchConcurrencyBarrier', barrier);
     await page.goto(url);
+    if (barrier !== undefined) await page.exposeFunction('__researchConcurrencyBarrier', barrier);
     await page.waitForFunction(() => typeof window.__runBrowserStorageResearch === 'function');
     return await page.evaluate(() => window.__runBrowserStorageResearch());
   } finally {

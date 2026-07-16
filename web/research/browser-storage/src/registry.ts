@@ -1,37 +1,17 @@
-import type {
-  CandidateId,
-  ResearchAdapterFactory,
-  ResearchFailureControls,
-  ResearchProgressStore,
-} from './contract';
+import { dexieFactory } from './adapters/dexie';
+import { idbFactory } from './adapters/idb';
+import { localStorageFactory } from './adapters/local-storage';
+import { memoryFactory } from './adapters/memory';
+import { nativeIndexedDbFactory } from './adapters/native-indexeddb';
+import type { CandidateId, ResearchAdapterFactory } from './contract';
 
-const candidateIds: CandidateId[] = ['memory', 'local-storage', 'native-indexeddb', 'idb', 'dexie'];
-
-function notImplemented(id: CandidateId): never {
-  throw new Error(`candidate ${id} not implemented`);
-}
-
-function stubControls(id: CandidateId): ResearchFailureControls {
-  return {
-    abortNextWrite: () => notImplemented(id),
-    abortNextUpgrade: () => notImplemented(id),
-    injectRawEnvelope: async () => notImplemented(id),
-    setQuotaError: () => notImplemented(id),
-    setUnavailable: () => notImplemented(id),
-  };
-}
-
-function stubFactory(id: CandidateId): ResearchAdapterFactory {
-  return {
-    id,
-    create(): ResearchProgressStore {
-      return notImplemented(id);
-    },
-    controls: stubControls(id),
-  };
-}
-
-export const candidateRegistry: ResearchAdapterFactory[] = candidateIds.map(stubFactory);
+export const candidateRegistry: ResearchAdapterFactory[] = [
+  memoryFactory,
+  localStorageFactory,
+  nativeIndexedDbFactory,
+  idbFactory,
+  dexieFactory,
+];
 
 export function selectCandidates(candidate?: CandidateId): ResearchAdapterFactory[] {
   return candidate === undefined
