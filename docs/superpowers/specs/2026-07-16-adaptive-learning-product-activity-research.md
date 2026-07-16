@@ -1,6 +1,6 @@
 # Adaptive Learning Product and Activity Research
 
-> Status: evidence review complete; awaiting user approval.
+> Status: approved 2026-07-16; all six bounded recommendations were accepted.
 > Scope: initial product/activity research for the local adaptive-learning mechanics proof.
 > Authority: research evidence only; adopted product behavior remains in approved owned designs.
 

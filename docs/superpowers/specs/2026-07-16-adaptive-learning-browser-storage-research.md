@@ -1,8 +1,8 @@
 # Adaptive Learning Browser Storage Research
 
-> Status: decision-ready; awaiting user approval.
+> Status: approved 2026-07-16; `idb` 8.0.3 is admitted for the scoped production `ProgressStore` adapter.
 > Scope: browser-local learner progress for the single-device adaptive-mechanics proof.
-> Authority: research evidence only; no production store is admitted until user approval.
+> Authority: admission evidence and downstream constraints; no production adapter is implemented yet.
 
 ## Research Questions
 
@@ -260,7 +260,9 @@ container. Deterministic fixtures, canonical exports, real v1→v2 upgrades, raw
 inspection, and 210 named result cells are committed. Native IndexedDB, `idb`, and Dexie each pass
 42/42; the result file records 120 `OBSERVED` and 90 `SYNTHETIC` cells. The `commit` field records
 the pre-commit base used by the uncommitted harness run; the reviewed harness itself is commit
-`9de383a`. No generated production artifact or production dependency is admitted here.
+`9de383a`. The research harness itself adds no generated production artifact or application
+dependency; user approval admits `idb` for the scoped production adapter, to be installed and
+bundle-checked only when that implementation slice begins.
 
 ### 6. Exit or Retirement Condition
 
@@ -309,7 +311,10 @@ becomes an approved requirement. The research harness remains the provider-neutr
 - Emitted production bundle cost was not measured. Registry evidence shows `idb` has zero runtime
   dependencies, but the implementation must still verify its actual build delta.
 
-## Recommendations Requiring User Approval
+## Approved Recommendation
+
+The user approved option 1 and its downstream constraints on 2026-07-16. Options 2 and 3 remain
+documented as the evaluated alternatives, not live choices.
 
 1. **Approve `idb` 8.0.3 and the downstream constraints (recommended).** It preserves native
    IndexedDB semantics, passes every hard gate in all three engines, has zero runtime dependencies,

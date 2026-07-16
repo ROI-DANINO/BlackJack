@@ -39,7 +39,7 @@ not replacements for historical milestone names, phase identifiers, specs, commi
 
 | Capability | Activation trigger | Guardrail / current status |
 |---|---|---|
-| Local durable progress | The first requirement that completion survive reload. | Triggered by the adaptive-learning mechanics proof. Anonymous device identity and the `ProgressStore` seam are approved; browser-storage research/admission must select the implementation and versioned migration envelope before the first durable write. |
+| Local durable progress | The first requirement that completion survive reload. | Triggered by the adaptive-learning mechanics proof. `idb` 8.0.3 is admitted behind the approved anonymous local identity and `ProgressStore` seam; the next slice designs and builds the first real versioned write/reload path with feature QA. |
 | Accounts and cross-device sync | Learners need progress on more than one device. | Ordinary training remains client-authoritative; research identity, storage, migration, offline, and conflict semantics before selecting a provider. Backend runtime runs the Admission Protocol; candidates: Node+Hono, Bun, Deno, Rust/axum reusing `blackjack-core` (native engine parity if replay-validation ever activates); storage behind `ProgressStore`, fetch-standard handlers only. See `journal/decisions.md` 2026-07-16. |
 | Product observability | External beta creates concrete learning or drop-off questions. | Research event purpose, consent/privacy, retention, batching, and offline failure before adding telemetry. |
 | Independently published curriculum | Content must ship without an application release. | Research integrity, schema compatibility, rollback, and provenance before remote payloads/admin tooling. |

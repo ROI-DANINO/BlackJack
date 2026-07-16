@@ -37,18 +37,24 @@
   technical boundaries, and 41 traceable requirements for multiple choice, assemble blocks,
   engine-backed hands, sessions, mastery/progression, and accessibility. The user approved all six
   bounded recommendations; numeric calibration and psychometric adaptive testing remain deferred.
+- **Browser-local progress storage admitted**: the equal research harness recorded 210 correctness
+  and failure cells across Chromium, Firefox, and WebKit; native IndexedDB, `idb`, and Dexie each
+  passed 42/42. The user approved `idb` 8.0.3 and the versioning, atomicity, recovery, export, and
+  privacy constraints. Performance timing remains an explicit non-blocking coverage gap; no
+  production adapter has been implemented yet.
 
 ## In progress
-- **Browser-local progress storage research is next**: AL-R2 will write an independent plan, compare
-  mechanisms against the durable `ProgressStore` consumer, and require explicit migration,
-  determinism, failure, and exit evidence before any implementation or admission decision.
+- **The first production durable-progress slice is next**: AL-D1 will trace the existing lesson
+  attempt lifecycle and design one real write/reload path through a provider-neutral `ProgressStore`
+  backed by the admitted `idb` adapter. The slice must include an executable TDD plan and scoped
+  feature QA before implementation is called done.
 - **Boundary hardening remains queued for the next Core wire change**: extend the WASM
   freshness guard to `Cargo.lock`/`build-wasm.sh` and add real native↔built-WASM parity evidence;
   the adaptive mechanics proof must not create a speculative Core wire change merely to absorb it.
 
 ## Open questions
-- Which browser-local storage mechanism best fits the durable `ProgressStore` consumer and its
-  migration/failure requirements?
+- Which existing learner action is the smallest valuable end-to-end consumer for the first durable
+  `ProgressStore` write and reload?
 - What provider-neutral local AI boundary can meet the approved authority, validation, privacy,
   token, latency, and deterministic-fallback constraints?
 - Should a later ruleset support player-taken insurance, or should V1/V2 keep training auto-decline?
