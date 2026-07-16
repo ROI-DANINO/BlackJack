@@ -3,7 +3,7 @@ phase: v2-learning-foundations
 sub_phase: adaptive-learning-storage-research
 plan: docs/superpowers/plans/2026-07-16-adaptive-learning-browser-storage-research.md
 spec: docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md
-step: "AL-R2 research plan written — awaiting written-plan review before Task 1 execution."
+step: "AL-R2 Task 1 — establish the browser-storage research record and evidence contract."
 prior_phase: research
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -29,6 +29,6 @@ sessions:
   - journal/ops/sessions/the-evidence-and-the-gate-2026-07-16T0531.md
 detour: []
 blocking: null
-next: "AL-R2 — Review and approve docs/superpowers/plans/2026-07-16-adaptive-learning-browser-storage-research.md before research execution begins."
-note: "The AL-R2 plan is committed at 04a16b3. No storage choice or production implementation is admitted; research execution waits for written-plan approval. STF-02/03/05 remain paused and recoverable from the archive and their specs."
+next: "AL-R2 — Execute Task 1 of docs/superpowers/plans/2026-07-16-adaptive-learning-browser-storage-research.md in .worktrees/al-r2-browser-storage."
+note: "The user approved plan execution and parallel read-only evidence lanes on 2026-07-16. Work proceeds on branch al-r2-browser-storage; no storage choice or production implementation is admitted. STF-02/03/05 remain paused and recoverable from the archive and their specs."
 ---
