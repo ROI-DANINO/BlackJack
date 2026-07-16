@@ -28,6 +28,6 @@ sessions:
   - journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md
 detour: []
 blocking: null
-next: "AL-R1 — execute Task 1 of the research plan: establish the findings record and evidence contract."
+next: "AL-R1 — execute Task 2, Step 1: search official Duolingo surfaces with bounded queries."
 note: "Milestone close: journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md approved the adaptive-learning umbrella and its separate plan family, archived the prior STF board exactly, removed the stale duplicate STF-04 by rolling the active board to adaptive-learning research, and selected AL-R1. STF-02/03/05 remain paused and recoverable from the archive and their specs."
 ---
