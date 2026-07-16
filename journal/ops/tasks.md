@@ -26,65 +26,50 @@
 
 ## Ready
 
-### STF-02 — Define the lesson content and state surface
-- Type: design
-- Mode: write
-- Owner: unclaimed
-- Depends on: STF-01
-- Source: `ROADMAP.md`
-- Outcome: The lesson's smallest content/state contract presents verified-profile and addressable strategy-table data without moving strategy truth into TypeScript.
-- Next: Map the approved learner sequence onto the existing learning contracts and Rust strategy source.
-- Load: `web/src/learn/types.ts`, `web/src/learn/content/blackjack-basics.ts`, `crates/blackjack-core/src/strategy.rs`
-- Workspace: repository root
-- Done when: The design names every required content/state field, its owner, and why no smaller surface works.
-- Gate: code-review
-- Evidence: pending
-- Updated: 2026-07-15T09:29:00+03:00
-
-### STF-03 — Define the engine-owned grading boundary
-- Type: design
-- Mode: write
-- Owner: unclaimed
-- Depends on: STF-02
-- Source: `docs/specs/stack-boundaries.md`
-- Outcome: A smallest Rust-owned grading API is specified with profile compatibility, verdict-versus-outcome separation, WASM freshness, and native↔built-WASM parity evidence.
-- Next: Define request/response shapes and deterministic parity vectors at the Rust/TypeScript boundary.
-- Load: `crates/blackjack-core/src/strategy.rs`, `web/src/bridge/types.ts`, `web/src/learn/engine.ts`, `docs/specs/stack-boundaries.md`
-- Workspace: repository root
-- Done when: The API contract, ownership, error cases, freshness guard, and parity proof are explicit enough to plan without inventing behavior.
-- Gate: code-review
-- Evidence: pending
-- Updated: 2026-07-15T09:29:00+03:00
-
-### STF-04 — Reconcile the early Hit-on-16 lesson moment
+### AL-R1 — Research learning products and initial activity mechanics
 - Type: research
-- Mode: read
-- Owner: unclaimed
-- Depends on: STF-01
-- Source: `docs/specs/product-vision.md`
-- Outcome: The earlier bust-risk interaction is explicitly contextualized so learners do not mistake it for Basic Strategy advice.
-- Next: Compare the Blackjack Foundations wording with the later strategy recommendation and draft the smallest clarification.
-- Load: `web/src/learn/content/blackjack-basics.ts`, `docs/specs/product-vision.md`, `docs/specs/research-brief.md`
-- Workspace: repository root
-- Done when: The design records approved wording/placement that preserves the original teaching goal without strategy contradiction.
-- Gate: user-approval
-- Evidence: pending
-- Updated: 2026-07-15T09:29:00+03:00
-
-### STF-05 — Write the Strategy Table Fundamentals feature design
-- Type: design
 - Mode: write
 - Owner: unclaimed
-- Depends on: STF-02, STF-03, STF-04
-- Source: `docs/specs/qa-playtest-process.md`
-- Outcome: One approved feature design integrates learner sequence, content/state ownership, grading boundary, wording reconciliation, and scoped learning/Player Experience QA.
-- Next: Synthesize the approved card outcomes into the feature design and its QA boundary.
-- Load: `journal/ops/tasks.md`, `docs/specs/product-vision.md`, `docs/specs/qa-playtest-process.md`, `docs/specs/stack-boundaries.md`
+- Depends on: AL-01
+- Source: `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`
+- Outcome: A cited, decision-ready evidence report defines requirements for the first three activity contracts without copying proprietary content or choosing unrelated infrastructure.
+- Next: Execute Task 1 of the research plan: establish the findings record and evidence contract.
+- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`, `docs/specs/product-vision.md`, `docs/specs/learning-mastery-and-scoring.md`, `docs/specs/research-brief.md`
 - Workspace: repository root
-- Done when: The feature design is approved and is detailed enough for a separate implementation plan.
+- Done when: The reviewed report distinguishes evidence from inference, produces traceable `ALR-*` requirements for multiple choice, assemble blocks, and engine-backed hands, records coverage gaps, and passes user approval.
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-15T09:29:00+03:00
+- Updated: 2026-07-16T04:22:00+03:00
+
+### AL-R2 — Research and admit browser-local learner progress storage
+- Type: research
+- Mode: write
+- Owner: unclaimed
+- Depends on: AL-01
+- Source: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`
+- Outcome: A focused evidence report and Tool & Runtime Admission record select the smallest durable browser-local ProgressStore implementation for the local-first proof.
+- Next: Write the independent browser-storage research plan and define its decision questions, benchmark evidence, migration boundary, and exit condition.
+- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/specs/stack-boundaries.md`, `docs/architecture.md`, `docs/specs/research-brief.md`
+- Workspace: repository root
+- Done when: Storage alternatives are compared against the active consumer, serialization and schema migration are explicit, determinism and failure behavior are tested, and the recommendation passes user approval.
+- Gate: user-approval
+- Evidence: pending
+- Updated: 2026-07-16T04:22:00+03:00
+
+### AL-R3 — Research and admit the local AI planner and coach boundary
+- Type: research
+- Mode: write
+- Owner: unclaimed
+- Depends on: AL-01
+- Source: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`
+- Outcome: A focused evidence report and Tool & Runtime Admission record define the provider-neutral local AI adapter, bounded latency/token policy, validation boundary, and deterministic fallback.
+- Next: Write the independent AI-adapter research plan and define provider/API comparisons, structured-output validation, privacy/security baseline, latency budget, and exit condition.
+- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/specs/stack-boundaries.md`, `docs/architecture.md`, `docs/specs/research-brief.md`
+- Workspace: repository root
+- Done when: The report supports a reversible adapter decision with hard authority, cost, latency, validation, fallback, and local-secret boundaries, and the recommendation passes user approval.
+- Gate: user-approval
+- Evidence: pending
+- Updated: 2026-07-16T04:22:00+03:00
 
 ## Active
 
@@ -94,32 +79,17 @@
 
 ## Done
 
-### STF-04 — Reconcile the early Hit-on-16 lesson moment
-- Type: research
-- Mode: read
-- Owner: orchestrator
-- Depends on: STF-01
-- Source: `docs/specs/product-vision.md`
-- Outcome: The earlier bust-risk interaction is explicitly contextualized so learners do not mistake it for Basic Strategy advice.
-- Next: Apply the approved one-string edit when the STF lesson is built (deferred write; linked from STF-05 or a small fix card).
-- Load: `web/src/learn/content/blackjack-basics.ts`, `web/src/learn/situations.ts`, `docs/specs/product-vision.md`, `docs/specs/research-brief.md`
-- Workspace: repository root
-- Done when: The design records approved wording/placement that preserves the original teaching goal without strategy contradiction.
-- Gate: user-approval
-- Evidence: Finding — all three `OPENINGS.stiffHands` examples (16v6, 15v5, 16v4) are Basic-Strategy STAND hands; the Hit unit instructs "choose Hit," a direct contradiction. Path A approved by user 2026-07-15: keep dealt hands, edit one `hit-hand` intro string to disclaim strategy + forward-reference STF; 16v6 becomes a deliberate callback. Approved wording/placement recorded in `docs/superpowers/specs/2026-07-15-strategy-table-fundamentals-lesson1-design.md` (Cross-Lesson Continuity).
-- Updated: 2026-07-15T10:06:50+03:00
-
-### STF-01 — Choose the first learner-visible objective and sequence
+### AL-01 — Approve the adaptive-learning umbrella and reconcile current work
 - Type: design
 - Mode: write
 - Owner: orchestrator
 - Depends on: none
-- Source: `ROADMAP.md`
-- Outcome: The first Strategy Table Fundamentals lesson has an approved mechanics-first objective and sequence from hand classification through table-open application.
-- Next: STF-02/STF-03/STF-04 design against this objective; STF-05 synthesizes the feature design.
-- Load: `ROADMAP.md`, `docs/specs/product-vision.md`, `docs/specs/learning-mastery-and-scoring.md`, `web/src/learn/types.ts`
+- Source: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`
+- Outcome: The adaptive-learning architecture, plan-family boundaries, and current research sequence are approved and represented by one valid active-phase board.
+- Next: AL-R1 — execute Task 1 of the approved learning-product and activity-mechanics research plan.
+- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`, `journal/ops/archive/tasks-2026-07-16T0422.md`
 - Workspace: repository root
-- Done when: The learner objective, ordered steps, exclusions, and success evidence are explicitly approved.
+- Done when: The umbrella architecture is approved, the work is split into independent research and implementation plans, the stale duplicate STF card is removed from the live board after an exact archive, and AL-R1 is the selected next card.
 - Gate: user-approval
-- Evidence: Approved design written to `docs/superpowers/specs/2026-07-15-strategy-table-fundamentals-lesson1-design.md` (objective, 8-step sequence, adaptive checkpoint grading, exclusions, success evidence). Fable 5 two-hat review folded in; user approved 2026-07-15. Downstream deltas recorded for STF-02/03/04/05.
-- Updated: 2026-07-15T10:06:50+03:00
+- Evidence: User approved the architecture and plan split on 2026-07-16; commits `9b59845`, `202ffdb`, and `6c1003c`; exact pre-update board archive comparison passed; docs diff/reference plus docs-map/memory integrity checks passed. A pre-existing missing private historical session pointer is documented in the close handoff. Paused STF-02/03/05 and completed STF-01/04 remain preserved in the archive.
+- Updated: 2026-07-16T04:22:00+03:00

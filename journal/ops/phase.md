@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
-sub_phase: strategy-table-fundamentals-design
-plan: null
-spec: null
-step: "Choose the first learner-visible objective and sequence: hand classification, row/column table navigation, then table-open application."
+sub_phase: adaptive-learning-mechanics-research
+plan: docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md
+spec: docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md
+step: "AL-R1 — Research learning products and initial activity mechanics."
 prior_phase: research
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -25,8 +25,9 @@ sessions:
   - journal/ops/sessions/the-inbox-and-the-compass-2026-07-15T0521.md
   - journal/ops/sessions/the-board-and-the-baton-2026-07-15T0929.md
   - journal/ops/sessions/the-bun-and-the-boundary-2026-07-16T0157.md
+  - journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md
 detour: []
 blocking: null
-next: "Before STF card plumbing, brainstorm the pedagogy loop + tutor/coach model (upstream of STF-02/03); then fix the duplicate STF-04 Ready copy and the likely-backwards STF-02<->STF-03 dependency edge."
-note: "Mid-work checkpoint: journal/ops/sessions/the-bun-and-the-boundary-2026-07-16T0157.md evaluated Bun (Fable-5 spike) and deferred it on all surfaces, reserving it only as a named future backend-runtime candidate (decisions.md + ROADMAP). Housekeeping: removed the test-bun worktree/branch, gitignored dist-qa-drill, committed the prior STF-01/STF-04 board reconciliation + approved STF lesson-1 spec. STF milestone remains closed (the-board-and-the-baton); no STF cards moved."
+next: "AL-R1 — execute Task 1 of the research plan: establish the findings record and evidence contract."
+note: "Milestone close: journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md approved the adaptive-learning umbrella and its separate plan family, archived the prior STF board exactly, removed the stale duplicate STF-04 by rolling the active board to adaptive-learning research, and selected AL-R1. STF-02/03/05 remain paused and recoverable from the archive and their specs."
 ---

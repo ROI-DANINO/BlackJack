@@ -24,17 +24,30 @@
   strategy profiles, engine-owned full-ruleset compatibility, a guarded Rust/TypeScript wire contract,
   and lesson lifecycle enforcement. Latest close evidence: 80 Rust tests, 217 web tests, and full QA
   pack PASS.
+- **Strategy Table Fundamentals lesson-one direction approved, then intentionally paused**: its
+  mechanics-first sequence and the Hit-on-16 continuity wording are recorded; the remaining content,
+  grading-boundary, and feature-design work resumes after the adaptive mechanics proof establishes
+  the contracts it should consume.
+- **Adaptive-learning umbrella approved**: stable versioned curriculum plus bounded dynamic sessions,
+  deterministic grading/mastery/progression authority, browser-local anonymous learner state, and a
+  checkpoint-hybrid/on-demand coach model. The work is split into independent research and
+  implementation plans rather than one coupled mega-plan.
 
 ## In progress
-- **Strategy Table Fundamentals design**: define the first learner-visible lesson—hand classification
-  and table navigation—and the smallest engine-owned grading API it needs, without making the first
-  experience memorization-first.
-- **Boundary hardening carried into that design**: the next Core wire change must extend the WASM
+- **Adaptive-learning mechanics research**: first, produce cited requirements for multiple choice,
+  assemble-blocks, and engine-backed-hand activities from learning-product patterns, learning
+  science, and public technical evidence; browser storage and the local AI adapter have separate
+  research/admission cards.
+- **Boundary hardening remains queued for the next Core wire change**: extend the WASM
   freshness guard to `Cargo.lock`/`build-wasm.sh` and add real native↔built-WASM parity evidence;
-  this was scheduled with the completed profile slice but did not land.
+  the adaptive mechanics proof must not create a speculative Core wire change merely to absorb it.
 
 ## Open questions
-- What should the first Strategy Table Fundamentals lesson teach first: hand classification, row/column lookup, or table-open practice?
-- How should the product distinguish the Blackjack Foundations "try Hit to feel bust risk" moment from later Basic Strategy recommendations?
+- Which evidenced Duolingo/Brilliant/learning-science patterns should become hard requirements for
+  the first three activity contracts, and which should be rejected or deferred?
+- Which browser-local storage mechanism best fits the durable `ProgressStore` consumer and its
+  migration/failure requirements?
+- What provider-neutral local AI boundary can meet the approved authority, validation, privacy,
+  token, latency, and deterministic-fallback constraints?
 - Should a later ruleset support player-taken insurance, or should V1/V2 keep training auto-decline?
 - What exact card lifecycle model will support future CSM/ASM variants cleanly?
