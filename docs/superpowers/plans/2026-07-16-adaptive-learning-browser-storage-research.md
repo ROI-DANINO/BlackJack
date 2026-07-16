@@ -531,7 +531,9 @@ engine rather than dropping WebKit or comparing engines across unlike environmen
 ```bash
 podman pull mcr.microsoft.com/playwright:v1.61.1-noble
 podman run --rm --network=host --ipc=host \
-  -v "$PWD:/work" -w /work \
+  -v "$PWD:$PWD" \
+  -v "$(git rev-parse --git-common-dir):$(git rev-parse --git-common-dir):ro" \
+  -w "$PWD" \
   mcr.microsoft.com/playwright:v1.61.1-noble \
   web/node_modules/.bin/tsx web/research/browser-storage/run.ts
 ```
