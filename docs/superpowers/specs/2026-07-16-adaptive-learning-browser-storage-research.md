@@ -18,10 +18,24 @@
 ## Evidence Labels
 
 - **OFFICIAL:** a directly attributable standard, browser-vendor document, official library document/repository, or package record.
-- **OBSERVED:** a result produced by the committed harness in the recorded browser/runtime environment.
+- **OBSERVED:** a result produced by the preserved harness in the recorded browser/runtime environment.
 - **SYNTHETIC:** a deterministic injected failure used to test application behavior; not a naturally observed browser event.
 - **INFERENCE:** the project's bounded interpretation of official or observed evidence.
 - **COVERAGE GAP:** a required question for which reliable direct evidence or reproducible measurement is unavailable.
+
+## Executable Evidence Preservation
+
+The project keeps this decision report and the raw 210-cell result matrix. The executable candidate
+harness was extracted from the current blackjack tree after approval so research-only adapters do not
+become product code by proximity. It remains available in the local standalone toolkit repository
+`/home/roking/Desktop/Projects/dev-toolkit/browser-storage-conformance` at commit `157d257` with its
+subtree history preserved. The exact pre-cleanup blackjack branch is independently preserved in
+`/home/roking/Desktop/Projects/dev-research-archive/blackjack-browser-storage-2026-07-16.bundle`,
+SHA-256 `163c1fc7954967746f3904ede89909b5896870ca9647eb05a4119cc1c0c0efd3`.
+
+These local preservation paths are research provenance, not project runtime dependencies. Production
+`ProgressStore` tests should adapt the relevant gates to the real application contract rather than
+importing the research adapters.
 
 ## Source Register
 
@@ -164,7 +178,7 @@ these gates.
 ## Benchmark Method
 
 > **COVERAGE GAP — protocol implemented but timing run deferred.** The equal protocol below remains
-> available in the committed harness, but no timing sample is decision-eligible in this report.
+> available in the preserved harness, but no timing sample is decision-eligible in this report.
 > Filtered trial runs showed that repeatedly rebuilding the 10,000-attempt fixture dominated
 > research wall time even though setup was correctly outside the timed windows. The trials were
 > stopped before atomic result replacement, so partial timing output is not preserved or cited.
@@ -254,13 +268,13 @@ truth; cached mastery is reproducible and may be discarded.
 
 ### 5. Freshness and Determinism Evidence
 
-The isolated research package pins `idb` 8.0.3 and Dexie 4.4.4; the runner used Playwright 1.61.1,
+The preserved research package pins `idb` 8.0.3 and Dexie 4.4.4; the runner used Playwright 1.61.1,
 Node v24.17.0, Chromium 149.0.7827.55, Firefox 151.0, and WebKit 26.5 in the pinned Ubuntu 24.04
 container. Deterministic fixtures, canonical exports, real v1→v2 upgrades, raw pre/post rollback
 inspection, and 210 named result cells are committed. Native IndexedDB, `idb`, and Dexie each pass
 42/42; the result file records 120 `OBSERVED` and 90 `SYNTHETIC` cells. The `commit` field records
 the pre-commit base used by the uncommitted harness run; the reviewed harness itself is commit
-`9de383a`. The research harness itself adds no generated production artifact or application
+`9de383a`. The extracted research harness adds no generated production artifact or application
 dependency; user approval admits `idb` for the scoped production adapter, to be installed and
 bundle-checked only when that implementation slice begins.
 
@@ -271,7 +285,8 @@ the Promise/type wrapper or if the wrapper stops tracking required browsers. Reo
 consumer requires its indexed query, collection, or live-observation surface and measured adapter
 code shows that reimplementing those capabilities is costlier. Replace browser-local storage only
 through a separately admitted serializable adapter if accounts, remote sync, or multi-device merge
-becomes an approved requirement. The research harness remains the provider-neutral exit test.
+becomes an approved requirement. The preserved research harness remains the provider-neutral exit
+test.
 
 ## Rejected Alternatives
 

@@ -1,9 +1,0 @@
-{
-  "name": "blackjack-browser-storage-research",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "dexie": "4.4.4",
-    "idb": "8.0.3"
-  }
-}
