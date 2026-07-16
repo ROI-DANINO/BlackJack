@@ -1,0 +1,1567 @@
+{
+  "schemaVersion": 1,
+  "generatedAtUtc": "2026-07-16T05:02:52.672Z",
+  "commit": "cbfecaff52ab442980d1ad39bac35e3bbedb198e",
+  "nodeVersion": "v24.17.0",
+  "packages": {
+    "idb": "8.0.3",
+    "dexie": "4.4.4",
+    "playwright": "1.61.1"
+  },
+  "browsers": [
+    {
+      "id": "chromium",
+      "version": "149.0.7827.55",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7827.55 Safari/537.36"
+    },
+    {
+      "id": "firefox",
+      "version": "151.0",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:151.0) Gecko/20100101 Firefox/151.0"
+    },
+    {
+      "id": "webkit",
+      "version": "26.5",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.5 Safari/605.1.15"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "dexie",
+      "role": "full-benchmark"
+    },
+    {
+      "id": "idb",
+      "role": "full-benchmark"
+    },
+    {
+      "id": "local-storage",
+      "role": "baseline"
+    },
+    {
+      "id": "memory",
+      "role": "baseline"
+    },
+    {
+      "id": "native-indexeddb",
+      "role": "full-benchmark"
+    }
+  ],
+  "runs": [
+    {
+      "candidate": "dexie",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "two real pages produced exactly one winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "chromium"
+    },
+    {
+      "candidate": "idb",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "two real pages produced exactly one winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "chromium"
+    },
+    {
+      "candidate": "local-storage",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": false,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "expected revision 1"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": false,
+          "evidenceKind": "OBSERVED",
+          "detail": "outcome:winner | outcome:winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "chromium"
+    },
+    {
+      "candidate": "memory",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": false,
+          "evidenceKind": "OBSERVED",
+          "detail": "outcome:winner | outcome:winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": false,
+          "evidenceKind": "OBSERVED",
+          "detail": "committed envelope is missing"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "chromium"
+    },
+    {
+      "candidate": "native-indexeddb",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "two real pages produced exactly one winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "chromium"
+    },
+    {
+      "candidate": "dexie",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "two real pages produced exactly one winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "firefox"
+    },
+    {
+      "candidate": "idb",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "two real pages produced exactly one winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "firefox"
+    },
+    {
+      "candidate": "local-storage",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": false,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "expected revision 1"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": false,
+          "evidenceKind": "OBSERVED",
+          "detail": "outcome:winner | outcome:winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "firefox"
+    },
+    {
+      "candidate": "memory",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": false,
+          "evidenceKind": "OBSERVED",
+          "detail": "outcome:winner | outcome:winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": false,
+          "evidenceKind": "OBSERVED",
+          "detail": "committed envelope is missing"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "firefox"
+    },
+    {
+      "candidate": "native-indexeddb",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "two real pages produced exactly one winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "firefox"
+    },
+    {
+      "candidate": "dexie",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "two real pages produced exactly one winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "webkit"
+    },
+    {
+      "candidate": "idb",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "two real pages produced exactly one winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "webkit"
+    },
+    {
+      "candidate": "local-storage",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": false,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "expected revision 1"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": false,
+          "evidenceKind": "OBSERVED",
+          "detail": "outcome:winner | outcome:winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "webkit"
+    },
+    {
+      "candidate": "memory",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": false,
+          "evidenceKind": "OBSERVED",
+          "detail": "outcome:winner | outcome:winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": false,
+          "evidenceKind": "OBSERVED",
+          "detail": "committed envelope is missing"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "webkit"
+    },
+    {
+      "candidate": "native-indexeddb",
+      "gates": [
+        {
+          "gate": "aborted-upgrade-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "atomic-checkpoint",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "complete-reset",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "concurrent-writers",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "two real pages produced exactly one winner"
+        },
+        {
+          "gate": "empty-load",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "idempotent-duplicate",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "malformed-record-recovery",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "newer-schema-refusal",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "quota-error-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "reload-round-trip",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "fresh-page read preserved exact checkpoint"
+        },
+        {
+          "gate": "revision-conflict",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "stable-export",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        },
+        {
+          "gate": "unavailable-storage-surface",
+          "passed": true,
+          "evidenceKind": "SYNTHETIC",
+          "detail": "passed"
+        },
+        {
+          "gate": "upgrade-v1-v2",
+          "passed": true,
+          "evidenceKind": "OBSERVED",
+          "detail": "passed"
+        }
+      ],
+      "timings": [],
+      "fixtureBytes": {
+        "small": 4453,
+        "medium": 211862,
+        "stress": 2117362
+      },
+      "exportBytes": {
+        "small": 0,
+        "medium": 0,
+        "stress": 0
+      },
+      "browser": "webkit"
+    }
+  ]
+}

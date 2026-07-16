@@ -1,6 +1,6 @@
 # Adaptive Learning Browser Storage Research
 
-> Status: evidence collection in progress.
+> Status: decision-ready; awaiting user approval.
 > Scope: browser-local learner progress for the single-device adaptive-mechanics proof.
 > Authority: research evidence only; no production store is admitted until user approval.
 
@@ -163,7 +163,35 @@ these gates.
 
 ## Benchmark Method
 
+> **COVERAGE GAP — protocol implemented but timing run deferred.** The equal protocol below remains
+> available in the committed harness, but no timing sample is decision-eligible in this report.
+> Filtered trial runs showed that repeatedly rebuilding the 10,000-attempt fixture dominated
+> research wall time even though setup was correctly outside the timed windows. The trials were
+> stopped before atomic result replacement, so partial timing output is not preserved or cited.
+
+```text
+browsers: Playwright bundled Chromium, Firefox, WebKit
+candidate order: rotate deterministically by browser; record order
+warm-up: 5 unrecorded operations per candidate/workload/operation
+samples: 30 recorded operations per candidate/workload/operation
+workloads: small (20 attempts), medium (1,000), stress (10,000)
+operations: open, load, single checkpoint commit, canonical export, reset
+statistics: raw samples plus p50, p95, max; no mean-only claims
+correctness gate: no timing is decision-eligible when that candidate/browser pair fails correctness
+```
+
+The harness records serialized fixture bytes and canonical exported bytes for every workload. These
+deterministic research tiers support equal comparisons; they do not predict a real learner's
+retention volume, device capacity, browser eviction behavior, or production latency distribution.
+
 ## Benchmark Results
+
+No performance ranking is made. The admission decision therefore uses hard cross-browser
+correctness, direct package/maintenance evidence, implemented adapter surface, dependency cost, and
+exit cost. This is sufficient to reject the incorrect baselines and to distinguish a thin native-
+shaped wrapper from Dexie's unused higher-level surface; it is not evidence that any eligible
+candidate is universally faster. A future performance-sensitive consumer may run the locked
+protocol and commit the raw 30-sample cells without changing the correctness decision recorded here.
 
 ## Migration and Recovery Evidence
 
@@ -191,18 +219,109 @@ remains a harness-only control and is not part of `ProgressStore`.
 
 ### 1. Active Task and Consumer
 
+The active consumer is the first local adaptive-learning proof in the browser. It needs one
+pseudonymous learner envelope to survive reloads and to append raw attempts while atomically
+advancing a reproducible checkpoint. A session-ending write, later reload, export, confirmed reset,
+and explicit schema upgrade are in scope. Account identity, remote sync, analytics, and a server
+backend are not. Progress loss now blocks the consumer because mastery and future activity selection
+cannot be reconstructed after reload if raw attempts disappear.
+
 ### 2. Alternatives Considered
+
+The equal screen considered the existing in-memory path, `localStorage`, native IndexedDB, `idb`
+8.0.3, Dexie 4.4.4, OPFS, Cache Storage, and the no-new-dependency path. Memory and
+`localStorage` remain useful baselines; native IndexedDB, `idb`, and Dexie received the same 14-gate
+matrix; OPFS and Cache Storage were rejected before implementation because their file/resource
+abstractions do not supply the active consumer's structured multi-record transaction and version-
+change boundary.
 
 ### 3. Why the Simpler Current Path No Longer Works
 
+**OBSERVED:** memory failed fresh-page reload and cross-page exactly-one-winner behavior in all
+three engines. **SYNTHETIC:** `localStorage` failed the injected split-write atomicity check.
+**OBSERVED:** both concurrent `localStorage` pages committed revision 1. These are direct failures
+of the consumer contract, not scale forecasts. The smallest sufficient substrate is therefore
+IndexedDB. The remaining decision is whether to use its native API or a bounded wrapper.
+
 ### 4. Serializable Boundary Shape
+
+The durable authority is an outer-versioned envelope containing the opaque local learner key,
+revision, reducer/curriculum versions, raw attempts, session summaries, and disposable cached
+mastery. A checkpoint write carries an idempotency key, expected revision, attempts, and optional
+session summary. One storage adapter owns open/load/atomic commit/export/reset/close; React and the
+blackjack engine consume application APIs and never call the provider directly. Raw attempts remain
+truth; cached mastery is reproducible and may be discarded.
 
 ### 5. Freshness and Determinism Evidence
 
+The isolated research package pins `idb` 8.0.3 and Dexie 4.4.4; the runner used Playwright 1.61.1,
+Node v24.17.0, Chromium 149.0.7827.55, Firefox 151.0, and WebKit 26.5 in the pinned Ubuntu 24.04
+container. Deterministic fixtures, canonical exports, real v1→v2 upgrades, raw pre/post rollback
+inspection, and 210 named result cells are committed. Native IndexedDB, `idb`, and Dexie each pass
+42/42; the result file records 120 `OBSERVED` and 90 `SYNTHETIC` cells. The `commit` field records
+the pre-commit base used by the uncommitted harness run; the reviewed harness itself is commit
+`9de383a`. No generated production artifact or production dependency is admitted here.
+
 ### 6. Exit or Retirement Condition
+
+Retire `idb` in favor of native IndexedDB if a dependency-free policy becomes more valuable than
+the Promise/type wrapper or if the wrapper stops tracking required browsers. Reopen Dexie if a real
+consumer requires its indexed query, collection, or live-observation surface and measured adapter
+code shows that reimplementing those capabilities is costlier. Replace browser-local storage only
+through a separately admitted serializable adapter if accounts, remote sync, or multi-device merge
+becomes an approved requirement. The research harness remains the provider-neutral exit test.
 
 ## Rejected Alternatives
 
+| Candidate | Disposition and evidence | Failed requirement / tradeoff | Reopen trigger |
+|---|---|---|---|
+| In-memory state | Reject for durable progress; 12/14 gates per browser | Loses reload state and has no cross-page write authority | Only if progress is explicitly disposable for the whole feature |
+| `localStorage` | Reject; STD-003 plus observed split-write and concurrent-winner failures | No multi-key transaction or safe revision race | Only for a single low-stakes blob with no atomic related metadata |
+| Native IndexedDB | Admission-eligible alternative, not recommended | Correct and dependency-free, but the research adapter exposes substantially more lifecycle/request/error plumbing | A no-runtime-dependency policy or material wrapper defect |
+| Dexie 4.4.4 | Defer | Correct, but its richer table/query/live surface has no active consumer | Approved indexed-query/live-observation requirements with measured code savings |
+| OPFS | Reject before benchmark; STD-004, BROWSER-008–009 | Would require inventing record, index, migration, and multi-file atomicity layers | A file-oriented consumer or measured IndexedDB bottleneck |
+| Cache Storage | Reject before benchmark; STD-005, BROWSER-010 | Request/response cache semantics mismatch mutable learner records | A resource-cache consumer rather than progress storage |
+
+## Downstream Implementation Constraints
+
+- The outer schema version and pseudonymous learner key exist before the first durable attempt.
+- Raw attempts remain durable authority; cached mastery is reproducible and disposable.
+- Checkpoint writes are atomic, revision-checked, and idempotent.
+- Unknown-newer and corrupt records never trigger silent reset.
+- Export is available before destructive reset or recovery.
+- Storage failure leaves the last committed state usable and surfaces a recoverable product state.
+- React and engine code do not call the storage provider directly.
+- Later account linking imports or associates the local envelope through a separate approved design.
+
 ## Limitations and Coverage Gaps
 
+- **COVERAGE GAP, non-blocking for admission:** the locked 30-sample performance protocol was not
+  completed. Filtered attempts showed fixture rebuild cost dominated research time; no partial
+  timing is retained and no speed claim influences the recommendation. Reopen only for a measured
+  performance-sensitive consumer.
+- **COVERAGE GAP, non-blocking:** containerized desktop engines do not cover mobile browsers,
+  private-mode lifetime, natural eviction, OS crash, or power loss. BROWSER-004–005 and vendor
+  policy establish that these losses remain possible; export, recoverable errors, and no silent
+  reset are still required.
+- **COVERAGE GAP, blocks product delivery rather than admission:** no production adapter is wired to
+  the application yet, and no feature QA has been run for durable learner progress. That is the next
+  implementation task after approval.
+- Emitted production bundle cost was not measured. Registry evidence shows `idb` has zero runtime
+  dependencies, but the implementation must still verify its actual build delta.
+
 ## Recommendations Requiring User Approval
+
+1. **Approve `idb` 8.0.3 and the downstream constraints (recommended).** It preserves native
+   IndexedDB semantics, passes every hard gate in all three engines, has zero runtime dependencies,
+   and adds only a native-shaped Promise/TypeScript layer. It reduces routine request wrapping and
+   transaction-completion plumbing without admitting Dexie's unused higher-level surface.
+2. **Approve native IndexedDB instead.** This keeps production dependency count at zero and passes
+   the same gates, at the explicit cost of more lifecycle, request, transaction-completion, and
+   typed-error code owned by the project.
+3. **Reject admission and keep progress in memory.** Durable-progress implementation remains blocked
+   until specified new evidence changes the boundary; reload and cross-page loss remain accepted.
+
+The recommendation changes if a no-dependency policy is imposed, `idb` loses required-browser
+support, a production bundle check shows a material unacceptable delta, or a real Dexie-only query
+consumer appears. The deferred performance comparison is non-blocking because speed is not used to
+choose among the three correctness-eligible candidates.
