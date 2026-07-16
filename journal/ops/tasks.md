@@ -60,6 +60,10 @@
 
 ## Verification
 
+## Blocked
+
+## Done
+
 ### AL-R1 — Research learning products and initial activity mechanics
 - Type: research
 - Mode: write
@@ -67,17 +71,13 @@
 - Depends on: AL-01
 - Source: `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`
 - Outcome: A cited, decision-ready evidence report defines requirements for the first three activity contracts without copying proprietary content or choosing unrelated infrastructure.
-- Next: User evidence gate — review the Adopt/Reject/Defer table, coverage gaps, and recommendations requiring approval.
+- Next: AL-R2 — write the independent browser-local learner progress storage research plan.
 - Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`, `docs/specs/product-vision.md`, `docs/specs/learning-mastery-and-scoring.md`, `docs/specs/research-brief.md`
 - Workspace: repository root
 - Done when: The reviewed report distinguishes evidence from inference, produces traceable `ALR-*` requirements for multiple choice, assemble blocks, and engine-backed hands, records coverage gaps, and passes user approval.
 - Gate: user-approval
-- Evidence: Research record `e4d73d7`; source register `2ebb792`; product comparison `e1f8b02`; learning-science synthesis `dd97d90`; technical audit `2ccfb34`; initial requirements `108d31f`; adversarial review `58acefb`. The report registers 24 sources, 12 product-pattern rows, 10 learning-science rows, 8 technical-boundary rows, 41 sequential `ALR-*` requirements, 15 dispositions, and 6 approval recommendations. Source/requirement reference integrity, scope and placeholder scans, and `git diff --check` passed before the review commit.
-- Updated: 2026-07-16T05:23:34+03:00
-
-## Blocked
-
-## Done
+- Evidence: Research record `e4d73d7`; source register `2ebb792`; product comparison `e1f8b02`; learning-science synthesis `dd97d90`; technical audit `2ccfb34`; initial requirements `108d31f`; adversarial review `58acefb`. The report registers 24 sources, 12 product-pattern rows, 10 learning-science rows, 8 technical-boundary rows, 41 sequential `ALR-*` requirements, 15 dispositions, and 6 approval recommendations. Source/requirement reference integrity, scope and placeholder scans, and `git diff --check` passed before the review commit. User approved the dispositions, gaps, and bounded recommendations on 2026-07-16.
+- Updated: 2026-07-16T05:27:07+03:00
 
 ### AL-01 — Approve the adaptive-learning umbrella and reconcile current work
 - Type: design

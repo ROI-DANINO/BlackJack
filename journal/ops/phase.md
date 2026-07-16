@@ -3,7 +3,7 @@ phase: v2-learning-foundations
 sub_phase: adaptive-learning-mechanics-research
 plan: docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md
 spec: docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md
-step: "AL-R1 — user evidence gate for reviewed activity research."
+step: "AL-R1 complete — AL-R2 is the next ready research card."
 prior_phase: research
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -28,6 +28,6 @@ sessions:
   - journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md
 detour: []
 blocking: null
-next: "AL-R1 — user reviews the evidence report's dispositions, coverage gaps, and six bounded recommendations; no implementation planning begins before approval."
-note: "AL-R1 research is committed through adversarial review at 58acefb and is in Verification. The report remains evidence rather than product authority until the user approves or revises its bounded recommendations. STF-02/03/05 remain paused and recoverable from the archive and their specs."
+next: "AL-R2 — write the independent browser-local learner progress storage research plan; do not start implementation or admit storage before its evidence gate."
+note: "The user approved AL-R1's reviewed dispositions, coverage gaps, and six bounded recommendations on 2026-07-16. AL-R1 is Done; accepted research remains traceable evidence for a later owned design fold. STF-02/03/05 remain paused and recoverable from the archive and their specs."
 ---
