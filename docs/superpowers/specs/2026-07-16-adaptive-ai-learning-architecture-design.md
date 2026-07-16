@@ -1,8 +1,8 @@
 # Adaptive AI Learning Architecture — Local Mechanics Proof
 
 > Status: conversational design approved 2026-07-16; written-spec review pending.
-> Scope: architecture and the first local, single-learner proof. This is not the full curriculum,
-> a public hosting design, or an implementation plan.
+> Scope: umbrella architecture and decomposition for the first local, single-learner proof. This is
+> not the full curriculum, a public hosting design, or one feature-sized implementation spec.
 
 ## Purpose
 
@@ -65,6 +65,63 @@ The first proof does not:
 - let AI create new activity component types or executable UI;
 - let AI decide blackjack facts, correct answers, grades, mastery, progression, or unlocks;
 - replace scoped feature QA with model self-evaluation.
+
+## Artifact and Plan Topology
+
+This document is the program-level architecture. It is not executed through one mega-plan. The
+work crosses operational state, independent research questions, infrastructure boundaries, pure
+learning mechanics, model integration, UI activities, and conditional convergence. Each
+implementation-bearing slice receives its own focused design, plan, verification, and feature QA.
+
+### Operational reconciliation — no feature coding plan
+
+After this umbrella spec passes written review, the root/orchestrating agent performs one explicit
+Kanban/phase reconciliation. That operation fixes the invalid duplicate card, records the temporary
+adaptive-learning sub-phase, creates only the active research/design cards, and validates board
+policy. It uses a small reviewed checklist and exact board diff; it does not belong inside any
+feature coding plan.
+
+### Research plan family
+
+The three initial research areas are independent artifacts with separate questions and evidence:
+
+1. **Learning-product and activity research plan** — Duolingo, Brilliant, learning science,
+   interaction/accessibility patterns, and requirements for the first three activity types.
+2. **Browser progress-storage research/admission plan** — identity, storage alternatives,
+   migrations, recovery, privacy, adapter contract, and the Tool & Runtime Admission record.
+3. **Local AI planner/coach research/admission plan** — provider/model evaluation, structured
+   output, grounding, security, latency, tokens, cost, fallback thresholds, and admission evidence.
+
+Each research plan produces a tracked findings/report artifact. Research conclusions may constrain
+later designs; they do not silently edit implementation scope.
+
+### Implementation spec-and-plan family
+
+Research evidence feeds several focused implementation cycles:
+
+1. **Adaptive mechanics foundation** — catalog contracts, learner envelope, evidence records,
+   mastery reducer, session-plan contract, deterministic planner, controller skeleton, headless
+   tests, and adapter contract suites. Its detailed design and plan consume the relevant learning
+   and storage findings.
+2. **Local AI adapter and evaluation harness** — loopback planner/coach boundary, request
+   isolation, structured validation, usage recording, model stubs, live evaluation harness, and
+   security baseline. Its design and plan consume the AI research and the proven planner contract.
+3. **Two-unit activity overlay** — the three activity factories, `Read Your Hand`, `Win, Lose, or
+   Push`, UI execution, checkpoint prefetch, on-demand coach, persistence integration, and scoped
+   feature QA. Its design and plan consume the mechanics foundation plus learning/activity evidence.
+4. **Lesson-path convergence** — conditional work only after overlay evidence. If the proof passes,
+   a separate convergence plan routes ordinary lessons through `SessionPlan`, adapts fixed
+   `steps[]` through the deterministic planner, proves parity, and removes the superseded direct
+   execution path.
+
+The mechanics, AI adapter, and overlay are not combined merely because they share this architecture.
+Their failure modes, research inputs, verification, and exit conditions differ enough to justify
+separate plans.
+
+### Later programs
+
+Wider curriculum-data research and public web/multi-user deployment remain separate future
+programs. Each receives its own design and plan only when the local proof activates its trigger.
 
 ## Authority Boundaries
 
@@ -529,24 +586,24 @@ spec is approved:
    shared architecture.
 5. Keep wider curriculum and public-scale work out of the active board until their triggers fire.
 
-Suggested active cards:
+The first reconciliation creates only the umbrella-close and three current-phase research cards;
+the research cards enter Ready and are pulled one at a time under the board's write-WIP policy:
 
-1. `AL-01` — approve adaptive-learning architecture;
-2. `AL-02` — research learning products and initial activity mechanics;
-3. `AL-03` — research/admit browser-local progress storage;
-4. `AL-04` — research/admit the local AI adapter;
-5. `AL-05` — write the implementation plan;
-6. `AL-06` — build headless mechanics and deterministic fallback;
-7. `AL-07` — build the two-unit adaptive overlay; and
-8. `AL-08` — feature QA and convergence decision.
+1. `AL-01` — close the approved umbrella architecture and board reconciliation;
+2. `AL-R1` — research learning products and initial activity mechanics;
+3. `AL-R2` — research/admit browser-local progress storage; and
+4. `AL-R3` — research/admit the local AI planner/coach boundary.
+
+Later mechanics, AI-adapter, activity-overlay, convergence, and QA cards are added when their
+upstream evidence makes their exact outcomes and gates current work. Their detailed task steps live
+in their own plans, not in this umbrella spec or in future board cards.
 
 Only the root/orchestrating agent edits the marked Kanban. Research cards that produce tracked
 artifacts are write-mode work and obey the board's single-writer WIP policy.
 
-After written-spec approval, the immediate planning transition produces a research-first execution
-plan and the board-reconciliation instructions. It does not pretend that storage or provider build
-steps are known before `AL-02` through `AL-04` produce evidence. `AL-05` is the evidence-informed
-implementation plan for the mechanics proof.
+After written-spec approval, the immediate planning transition produces the small operational
+reconciliation checklist and the first research plan, not a feature-coding mega-plan. Later
+implementation plans are written only after their named research and contract dependencies close.
 
 ## Design Outcome
 
