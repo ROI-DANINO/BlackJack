@@ -24,17 +24,38 @@
   strategy profiles, engine-owned full-ruleset compatibility, a guarded Rust/TypeScript wire contract,
   and lesson lifecycle enforcement. Latest close evidence: 80 Rust tests, 217 web tests, and full QA
   pack PASS.
+- **Strategy Table Fundamentals lesson-one direction approved, then intentionally paused**: its
+  mechanics-first sequence and the Hit-on-16 continuity wording are recorded; the remaining content,
+  grading-boundary, and feature-design work resumes after the adaptive mechanics proof establishes
+  the contracts it should consume.
+- **Adaptive-learning umbrella approved**: stable versioned curriculum plus bounded dynamic sessions,
+  deterministic grading/mastery/progression authority, browser-local anonymous learner state, and a
+  checkpoint-hybrid/on-demand coach model. The work is split into independent research and
+  implementation plans rather than one coupled mega-plan.
+- **Adaptive learning product/activity research approved** (`58acefb`): 24 registered sources,
+  12 compared teaching patterns, 10 learning-science/accessibility evidence areas, 8 public
+  technical boundaries, and 41 traceable requirements for multiple choice, assemble blocks,
+  engine-backed hands, sessions, mastery/progression, and accessibility. The user approved all six
+  bounded recommendations; numeric calibration and psychometric adaptive testing remain deferred.
+- **Browser-local progress storage admitted**: the equal research harness recorded 210 correctness
+  and failure cells across Chromium, Firefox, and WebKit; native IndexedDB, `idb`, and Dexie each
+  passed 42/42. The user approved `idb` 8.0.3 and the versioning, atomicity, recovery, export, and
+  privacy constraints. Performance timing remains an explicit non-blocking coverage gap; no
+  production adapter has been implemented yet.
 
 ## In progress
-- **Strategy Table Fundamentals design**: define the first learner-visible lesson—hand classification
-  and table navigation—and the smallest engine-owned grading API it needs, without making the first
-  experience memorization-first.
-- **Boundary hardening carried into that design**: the next Core wire change must extend the WASM
+- **The first production durable-progress slice is next**: AL-D1 will trace the existing lesson
+  attempt lifecycle and design one real write/reload path through a provider-neutral `ProgressStore`
+  backed by the admitted `idb` adapter. The slice must include an executable TDD plan and scoped
+  feature QA before implementation is called done.
+- **Boundary hardening remains queued for the next Core wire change**: extend the WASM
   freshness guard to `Cargo.lock`/`build-wasm.sh` and add real native↔built-WASM parity evidence;
-  this was scheduled with the completed profile slice but did not land.
+  the adaptive mechanics proof must not create a speculative Core wire change merely to absorb it.
 
 ## Open questions
-- What should the first Strategy Table Fundamentals lesson teach first: hand classification, row/column lookup, or table-open practice?
-- How should the product distinguish the Blackjack Foundations "try Hit to feel bust risk" moment from later Basic Strategy recommendations?
+- Which existing learner action is the smallest valuable end-to-end consumer for the first durable
+  `ProgressStore` write and reload?
+- What provider-neutral local AI boundary can meet the approved authority, validation, privacy,
+  token, latency, and deterministic-fallback constraints?
 - Should a later ruleset support player-taken insurance, or should V1/V2 keep training auto-decline?
 - What exact card lifecycle model will support future CSM/ASM variants cleanly?

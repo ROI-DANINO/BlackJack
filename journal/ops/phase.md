@@ -1,10 +1,10 @@
 ---
 phase: v2-learning-foundations
-sub_phase: strategy-table-fundamentals-design
+sub_phase: adaptive-learning-progress-design
 plan: null
-spec: null
-step: "Choose the first learner-visible objective and sequence: hand classification, row/column table navigation, then table-open application."
-prior_phase: research
+spec: docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md
+step: "AL-D1 ready — design the first production durable ProgressStore slice."
+prior_phase: adaptive-learning-storage-research
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
   - journal/ops/sessions/v1-ruleset-locked-20260707-035405.md
@@ -25,8 +25,11 @@ sessions:
   - journal/ops/sessions/the-inbox-and-the-compass-2026-07-15T0521.md
   - journal/ops/sessions/the-board-and-the-baton-2026-07-15T0929.md
   - journal/ops/sessions/the-bun-and-the-boundary-2026-07-16T0157.md
+  - journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md
+  - journal/ops/sessions/the-evidence-and-the-gate-2026-07-16T0531.md
+  - journal/ops/sessions/the-proof-and-the-product-2026-07-16T0840.md
 detour: []
 blocking: null
-next: "Before STF card plumbing, brainstorm the pedagogy loop + tutor/coach model (upstream of STF-02/03); then fix the duplicate STF-04 Ready copy and the likely-backwards STF-02<->STF-03 dependency edge."
-note: "Mid-work checkpoint: journal/ops/sessions/the-bun-and-the-boundary-2026-07-16T0157.md evaluated Bun (Fable-5 spike) and deferred it on all surfaces, reserving it only as a named future backend-runtime candidate (decisions.md + ROADMAP). Housekeeping: removed the test-bun worktree/branch, gitignored dist-qa-drill, committed the prior STF-01/STF-04 board reconciliation + approved STF lesson-1 spec. STF milestone remains closed (the-board-and-the-baton); no STF cards moved."
+next: "AL-D1 — Resume brainstorming by tracing the current lesson-attempt lifecycle and select one smallest valuable write/reload consumer for an idb-backed ProgressStore; then write the design and TDD implementation plan."
+note: "The user approved idb 8.0.3 on 2026-07-16 after redirecting effort away from further benchmark timing and toward production value. Storage research is closed with the timing gap explicit; no production dependency or adapter has been added yet. AL-R3 AI-planner research is deferred off the current-phase board, and STF-02/03/05 remain paused and recoverable from archives/specs."
 ---

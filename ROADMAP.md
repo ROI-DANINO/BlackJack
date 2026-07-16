@@ -28,8 +28,9 @@ not replacements for historical milestone names, phase identifiers, specs, commi
   `Cargo.lock`/`build-wasm.sh` and prove native↔built-WASM parity with the next wire-changing slice.
 - **T2 Learning — architecture and pedagogy:** typed curriculum, deterministic lesson flow,
   engine-owned grading, feedback, practice, mastery, and later counting instruction. Blackjack
-  Foundations and the Strategy Profile Foundation are complete. The next product slice is the first
-  learner-visible Strategy Table Fundamentals lesson and its smallest grading API.
+  Foundations and the Strategy Profile Foundation are complete. The active slice is a small
+  adaptive-learning mechanics proof over representative Blackjack Foundations units: establish the
+  evidence/activity/progress contracts before Strategy Table Fundamentals resumes against them.
 - **T3 Visual Shell — product experience:** coherent app navigation, onboarding, game feel,
   accessible feedback, responsive presentation, and later mobile delivery. This track has not begun;
   libraries and runtimes remain undecided until an active consumer justifies them.
@@ -38,7 +39,7 @@ not replacements for historical milestone names, phase identifiers, specs, commi
 
 | Capability | Activation trigger | Guardrail / current status |
 |---|---|---|
-| Local durable progress | The first requirement that completion survive reload. | Before the first durable `AttemptRecord` write, decide the stable learner identity and implement the approved `ProgressStore` port plus a versioned progress envelope. That seam is approved but not implemented. |
+| Local durable progress | The first requirement that completion survive reload. | Triggered by the adaptive-learning mechanics proof. `idb` 8.0.3 is admitted behind the approved anonymous local identity and `ProgressStore` seam; the next slice designs and builds the first real versioned write/reload path with feature QA. |
 | Accounts and cross-device sync | Learners need progress on more than one device. | Ordinary training remains client-authoritative; research identity, storage, migration, offline, and conflict semantics before selecting a provider. Backend runtime runs the Admission Protocol; candidates: Node+Hono, Bun, Deno, Rust/axum reusing `blackjack-core` (native engine parity if replay-validation ever activates); storage behind `ProgressStore`, fetch-standard handlers only. See `journal/decisions.md` 2026-07-16. |
 | Product observability | External beta creates concrete learning or drop-off questions. | Research event purpose, consent/privacy, retention, batching, and offline failure before adding telemetry. |
 | Independently published curriculum | Content must ship without an application release. | Research integrity, schema compatibility, rollback, and provenance before remote payloads/admin tooling. |
@@ -78,6 +79,11 @@ V2 ships two ordered, replayable subjects:
 
 The shared **Strategy Profile Foundation** required by the second subject is complete: H17/S17
 strategy truth is verified and lessons can gate against the active ruleset (`5bbc0b4`).
+
+Before the remaining Strategy Table Fundamentals design is resumed, the active adaptive-learning
+mechanics sub-phase will prove the smallest reusable evidence, activity, session, progress, and
+deterministic-fallback contracts against one or two existing Blackjack Foundations units. This is a
+bounded retrofit, not a new subject or a generic course platform.
 
 Build the learning loop in this order: verify and encode one ruleset-matched strategy source;
 ship one guided drill loop; add brief feedback and targeted repetition; add persisted progress

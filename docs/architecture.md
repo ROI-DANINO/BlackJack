@@ -68,12 +68,12 @@ V1 session state is in memory. The web application can export local history as J
 product database, account system, or sync layer. See [data/history/README.md](../data/history/README.md)
 for the exported-data surface.
 
-Learning attempts are also in-memory serializable records today. There is no `ProgressStore`, stable
-learner identity, or versioned progress-record envelope in the current code. The approved future seam
-remains an outstanding implementation obligation: decide the stable learner/account key before the
-first durable `AttemptRecord` write, put persistence behind a `ProgressStore`-style application port,
-and version the outer progress record. That seam must land before or as the first step of durable
-progress work; this documentation does not mark it implemented.
+Learning attempts are also in-memory serializable records today. There is no production
+`ProgressStore`, stable learner identity, or versioned progress-record envelope in the current code.
+`idb` 8.0.3 is admitted as the browser-local adapter for the first durable-progress slice, but the
+approved seam remains an implementation obligation: create the opaque local learner key before the
+first durable `AttemptRecord` write, put persistence behind a `ProgressStore` application port, and
+version the outer progress record. This documentation does not mark that adapter or seam implemented.
 
 ## Hosted product posture
 
@@ -83,8 +83,9 @@ storage, and cross-device sync rather than moving normal game execution to a ser
 
 Persistence, sync, analytics, and other third-party providers must sit behind application ports.
 React components and `LessonController` consume product-facing interfaces and cannot contain direct
-provider/database calls. No provider is selected until an active feature passes the Tool & Runtime
-Admission Protocol.
+provider/database calls. `idb` is selected only for the scoped browser-local `ProgressStore`
+adapter after passing the Tool & Runtime Admission Protocol; no account, sync, analytics, or hosted
+provider is selected.
 
 Server game authority activates only when a competitive or certified requirement makes client trust
 insufficient—for example multiplayer, leaderboards, or certified mastery. That later design must
