@@ -411,7 +411,7 @@ Run:
 ```bash
 npm install --prefix web/research/browser-storage --ignore-scripts
 npm --prefix web/research/browser-storage ls --depth=0
-npm --prefix web exec -- tsc -p research/browser-storage/tsconfig.json --noEmit
+web/node_modules/.bin/tsc -p web/research/browser-storage/tsconfig.json --noEmit
 git diff -- web/package.json web/package-lock.json
 ```
 
@@ -551,7 +551,7 @@ With no filter it runs all five candidates and includes timings. An unknown flag
 Run:
 
 ```bash
-npm --prefix web exec -- tsx research/browser-storage/run.ts
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts
 ```
 
 Expected: FAIL with `candidate memory not implemented` and analogous failures for the other registered candidates; no production app file changes.
@@ -590,7 +590,7 @@ The memory baseline stores a cloned envelope per namespace in a module-level `Ma
 Run:
 
 ```bash
-npm --prefix web exec -- tsx research/browser-storage/run.ts --candidate memory
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts --candidate memory
 ```
 
 Expected: all applicable memory correctness gates pass except the explicitly expected durability limitation; the overall command still exits zero because memory is a baseline, not an admission candidate.
@@ -602,7 +602,7 @@ Store one canonical JSON envelope and one idempotency-key set under namespace-pr
 Run:
 
 ```bash
-npm --prefix web exec -- tsx research/browser-storage/run.ts --candidate local-storage
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts --candidate local-storage
 ```
 
 Expected: reload/export/reset gates pass; any atomicity or concurrency limitation is explicit and does not fail the research run because `localStorage` is a baseline.
@@ -623,7 +623,7 @@ idempotency   keyPath "idempotencyKey"
 Run:
 
 ```bash
-npm --prefix web exec -- tsx research/browser-storage/run.ts --candidate native-indexeddb
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts --candidate native-indexeddb
 ```
 
 Expected: the native candidate passes the full correctness suite in all three browser engines before timings are accepted.
@@ -635,7 +635,7 @@ Use `openDB` and its upgrade callback for the exact four-store schema. Use a sin
 Run:
 
 ```bash
-npm --prefix web exec -- tsx research/browser-storage/run.ts --candidate idb
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts --candidate idb
 ```
 
 Expected: `idb` passes the same full correctness suite in Chromium, Firefox, and WebKit.
@@ -647,7 +647,7 @@ Define the exact four tables and use `db.transaction('rw', ...)` for checkpoint 
 Run:
 
 ```bash
-npm --prefix web exec -- tsx research/browser-storage/run.ts --candidate dexie
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts --candidate dexie
 ```
 
 Expected: Dexie passes the same full correctness suite in Chromium, Firefox, and WebKit.
@@ -655,7 +655,7 @@ Expected: Dexie passes the same full correctness suite in Chromium, Firefox, and
 - [ ] **Step 6: Run the complete equal-candidate correctness matrix**
 
 ```bash
-npm --prefix web exec -- tsx research/browser-storage/run.ts --correctness-only
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts --correctness-only
 ```
 
 Expected: all full-benchmark candidates pass all required correctness gates across the three browsers; baselines record limitations without being promoted to admission candidates.
@@ -732,7 +732,7 @@ Inject `QuotaExceededError`, storage-unavailable, and write-abort faults through
 - [ ] **Step 7: Run and record the full failure matrix**
 
 ```bash
-npm --prefix web exec -- tsx research/browser-storage/run.ts --correctness-only
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts --correctness-only
 ```
 
 Expected: raw JSON contains all 14 named gate results for every candidate/browser pair, with explicit `OBSERVED` or `SYNTHETIC` labels and no missing result cells.
@@ -786,7 +786,7 @@ Record serialized fixture byte size and exported byte size for every workload. D
 - [ ] **Step 2: Install the three Playwright browser engines if missing**
 
 ```bash
-npm --prefix web exec -- playwright install chromium firefox webkit
+web/node_modules/.bin/playwright install chromium firefox webkit
 ```
 
 Expected: Playwright reports the required browser binaries present or installs them successfully.
@@ -794,7 +794,7 @@ Expected: Playwright reports the required browser binaries present or installs t
 - [ ] **Step 3: Run the complete benchmark from a clean result path**
 
 ```bash
-npm --prefix web exec -- tsx research/browser-storage/run.ts
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts
 ```
 
 Expected: exit zero; the runner atomically replaces one deterministic-schema result file containing environment metadata, all gate cells, raw timing arrays, summaries, fixture sizes, export sizes, and no missing candidate-browser-workload-operation cell.
@@ -949,7 +949,7 @@ For every report row and recommendation:
 
 ```bash
 npm install --prefix web/research/browser-storage --ignore-scripts
-npm --prefix web exec -- tsx research/browser-storage/run.ts
+web/node_modules/.bin/tsx web/research/browser-storage/run.ts
 git diff -- docs/superpowers/specs/evidence/2026-07-16-browser-storage/results.json
 ```
 
