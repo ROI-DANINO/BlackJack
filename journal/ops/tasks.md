@@ -26,21 +26,6 @@
 
 ## Ready
 
-### AL-R1 — Research learning products and initial activity mechanics
-- Type: research
-- Mode: write
-- Owner: unclaimed
-- Depends on: AL-01
-- Source: `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`
-- Outcome: A cited, decision-ready evidence report defines requirements for the first three activity contracts without copying proprietary content or choosing unrelated infrastructure.
-- Next: Execute Task 1 of the research plan: establish the findings record and evidence contract.
-- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`, `docs/specs/product-vision.md`, `docs/specs/learning-mastery-and-scoring.md`, `docs/specs/research-brief.md`
-- Workspace: repository root
-- Done when: The reviewed report distinguishes evidence from inference, produces traceable `ALR-*` requirements for multiple choice, assemble blocks, and engine-backed hands, records coverage gaps, and passes user approval.
-- Gate: user-approval
-- Evidence: pending
-- Updated: 2026-07-16T04:22:00+03:00
-
 ### AL-R2 — Research and admit browser-local learner progress storage
 - Type: research
 - Mode: write
@@ -72,6 +57,21 @@
 - Updated: 2026-07-16T04:22:00+03:00
 
 ## Active
+
+### AL-R1 — Research learning products and initial activity mechanics
+- Type: research
+- Mode: write
+- Owner: orchestrator
+- Depends on: AL-01
+- Source: `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`
+- Outcome: A cited, decision-ready evidence report defines requirements for the first three activity contracts without copying proprietary content or choosing unrelated infrastructure.
+- Next: Execute Task 1 of the research plan: establish the findings record and evidence contract.
+- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`, `docs/specs/product-vision.md`, `docs/specs/learning-mastery-and-scoring.md`, `docs/specs/research-brief.md`
+- Workspace: repository root
+- Done when: The reviewed report distinguishes evidence from inference, produces traceable `ALR-*` requirements for multiple choice, assemble blocks, and engine-backed hands, records coverage gaps, and passes user approval.
+- Gate: user-approval
+- Evidence: pending
+- Updated: 2026-07-16T05:01:07+03:00
 
 ## Verification
 
