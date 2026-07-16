@@ -67,6 +67,7 @@ export interface ResearchFailureControls {
   abortNextWrite(): void;
   abortNextUpgrade(): void;
   injectRawEnvelope(namespace: string, value: unknown): Promise<void>;
+  inspectRawEnvelope?(namespace: string): Promise<unknown>;
   setQuotaError(enabled: boolean): void;
   setUnavailable(enabled: boolean): void;
 }

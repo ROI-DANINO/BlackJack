@@ -145,12 +145,47 @@ these gates.
 
 | Candidate | Browser | Reload | Atomic commit | Idempotency | Revision conflict | Concurrent tabs | Export/reset | Migration/recovery | Gate verdict |
 |---|---|---|---|---|---|---|---|---|---|
+| in-memory state | Chromium / Firefox / WebKit | Fail: a fresh page loses the module map | Pass: cloned replacement is atomic in one realm | Pass | Pass | Fail: independent pages both win | Pass while the realm lives | Pass for code-only migration and typed fixtures | Baseline, 12/14 per browser |
+| `localStorage` | Chromium / Firefox / WebKit | Pass | Fail: injected interruption between envelope and idempotency-key writes exposes the split commit | Pass without contention | Pass without contention | Fail: both pages read revision 0 and win | Pass | Pass for application parse/rewrite, but no transactional upgrade boundary | Baseline, 12/14 per browser |
+| native IndexedDB | Chromium / Firefox / WebKit | Pass | Pass: one four-store `readwrite` transaction | Pass | Pass | Pass: one initial winner; loser reloads and retries at revision 1 | Pass | Pass: real v1→v2 `versionchange`, rollback, raw-v1 inspection, corrupt/newer refusal | Admission candidate, 14/14 per browser |
+| `idb` 8.0.3 | Chromium / Firefox / WebKit | Pass | Pass: one four-store `readwrite` transaction plus `tx.done` | Pass | Pass | Pass: one initial winner; loser reloads and retries at revision 1 | Pass | Pass: real `openDB` v1→v2 upgrade, rollback, raw-v1 inspection, corrupt/newer refusal | Admission candidate, 14/14 per browser |
+| Dexie 4.4.4 | Chromium / Firefox / WebKit | Pass | Pass: one four-table `rw` transaction | Pass | Pass | Pass: one initial winner; loser reloads and retries at revision 1 | Pass | Pass: declared v1/v2 upgrade transaction, rollback, raw-v1 inspection, corrupt/newer refusal | Admission candidate, 14/14 per browser |
+
+- **OBSERVED:** the Task 5 correctness run produced all 210 named gate cells: 120 `OBSERVED`
+  cells and 90 `SYNTHETIC` cells. Native IndexedDB, `idb`, and Dexie passed 42/42 each.
+  The two baselines exited without admission failure while preserving their exact limitations above.
+- **OBSERVED:** for every full candidate, two real pages reached the same revision without a
+  runner-side mutex. Exactly one initial write committed; the conflict loser loaded revision 1 and
+  its explicit retry advanced to revision 2.
+- **SYNTHETIC:** quota, unavailable-storage, write-abort, aborted-upgrade, malformed-record, and
+  newer-schema cells use deterministic harness controls. They prove the adapter response and
+  last-valid-state handling, not the frequency or exact trigger of real browser failures.
 
 ## Benchmark Method
 
 ## Benchmark Results
 
 ## Migration and Recovery Evidence
+
+The research migration is deliberately narrow. A v1 attempt has no `assistance`; v2 adds
+`assistance: "none"`. V1 metadata has no `reducerVersion`; v2 adds
+`research-reducer-v1`. Learner ID, revision 7, the complete attempt/session collections, cached
+mastery, curriculum versions, and the pre-existing `migration-existing` idempotency key remain
+unchanged. Reopening and re-running the v2 path produces byte-identical canonical export.
+
+| Candidate | Transaction scope | Migration mechanism | Abort and retry evidence | Corrupt / newer behavior | Concurrent-writer result | User recovery path | Limitation |
+|---|---|---|---|---|---|---|---|
+| in-memory state | One cloned map-record replacement | Code-only parse and replacement | Injected abort occurs before replacement; retry migrates the retained v1 object | Typed refusal in the live realm | Independent page realms both win | Export or confirmed reset is possible only before the realm disappears | No reload durability and no cross-page authority |
+| `localStorage` | Two independent synchronous key writes | Application parse/rewrite of envelope and idempotency-key set | Upgrade abort preserves v1, but checkpoint interruption proves the two-key boundary can become inconsistent | Typed refusal; reset is explicit | Both pages win and one update is lost | A production design would need raw export before confirmed reset; this baseline does not supply an atomic recovery boundary | No transaction across keys; synchronous main-thread work |
+| native IndexedDB | One four-store checkpoint transaction; one exclusive version-change transaction | Native v1 database opened at version 2; cursor transforms attempts before metadata completes | Abort after attempt transforms rolls the physical database back to version 1; raw inspection shows no `assistance` or `reducerVersion`; reopen/retry succeeds | `RECOVERY_REQUIRED` or `NEWER_SCHEMA` includes namespace, detected schema, and safe actions; no automatic reset | Exactly one first commit; loser reload/retry reaches revision 2 | Offer raw export, then `reset-with-confirmation`; require app upgrade for schema 999 | Most lifecycle/error code; browser durability remains outside application control |
+| `idb` 8.0.3 | Same four-store native transaction, awaited through `tx.done`; one `openDB` version-change transaction | `openDB(..., 2)` upgrade uses the underlying version-change transaction and cursor transform | Same physical-version-1 rollback and byte-stable retry; rejected `transaction.done` is consumed on deliberate abort | Same typed namespace/schema/action detail and no silent discard | Exactly one first commit; loser reload/retry reaches revision 2 | Same raw-export/confirmed-reset or app-upgrade route | Thin wrapper does not remove native transaction-lifetime or durability constraints |
+| Dexie 4.4.4 | One four-table `rw` transaction; one declared-version upgrade transaction | Dexie version 1 and 2 schemas share the four tables; `version(2).upgrade(...)` performs the data transform | Throwing after attempt transforms rolls the whole upgrade back to logical version 1; v1-only inspection and retry pass | Same typed namespace/schema/action detail and no silent discard | Exactly one first commit; loser reload/retry reaches revision 2 | Same raw-export/confirmed-reset or app-upgrade route | Richest candidate-specific API surface; IndexedDB still owns storage guarantees |
+
+For malformed metadata and malformed attempts, the full candidates surface
+`RECOVERY_REQUIRED` with `export-raw` and `reset-with-confirmation`. For schema 999 they surface
+`NEWER_SCHEMA` with `export-raw` and `upgrade-app`. Reset is never automatic: preserving the raw
+record for user-directed export is part of the later product boundary, while the inspector used here
+remains a harness-only control and is not part of `ProgressStore`.
 
 ## Tool and Runtime Admission Record
 

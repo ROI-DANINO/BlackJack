@@ -13,6 +13,7 @@ import {
 } from './contract';
 import {
   buildMalformedFixture,
+  buildMalformedAttemptFixture,
   buildSchemaV1Fixture,
   buildSchemaV2Fixture,
   buildUnsupportedSchemaFixture,
@@ -21,6 +22,7 @@ import {
   FIXTURE_TIERS,
   RESEARCH_CURRICULUM_VERSIONS,
   RESEARCH_LEARNER_ID,
+  RESEARCH_MIGRATION_CACHED_MASTERY,
   RESEARCH_REDUCER_VERSION,
   type FixtureTier,
 } from './fixtures';
@@ -38,19 +40,76 @@ function assert(condition: unknown, detail: string): asserts condition {
   if (!condition) throw new Error(detail);
 }
 
-function assertStoreError(error: unknown, code: ResearchStoreErrorCode): void {
+function assertStoreError(
+  error: unknown,
+  code: ResearchStoreErrorCode,
+): asserts error is ResearchStoreError {
   assert(error instanceof ResearchStoreError, `expected typed ${code} error`);
   assert(error.code === code, `expected ${code}, received ${error.code}`);
 }
 
-async function expectStoreError(operation: () => Promise<unknown>, code: ResearchStoreErrorCode): Promise<void> {
+async function expectStoreError(
+  operation: () => Promise<unknown>,
+  code: ResearchStoreErrorCode,
+): Promise<ResearchStoreError> {
   try {
     await operation();
   } catch (error) {
     assertStoreError(error, code);
-    return;
+    return error;
   }
   throw new Error(`expected ${code} rejection`);
+}
+
+const FULL_CANDIDATES = new Set(['native-indexeddb', 'idb', 'dexie']);
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function canonicalize(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(canonicalize);
+  if (!isRecord(value)) return value;
+  return Object.fromEntries(
+    Object.keys(value).sort().map((key) => [key, canonicalize(value[key])]),
+  );
+}
+
+function logicalJson(value: unknown): string {
+  return JSON.stringify(canonicalize(value));
+}
+
+function expectedMigratedEnvelope(): ResearchEnvelope {
+  return {
+    ...buildSchemaV2Fixture('small'),
+    revision: 7,
+    cachedMastery: RESEARCH_MIGRATION_CACHED_MASTERY,
+  };
+}
+
+function assertRecoveryDetails(
+  error: ResearchStoreError,
+  namespace: string,
+  detectedSchema: number,
+  safeAction: 'reset-with-confirmation' | 'upgrade-app',
+): void {
+  assert(error.message.includes(`namespace=${namespace}`), 'recoverable error omitted namespace');
+  assert(error.message.includes(`detectedSchema=${detectedSchema}`), 'recoverable error omitted detected schema');
+  assert(error.message.includes('export-raw'), 'recoverable error omitted raw export action');
+  assert(error.message.includes(safeAction), `recoverable error omitted ${safeAction} action`);
+}
+
+function assertRawV1Envelope(value: unknown): void {
+  assert(isRecord(value), 'raw v1 inspection did not return an envelope');
+  assert(value.databaseVersion === 1, 'v1 fixture was not stored at physical database version 1');
+  assert(value.schemaVersion === 1, 'aborted migration changed the visible schema');
+  assert(value.revision === 7, 'aborted migration changed revision');
+  assert(!Object.hasOwn(value, 'reducerVersion'), 'aborted migration exposed reducerVersion');
+  assert(Array.isArray(value.attempts), 'raw v1 inspection omitted attempts');
+  assert(value.attempts.every((attempt) => isRecord(attempt) && !Object.hasOwn(attempt, 'assistance')),
+    'aborted migration exposed partially transformed attempts');
+  assert(JSON.stringify(value.idempotencyKeys) === JSON.stringify(['migration-existing']),
+    'aborted migration changed idempotency keys');
 }
 
 async function safeClose(store: ResearchProgressStore): Promise<void> {
@@ -164,19 +223,46 @@ async function exerciseGate(factory: ResearchAdapterFactory, gate: GateName): Pr
       await factory.controls.injectRawEnvelope(namespace, buildSchemaV1Fixture());
       await store.open(namespace);
       const loaded = await store.load();
-      assert(loaded?.schemaVersion === 2, 'v1 record did not migrate to v2');
-      assert(loaded.reducerVersion === 'research-reducer-v1', 'migration omitted reducer version');
+      const expected = expectedMigratedEnvelope();
+      assert(logicalJson(loaded) === logicalJson(expected), 'v1 migration changed logical learner state');
+      const duplicate = await store.commitCheckpoint(
+        checkpointFromFixture(expected, 'migration-existing', expected.revision),
+      );
+      assert(duplicate.duplicate && duplicate.revision === expected.revision,
+        'migration did not preserve idempotency metadata');
+      const firstExport = await store.exportJson();
+      await store.close();
+      const reopened = factory.create();
+      try {
+        await reopened.open(namespace);
+        const secondExport = await reopened.exportJson();
+        assert(firstExport === secondExport, 'migration export changed after reopen/re-run');
+      } finally {
+        await safeClose(reopened);
+      }
       return;
     }
 
     if (gate === 'aborted-upgrade-recovery') {
       await factory.controls.injectRawEnvelope(namespace, buildSchemaV1Fixture());
+      const inspect = factory.controls.inspectRawEnvelope;
+      const before = FULL_CANDIDATES.has(factory.id) && inspect !== undefined
+        ? await inspect(namespace)
+        : undefined;
       factory.controls.abortNextUpgrade();
       await expectStoreError(() => store.open(namespace), 'UPGRADE_ABORTED');
+      if (FULL_CANDIDATES.has(factory.id)) {
+        assert(inspect !== undefined, 'full candidate omitted raw migration inspection');
+        assertRawV1Envelope(before);
+        const after = await inspect(namespace);
+        assertRawV1Envelope(after);
+        assert(JSON.stringify(after) === JSON.stringify(before), 'aborted migration changed raw v1 bytes');
+      }
       const retry = factory.create();
       try {
         await retry.open(namespace);
-        assert((await retry.load())?.schemaVersion === 2, 'retry did not recover last valid v1 state');
+        assert(logicalJson(await retry.load()) === logicalJson(expectedMigratedEnvelope()),
+          'retry did not recover the last valid v1 state');
       } finally {
         await safeClose(retry);
       }
@@ -184,6 +270,30 @@ async function exerciseGate(factory: ResearchAdapterFactory, gate: GateName): Pr
     }
 
     if (gate === 'malformed-record-recovery') {
+      if (FULL_CANDIDATES.has(factory.id)) {
+        for (const [suffix, fixture] of [
+          ['meta', buildMalformedFixture()],
+          ['attempt', buildMalformedAttemptFixture()],
+        ] as const) {
+          const corruptNamespace = `${namespace}:${suffix}`;
+          const corruptStore = factory.create();
+          const inspect = factory.controls.inspectRawEnvelope;
+          assert(inspect !== undefined, 'full candidate omitted raw recovery inspection');
+          await factory.controls.injectRawEnvelope(corruptNamespace, fixture);
+          const before = await inspect(corruptNamespace);
+          try {
+            await corruptStore.open(corruptNamespace);
+            const error = await expectStoreError(() => corruptStore.load(), 'RECOVERY_REQUIRED');
+            assertRecoveryDetails(error, corruptNamespace, 2, 'reset-with-confirmation');
+            const after = await inspect(corruptNamespace);
+            assert(JSON.stringify(after) === JSON.stringify(before),
+              `${suffix} refusal changed persisted raw state`);
+          } finally {
+            await safeClose(corruptStore);
+          }
+        }
+        return;
+      }
       await factory.controls.injectRawEnvelope(namespace, buildMalformedFixture());
       await store.open(namespace);
       await expectStoreError(() => store.load(), 'RECOVERY_REQUIRED');
@@ -194,8 +304,19 @@ async function exerciseGate(factory: ResearchAdapterFactory, gate: GateName): Pr
 
     if (gate === 'newer-schema-refusal') {
       await factory.controls.injectRawEnvelope(namespace, buildUnsupportedSchemaFixture());
+      const inspect = factory.controls.inspectRawEnvelope;
+      const before = FULL_CANDIDATES.has(factory.id) && inspect !== undefined
+        ? await inspect(namespace)
+        : undefined;
       await store.open(namespace);
-      await expectStoreError(() => store.load(), 'NEWER_SCHEMA');
+      const error = await expectStoreError(() => store.load(), 'NEWER_SCHEMA');
+      if (FULL_CANDIDATES.has(factory.id)) {
+        assert(inspect !== undefined, 'full candidate omitted raw recovery inspection');
+        assertRecoveryDetails(error, namespace, 999, 'upgrade-app');
+        const after = await inspect(namespace);
+        assert(JSON.stringify(after) === JSON.stringify(before),
+          'newer-schema refusal changed persisted raw state');
+      }
       return;
     }
 
@@ -396,7 +517,13 @@ export async function runConcurrentWriterProbe(
         return 'outcome:winner';
       } catch (error) {
         assertStoreError(error, 'REVISION_CONFLICT');
-        return 'outcome:revision-conflict';
+        const current = await store.load();
+        assert(current?.revision === 1, 'conflict loser did not reload the winner revision');
+        const retry = await store.commitCheckpoint(
+          checkpointFromFixture(buildSchemaV2Fixture('small'), `race-${role}-retry`, 1),
+        );
+        assert(retry.revision === 2 && !retry.duplicate, 'conflict loser retry did not advance once');
+        return 'outcome:revision-conflict-retry';
       }
     } finally {
       await safeClose(store);

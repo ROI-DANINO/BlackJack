@@ -186,7 +186,7 @@ async function orchestrateConcurrency(
     const gates = [onlyGate(leftResult), onlyGate(rightResult)];
     const outcomes = gates.map((gate) => gate.detail).sort();
     const passed = gates.every((gate) => gate.passed)
-      && outcomes[0] === 'outcome:revision-conflict'
+      && outcomes[0] === 'outcome:revision-conflict-retry'
       && outcomes[1] === 'outcome:winner';
     return {
       gate: 'concurrent-writers',

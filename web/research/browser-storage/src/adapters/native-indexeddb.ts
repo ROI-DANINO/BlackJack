@@ -356,6 +356,67 @@ async function injectRawEnvelope(namespace: string, value: unknown): Promise<voi
   }
 }
 
+function compareRawRecords(left: unknown, right: unknown, key: string): number {
+  const leftKey = isRecord(left) && typeof left[key] === 'string' ? left[key] : '';
+  const rightKey = isRecord(right) && typeof right[key] === 'string' ? right[key] : '';
+  return leftKey.localeCompare(rightKey);
+}
+
+async function inspectRawEnvelope(namespace: string): Promise<unknown> {
+  const database = await new Promise<IDBDatabase>((resolve, reject) => {
+    // Omitting the version is intentional: inspection must never start the v1-to-v2 upgrade.
+    const request = indexedDB.open(databaseName(namespace));
+    let createdMissingDatabase = false;
+    request.onupgradeneeded = () => {
+      createdMissingDatabase = true;
+      request.transaction?.abort();
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(storeError(
+      'STORAGE_UNAVAILABLE',
+      namespace,
+      createdMissingDatabase
+        ? 'raw inspection requires an existing IndexedDB database'
+        : (request.error?.message ?? 'raw IndexedDB inspection open failed'),
+    ));
+    request.onblocked = () => reject(storeError(
+      'STORAGE_UNAVAILABLE',
+      namespace,
+      'raw IndexedDB inspection was blocked by another connection',
+    ));
+  });
+
+  try {
+    const transaction = database.transaction([...STORE_NAMES], 'readonly');
+    const completion = transactionCompletion(transaction, namespace, 'STORAGE_UNAVAILABLE');
+    const [rawMeta, rawAttempts, rawSessions, rawIdempotency] = await Promise.all([
+      requestResult(transaction.objectStore('meta').get(META_KEY)),
+      requestResult(transaction.objectStore('attempts').getAll()),
+      requestResult(transaction.objectStore('sessions').getAll()),
+      requestResult(transaction.objectStore('idempotency').getAll()),
+      completion,
+    ]);
+    if (!isRecord(rawMeta)) {
+      throw recoveryError(namespace, rawMeta, 'raw learner metadata is missing or malformed');
+    }
+    const attempts = [...rawAttempts].sort((left, right) => compareRawRecords(left, right, 'attemptId'));
+    const sessions = [...rawSessions].sort((left, right) => compareRawRecords(left, right, 'sessionId'));
+    const idempotencyKeys = rawIdempotency
+      .map((record: unknown) => isRecord(record) ? record.idempotencyKey : undefined)
+      .filter((key): key is string => typeof key === 'string')
+      .sort((left, right) => left.localeCompare(right));
+    return {
+      ...rawMeta,
+      databaseVersion: database.version,
+      attempts,
+      sessions,
+      idempotencyKeys,
+    };
+  } finally {
+    database.close();
+  }
+}
+
 class NativeIndexedDbStore implements ResearchProgressStore {
   private database: IDBDatabase | null = null;
   private namespace: string | null = null;
@@ -366,8 +427,10 @@ class NativeIndexedDbStore implements ResearchProgressStore {
     }
     this.database?.close();
     this.database = null;
+    this.namespace = null;
+    const database = await openDatabase(namespace);
+    this.database = database;
     this.namespace = namespace;
-    this.database = await openDatabase(namespace);
   }
 
   async load(): Promise<ResearchEnvelope | null> {
@@ -506,6 +569,7 @@ export const nativeIndexedDbFactory: ResearchAdapterFactory = {
     abortNextWrite: () => { failures.abortWrite = true; },
     abortNextUpgrade: () => { failures.abortUpgrade = true; },
     injectRawEnvelope,
+    inspectRawEnvelope,
     setQuotaError: (enabled) => { failures.quotaError = enabled; },
     setUnavailable: (enabled) => { failures.unavailable = enabled; },
   },

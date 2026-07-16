@@ -1,4 +1,11 @@
-import { deleteDB, openDB, type DBSchema, type IDBPDatabase } from 'idb';
+import {
+  deleteDB,
+  openDB,
+  unwrap,
+  type DBSchema,
+  type IDBPDatabase,
+  type IDBPTransaction,
+} from 'idb';
 import {
   ResearchStoreError,
   type CheckpointWrite,
@@ -8,6 +15,7 @@ import {
   type ResearchFailureControls,
   type ResearchProgressStore,
   type ResearchSessionSummary,
+  type ResearchStoreErrorCode,
 } from '../contract';
 import {
   RESEARCH_CURRICULUM_VERSIONS,
@@ -27,6 +35,9 @@ type MetaRecord = {
 
 type IdempotencyRecord = { idempotencyKey: string };
 
+const DATABASE_VERSION = 2;
+const STORE_NAMES = ['meta', 'attempts', 'sessions', 'idempotency'] as const;
+
 interface ResearchDb extends DBSchema {
   meta: { key: 'learner'; value: MetaRecord };
   attempts: { key: string; value: ResearchAttempt; indexes: { sessionId: string } };
@@ -43,6 +54,65 @@ const controlsState = {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function storeError(
+  code: ResearchStoreErrorCode,
+  namespace: string,
+  detail: string,
+): ResearchStoreError {
+  return new ResearchStoreError(code, `${detail}; namespace=${namespace}`);
+}
+
+function detectedSchema(value: unknown): string {
+  if (isRecord(value) && typeof value.schemaVersion === 'number') return String(value.schemaVersion);
+  return 'unknown';
+}
+
+function recoveryError(namespace: string, value: unknown, detail: string): ResearchStoreError {
+  return storeError(
+    'RECOVERY_REQUIRED',
+    namespace,
+    `${detail}; detectedSchema=${detectedSchema(value)}; safeNextActions=export-raw,reset-with-confirmation`,
+  );
+}
+
+function newerSchemaError(namespace: string, value: unknown): ResearchStoreError {
+  return storeError(
+    'NEWER_SCHEMA',
+    namespace,
+    `stored schema is newer than ${DATABASE_VERSION}; detectedSchema=${detectedSchema(value)}; safeNextActions=export-raw,upgrade-app`,
+  );
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((entry) => typeof entry === 'string');
+}
+
+function isAttempt(value: unknown): value is ResearchAttempt {
+  return isRecord(value)
+    && typeof value.attemptId === 'string'
+    && typeof value.sessionId === 'string'
+    && typeof value.occurredAt === 'string'
+    && typeof value.activityId === 'string'
+    && typeof value.decision === 'string'
+    && typeof value.correct === 'boolean'
+    && typeof value.responseMs === 'number'
+    && Number.isFinite(value.responseMs)
+    && value.assistance === 'none';
+}
+
+function isSession(value: unknown): value is ResearchSessionSummary {
+  return isRecord(value)
+    && typeof value.sessionId === 'string'
+    && typeof value.startedAt === 'string'
+    && typeof value.endedAt === 'string'
+    && typeof value.attemptCount === 'number'
+    && Number.isInteger(value.attemptCount)
+    && value.attemptCount >= 0
+    && typeof value.correctCount === 'number'
+    && Number.isInteger(value.correctCount)
+    && value.correctCount >= 0;
 }
 
 function createStores(database: IDBPDatabase<ResearchDb>): void {
@@ -78,164 +148,189 @@ function canonicalEnvelope(
     learnerId: meta.learnerId,
     revision: meta.revision,
     reducerVersion: meta.reducerVersion,
-    curriculumVersions: Array.isArray(meta.curriculumVersions)
-      ? [...meta.curriculumVersions].sort((left, right) => left.localeCompare(right))
-      : meta.curriculumVersions,
-    attempts: attempts.sort((left, right) => String(left.attemptId).localeCompare(String(right.attemptId))),
-    sessions: sessions.sort((left, right) => String(left.sessionId).localeCompare(String(right.sessionId))),
+    curriculumVersions: [...meta.curriculumVersions].sort((left, right) => left.localeCompare(right)),
+    attempts: [...attempts].sort((left, right) => left.attemptId.localeCompare(right.attemptId)),
+    sessions: [...sessions].sort((left, right) => left.sessionId.localeCompare(right.sessionId)),
     cachedMastery: meta.cachedMastery,
   };
 }
 
-function requireValidEnvelope(value: ResearchEnvelope): ResearchEnvelope {
-  requireValidMeta(value);
-  const valid = Array.isArray(value.attempts)
-    && value.attempts.every((attempt: unknown): attempt is ResearchAttempt =>
-      isRecord(attempt)
-      && typeof attempt.attemptId === 'string'
-      && typeof attempt.sessionId === 'string'
-      && typeof attempt.occurredAt === 'string'
-      && typeof attempt.activityId === 'string'
-      && typeof attempt.decision === 'string'
-      && typeof attempt.correct === 'boolean'
-      && typeof attempt.responseMs === 'number'
-      && Number.isFinite(attempt.responseMs)
-      && attempt.assistance === 'none')
-    && Array.isArray(value.sessions)
-    && value.sessions.every((session: unknown): session is ResearchSessionSummary =>
-      isRecord(session)
-      && typeof session.sessionId === 'string'
-      && typeof session.startedAt === 'string'
-      && typeof session.endedAt === 'string'
-      && typeof session.attemptCount === 'number'
-      && typeof session.correctCount === 'number'
-      && Number.isInteger(session.attemptCount)
-      && Number.isInteger(session.correctCount)
-      && session.attemptCount >= 0
-      && session.correctCount >= 0);
-  if (!valid) throw new ResearchStoreError('RECOVERY_REQUIRED', 'stored learner envelope is malformed');
-  return value;
-}
-
-function requireValidMeta<T extends {
-  schemaVersion: number;
-  learnerId: string;
-  revision: number;
-  reducerVersion: string;
-  curriculumVersions: string[];
-}>(meta: T): T {
-  if (meta.schemaVersion > 2) {
-    throw new ResearchStoreError('NEWER_SCHEMA', `schema ${meta.schemaVersion} requires a newer app`);
+function requireValidMeta(namespace: string, value: unknown): MetaRecord {
+  if (isRecord(value) && typeof value.schemaVersion === 'number' && value.schemaVersion > DATABASE_VERSION) {
+    throw newerSchemaError(namespace, value);
   }
-  const valid = meta.schemaVersion === 2
-    && typeof meta.learnerId === 'string'
-    && Number.isInteger(meta.revision)
-    && meta.revision >= 0
-    && typeof meta.reducerVersion === 'string'
-    && Array.isArray(meta.curriculumVersions)
-    && meta.curriculumVersions.every((version) => typeof version === 'string');
-  if (!valid) throw new ResearchStoreError('RECOVERY_REQUIRED', 'stored learner metadata is malformed');
-  return meta;
+  if (!isRecord(value)
+    || value.key !== 'learner'
+    || value.schemaVersion !== DATABASE_VERSION
+    || typeof value.learnerId !== 'string'
+    || typeof value.revision !== 'number'
+    || !Number.isInteger(value.revision)
+    || value.revision < 0
+    || typeof value.reducerVersion !== 'string'
+    || !isStringArray(value.curriculumVersions)
+    || !Object.hasOwn(value, 'cachedMastery')) {
+    throw recoveryError(namespace, value, 'stored learner metadata is malformed');
+  }
+  return {
+    key: 'learner',
+    schemaVersion: value.schemaVersion,
+    learnerId: value.learnerId,
+    revision: value.revision,
+    reducerVersion: value.reducerVersion,
+    curriculumVersions: [...value.curriculumVersions],
+    cachedMastery: value.cachedMastery,
+  };
 }
 
 function mapError(
   error: unknown,
+  namespace: string,
   fallback: 'STORAGE_UNAVAILABLE' | 'WRITE_ABORTED' | 'UPGRADE_ABORTED' = 'STORAGE_UNAVAILABLE',
 ): never {
   if (error instanceof ResearchStoreError) throw error;
   if (error instanceof DOMException && error.name === 'QuotaExceededError') {
-    throw new ResearchStoreError('QUOTA_EXCEEDED', error.message);
+    throw storeError('QUOTA_EXCEEDED', namespace, error.message);
   }
-  throw new ResearchStoreError(
+  throw storeError(
     fallback,
+    namespace,
     error instanceof Error ? error.message : String(error),
   );
 }
 
-async function openDatabase(namespace: string): Promise<IDBPDatabase<ResearchDb>> {
-  return openDB<ResearchDb>(namespace, 2, {
-    upgrade(database) {
-      createStores(database);
-    },
-  });
-}
-
-async function migratePayload(database: IDBPDatabase<ResearchDb>): Promise<void> {
-  const transaction = database.transaction(['meta', 'attempts'], 'readwrite');
-  try {
-    const rawMeta = await transaction.objectStore('meta').get('learner') as unknown as Record<string, unknown> | undefined;
-    if (rawMeta?.schemaVersion !== 1) {
-      await transaction.done;
+function migrateVersionOne(
+  transaction: IDBPTransaction<
+    ResearchDb,
+    Array<'meta' | 'attempts' | 'sessions' | 'idempotency'>,
+    'versionchange'
+  >,
+  onInjectedAbort: () => void,
+): void {
+  const nativeTransaction = unwrap(transaction);
+  const attempts = nativeTransaction.objectStore('attempts');
+  const cursorRequest = attempts.openCursor();
+  cursorRequest.onerror = () => nativeTransaction.abort();
+  cursorRequest.onsuccess = () => {
+    const cursor = cursorRequest.result;
+    if (cursor !== null) {
+      const rawAttempt = cursor.value as unknown;
+      if (isRecord(rawAttempt) && !Object.hasOwn(rawAttempt, 'assistance')) {
+        cursor.update({ ...rawAttempt, assistance: 'none' });
+      }
+      cursor.continue();
       return;
     }
-    const attempts = await transaction.objectStore('attempts').getAll() as unknown as Array<Record<string, unknown>>;
-    for (const attempt of attempts) {
-      await transaction.objectStore('attempts').put({ ...attempt, assistance: 'none' } as unknown as ResearchAttempt);
-    }
-    await transaction.objectStore('meta').put({
-      ...rawMeta,
-      key: 'learner',
-      schemaVersion: 2,
-      reducerVersion: RESEARCH_REDUCER_VERSION,
-    } as unknown as MetaRecord);
+
     if (controlsState.abortUpgrade) {
       controlsState.abortUpgrade = false;
-      transaction.abort();
-      await transaction.done.catch(() => undefined);
-      throw new ResearchStoreError('UPGRADE_ABORTED', 'injected migration abort');
+      onInjectedAbort();
+      nativeTransaction.abort();
+      return;
     }
-    await transaction.done;
+
+    const metaStore = nativeTransaction.objectStore('meta');
+    const metaRequest = metaStore.get('learner');
+    metaRequest.onerror = () => nativeTransaction.abort();
+    metaRequest.onsuccess = () => {
+      const rawMeta = metaRequest.result as unknown;
+      if (!isRecord(rawMeta) || rawMeta.schemaVersion !== 1) {
+        nativeTransaction.abort();
+        return;
+      }
+      metaStore.put({
+        ...rawMeta,
+        key: 'learner',
+        schemaVersion: DATABASE_VERSION,
+        reducerVersion: RESEARCH_REDUCER_VERSION,
+      });
+    };
+  };
+}
+
+async function openDatabase(namespace: string): Promise<IDBPDatabase<ResearchDb>> {
+  let injectedUpgradeAbort = false;
+  try {
+    return await openDB<ResearchDb>(namespace, DATABASE_VERSION, {
+      upgrade(database, oldVersion, _newVersion, transaction) {
+        // idb eagerly creates transaction.done for versionchange transactions;
+        // the open request owns the outcome, but the done rejection still needs
+        // a handler when an injected or browser abort occurs.
+        void transaction.done.catch(() => undefined);
+        if (oldVersion === 0) {
+          createStores(database);
+          return;
+        }
+        if (oldVersion === 1) {
+          migrateVersionOne(transaction, () => { injectedUpgradeAbort = true; });
+        }
+      },
+    });
   } catch (error) {
-    mapError(error, 'UPGRADE_ABORTED');
+    if (injectedUpgradeAbort) {
+      throw storeError('UPGRADE_ABORTED', namespace, 'injected v1 to v2 upgrade abort');
+    }
+    mapError(error, namespace);
   }
 }
 
 class IdbProgressStore implements ResearchProgressStore {
   private database: IDBPDatabase<ResearchDb> | null = null;
+  private namespace: string | null = null;
 
   async open(namespace: string): Promise<void> {
-    if (controlsState.unavailable) throw new ResearchStoreError('STORAGE_UNAVAILABLE', 'injected storage unavailable');
+    if (controlsState.unavailable) {
+      throw storeError('STORAGE_UNAVAILABLE', namespace, 'injected storage unavailable');
+    }
     this.database?.close();
     this.database = null;
+    this.namespace = namespace;
     try {
       this.database = await openDatabase(namespace);
-      await migratePayload(this.database);
     } catch (error) {
       this.database?.close();
       this.database = null;
-      mapError(error);
+      this.namespace = null;
+      mapError(error, namespace);
     }
   }
 
-  private requireDatabase(): IDBPDatabase<ResearchDb> {
-    if (this.database === null) throw new ResearchStoreError('STORAGE_UNAVAILABLE', 'store is not open');
-    return this.database;
+  private requireOpen(): { database: IDBPDatabase<ResearchDb>; namespace: string } {
+    if (this.database === null || this.namespace === null) {
+      throw new ResearchStoreError('STORAGE_UNAVAILABLE', 'idb store is not open');
+    }
+    return { database: this.database, namespace: this.namespace };
   }
 
   async load(): Promise<ResearchEnvelope | null> {
+    const { database, namespace } = this.requireOpen();
     try {
-      const transaction = this.requireDatabase().transaction(['meta', 'attempts', 'sessions'], 'readonly');
-      const [meta, attempts, sessions] = await Promise.all([
+      const transaction = database.transaction(['meta', 'attempts', 'sessions'], 'readonly');
+      const [rawMeta, rawAttempts, rawSessions] = await Promise.all([
         transaction.objectStore('meta').get('learner'),
         transaction.objectStore('attempts').getAll(),
         transaction.objectStore('sessions').getAll(),
+        transaction.done,
       ]);
-      await transaction.done;
-      if (meta === undefined) {
-        if (attempts.length !== 0 || sessions.length !== 0) {
-          throw new ResearchStoreError('RECOVERY_REQUIRED', 'records exist without learner metadata');
+      if (rawMeta === undefined) {
+        if (rawAttempts.length !== 0 || rawSessions.length !== 0) {
+          throw recoveryError(namespace, rawMeta, 'records exist without learner metadata');
         }
         return null;
       }
-      return requireValidEnvelope(canonicalEnvelope(meta, attempts, sessions));
+      const meta = requireValidMeta(namespace, rawMeta);
+      if (!rawAttempts.every(isAttempt) || !rawSessions.every(isSession)) {
+        throw recoveryError(namespace, rawMeta, 'stored attempt or session record is malformed');
+      }
+      return canonicalEnvelope(meta, rawAttempts, rawSessions);
     } catch (error) {
-      mapError(error);
+      mapError(error, namespace);
     }
   }
 
   async commitCheckpoint(write: CheckpointWrite): Promise<{ revision: number; duplicate: boolean }> {
-    if (controlsState.quota) throw new ResearchStoreError('QUOTA_EXCEEDED', 'injected quota failure');
-    const transaction = this.requireDatabase().transaction(
+    const { database, namespace } = this.requireOpen();
+    if (controlsState.quota) throw storeError('QUOTA_EXCEEDED', namespace, 'injected quota failure');
+    const transaction = database.transaction(
       ['meta', 'attempts', 'sessions', 'idempotency'],
       'readwrite',
     );
@@ -249,10 +344,10 @@ class IdbProgressStore implements ResearchProgressStore {
           transaction.objectStore('idempotency').count(),
         ]);
         if (attemptCount !== 0 || sessionCount !== 0 || idempotencyCount !== 0) {
-          throw new ResearchStoreError('RECOVERY_REQUIRED', 'records exist without learner metadata');
+          throw recoveryError(namespace, storedMeta, 'records exist without learner metadata');
         }
       }
-      const current = storedMeta === undefined ? defaultMeta() : requireValidMeta(storedMeta);
+      const current = storedMeta === undefined ? defaultMeta() : requireValidMeta(namespace, storedMeta);
       if (duplicate !== undefined) {
         await transaction.done;
         return { revision: current.revision, duplicate: true };
@@ -260,8 +355,9 @@ class IdbProgressStore implements ResearchProgressStore {
       if (current.revision !== write.expectedRevision) {
         transaction.abort();
         await transaction.done.catch(() => undefined);
-        throw new ResearchStoreError(
+        throw storeError(
           'REVISION_CONFLICT',
+          namespace,
           `expected revision ${write.expectedRevision}, found ${current.revision}`,
         );
       }
@@ -273,12 +369,18 @@ class IdbProgressStore implements ResearchProgressStore {
         controlsState.abortWrite = false;
         transaction.abort();
         await transaction.done.catch(() => undefined);
-        throw new ResearchStoreError('WRITE_ABORTED', 'injected checkpoint abort');
+        throw storeError('WRITE_ABORTED', namespace, 'injected checkpoint abort');
       }
       await transaction.done;
       return { revision: current.revision + 1, duplicate: false };
     } catch (error) {
-      mapError(error, 'WRITE_ABORTED');
+      try {
+        transaction.abort();
+      } catch {
+        // The transaction may already have completed or aborted.
+      }
+      await transaction.done.catch(() => undefined);
+      mapError(error, namespace, 'WRITE_ABORTED');
     }
   }
 
@@ -287,47 +389,135 @@ class IdbProgressStore implements ResearchProgressStore {
   }
 
   async reset(): Promise<void> {
+    const { database, namespace } = this.requireOpen();
     try {
-      const transaction = this.requireDatabase().transaction(
+      const transaction = database.transaction(
         ['meta', 'attempts', 'sessions', 'idempotency'],
         'readwrite',
       );
+      const completion = transaction.done;
       await Promise.all([
         transaction.objectStore('meta').clear(),
         transaction.objectStore('attempts').clear(),
         transaction.objectStore('sessions').clear(),
         transaction.objectStore('idempotency').clear(),
+        completion,
       ]);
-      await transaction.done;
     } catch (error) {
-      mapError(error, 'WRITE_ABORTED');
+      mapError(error, namespace, 'WRITE_ABORTED');
     }
   }
 
   async close(): Promise<void> {
     this.database?.close();
     this.database = null;
+    this.namespace = null;
   }
 }
 
+function rawParts(value: unknown): {
+  meta: Record<string, unknown>;
+  attempts: unknown[];
+  sessions: unknown[];
+  idempotencyKeys: string[];
+} {
+  if (!isRecord(value)) return { meta: {}, attempts: [], sessions: [], idempotencyKeys: [] };
+  const {
+    attempts: rawAttempts,
+    sessions: rawSessions,
+    idempotencyKeys: rawIdempotencyKeys,
+    ...meta
+  } = value;
+  return {
+    meta,
+    attempts: Array.isArray(rawAttempts) ? rawAttempts : [],
+    sessions: Array.isArray(rawSessions) ? rawSessions : [],
+    idempotencyKeys: Array.isArray(rawIdempotencyKeys)
+      ? rawIdempotencyKeys.filter((key): key is string => typeof key === 'string')
+      : [],
+  };
+}
+
 async function injectRawEnvelope(namespace: string, value: unknown): Promise<void> {
-  await deleteDB(namespace);
-  const database = await openDatabase(namespace);
   try {
-    const transaction = database.transaction(['meta', 'attempts', 'sessions', 'idempotency'], 'readwrite');
-    const raw = value as Record<string, unknown>;
-    const { attempts, sessions, idempotencyKeys, ...rawMeta } = raw;
-    await transaction.objectStore('meta').put({ ...rawMeta, key: 'learner' } as unknown as MetaRecord);
-    for (const attempt of Array.isArray(attempts) ? attempts : []) {
-      await transaction.objectStore('attempts').put(attempt as ResearchAttempt);
+    await deleteDB(namespace);
+  } catch (error) {
+    mapError(error, namespace);
+  }
+  const databaseVersion = isRecord(value) && value.schemaVersion === 1 ? 1 : DATABASE_VERSION;
+  let database: IDBPDatabase<ResearchDb>;
+  try {
+    database = await openDB<ResearchDb>(namespace, databaseVersion, {
+      upgrade(createdDatabase, _oldVersion, _newVersion, transaction) {
+        void transaction.done.catch(() => undefined);
+        createStores(createdDatabase);
+      },
+    });
+  } catch (error) {
+    mapError(error, namespace);
+  }
+  try {
+    const transaction = database.transaction([...STORE_NAMES], 'readwrite');
+    const completion = transaction.done;
+    const parts = rawParts(value);
+    try {
+      await transaction.objectStore('meta').put({ ...parts.meta, key: 'learner' } as unknown as MetaRecord);
+      for (const attempt of parts.attempts) {
+        await transaction.objectStore('attempts').put(attempt as ResearchAttempt);
+      }
+      for (const session of parts.sessions) {
+        await transaction.objectStore('sessions').put(session as ResearchSessionSummary);
+      }
+      for (const idempotencyKey of parts.idempotencyKeys) {
+        await transaction.objectStore('idempotency').put({ idempotencyKey });
+      }
+      await completion;
+    } catch (error) {
+      try {
+        transaction.abort();
+      } catch {
+        // The injection transaction may already have aborted.
+      }
+      await completion.catch(() => undefined);
+      throw error;
     }
-    for (const session of Array.isArray(sessions) ? sessions : []) {
-      await transaction.objectStore('sessions').put(session as ResearchSessionSummary);
-    }
-    for (const key of Array.isArray(idempotencyKeys) ? idempotencyKeys : []) {
-      await transaction.objectStore('idempotency').put({ idempotencyKey: String(key) });
-    }
-    await transaction.done;
+  } catch (error) {
+    mapError(error, namespace);
+  } finally {
+    database.close();
+  }
+}
+
+async function inspectRawEnvelope(namespace: string): Promise<unknown> {
+  let database: IDBPDatabase<ResearchDb>;
+  try {
+    database = await openDB<ResearchDb>(namespace);
+  } catch (error) {
+    mapError(error, namespace);
+  }
+  try {
+    const transaction = database.transaction([...STORE_NAMES], 'readonly');
+    const [rawMeta, attempts, sessions, idempotency] = await Promise.all([
+      transaction.objectStore('meta').get('learner'),
+      transaction.objectStore('attempts').getAll(),
+      transaction.objectStore('sessions').getAll(),
+      transaction.objectStore('idempotency').getAll(),
+      transaction.done,
+    ]);
+    const { key: _key, ...meta } = isRecord(rawMeta) ? rawMeta : {};
+    return {
+      databaseVersion: database.version,
+      ...meta,
+      attempts: [...attempts].sort((left, right) =>
+        String(left.attemptId).localeCompare(String(right.attemptId))),
+      sessions: [...sessions].sort((left, right) =>
+        String(left.sessionId).localeCompare(String(right.sessionId))),
+      idempotencyKeys: idempotency
+        .map((record) => record.idempotencyKey)
+        .sort((left, right) => left.localeCompare(right)),
+    };
+  } catch (error) {
+    mapError(error, namespace);
   } finally {
     database.close();
   }
@@ -337,6 +527,7 @@ const controls: ResearchFailureControls = {
   abortNextWrite: () => { controlsState.abortWrite = true; },
   abortNextUpgrade: () => { controlsState.abortUpgrade = true; },
   injectRawEnvelope,
+  inspectRawEnvelope,
   setQuotaError: (enabled) => { controlsState.quota = enabled; },
   setUnavailable: (enabled) => { controlsState.unavailable = enabled; },
 };

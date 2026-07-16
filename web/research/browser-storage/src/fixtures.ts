@@ -10,6 +10,10 @@ export type FixtureTier = 'small' | 'medium' | 'stress';
 export const RESEARCH_LEARNER_ID = 'device:00000000-0000-4000-8000-000000000001';
 export const RESEARCH_REDUCER_VERSION = 'research-reducer-v1';
 export const RESEARCH_CURRICULUM_VERSIONS = ['basic-strategy-research-v1'] as const;
+export const RESEARCH_MIGRATION_CACHED_MASTERY = {
+  sourceRevision: 7,
+  skills: { hardTotals: 0.625 },
+} as const;
 const START_MS = Date.parse('2026-07-16T00:00:00.000Z');
 const TIER_SIZES: Record<FixtureTier, { sessions: number; attempts: number }> = {
   small: { sessions: 1, attempts: 20 },
@@ -71,17 +75,29 @@ export function buildSchemaV1Fixture(tier: FixtureTier = 'small'): unknown {
   return {
     schemaVersion: 1,
     learnerId: fixture.learnerId,
-    revision: fixture.revision,
+    revision: 7,
     curriculumVersions: fixture.curriculumVersions,
     attempts: fixture.attempts.map(({ assistance: _assistance, ...attempt }) => attempt),
     sessions: fixture.sessions,
-    cachedMastery: fixture.cachedMastery,
-    idempotencyKeys: [],
+    cachedMastery: RESEARCH_MIGRATION_CACHED_MASTERY,
+    idempotencyKeys: ['migration-existing'],
   };
 }
 
 export function buildMalformedFixture(): unknown {
   return { schemaVersion: 2, learnerId: 17, revision: 'not-a-number', attempts: null };
+}
+
+export function buildMalformedAttemptFixture(): unknown {
+  const fixture = buildSchemaV2Fixture('small');
+  return {
+    ...fixture,
+    attempts: [
+      { ...fixture.attempts[0], attemptId: 17 },
+      ...fixture.attempts.slice(1),
+    ],
+    idempotencyKeys: [],
+  };
 }
 
 export function buildUnsupportedSchemaFixture(): unknown {
