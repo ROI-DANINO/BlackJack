@@ -82,6 +82,40 @@ The active consumer is one first-party browser application serving one anonymous
 
 ## Provisional ProgressStore Contract
 
+```typescript
+type ResearchEnvelope = {
+  schemaVersion: number;
+  learnerId: string;
+  revision: number;
+  reducerVersion: string;
+  curriculumVersions: string[];
+  attempts: ResearchAttempt[];
+  sessions: ResearchSessionSummary[];
+  cachedMastery: unknown | null;
+};
+
+type CheckpointWrite = {
+  idempotencyKey: string;
+  expectedRevision: number;
+  attempts: ResearchAttempt[];
+  sessionSummary: ResearchSessionSummary | null;
+};
+
+interface ResearchProgressStore {
+  open(namespace: string): Promise<void>;
+  load(): Promise<ResearchEnvelope | null>;
+  commitCheckpoint(write: CheckpointWrite): Promise<{ revision: number; duplicate: boolean }>;
+  exportJson(): Promise<string>;
+  reset(): Promise<void>;
+  close(): Promise<void>;
+}
+```
+
+This research contract tests required persistence semantics. The later adaptive-mechanics design may
+split or rename operations, but it may not weaken atomic commit, idempotency, revision conflict,
+migration/recovery, stable export, complete reset, or typed recoverable-error behavior established by
+these gates.
+
 ## Identity and Privacy Boundary
 
 - **INFERENCE from STD-002 and BROWSER-001:** progress is scoped to the application's origin and the current browser profile; it is not a physical-device identity and will not automatically follow a learner across scheme, host, port, profile, browser, or device changes.
@@ -90,6 +124,22 @@ The active consumer is one first-party browser application serving one anonymous
 - **INFERENCE:** canonical export must be available before destructive recovery/reset, and reset must remove the complete local learner envelope. A later account link must be designed as an explicit import/association boundary; it is not implicit sync for this proof.
 
 ## Browser Environment
+
+- **OBSERVED:** the CachyOS/Arch host launches Playwright Chromium and Firefox, but the downloaded
+  WebKit fallback targets Ubuntu 24.04 libraries and cannot launch against the host ABI. The equal
+  three-engine matrix therefore runs entirely in the version-matched official Playwright container,
+  not as a mixed host/container comparison.
+- Container: `mcr.microsoft.com/playwright:v1.61.1-noble`, digest
+  `sha256:cf0daee9b994042e011bc29f20cdff1a9f682a039b43fcd738f7d8a9d3bcd9d6`.
+- Red-harness environment: Node `v24.17.0`, Playwright `1.61.1`, Chromium `149.0.7827.55`,
+  Firefox `151.0`, WebKit `26.5`, `idb` `8.0.3`, and Dexie `4.4.4`.
+- **OBSERVED:** the deliberate red run produced the exact 15 browser/candidate rows and 210 named
+  gate cells; all 210 failed only because the five registry factories report `candidate <id> not
+  implemented`. The provisional result file was inspected and removed so pre-implementation output
+  cannot be mistaken for final evidence.
+- **Limitation:** containerized desktop engines are reproducible research targets, not evidence for
+  mobile browsers, private-mode lifetime, natural eviction, OS power loss, or every deployed browser
+  version.
 
 ## Correctness and Failure Results
 
