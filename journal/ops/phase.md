@@ -3,7 +3,7 @@ phase: v2-learning-foundations
 sub_phase: adaptive-learning-mechanics-research
 plan: docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md
 spec: docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md
-step: "AL-R1 — Research learning products and initial activity mechanics."
+step: "AL-R1 — user evidence gate for reviewed activity research."
 prior_phase: research
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -28,6 +28,6 @@ sessions:
   - journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md
 detour: []
 blocking: null
-next: "AL-R1 — execute Task 2, Step 1: search official Duolingo surfaces with bounded queries."
-note: "Milestone close: journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md approved the adaptive-learning umbrella and its separate plan family, archived the prior STF board exactly, removed the stale duplicate STF-04 by rolling the active board to adaptive-learning research, and selected AL-R1. STF-02/03/05 remain paused and recoverable from the archive and their specs."
+next: "AL-R1 — user reviews the evidence report's dispositions, coverage gaps, and six bounded recommendations; no implementation planning begins before approval."
+note: "AL-R1 research is committed through adversarial review at 58acefb and is in Verification. The report remains evidence rather than product authority until the user approves or revises its bounded recommendations. STF-02/03/05 remain paused and recoverable from the archive and their specs."
 ---

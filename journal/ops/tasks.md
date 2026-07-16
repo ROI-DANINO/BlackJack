@@ -58,6 +58,8 @@
 
 ## Active
 
+## Verification
+
 ### AL-R1 — Research learning products and initial activity mechanics
 - Type: research
 - Mode: write
@@ -65,15 +67,13 @@
 - Depends on: AL-01
 - Source: `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`
 - Outcome: A cited, decision-ready evidence report defines requirements for the first three activity contracts without copying proprietary content or choosing unrelated infrastructure.
-- Next: Execute Task 2, Step 1 of the research plan: search official Duolingo surfaces with bounded queries.
+- Next: User evidence gate — review the Adopt/Reject/Defer table, coverage gaps, and recommendations requiring approval.
 - Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md`, `docs/specs/product-vision.md`, `docs/specs/learning-mastery-and-scoring.md`, `docs/specs/research-brief.md`
 - Workspace: repository root
 - Done when: The reviewed report distinguishes evidence from inference, produces traceable `ALR-*` requirements for multiple choice, assemble blocks, and engine-backed hands, records coverage gaps, and passes user approval.
 - Gate: user-approval
-- Evidence: Task 1 committed at `e4d73d7`; the findings record contains all 16 required research surfaces and passes `git diff --check`.
-- Updated: 2026-07-16T05:02:45+03:00
-
-## Verification
+- Evidence: Research record `e4d73d7`; source register `2ebb792`; product comparison `e1f8b02`; learning-science synthesis `dd97d90`; technical audit `2ccfb34`; initial requirements `108d31f`; adversarial review `58acefb`. The report registers 24 sources, 12 product-pattern rows, 10 learning-science rows, 8 technical-boundary rows, 41 sequential `ALR-*` requirements, 15 dispositions, and 6 approval recommendations. Source/requirement reference integrity, scope and placeholder scans, and `git diff --check` passed before the review commit.
+- Updated: 2026-07-16T05:23:34+03:00
 
 ## Blocked
 
