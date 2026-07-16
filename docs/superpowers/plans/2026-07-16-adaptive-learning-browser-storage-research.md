@@ -515,6 +515,16 @@ Quota and unavailable-storage gates pass only when they surface typed recoverabl
 
 - [ ] **Step 6: Create the page entry and three-browser runner**
 
+Install the browser bundles belonging to the existing pinned Playwright version before the first
+three-engine run:
+
+```bash
+web/node_modules/.bin/playwright install chromium firefox webkit
+```
+
+Expected: Chromium, Firefox, and WebKit bundles for the existing web toolchain are available in the
+Playwright cache; no production package manifest or lockfile changes.
+
 `index.html` imports `/research/browser-storage/src/page.ts`. `page.ts` exposes exactly:
 
 ```typescript
