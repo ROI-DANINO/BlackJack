@@ -524,6 +524,22 @@ web/node_modules/.bin/playwright install chromium firefox webkit
 Expected: Chromium, Firefox, and WebKit bundles for the existing web toolchain are available in the
 Playwright cache; no production package manifest or lockfile changes.
 
+If Playwright reports that the host OS is unsupported or WebKit cannot launch because its fallback
+build targets a different system ABI, use the official version-matched Playwright image for every
+engine rather than dropping WebKit or comparing engines across unlike environments:
+
+```bash
+podman pull mcr.microsoft.com/playwright:v1.61.1-noble
+podman run --rm --network=host --ipc=host \
+  -v "$PWD:/work" -w /work \
+  mcr.microsoft.com/playwright:v1.61.1-noble \
+  web/node_modules/.bin/tsx web/research/browser-storage/run.ts
+```
+
+Expected: the same pinned Node package launches the image's version-matched Chromium, Firefox, and
+WebKit builds with their Linux dependencies. Record the image digest in `Browser Environment`; the
+container is research infrastructure only and adds no product runtime or manifest dependency.
+
 `index.html` imports `/research/browser-storage/src/page.ts`. `page.ts` exposes exactly:
 
 ```typescript
@@ -572,7 +588,9 @@ Run:
 web/node_modules/.bin/tsx web/research/browser-storage/run.ts
 ```
 
-Expected: FAIL with `candidate memory not implemented` and analogous failures for the other registered candidates; no production app file changes.
+On an unsupported host, use the version-matched Podman command from Step 6 instead. Expected: FAIL
+with `candidate memory not implemented` and analogous failures for the other registered candidates;
+no production app file changes.
 
 - [ ] **Step 8: Commit the contract and red harness**
 
