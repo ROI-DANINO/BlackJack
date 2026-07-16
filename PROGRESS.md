@@ -32,19 +32,21 @@
   deterministic grading/mastery/progression authority, browser-local anonymous learner state, and a
   checkpoint-hybrid/on-demand coach model. The work is split into independent research and
   implementation plans rather than one coupled mega-plan.
+- **Adaptive learning product/activity research approved** (`58acefb`): 24 registered sources,
+  12 compared teaching patterns, 10 learning-science/accessibility evidence areas, 8 public
+  technical boundaries, and 41 traceable requirements for multiple choice, assemble blocks,
+  engine-backed hands, sessions, mastery/progression, and accessibility. The user approved all six
+  bounded recommendations; numeric calibration and psychometric adaptive testing remain deferred.
 
 ## In progress
-- **Adaptive-learning mechanics research**: first, produce cited requirements for multiple choice,
-  assemble-blocks, and engine-backed-hand activities from learning-product patterns, learning
-  science, and public technical evidence; browser storage and the local AI adapter have separate
-  research/admission cards.
+- **Browser-local progress storage research is next**: AL-R2 will write an independent plan, compare
+  mechanisms against the durable `ProgressStore` consumer, and require explicit migration,
+  determinism, failure, and exit evidence before any implementation or admission decision.
 - **Boundary hardening remains queued for the next Core wire change**: extend the WASM
   freshness guard to `Cargo.lock`/`build-wasm.sh` and add real native↔built-WASM parity evidence;
   the adaptive mechanics proof must not create a speculative Core wire change merely to absorb it.
 
 ## Open questions
-- Which evidenced Duolingo/Brilliant/learning-science patterns should become hard requirements for
-  the first three activity contracts, and which should be rejected or deferred?
 - Which browser-local storage mechanism best fits the durable `ProgressStore` consumer and its
   migration/failure requirements?
 - What provider-neutral local AI boundary can meet the approved authority, validation, privacy,

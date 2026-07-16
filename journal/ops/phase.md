@@ -1,9 +1,9 @@
 ---
 phase: v2-learning-foundations
-sub_phase: adaptive-learning-mechanics-research
-plan: docs/superpowers/plans/2026-07-16-adaptive-learning-product-activity-research.md
+sub_phase: adaptive-learning-storage-research
+plan: null
 spec: docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md
-step: "AL-R1 complete — AL-R2 is the next ready research card."
+step: "AL-R1 milestone closed — AL-R2 is the selected Ready research card."
 prior_phase: research
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -26,8 +26,9 @@ sessions:
   - journal/ops/sessions/the-board-and-the-baton-2026-07-15T0929.md
   - journal/ops/sessions/the-bun-and-the-boundary-2026-07-16T0157.md
   - journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md
+  - journal/ops/sessions/the-evidence-and-the-gate-2026-07-16T0531.md
 detour: []
 blocking: null
-next: "AL-R2 — write the independent browser-local learner progress storage research plan; do not start implementation or admit storage before its evidence gate."
-note: "The user approved AL-R1's reviewed dispositions, coverage gaps, and six bounded recommendations on 2026-07-16. AL-R1 is Done; accepted research remains traceable evidence for a later owned design fold. STF-02/03/05 remain paused and recoverable from the archive and their specs."
+next: "AL-R2 — Write the independent browser-storage research plan and define its decision questions, benchmark evidence, migration boundary, and exit condition."
+note: "Milestone close: journal/ops/sessions/the-evidence-and-the-gate-2026-07-16T0531.md records AL-R1's verified report and user approval. AL-R1 is Done; AL-R2 remains Ready and no storage choice or implementation is admitted. STF-02/03/05 remain paused and recoverable from the archive and their specs."
 ---
