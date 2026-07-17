@@ -271,6 +271,92 @@ describe('canonicalize — byte-identity is a property of the serializer (design
     expect(outputA).toEqual(outputB);
   });
 
+  it('(g) a populated (non-null) `engine` context canonicalizes its declared fields, including the outcomes array rebuild', () => {
+    const attempt: ProgressAttempt = {
+      ...makeAttemptDraft({
+        engine: {
+          seed: 'fixture-engine-seed',
+          playerCardIds: ['card-1', 'card-2'],
+          dealerUpcardId: 'card-3',
+          legalActions: ['hit', 'stand'],
+          outcomes: [{ hand_index: 0, result: 'win', wager: 10, delta: 10 }],
+          wager: 10,
+        },
+      }),
+      committedAtRevision: 1,
+    };
+
+    const output = canonicalize(snapshotFrom({ attempts: [attempt], sessions: [] }));
+    const parsed = JSON.parse(output) as {
+      attempts: Array<{
+        engine: {
+          seed: string;
+          playerCardIds: string[];
+          dealerUpcardId: string;
+          legalActions: string[];
+          outcomes: Array<{ hand_index: number; result: string; wager: number; delta: number }>;
+          wager: number;
+        } | null;
+      }>;
+    };
+
+    expect(parsed.attempts[0]!.engine).toEqual({
+      seed: 'fixture-engine-seed',
+      playerCardIds: ['card-1', 'card-2'],
+      dealerUpcardId: 'card-3',
+      legalActions: ['hit', 'stand'],
+      outcomes: [{ hand_index: 0, result: 'win', wager: 10, delta: 10 }],
+      wager: 10,
+    });
+  });
+
+  it('(g) a populated (non-null) `cachedMastery`, including its opaque `states` payload, is key-sorted regardless of insertion order', () => {
+    const statesA = { skillA: { level: 1, seen: 3 }, skillB: { level: 2, seen: 1 } };
+    const statesB = { skillB: { seen: 1, level: 2 }, skillA: { seen: 3, level: 1 } };
+    expect(Object.keys(statesB)).not.toEqual(Object.keys(statesA));
+
+    const outputA = canonicalize(
+      snapshotFrom({
+        attempts: [],
+        sessions: [],
+        cachedMastery: { reducerVersion: 'fixture-reducer-v1', computedAtRevision: 4, states: statesA },
+      }),
+    );
+    const outputB = canonicalize(
+      snapshotFrom({
+        attempts: [],
+        sessions: [],
+        cachedMastery: { computedAtRevision: 4, states: statesB, reducerVersion: 'fixture-reducer-v1' },
+      }),
+    );
+    expect(outputA).toEqual(outputB);
+
+    const parsed = JSON.parse(outputA) as {
+      cachedMastery: { reducerVersion: string; computedAtRevision: number; states: unknown } | null;
+    };
+    expect(parsed.cachedMastery).toEqual({
+      reducerVersion: 'fixture-reducer-v1',
+      computedAtRevision: 4,
+      states: { skillA: { level: 1, seen: 3 }, skillB: { level: 2, seen: 1 } },
+    });
+  });
+
+  it('(g) a populated (non-null) `session.summary` (opaque) is key-sorted regardless of insertion order', () => {
+    const summaryA = { attemptsGraded: 3, notes: { flagged: false, tag: 'ok' } };
+    const summaryB = { notes: { tag: 'ok', flagged: false }, attemptsGraded: 3 };
+    expect(Object.keys(summaryB)).not.toEqual(Object.keys(summaryA));
+
+    const sessionA: SessionRecord = { ...makeSessionRecord({ summary: summaryA }), committedAtRevision: 1 };
+    const sessionB: SessionRecord = { ...makeSessionRecord({ summary: summaryB }), committedAtRevision: 1 };
+
+    const outputA = canonicalize(snapshotFrom({ attempts: [], sessions: [sessionA] }));
+    const outputB = canonicalize(snapshotFrom({ attempts: [], sessions: [sessionB] }));
+    expect(outputA).toEqual(outputB);
+
+    const parsed = JSON.parse(outputA) as { sessions: Array<{ summary: unknown }> };
+    expect(parsed.sessions[0]!.summary).toEqual({ attemptsGraded: 3, notes: { flagged: false, tag: 'ok' } });
+  });
+
   it('emits the format tag and format version', () => {
     const parsed = JSON.parse(canonicalize(snapshotFrom())) as { format: string; formatVersion: number };
     expect(parsed.format).toBe('blackjack.progress.snapshot');

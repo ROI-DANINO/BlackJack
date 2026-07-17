@@ -114,7 +114,32 @@ function canonicalDisposition(disposition: AttemptDisposition): Record<string, u
   }
 }
 
-function canonicalEngine(engine: AttemptEngineContext | null) {
+// Key-list exhaustiveness tripwire (review finding, task 2 fix pass 2). Every canonicalX
+// function below returns a hand-enumerated object literal; without a return-type annotation tied
+// to the SOURCE type, the literal is only checked against itself (inferred), so adding a field to
+// `T` (e.g. §7's `planning?` group landing on `ProgressAttempt`) compiles cleanly and that field
+// silently never reaches the canonical export — exactly the failure this type exists to catch.
+//
+// Deliberately `Record<keyof T, unknown>`, NOT the homomorphic `{ [K in keyof T]: unknown }`
+// written directly over `T`. The homomorphic form preserves T's own optional/readonly modifiers,
+// so a newly-added `field?: X` would stay optional in the mapped type too and the object literal
+// could keep omitting it with no error — reproducing this exact bug for the one case (an
+// *optional* field) the finding names. `Record<K, V>` is defined generically over `K`, which
+// breaks that homomorphic link: every key of `T`, including future optional ones, becomes
+// REQUIRED in the checked type. Verified directly (not just asserted): `Record<keyof {a:string;
+// b?:number}, unknown>` rejects `{a: 'x'}` with TS2741 "Property 'b' is missing".
+//
+// This does not fight the phantom rule (design §7 — absent keys must stay absent, never emitted
+// as null/undefined in the OUTPUT BYTES). `unknown` accepts `undefined` as a value, so a future
+// branch can satisfy "the key is present in the object literal" by writing `planning: undefined`
+// when there is nothing to canonicalize — and `JSON.stringify` drops undefined-valued keys from
+// its output entirely (verified: `JSON.stringify({a:1,b:undefined})` → `'{"a":1}'`, no `b` key at
+// all, not even `null`). So the TYPE requires the key to be written down; the BYTES stay exactly
+// as absent as they are today. The tripwire forces a human decision at the source line, not a
+// particular runtime shape.
+type AllKeysOf<T> = Record<keyof T, unknown>;
+
+function canonicalEngine(engine: AttemptEngineContext | null): AllKeysOf<AttemptEngineContext> | null {
   if (engine === null) return null;
   return {
     seed: engine.seed,
@@ -131,7 +156,7 @@ function canonicalEngine(engine: AttemptEngineContext | null) {
   };
 }
 
-function canonicalAttempt(attempt: ProgressAttempt) {
+function canonicalAttempt(attempt: ProgressAttempt): AllKeysOf<ProgressAttempt> {
   return {
     attemptId: attempt.attemptId,
     committedAtRevision: attempt.committedAtRevision,
@@ -171,7 +196,7 @@ function canonicalAttempt(attempt: ProgressAttempt) {
   };
 }
 
-function canonicalRuleset(ruleset: Ruleset) {
+function canonicalRuleset(ruleset: Ruleset): AllKeysOf<Ruleset> {
   return {
     id: ruleset.id,
     decks: ruleset.decks,
@@ -186,7 +211,7 @@ function canonicalRuleset(ruleset: Ruleset) {
   };
 }
 
-function canonicalSession(session: SessionRecord) {
+function canonicalSession(session: SessionRecord): AllKeysOf<SessionRecord> {
   return {
     sessionId: session.sessionId,
     learnerKey: session.learnerKey,
@@ -207,7 +232,7 @@ function canonicalSession(session: SessionRecord) {
   };
 }
 
-function canonicalCachedMastery(cachedMastery: CachedMastery | null) {
+function canonicalCachedMastery(cachedMastery: CachedMastery | null): AllKeysOf<CachedMastery> | null {
   if (cachedMastery === null) return null;
   return {
     reducerVersion: cachedMastery.reducerVersion,
