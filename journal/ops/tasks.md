@@ -26,22 +26,22 @@
 
 ## Ready
 
-### AL-D1 — Design the first production durable ProgressStore slice
+## Active
+
+### AL-D1 — Design the cycle-1 ProgressStore foundation (port, envelope, contract suite)
 - Type: design
 - Mode: write
 - Owner: orchestrator
 - Depends on: AL-R2
 - Source: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`
-- Outcome: A user-approved design and implementation plan define one end-to-end product slice that writes and reloads real learner progress through a provider-neutral `ProgressStore` backed by the admitted `idb` adapter.
-- Next: Resume the production-slice brainstorm by tracing the current lesson-attempt lifecycle and selecting the smallest real write/reload consumer; do not reopen storage candidate research.
-- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/superpowers/specs/2026-07-16-adaptive-learning-browser-storage-research.md`, `docs/architecture.md`, `docs/specs/learning-mastery-and-scoring.md`, `web/src/`
-- Workspace: `.worktrees/al-r2-browser-storage`
-- Done when: The design names the real learner action that becomes durable, defines the application port and versioned record shape, preserves the admitted failure/recovery constraints, scopes feature QA, and has an executable TDD implementation plan approved by the user.
+- Outcome: A user-approved design and executable TDD plan define the provider-neutral `ProgressStore` port, the versioned learner envelope and attempt record, and a provider-neutral contract suite — proven headless against fixtures. No UI consumer, and no learner data written.
+- Next: Design the port signatures, envelope/attempt-record shape, and physical store layout against the constraint set from the 2026-07-17 research sweep; resolve the open record questions (session definition, per-skill evidence keying, storage-failure policy, retention bound, raw-export path, phantom plan/checkpoint/evidence-goal IDs) inside the design rather than deferring them.
+- Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/superpowers/specs/2026-07-16-adaptive-learning-browser-storage-research.md`, `docs/superpowers/specs/2026-07-16-adaptive-learning-product-activity-research.md`, `docs/specs/learning-mastery-and-scoring.md`, `docs/specs/research-brief.md`, `docs/architecture.md`, `web/src/learn/`, `web/src/bridge/log/sink.ts`
+- Workspace: repository root
+- Done when: The design (a) gives signatures for the six pinned port operations — load, append attempt, commit session summary, export, reset, explicit migration/recovery; (b) defines the versioned envelope and attempt record carrying the owned-spec field set, including per-skill/cell evidence keys, an attempt-kind discriminator, evidence mode, assistance level, table visibility, strategy-profile version, and session attribution; (c) decides the physical store layout and separates it from the export/wire envelope; (d) answers all seven `research-brief.md:20` obligations (identity is discharged by the 2026-07-17 ADR; record ownership, storage semantics, boundary, schema versioning, migration, and recovery remain); (e) originates the storage-failure policy the research explicitly does not cover — quota, denied/private-mode IndexedDB, corruption, multi-tab — plus a retention bound; (f) plans the conditional `idb` bundle-delta check with a pre-agreed "material" threshold; (g) re-derives the 14 storage gates against the real contract without importing the extracted harness; and (h) ships an executable TDD plan with scoped feature QA, approved by the user.
 - Gate: user-approval
-- Evidence: User explicitly redirected the work from further benchmark timing toward a production artifact and approved `idb` 8.0.3 on 2026-07-16; storage decision package `b8c0d2f`.
-- Updated: 2026-07-16T08:40:27+03:00
-
-## Active
+- Evidence: 2026-07-17 seven-cluster research sweep (AL-R1, AL-R2, adaptive design, foundation ADR + architecture + decisions, V2 research imports, course bundle + history data, mastery/scoring + future guidance) established the cycle-1 re-scope; user approved the scope and the folded repairs on 2026-07-17. First step complete: identity ADR recorded, conditional bundle-check obligation propagated to `journal/decisions.md` / `ROADMAP.md` / `docs/specs/stack-boundaries.md`, identity wording corrected in three docs, and two dropped learning-integrity QA gates restored to `docs/specs/qa-playtest-process.md`. Prior: storage decision package `b8c0d2f`; user redirected from benchmark timing toward a production artifact on 2026-07-16.
+- Updated: 2026-07-17
 
 ## Verification
 

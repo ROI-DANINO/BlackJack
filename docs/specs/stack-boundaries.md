@@ -65,10 +65,12 @@ analytics, audits, and notebooks. It is not a production application runtime tod
 
 Current product state is in memory. Local JSONL history export is a lossless user/dev artifact, not a
 database or sync system. `idb` 8.0.3 is admitted for one concrete consumer: the browser-local
-`ProgressStore` adapter for anonymous learner attempts and checkpoints. It passed the scoped
+`ProgressStore` adapter for pseudonymous learner attempts and checkpoints. It passed the scoped
 cross-browser correctness, migration, failure, and recovery gates; performance timing was explicitly
 not used in the decision and remains a non-blocking gap. The application dependency and production
-adapter are not installed or implemented yet. No account provider, BaaS, telemetry service, hosted
+adapter are not installed or implemented yet — and the admission stays conditional until they are:
+the implementation slice must measure the real production bundle delta, and a material unacceptable
+delta reverses the choice to native IndexedDB. No account provider, BaaS, telemetry service, hosted
 database, or mobile framework has been admitted. The provider-neutral `ProgressStore` and
 outer-versioned record seam must be implemented by the first durable-progress slice.
 

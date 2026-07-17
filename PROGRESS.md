@@ -44,17 +44,45 @@
   production adapter has been implemented yet.
 
 ## In progress
-- **The first production durable-progress slice is next**: AL-D1 will trace the existing lesson
-  attempt lifecycle and design one real write/reload path through a provider-neutral `ProgressStore`
-  backed by the admitted `idb` adapter. The slice must include an executable TDD plan and scoped
-  feature QA before implementation is called done.
-- **Boundary hardening remains queued for the next Core wire change**: extend the WASM
-  freshness guard to `Cargo.lock`/`build-wasm.sh` and add real native↔built-WASM parity evidence;
-  the adaptive mechanics proof must not create a speculative Core wire change merely to absorb it.
+- **AL-D1 is re-scoped to the cycle-1 `ProgressStore` foundation** (2026-07-17): the port, the
+  versioned learner envelope and attempt record, and a provider-neutral contract suite — proven
+  headless against fixtures, with no UI consumer and no learner data written. A seven-cluster
+  research sweep found the previous end-to-end framing ran one cycle ahead of its own source design,
+  and that today's `AttemptRecord` cannot support the admitted idempotent revision-checked
+  checkpoints — it has no id, timestamp, schema version, or learner key, so two identical wrong
+  answers on one step are byte-identical. Its first step is complete: the identity ADR is recorded,
+  the conditional `idb` bundle-check obligation is propagated into the owned docs, identity wording
+  is corrected in three docs, and two dropped learning-integrity QA gates are restored.
+- **Skill-grained evidence already exists and is misnamed** (verified 2026-07-17):
+  `AttemptRecord.outcomeId` is a validated foreign key into `Subject.skills` — `validate.ts:51-55`
+  requires every `unit.outcomes` entry to be a known skill id, `:70-75` requires every question
+  step's `outcomeId` to be in `unit.outcomes` — over a real 16-skill taxonomy. Mastery has a usable
+  key today. The name collides with `engine.outcomes: HandOutcome[]` (win/loss/push) one field away
+  in the same record, so the durable projection should rename rather than re-derive.
+- **The first real write/reload consumer moves to the adaptive-mechanics proof**, where the design
+  places persistence integration and where the per-cell strategy-chart grammar gets named.
+- **Boundary hardening — the freshness half is unblocked and should stop waiting.**
+  `web/scripts/check-wasm-fresh.sh:12` watches only `crates/blackjack-core/src` and its `Cargo.toml`,
+  so the root `Cargo.lock` and `web/scripts/build-wasm.sh` are invisible to it — a one-line `find`
+  fix with zero wire dependency. It has now failed to ride a Core wire slice twice, and nothing on
+  the remaining V2 path is guaranteed to be wire-changing. Only the native↔built-WASM parity half
+  genuinely needs a build-and-compare harness and a carrier.
 
 ## Open questions
-- Which existing learner action is the smallest valuable end-to-end consumer for the first durable
-  `ProgressStore` write and reload?
+- What is a "session" — its identity, boundary, and lifecycle? `learning-mastery-and-scoring.md:114`
+  requires mastery evidence to span sessions, but no owned doc defines one, and attempts cannot be
+  attributed without it.
+- What bounds the raw attempt log? The owned instruction is to keep raw attempts, with no stated cap;
+  retention appears only under the unfired external-beta telemetry trigger, so there is no authority
+  to import one.
+- Should the attempt record pin the strategy-profile version? Lessons already gate on
+  `unit.profileId`, but no owned doc pins it into evidence — so evidence collected under a future
+  S17 profile would be indistinguishable from H17 evidence.
+- Was dropping the "production" rung — the learner names the play before seeing options — from the
+  exercise ladder in `learning-mastery-and-scoring.md:85-95` intentional? The fold added two rungs
+  and dropped that one without a recorded reason.
+- Which existing learner action becomes the first durable write/reload consumer? Deferred to the
+  adaptive-mechanics proof rather than answered by AL-D1.
 - What provider-neutral local AI boundary can meet the approved authority, validation, privacy,
   token, latency, and deterministic-fallback constraints?
 - Should a later ruleset support player-taken insurance, or should V1/V2 keep training auto-decline?
