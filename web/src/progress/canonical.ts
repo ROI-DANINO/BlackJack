@@ -21,9 +21,12 @@
 // import of '../learn/'.
 //
 // Caller-opaque `JsonValue` payloads (`response`, `activity.params`, `session.summary`,
-// `cachedMastery.states`) are passed through as-is, not recursively key-sorted. types.ts already
-// documents these as fields "the store stores it opaquely" — this module owns key order for the
-// record shapes it declares, not for content only the activity/reducer understands.
+// `cachedMastery.states`) are routed through `canonicalizeJsonValue` below. "Opaque" means this
+// module does not INTERPRET the value — it never adds, drops, or reinterprets a key. Imposing a
+// deterministic key order at export time is not interpretation: JSON objects are an unordered
+// collection of name/value pairs (RFC 8259), so lexicographic key sorting changes no stored bytes
+// and loses no information. Arrays inside these payloads ARE ordered by JSON semantics and are
+// therefore never sorted, only recursed into.
 
 import type {
   ProgressAttempt,
@@ -31,8 +34,29 @@ import type {
   CachedMastery,
   AttemptDisposition,
   AttemptEngineContext,
+  JsonValue,
 } from './types';
 import type { Ruleset } from '../bridge/types';
+
+/**
+ * Recursively re-emits a `JsonValue` with object keys in lexicographic order. Arrays keep their
+ * original element order — arrays are ordered in JSON semantics; only object key order is an
+ * unspecified implementation detail (insertion / structured-clone order) that this function
+ * replaces with a declared one (design §5.2).
+ */
+function canonicalizeJsonValue(value: JsonValue): JsonValue {
+  if (value === null || typeof value !== 'object') {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.map(canonicalizeJsonValue);
+  }
+  const out: { [key: string]: JsonValue } = {};
+  for (const key of Object.keys(value).sort()) {
+    out[key] = canonicalizeJsonValue(value[key] as JsonValue);
+  }
+  return out;
+}
 
 /**
  * The canonical export shape (design §5.2). Distinct from `LearnerEnvelope` (types.ts): it adds
@@ -128,7 +152,7 @@ function canonicalAttempt(attempt: ProgressAttempt) {
     assistance: attempt.assistance,
     tableVisibility: attempt.tableVisibility,
     presentation: attempt.presentation,
-    response: attempt.response,
+    response: canonicalizeJsonValue(attempt.response),
     disposition: canonicalDisposition(attempt.disposition),
     gradedBy: {
       authority: attempt.gradedBy.authority,
@@ -140,7 +164,7 @@ function canonicalAttempt(attempt: ProgressAttempt) {
       activityVersion: attempt.activity.activityVersion,
       catalogVersion: attempt.activity.catalogVersion,
       seed: attempt.activity.seed,
-      params: attempt.activity.params,
+      params: canonicalizeJsonValue(attempt.activity.params),
     },
     occurredAt: attempt.occurredAt,
     elapsedMs: attempt.elapsedMs,
@@ -179,7 +203,7 @@ function canonicalSession(session: SessionRecord) {
     profileId: session.profileId,
     reducerVersion: session.reducerVersion,
     curriculumVersion: session.curriculumVersion,
-    summary: session.summary,
+    summary: canonicalizeJsonValue(session.summary),
   };
 }
 
@@ -188,7 +212,7 @@ function canonicalCachedMastery(cachedMastery: CachedMastery | null) {
   return {
     reducerVersion: cachedMastery.reducerVersion,
     computedAtRevision: cachedMastery.computedAtRevision,
-    states: cachedMastery.states,
+    states: canonicalizeJsonValue(cachedMastery.states),
   };
 }
 

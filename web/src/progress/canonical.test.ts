@@ -216,6 +216,61 @@ describe('canonicalize — byte-identity is a property of the serializer (design
     expect(canonicalize(snapshotFrom())).toEqual(canonicalize(snapshotFrom()));
   });
 
+  it('(f) an opaque `response` object with the same content but different (nested) key insertion order canonicalizes identically', () => {
+    // Built key-by-key in one order, including a nested object, so the reversed version below is
+    // genuinely a different insertion order — not the same construction twice.
+    const responseA = {
+      choice: 'a',
+      meta: { hint: false, retries: 0 },
+      trail: [3, 1, 2],
+    };
+    const responseB = {
+      trail: [3, 1, 2],
+      meta: { retries: 0, hint: false },
+      choice: 'a',
+    };
+    expect(Object.keys(responseB)).not.toEqual(Object.keys(responseA));
+    expect(JSON.stringify(responseB)).not.toEqual(JSON.stringify(responseA));
+
+    const attemptA: ProgressAttempt = { ...makeAttemptDraft({ response: responseA }), committedAtRevision: 1 };
+    const attemptB: ProgressAttempt = { ...makeAttemptDraft({ response: responseB }), committedAtRevision: 1 };
+
+    const outputA = canonicalize(snapshotFrom({ attempts: [attemptA], sessions: [] }));
+    const outputB = canonicalize(snapshotFrom({ attempts: [attemptB], sessions: [] }));
+    expect(outputA).toEqual(outputB);
+  });
+
+  it('(f) an array inside an opaque payload keeps its element order — [3,1,2] is not sorted to [1,2,3]', () => {
+    const attempt: ProgressAttempt = {
+      ...makeAttemptDraft({ response: { trail: [3, 1, 2] } }),
+      committedAtRevision: 1,
+    };
+    const output = canonicalize(snapshotFrom({ attempts: [attempt], sessions: [] }));
+    const parsed = JSON.parse(output) as { attempts: Array<{ response: { trail: number[] } }> };
+    expect(parsed.attempts[0]!.response.trail).toEqual([3, 1, 2]);
+  });
+
+  it('(f) `activity.params` (another opaque call site) is also key-sorted regardless of insertion order', () => {
+    const paramsA = { level: 2, seedGroup: { high: 9, low: 1 } };
+    const paramsB = { seedGroup: { low: 1, high: 9 }, level: 2 };
+    expect(Object.keys(paramsB)).not.toEqual(Object.keys(paramsA));
+
+    const attemptA: ProgressAttempt = {
+      ...makeAttemptDraft(),
+      committedAtRevision: 1,
+      activity: { ...makeAttemptDraft().activity, params: paramsA },
+    };
+    const attemptB: ProgressAttempt = {
+      ...makeAttemptDraft(),
+      committedAtRevision: 1,
+      activity: { ...makeAttemptDraft().activity, params: paramsB },
+    };
+
+    const outputA = canonicalize(snapshotFrom({ attempts: [attemptA], sessions: [] }));
+    const outputB = canonicalize(snapshotFrom({ attempts: [attemptB], sessions: [] }));
+    expect(outputA).toEqual(outputB);
+  });
+
   it('emits the format tag and format version', () => {
     const parsed = JSON.parse(canonicalize(snapshotFrom())) as { format: string; formatVersion: number };
     expect(parsed.format).toBe('blackjack.progress.snapshot');
