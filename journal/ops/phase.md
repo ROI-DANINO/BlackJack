@@ -1,10 +1,10 @@
 ---
 phase: v2-learning-foundations
-sub_phase: adaptive-learning-progress-design
+sub_phase: adaptive-learning-progress-build
 plan: null
 spec: docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md
-step: "AL-D1 done — cycle-1 ProgressStore spec + 11-task TDD plan approved. AL-B1 ready to build."
-prior_phase: adaptive-learning-storage-research
+step: "AL-B1 in progress — 6/11 tasks done (records, canonical serializer, port + AST boundary guard, the 14 gates, the fake at 12/14, idb bundle gate PASSED at 1.35 KB). Next: Task 6.5 contract amendment, then Tasks 7-11."
+prior_phase: adaptive-learning-progress-design
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
   - journal/ops/sessions/v1-ruleset-locked-20260707-035405.md
@@ -29,8 +29,9 @@ sessions:
   - journal/ops/sessions/the-evidence-and-the-gate-2026-07-16T0531.md
   - journal/ops/sessions/the-proof-and-the-product-2026-07-16T0840.md
   - journal/ops/sessions/the-sweep-and-the-rescope-2026-07-17T1034.md
+  - journal/ops/sessions/the-gates-and-the-probe-2026-07-17T1802.md
 detour: []
 blocking: null
-next: "AL-B1 — execute Task 1 of docs/superpowers/plans/2026-07-17-progressstore-cycle1.md (records, fixtures, and the phantom rule as a test), then Tasks 2-11 in order. Task 6 (bundle probe) gates whether idb survives; it runs before the adapter is written on purpose."
-note: "2026-07-17: a seven-cluster research sweep re-scoped AL-D1 from an end-to-end write/reload slice to the design's cycle-1 foundation — the card had run one cycle ahead of its own Source (which places persistence integration in the cycle-3 overlay), and today's stepId-keyed attempts would persist mastery-unusable evidence. The first-durable-consumer question moves to the adaptive-mechanics proof. Repairs landed with the re-scope: the identity ADR was recorded for the first time (pseudonymous random opaque origin+profile-scoped key — the 2026-07-12 reserve-now gate had never been discharged), the idb admission was found to be conditional on an unrecorded production bundle-delta check and that obligation was propagated to decisions/ROADMAP/stack-boundaries, and two learning-integrity QA gates dropped in an earlier fold were restored. AL-R3 AI-planner research stays deferred; STF-02/03/05 remain paused and recoverable from archives/specs. The WASM freshness guard fix is a one-line change with no wire dependency and has now missed two carriers."
+next: "Task 6.5 — the user-directed contract amendment (four rulings: empty-export outcome; NEWER_SCHEMA write refusal across all write ops; no-mint/no-op commitSessionSummary; store-clearing reset — plus recording the OpenProgressStore deviation). Full spec in .wl/sdd/progress.md; it was dispatched and stopped clean, re-dispatch from scratch. Then Tasks 7-11 (idb adapter, real-browser 28/28, byte tiers, feature QA)."
+note: "2026-07-17 pm: AL-B1 went from zero code to 6/11 tasks under subagent-driven-development inside iroh — a fresh implementer + adversarial review + fix loop per task. The 14 gates went from written to EXECUTING (T5): 12 pass + 2 declared-unsupported, mutation-verified 16/16, with contract.ts held at 0 changed lines (the fake conforms to the contract, never the reverse). The idb bundle-delta gate PASSED (T6) at 1.35 KB vs the >5 KB alarm — the implementer caught its own false first measurement (Vite tree-shook the calls it was measuring). T3's import-boundary guard shipped broken twice before an AST rewrite. The user then ruled on four Task-7 blockers and directed them recorded as explicit design deviations (Task 6.5), with the fake and adapter to stay governed by one contract. Suite 279/279, build clean, 7 commits local + unpushed; branch also on GitHub as PR #7 (body now understates the work — describes contract.ts as 'never run', which T5 falsified). A Fable review agent pushed to the public remote against an explicit read-only brief — harmless, but lesson saved: constrain subagents by capability, not instruction."
 ---
