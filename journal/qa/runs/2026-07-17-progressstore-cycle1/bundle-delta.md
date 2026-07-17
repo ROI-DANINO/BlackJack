@@ -5,6 +5,11 @@
   amended 2026-07-17) holds. Proceed to Task 7 against the `idb` adapter.
 - **`idb` version: `8.0.3`**, pinned exactly in `web/package.json` (`"idb": "8.0.3"`, not
   `"^8.0.3"`) — matching AL-R2's LIB-001 artifact.
+- **Toolchain:** `vite v5.4.21` (from the build console output, reproduced in "Commands run from
+  `web/`" below). The Node version is **not** recorded: it did not appear in the console output
+  captured for this measurement, and neither `web/package.json` nor `web/package-lock.json`
+  declares an `engines.node` constraint. Noting the gap rather than guessing at a number; a future
+  re-run should capture `node -v` alongside the build output.
 
 ## Why this measurement exists, and why it runs before the adapter
 
@@ -67,6 +72,64 @@ the build entry (the probe file instead of `index.html`) and, for build (b) only
 (`openDB`, `deleteDB`, same call signatures, no real behavior). Nothing else differed between the
 two invocations — same file, same config object, same flags, toggled only by a `PROBE_STUB` env
 var that this file's `resolve.alias` branches on.
+
+### The throwaway harness, inlined for reproducibility
+
+Both `web/.probe.vite.config.ts` and the no-op `idb` stub were deliberately never committed (see
+"What did NOT ship" below), and their exact original bytes were not captured verbatim anywhere at
+the time — checked against this repo's full git history, including unreachable objects
+(`git fsck --unreachable`), and neither file's content turned up. **What follows is a labelled
+reconstruction from the prose description above (config shape, `mergeConfig` over the real
+`web/vite.config.ts`, `PROBE_STUB`-gated `resolve.alias`, matching-signature no-op stub), not a
+recovery of the original bytes.** It is offered so a future re-run has a concrete starting point
+instead of having to re-derive the harness from prose alone — re-verify against the real `idb`
+type signatures for the `idb` version in use before trusting it as-is.
+
+`web/.probe.vite.config.ts` (reconstructed):
+
+```ts
+import { defineConfig, mergeConfig } from 'vite';
+import baseConfig from './vite.config';
+
+const isStub = process.env.PROBE_STUB === '1';
+
+export default defineConfig(
+  mergeConfig(baseConfig, {
+    build: {
+      outDir: isStub ? '.probe-dist/stub' : '.probe-dist/real',
+      rollupOptions: {
+        input: 'qa/progress/bundle-probe.ts',
+      },
+    },
+    resolve: isStub
+      ? {
+          alias: {
+            idb: '/qa/progress/idb.stub.ts',
+          },
+        }
+      : undefined,
+  }),
+);
+```
+
+No-op `idb` stub, same exported shape (`openDB`, `deleteDB`) as the real package (reconstructed):
+
+```ts
+// No-op stand-in for the `idb` runtime surface bundle-probe.ts uses. Same call signatures as the
+// real package's openDB/deleteDB; no IndexedDB calls, no real behavior. Used only via
+// resolve.alias in .probe.vite.config.ts when PROBE_STUB=1.
+export async function openDB(
+  _name: string,
+  _version?: number,
+  _options?: unknown,
+): Promise<{ close(): void }> {
+  return { close() {} };
+}
+
+export async function deleteDB(_name: string): Promise<void> {
+  return;
+}
+```
 
 Commands run from `web/`:
 
@@ -136,6 +199,49 @@ already-small file; the default-level figures above are what is reported as the 
   measurement, where an unforced, unreachable version of the exact same wrapper logic was
   tree-shaken to an empty chunk) — so the reported delta is attributable to `idb`, not to glue code
   written for this probe.
+
+## Independent corroboration (from-scratch reproduction)
+
+A second, independent run of this measurement was performed from scratch — its own throwaway Vite
+config and its own no-op `idb` stub (leaner than the one reconstructed above), built without access
+to the implementer's throwaway files, which were already deleted. Purpose: confirm the result is
+reproducible from the method description alone, not an artifact of one specific probe/stub
+pairing.
+
+| | gzip bytes |
+|---|---|
+| (a) real `idb` (independent run) | 1,666 |
+| (b) no-op stub (independent run, leaner shape) | 190 |
+| **Delta (independent run)** | **1,476 (≈1.44 KB)** |
+
+- **Real-side figure reproduced exactly**: 1,666 bytes gzipped — identical to the 1,666 recorded
+  above. This is the strongest evidence that the real-`idb` measurement is stable and
+  config-independent.
+- **Stub-side figure did not reproduce**: 190 bytes vs. this document's 284 — a leaner no-op stub
+  (fewer or smaller no-op bodies). That difference alone moved the delta from 1,382 (1.35 KB) to
+  1,476 (1.44 KB), a swing of **~7%** attributable purely to stub shape, not to anything about the
+  real `idb` build.
+- **Anti-tree-shake check held in both runs**: the real build contains `indexedDB.open` and
+  `indexedDB.deleteDatabase`; the stub build contains zero `indexedDB` occurrences.
+- **Verdict is unaffected**: 1.35 KB and 1.44 KB both land far under the 5 KB alarm (≈3.7× and
+  ≈3.4× headroom respectively). This is reported as corroboration of the PASS, not as a
+  discrepancy to resolve.
+- **This is exactly why the harness is inlined above.** A ~7% swing from stub shape alone, with the
+  real side pinned exactly, means the number that moves under a version bump or a re-run is
+  sensitive to a throwaway file most readers would assume is interchangeable. Without the config
+  and stub preserved, a future re-run cannot tell whether a changed delta reflects a real change in
+  `idb`'s emitted code or just a different stub.
+
+**On future headroom (verified against `web/node_modules/idb/package.json` and
+`web/node_modules/idb/build/index.js`):** `idb`'s `package.json` declares no `sideEffects` field,
+and its single ESM entry point exports exactly four names — `export { deleteDB, openDB, unwrap,
+wrap };` — its complete public surface. All four dispatch through one shared Proxy-wrapping
+mechanism (`wrap` / `wrapFunction` / `idbProxyTraps` in `build/index.js`) that `openDB` already
+pulls in to satisfy this measurement. A later adapter exercising more of the surface
+(`transaction()`, `objectStore()`, cursors) would be calling methods on objects already Proxy-wrapped
+via that same shared path, so it is unlikely to add meaningfully more bytes beyond what's measured
+here — though this is inference from reading the source, not a repeat measurement, and the gate
+should still be re-run if the adapter's real bundle delta is ever in question.
 
 ## What did NOT ship, and why that's fine
 
