@@ -26,7 +26,28 @@
 
 ## Ready
 
+### AL-B1 — Build the cycle-1 ProgressStore foundation
+- Type: build
+- Mode: write
+- Owner: orchestrator
+- Depends on: AL-D1
+- Source: `docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md`
+- Outcome: The provider-neutral `ProgressStore` port, the versioned envelope and attempt record, an `idb` adapter, and a host-neutral 14-gate contract suite exist — passing against a fake (12/14, with declared non-capabilities) and against real browsers (14/14) — with the `idb` bundle delta and the serialized envelope bytes measured rather than assumed.
+- Next: Execute Task 1 of `docs/superpowers/plans/2026-07-17-progressstore-cycle1.md` — records, fixtures, and the phantom rule as a test.
+- Load: `docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md`, `docs/superpowers/plans/2026-07-17-progressstore-cycle1.md`, `web/src/learn/types.ts`, `web/src/bridge/log/sink.ts`, `web/qa/lib/`
+- Workspace: repository root
+- Done when: All 11 plan tasks land in order; the 14 gates pass under `qa:progress` in Chromium and Firefox; the bundle delta is measured against the >5 KB gzipped threshold and the result recorded either way (a failure reverts to native IndexedDB, which the adapter boundary must survive); serialized envelope bytes are measured at the 20 / 1,000 / 10,000 tiers; scoped feature QA passes and `journal/qa/ledger.md` records durable progress as a newly deep-tested area; and the existing Rust and web suites stay green. Cycle-1 boundary holds throughout — no `LessonController` change, no UI consumer, no learner data written.
+- Gate: feature-qa
+- Evidence: Pending. Design + plan approved by the user on 2026-07-17.
+- Updated: 2026-07-17
+
 ## Active
+
+## Verification
+
+## Blocked
+
+## Done
 
 ### AL-D1 — Design the cycle-1 ProgressStore foundation (port, envelope, contract suite)
 - Type: design
@@ -35,19 +56,13 @@
 - Depends on: AL-R2
 - Source: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`
 - Outcome: A user-approved design and executable TDD plan define the provider-neutral `ProgressStore` port, the versioned learner envelope and attempt record, and a provider-neutral contract suite — proven headless against fixtures. No UI consumer, and no learner data written.
-- Next: Design the port signatures, envelope/attempt-record shape, and physical store layout against the constraint set from the 2026-07-17 research sweep; resolve the open record questions (session definition, per-skill evidence keying, storage-failure policy, retention bound, raw-export path, phantom plan/checkpoint/evidence-goal IDs) inside the design rather than deferring them.
+- Next: AL-B1 — execute Task 1 of the approved TDD plan.
 - Load: `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md`, `docs/superpowers/specs/2026-07-16-adaptive-learning-browser-storage-research.md`, `docs/superpowers/specs/2026-07-16-adaptive-learning-product-activity-research.md`, `docs/specs/learning-mastery-and-scoring.md`, `docs/specs/research-brief.md`, `docs/architecture.md`, `web/src/learn/`, `web/src/bridge/log/sink.ts`
 - Workspace: repository root
 - Done when: The design (a) gives signatures for the six pinned port operations — load, append attempt, commit session summary, export, reset, explicit migration/recovery; (b) defines the versioned envelope and attempt record carrying the owned-spec field set, including per-skill/cell evidence keys, an attempt-kind discriminator, evidence mode, assistance level, table visibility, strategy-profile version, and session attribution; (c) decides the physical store layout and separates it from the export/wire envelope; (d) answers all seven `research-brief.md:20` obligations (identity is discharged by the 2026-07-17 ADR; record ownership, storage semantics, boundary, schema versioning, migration, and recovery remain); (e) originates the storage-failure policy the research explicitly does not cover — quota, denied/private-mode IndexedDB, corruption, multi-tab — plus a retention bound; (f) plans the conditional `idb` bundle-delta check with a pre-agreed "material" threshold; (g) re-derives the 14 storage gates against the real contract without importing the extracted harness; and (h) ships an executable TDD plan with scoped feature QA, approved by the user.
 - Gate: user-approval
-- Evidence: 2026-07-17 seven-cluster research sweep (AL-R1, AL-R2, adaptive design, foundation ADR + architecture + decisions, V2 research imports, course bundle + history data, mastery/scoring + future guidance) established the cycle-1 re-scope; user approved the scope and the folded repairs on 2026-07-17. First step complete: identity ADR recorded, conditional bundle-check obligation propagated to `journal/decisions.md` / `ROADMAP.md` / `docs/specs/stack-boundaries.md`, identity wording corrected in three docs, and two dropped learning-integrity QA gates restored to `docs/specs/qa-playtest-process.md`. Prior: storage decision package `b8c0d2f`; user redirected from benchmark timing toward a production artifact on 2026-07-16.
+- Evidence: 2026-07-17 seven-cluster research sweep (AL-R1, AL-R2, adaptive design, foundation ADR + architecture + decisions, V2 research imports, course bundle + history data, mastery/scoring + future guidance) established the cycle-1 re-scope; user approved the scope and the folded repairs on 2026-07-17. Repairs landed: identity ADR recorded, conditional bundle-check obligation propagated to `journal/decisions.md` / `ROADMAP.md` / `docs/specs/stack-boundaries.md`, identity wording corrected in three docs, two dropped learning-integrity QA gates restored to `docs/specs/qa-playtest-process.md`, and the stale `.worktrees/al-r2-browser-storage` pointer fixed. Owned spec `docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md` (1021 lines) and TDD plan `docs/superpowers/plans/2026-07-17-progressstore-cycle1.md` (11 tasks) written and user-approved on 2026-07-17, including all four design rulings (bundle threshold >5 KB gzipped; cellId field fixed / grammar deferred to curriculum; authored prose dropped; `appendAttempt` drops `expectedRevision` as a recorded deviation from AL-R2's floor). Gate satisfied: user-approval. Prior: storage decision package `b8c0d2f`; user redirected from benchmark timing toward a production artifact on 2026-07-16.
 - Updated: 2026-07-17
-
-## Verification
-
-## Blocked
-
-## Done
 
 ### AL-R2 — Research and admit browser-local learner progress storage
 - Type: research

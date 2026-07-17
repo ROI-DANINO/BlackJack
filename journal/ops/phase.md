@@ -3,7 +3,7 @@ phase: v2-learning-foundations
 sub_phase: adaptive-learning-progress-design
 plan: null
 spec: docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md
-step: "AL-D1 active — design the cycle-1 ProgressStore foundation (port, envelope, contract suite)."
+step: "AL-D1 done — cycle-1 ProgressStore spec + 11-task TDD plan approved. AL-B1 ready to build."
 prior_phase: adaptive-learning-storage-research
 sessions:
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -28,8 +28,9 @@ sessions:
   - journal/ops/sessions/the-curriculum-and-the-coach-2026-07-16T0422.md
   - journal/ops/sessions/the-evidence-and-the-gate-2026-07-16T0531.md
   - journal/ops/sessions/the-proof-and-the-product-2026-07-16T0840.md
+  - journal/ops/sessions/the-sweep-and-the-rescope-2026-07-17T1034.md
 detour: []
 blocking: null
-next: "AL-D1 — Design the ProgressStore port signatures, versioned envelope/attempt record, and physical store layout headless against fixtures; resolve session definition, per-skill evidence keying, storage-failure policy, retention bound, and the raw-export path inside the design; then write the TDD implementation plan."
+next: "AL-B1 — execute Task 1 of docs/superpowers/plans/2026-07-17-progressstore-cycle1.md (records, fixtures, and the phantom rule as a test), then Tasks 2-11 in order. Task 6 (bundle probe) gates whether idb survives; it runs before the adapter is written on purpose."
 note: "2026-07-17: a seven-cluster research sweep re-scoped AL-D1 from an end-to-end write/reload slice to the design's cycle-1 foundation — the card had run one cycle ahead of its own Source (which places persistence integration in the cycle-3 overlay), and today's stepId-keyed attempts would persist mastery-unusable evidence. The first-durable-consumer question moves to the adaptive-mechanics proof. Repairs landed with the re-scope: the identity ADR was recorded for the first time (pseudonymous random opaque origin+profile-scoped key — the 2026-07-12 reserve-now gate had never been discharged), the idb admission was found to be conditional on an unrecorded production bundle-delta check and that obligation was propagated to decisions/ROADMAP/stack-boundaries, and two learning-integrity QA gates dropped in an earlier fold were restored. AL-R3 AI-planner research stays deferred; STF-02/03/05 remain paused and recoverable from archives/specs. The WASM freshness guard fix is a one-line change with no wire dependency and has now missed two carriers."
 ---

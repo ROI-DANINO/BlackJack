@@ -43,16 +43,25 @@
   privacy constraints. Performance timing remains an explicit non-blocking coverage gap; no
   production adapter has been implemented yet.
 
+- **AL-D1 complete — the cycle-1 `ProgressStore` design and its 11-task TDD plan are approved**
+  (2026-07-17). A seven-cluster research sweep re-scoped the card from an end-to-end write/reload
+  slice to the design's cycle-1 foundation: the port, the versioned envelope and attempt record, and
+  a provider-neutral contract suite proven headless against fixtures. The card had run one cycle
+  ahead of its own source design, and today's `AttemptRecord` cannot support the admitted idempotent
+  revision-checked checkpoints — no id, timestamp, schema version, or learner key, so two identical
+  wrong answers on one step are byte-identical. Five docs repairs landed with it: the identity ADR
+  (never previously written down, though required before any durable write), the conditional `idb`
+  bundle-check obligation propagated into the owned docs, identity wording corrected in three docs,
+  two dropped learning-integrity QA gates restored, and a stale worktree pointer fixed.
+
 ## In progress
-- **AL-D1 is re-scoped to the cycle-1 `ProgressStore` foundation** (2026-07-17): the port, the
-  versioned learner envelope and attempt record, and a provider-neutral contract suite — proven
-  headless against fixtures, with no UI consumer and no learner data written. A seven-cluster
-  research sweep found the previous end-to-end framing ran one cycle ahead of its own source design,
-  and that today's `AttemptRecord` cannot support the admitted idempotent revision-checked
-  checkpoints — it has no id, timestamp, schema version, or learner key, so two identical wrong
-  answers on one step are byte-identical. Its first step is complete: the identity ADR is recorded,
-  the conditional `idb` bundle-check obligation is propagated into the owned docs, identity wording
-  is corrected in three docs, and two dropped learning-integrity QA gates are restored.
+- **AL-B1 — build the cycle-1 foundation.** 11 tasks, TDD, no visible product change by design.
+  Two traps are already defused in the plan: the bundle probe runs *before* the adapter (nothing
+  imports `idb` in cycle 1, so a naive diff would tree-shake to zero and make the conditional
+  admission decorative), and the 14 gates are host-neutral **data** rather than `it()` blocks,
+  because neither Vitest environment has IndexedDB and `fake-indexeddb` was rejected — it would
+  prove the multi-tab gate against a simulation, and that gate is the entire evidence for the
+  approved `appendAttempt` deviation.
 - **Skill-grained evidence already exists and is misnamed** (verified 2026-07-17):
   `AttemptRecord.outcomeId` is a validated foreign key into `Subject.skills` — `validate.ts:51-55`
   requires every `unit.outcomes` entry to be a known skill id, `:70-75` requires every question
