@@ -91,7 +91,13 @@ type PhysicalRecord = { [key: string]: unknown };
  */
 type NamespaceState = {
   physicalVersion: number;
-  meta: PhysicalRecord;
+  // §5.1: `meta` is a real object store — physically it can hold 0, 1, or (in principle) more
+  // records; singleton-ness is an APP convention this store enforces itself (`mintNamespace`
+  // creates exactly one, no operation here ever adds or removes it), not a guarantee the type
+  // system hands us for free. Modelled as an array, like `attempts`/`sessions`, so
+  // `recordCounts.meta` in `diagnose()` below is a real count of what is physically present rather
+  // than a literal that cannot reflect reality.
+  meta: PhysicalRecord[];
   attempts: PhysicalRecord[];
   sessions: PhysicalRecord[];
 };
@@ -288,11 +294,28 @@ function validateMeta(record: PhysicalRecord): string | null {
   );
 }
 
+/**
+ * The namespace's single meta record. Every write path here (`mintNamespace`, and every operation
+ * that only ever mutates the existing entry) maintains exactly one — this is an internal invariant
+ * of THIS store, not a fact the array type gives away for free, so it is asserted rather than
+ * index-asserted away (`noUncheckedIndexedAccess`). If this ever throws, a write path broke the
+ * invariant; that is a bug in the fake, not a recoverable storage condition (§3.3), which is why it
+ * throws instead of returning an error like `storageUnavailable` would.
+ */
+function metaRecordOf(state: NamespaceState): PhysicalRecord {
+  const record = state.meta[0];
+  if (record === undefined) {
+    throw new Error('fake subject: internal invariant violated — namespace state has no meta record.');
+  }
+  return record;
+}
+
 /** Every invalid record in the namespace, itemised by store + key + reason (§3.3, §8.4). */
 function validateAll(state: NamespaceState): InvalidRecordRef[] {
   const invalid: InvalidRecordRef[] = [];
-  const metaReason = validateMeta(state.meta);
-  if (metaReason !== null) invalid.push({ store: 'meta', key: state.meta['id'] ?? META_SINGLETON_ID, reason: metaReason });
+  const meta = metaRecordOf(state);
+  const metaReason = validateMeta(meta);
+  if (metaReason !== null) invalid.push({ store: 'meta', key: meta['id'] ?? META_SINGLETON_ID, reason: metaReason });
   state.attempts.forEach((record, index) => {
     const reason = validateAttempt(record);
     if (reason !== null) invalid.push({ store: 'attempts', key: record['attemptId'] ?? `<attempts[${index}]>`, reason });
@@ -326,7 +349,7 @@ function compareSessions(a: SessionRecord, b: SessionRecord): number {
  * (IndexedDB hands back a structured clone).
  */
 function readEnvelope(state: NamespaceState): LearnerEnvelope {
-  const meta = state.meta;
+  const meta = metaRecordOf(state);
   return {
     schemaVersion: state.physicalVersion,
     learnerKey: meta['learnerKey'] as LearnerKey,
@@ -363,14 +386,16 @@ function snapshotOf(namespace: string, envelope: LearnerEnvelope): CanonicalSnap
 function mintNamespace(config: ProgressStoreConfig): NamespaceState {
   return {
     physicalVersion: config.schemaVersion,
-    meta: {
-      id: META_SINGLETON_ID,
-      schemaVersion: config.schemaVersion,
-      learnerKey: config.mintLearnerKey(),
-      revision: 0,
-      curriculumVersions: [],
-      cachedMastery: null,
-    },
+    meta: [
+      {
+        id: META_SINGLETON_ID,
+        schemaVersion: config.schemaVersion,
+        learnerKey: config.mintLearnerKey(),
+        revision: 0,
+        curriculumVersions: [],
+        cachedMastery: null,
+      },
+    ],
     attempts: [],
     sessions: [],
   };
@@ -378,7 +403,7 @@ function mintNamespace(config: ProgressStoreConfig): NamespaceState {
 
 /** `curriculumVersions[]`: "every catalog version encountered" (types.ts §4.5). */
 function noteCurriculumVersion(state: NamespaceState, version: string): void {
-  const versions = state.meta['curriculumVersions'];
+  const versions = metaRecordOf(state)['curriculumVersions'];
   if (Array.isArray(versions) && !versions.includes(version)) versions.push(version);
 }
 
@@ -447,8 +472,9 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
 
       // §8.4: read meta.revision, +1, write meta + attempt in ONE readwrite tx. §6: the store
       // assigns exactly one field, `committedAtRevision`.
-      const revision = (next.meta['revision'] as number) + 1;
-      next.meta['revision'] = revision;
+      const metaRecord = metaRecordOf(next);
+      const revision = (metaRecord['revision'] as number) + 1;
+      metaRecord['revision'] = revision;
       next.attempts.push(structuredClone({ ...draft, committedAtRevision: revision }) as unknown as PhysicalRecord);
       noteCurriculumVersion(next, draft.activity.catalogVersion);
 
@@ -471,15 +497,16 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
       // §2.4/§8.4: the revision check belongs HERE and only here — a summary (and any cachedMastery
       // it publishes) is derived from ALL attempts, so one computed at revision 5 is genuinely
       // stale once another tab appended at 6. That is where a lost update loses information.
-      const currentRevision = next.meta['revision'] as number;
+      const metaRecord = metaRecordOf(next);
+      const currentRevision = metaRecord['revision'] as number;
       if (write.expectedRevision !== currentRevision) return { status: 'conflict', currentRevision };
 
       const revision = currentRevision + 1;
-      next.meta['revision'] = revision;
+      metaRecord['revision'] = revision;
       next.sessions.push(structuredClone({ ...write.session, committedAtRevision: revision }) as unknown as PhysicalRecord);
       // `cachedMastery: null` is "no derived publish on this write" (§3.4), not "clear the cache" —
       // the cache is disposable, but discarding it is a decision, not a side effect of a summary.
-      if (write.cachedMastery !== null) next.meta['cachedMastery'] = structuredClone(write.cachedMastery);
+      if (write.cachedMastery !== null) metaRecord['cachedMastery'] = structuredClone(write.cachedMastery);
       noteCurriculumVersion(next, write.session.curriculumVersion);
 
       if (consumeFault(ns, 'abortWrite')) {
@@ -504,7 +531,7 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
                 namespace: ns,
                 physicalVersion: state.physicalVersion,
                 stores: {
-                  meta: [structuredClone(state.meta)],
+                  meta: structuredClone(state.meta),
                   attempts: structuredClone(state.attempts),
                   sessions: structuredClone(state.sessions),
                 },
@@ -542,13 +569,14 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
       if (confirmation.expectedRevision !== 'unloadable') {
         // §3.4: expectedRevision proves the caller LOOKED first, and stops a reset silently
         // destroying a concurrent tab's writes it never saw.
-        const currentRevision = state.meta['revision'];
+        const currentRevision = state.meta[0]?.['revision'];
         if (isNumber(currentRevision) && currentRevision !== confirmation.expectedRevision) {
           return { status: 'conflict', currentRevision: currentRevision as number };
         }
-        // A meta whose revision is unreadable cannot be revision-checked at all; that is what
-        // `expectedRevision: 'unloadable'` exists for, and the caller reaching here with a number
-        // has looked at something this store cannot corroborate. Ungated.
+        // A meta whose revision is unreadable — or, physically, a meta record that is not present
+        // at all — cannot be revision-checked; that is what `expectedRevision: 'unloadable'` exists
+        // for, and the caller reaching here with a number has looked at something this store cannot
+        // corroborate. Ungated.
       }
       REALM.delete(ns);
       return { status: 'reset' };
@@ -587,8 +615,14 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
         namespace: ns,
         expectedSchema: config.schemaVersion,
         detectedSchema: state.physicalVersion,
-        physicalStores: [...PHYSICAL_STORES],
-        recordCounts: { meta: 1, attempts: state.attempts.length, sessions: state.sessions.length },
+        // Derived from `state` itself, not the `PHYSICAL_STORES` constant: a physically-present
+        // namespace always has all three keys, so this filters `state`'s own shape rather than
+        // asserting the constant is right.
+        physicalStores: PHYSICAL_STORES.filter((store) => state[store] !== undefined),
+        // `meta: state.meta.length`, not a literal `1` — §5.1 models `meta` as a real object store
+        // that could physically hold 0 or 2 records, and the gates that assert `=== 1` (contract.ts
+        // requireCount call sites for 'meta') must be able to see a wrong count, not a constant.
+        recordCounts: { meta: state.meta.length, attempts: state.attempts.length, sessions: state.sessions.length },
         migration,
         integrity: { invalid },
         safeActions,
@@ -631,7 +665,7 @@ function openConnection(config: ProgressStoreConfig, migrations: MigrationMap | 
     replaceRecords(upgraded, step.store, step.transform);
   }
   upgraded.physicalVersion = config.schemaVersion;
-  upgraded.meta['schemaVersion'] = config.schemaVersion;
+  metaRecordOf(upgraded)['schemaVersion'] = config.schemaVersion;
 
   // THE COMMIT POINT of the versionchange transaction. The cursor transform and the version bump
   // are one transaction (§8.1): an abort must undo BOTH, and it does here by construction — the
@@ -647,7 +681,9 @@ function openConnection(config: ProgressStoreConfig, migrations: MigrationMap | 
 function replaceRecords(state: NamespaceState, store: MigrationStoreName, transform: (record: PhysicalRecord) => PhysicalRecord): void {
   switch (store) {
     case 'meta':
-      state.meta = transform(state.meta);
+      // Mapped like `attempts`/`sessions`, not singleton-special-cased: at most one entry exists in
+      // practice, but the transform applies uniformly to whatever is physically present (0 or 1).
+      state.meta = state.meta.map(transform);
       return;
     case 'attempts':
       state.attempts = state.attempts.map(transform);
@@ -724,7 +760,7 @@ export function createFakeSubject(): ContractSubject {
       // readable at v1, which is what gate 13's detectedSchema:1 assertion depends on).
       const state = requireState(namespace, 'corrupt');
       if (target === 'meta') {
-        state.meta['revision'] = CORRUPT_MARKER;
+        metaRecordOf(state)['revision'] = CORRUPT_MARKER;
         return;
       }
       const record = state.attempts[0];

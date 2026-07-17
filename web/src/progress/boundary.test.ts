@@ -40,6 +40,10 @@ import * as ts from 'typescript';
 
 const PROGRESS_DIR = dirname(fileURLToPath(import.meta.url));
 const LEARN_DIR = join(PROGRESS_DIR, '..', 'learn');
+const SRC_DIR = resolve(PROGRESS_DIR, '..');
+// Extension-free, matching how a specifier like './fake-store' is written (never './fake-store.ts').
+const FAKE_STORE_NO_EXT = join(PROGRESS_DIR, 'fake-store');
+const FAKE_STORE_ALLOWED_IMPORTER = 'progress/contract.test.ts'; // relative to SRC_DIR
 
 /**
  * Every `.ts` file physically present in progress/ right now, recursively — so a future nested
@@ -51,6 +55,21 @@ function progressFiles(): string[] {
   return readdirSync(PROGRESS_DIR, { withFileTypes: true, recursive: true })
     .filter((entry) => entry.isFile() && entry.name.endsWith('.ts'))
     .map((entry) => join(relative(PROGRESS_DIR, entry.parentPath), entry.name).split(sep).join('/'));
+}
+
+/**
+ * Every `.ts`/`.tsx` file under `web/src`, recursively — the scan root for the fake-store import
+ * check below, which is deliberately WIDER than `progressFiles()`'s `progress/`-only scan. The risk
+ * fake-store.ts's own header names ("Nothing outside progress/contract.test.ts may import this
+ * file") is specifically an importer OUTSIDE progress/ — the product's UI consumer landing in
+ * §13.5 imports from `web/src/app/`, not from inside `progress/` itself — so a scan confined to
+ * `progress/` would miss exactly the case the rule exists to catch. Paths are relative to
+ * `SRC_DIR` with forward slashes.
+ */
+function srcFiles(): string[] {
+  return readdirSync(SRC_DIR, { withFileTypes: true, recursive: true })
+    .filter((entry) => entry.isFile() && (entry.name.endsWith('.ts') || entry.name.endsWith('.tsx')))
+    .map((entry) => join(relative(SRC_DIR, entry.parentPath), entry.name).split(sep).join('/'));
 }
 
 /**
@@ -157,6 +176,24 @@ function importsLearn(file: string): boolean {
   });
 }
 
+/**
+ * `file` is relative to `SRC_DIR` (per `srcFiles()`), unlike `moduleSpecifiers`'s `progressFiles()`
+ * callers — so the specifier is resolved against `SRC_DIR`-plus-`file`'s directory, not
+ * `PROGRESS_DIR`-plus-`file`'s. A specifier is only a candidate if it is relative (only a relative
+ * specifier can reach a sibling source file at all), and the resolved path is compared
+ * extension-free against `FAKE_STORE_NO_EXT` so both `'./fake-store'` (from inside progress/) and
+ * `'../progress/fake-store'` (from `web/src/app/`, the case the header warns about) match.
+ */
+function importsFakeStore(file: string): boolean {
+  const fileDir = join(SRC_DIR, dirname(file));
+  const source = readFileSync(join(SRC_DIR, file), 'utf8');
+  return specifiersOfSource(source, file).some((specifier) => {
+    if (!specifier.startsWith('.')) return false;
+    const resolved = resolve(fileDir, specifier).replace(/\.ts$/, '');
+    return resolved === FAKE_STORE_NO_EXT;
+  });
+}
+
 describe('module boundary — only idb-store.ts may import "idb" (design §3.1)', () => {
   it('no file other than idb-store.ts contains an idb import', () => {
     for (const file of progressFiles()) {
@@ -170,6 +207,19 @@ describe('module boundary — only idb-store.ts may import "idb" (design §3.1)'
     // yet on disk this check is vacuous, which is expected at this point in the plan, not a defect.
     if (!progressFiles().includes('idb-store.ts')) return;
     expect(importsIdb('idb-store.ts')).toBe(true);
+  });
+});
+
+describe('module boundary — only progress/contract.test.ts may import fake-store.ts (fake-store.ts header, design §8.3)', () => {
+  it('no file other than progress/contract.test.ts imports ./fake-store', () => {
+    for (const file of srcFiles()) {
+      if (file === FAKE_STORE_ALLOWED_IMPORTER) continue;
+      expect(
+        importsFakeStore(file),
+        `${file} must not import progress/fake-store — it is a TEST SUBJECT, never a product fallback ` +
+          `(fake-store.ts's header: "Nothing outside progress/contract.test.ts may import this file").`,
+      ).toBe(false);
+    }
   });
 });
 
