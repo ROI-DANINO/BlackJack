@@ -12,6 +12,21 @@ describe('structured-clone safety (design §9.2)', () => {
     expect(cloned).toEqual(draft);
   });
 
+  it('structuredClone(makeAttemptDraft({ engine })) round-trips deep-equal with a populated engine', () => {
+    const draft = makeAttemptDraft({
+      engine: {
+        seed: 'fixture-engine-seed-1',
+        playerCardIds: ['card-1', 'card-2'],
+        dealerUpcardId: 'card-3',
+        legalActions: ['hit', 'stand', 'double', 'split'],
+        outcomes: [{ hand_index: 0, result: 'win', wager: 10, delta: 15 }],
+        wager: 10,
+      },
+    });
+    const cloned = structuredClone(draft);
+    expect(cloned).toEqual(draft);
+  });
+
   it('structuredClone(makeSessionRecord()) round-trips deep-equal', () => {
     const session = makeSessionRecord();
     expect(structuredClone(session)).toEqual(session);

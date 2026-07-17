@@ -90,7 +90,7 @@ export function makeSessionRecord(overrides: Partial<SessionRecord> = {}): Sessi
     closedAt: '2026-01-01T00:10:00.000Z',
     closeReason: 'learner-stopped',
     budget: { presetId: 'fixture-preset', targetDurationMs: 600_000, maxActivities: 10 },
-    ruleset: FIXTURE_RULESET,
+    ruleset: { ...FIXTURE_RULESET },
     profileId: null,
     reducerVersion: null,
     curriculumVersion: 'fixture-catalog-v1',
