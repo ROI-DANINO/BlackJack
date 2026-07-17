@@ -33,6 +33,17 @@
 // papered over. Two clauses are load-bearing for approved deviations and must never be softened:
 // gate 7 is the ONLY evidence for §2.4's `appendAttempt` deviation (deviations register #4), and
 // gates 3/4/5 are the only evidence for §5.1's three-store layout (deviations register #3).
+//
+// TWO THINGS THIS FILE DELIBERATELY DOES NOT GATE, RECORDED HERE SO THEY DO NOT READ AS GAPS:
+//   - §9 point 2 ("every write argument is structured-clone-safe ... asserted structurally by the
+//     suite rather than trusted") has no gate here. It is not one of §11's 14, and this file's own
+//     14-gate invariant (below) would break if a 15th were added to cover it. The property IS
+//     covered — by progress/types.test.ts's `structuredClone(makeAttemptDraft())` deep-equality
+//     round-trip (Task 1) — just not by a gate.
+//   - §10 says "§11 makes measuring it a gate" (serialized envelope bytes at 20/1,000/10,000). §11's
+//     table has no such gate, and this file is correct to have exactly 14: the measurement is a
+//     design erratum, not a gap here. It lands as a measurement PASS, not a gate, in Task 10's
+//     Playwright runner (docs/superpowers/plans/2026-07-17-progressstore-cycle1.md, Task 10).
 
 import type { LearnerEnvelope, ProgressAttempt, SafeAction, SessionRecord } from './types';
 import type {
@@ -117,10 +128,36 @@ export type ContractSubject = {
   capabilities: StoreCapabilities;
   open: (namespace: string) => Promise<OpenOutcome>;
   reopen: (namespace: string) => Promise<OpenOutcome>;
+  /**
+   * Corrupts exactly ONE existing record of the given kind, MUTATED IN PLACE — never inserted, and
+   * every other record's count in every store is UNCHANGED. `target: 'attempt'` (gate 13) corrupts
+   * one existing attempt record only: the `meta` store is untouched — it remains physically intact
+   * and readable at its existing schema version, and its record count stays 1. A subject that
+   * "corrupts" by inserting a garbage record, or by resetting/recreating the namespace, does not
+   * satisfy this and will make gate 13 fail for the wrong reason.
+   */
   corrupt: (namespace: string, target: 'meta' | 'attempt') => Promise<void>;
+  /**
+   * Sets the namespace's physical `db.version` to `version` and nothing else: no stored record in
+   * any store is added, removed, or altered (gate 14 reads a previously-seeded attempt back intact,
+   * through raw export, after this call). This changes only the schema marker IndexedDB itself
+   * tracks — it does not run a migration and does not materialize any default.
+   */
   setPhysicalSchema: (namespace: string, version: number) => Promise<void>;
   withMigrations: (namespace: string, map: MigrationMap) => Promise<OpenOutcome>;
+  /**
+   * Causes the SINGLE NEXT write transaction (one `appendAttempt` or `commitSessionSummary`) to
+   * abort before it commits: nothing that write would have added or changed survives, and nothing
+   * already committed before this call is disturbed (gate 4). A one-shot injected fault — writes
+   * after the aborted one must proceed normally.
+   */
   abortNextWrite: (namespace: string) => Promise<void>;
+  /**
+   * Causes the SINGLE NEXT `versionchange` (upgrade) transaction to abort before it commits: the
+   * namespace is left physically at its PRE-upgrade schema version, with its pre-upgrade records
+   * unchanged — no partial cursor transform survives (gate 12). A one-shot injected fault — a
+   * subsequent upgrade attempt must be able to succeed.
+   */
   abortNextUpgrade: (namespace: string) => Promise<void>;
   destroy: (namespace: string) => Promise<void>;
 };
@@ -147,10 +184,15 @@ function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new ContractAssertionError(message);
 }
 
+/**
+ * Non-`ContractAssertionError` output is prefixed `GATE BUG: ` so a runner reading only `status`
+ * (a `TypeError` here still reports `status:'fail'`, per `GateResult`'s brief-mandated union — see
+ * gate()'s catch) cannot mistake a bug in the gate's OWN body for the subject failing the gate.
+ */
 function describeError(error: unknown): string {
   if (error instanceof ContractAssertionError) return error.message;
-  if (error instanceof Error) return error.stack ?? `${error.name}: ${error.message}`;
-  return `non-Error thrown: ${String(error)}`;
+  if (error instanceof Error) return `GATE BUG: ${error.stack ?? `${error.name}: ${error.message}`}`;
+  return `GATE BUG: non-Error thrown: ${String(error)}`;
 }
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -363,7 +405,9 @@ function assertSafeActions(actual: SafeAction[], expected: SafeAction[], context
   assert(Array.isArray(actual), `${context}: safeActions is not an array.`);
   assert(
     actual.length === expected.length && expected.every((action, index) => actual[index] === action),
-    `${context}: safeActions must be exactly [${expected.map((a) => `'${a}'`).join(', ')}] (design §11), ` +
+    `${context}: safeActions must be exactly [${expected.map((a) => `'${a}'`).join(', ')}] — this suite's declared ` +
+      `order, grounded in §8.2's export-before-reset rationale ("reset is the only thing that frees space and it ` +
+      `destroys everything ... which is exactly why export must precede reset"), ` +
       `got [${actual.map((a) => `'${String(a)}'`).join(', ')}].`,
   );
 }
@@ -1113,7 +1157,12 @@ const completeReset = gate('complete-reset', 'OBSERVED', async (run) => {
  *     one thing in the canonical view — the schema version. A dropped attempt, a re-keyed field, a
  *     re-nested group, or a revision bump the migration had no business making all move these
  *     bytes. (Note the corollary: this gate asserts a migration does NOT advance `meta.revision`.
- *     A migration writes no evidence, so it must not look like a write.)
+ *     §8.1 point 2 licenses exactly one migration shape — additive-field-with-default, verified
+ *     byte-identical against a golden fixture — and canonical.ts's `AllKeysOf` tripwire hand-
+ *     enumerates this build's `ProgressAttempt` keys, so `schemaVersion` is the ONLY thing an
+ *     additive migration may move in the canonical view. A revision bump moves a second thing,
+ *     outside §8.1's license — not merely a fact about `committedAtRevision`'s single assignment
+ *     (§6, which is about the ATTEMPT field, not `meta.revision`).)
  */
 const migrationAdditive = gate('migration-additive', 'OBSERVED', async (run) => {
   await run.subject.destroy(run.ns);
@@ -1303,7 +1352,13 @@ const corruptRecovery = gate('corrupt-recovery', 'SYNTHETIC', async (run) => {
   const error = load.error;
   assert(error.code === 'RECOVERY_REQUIRED', `corrupt-recovery: expected code 'RECOVERY_REQUIRED', got '${error.code}'.`);
   assert(error.namespace === run.ns, `corrupt-recovery: the error names namespace '${error.namespace}', expected '${run.ns}'.`);
-  assert('detectedSchema' in error, `corrupt-recovery: RECOVERY_REQUIRED must carry a detectedSchema field (§3.3); the key is absent.`);
+  assert(
+    error.detectedSchema === V1_SCHEMA,
+    `corrupt-recovery: RECOVERY_REQUIRED must report detectedSchema:${V1_SCHEMA} (§3.3) — only the 'attempt' record was ` +
+      `corrupted, so the meta singleton is intact and the physical schema IS readable; ${JSON.stringify(error.detectedSchema)} ` +
+      `either lies about a present, readable v1 namespace (a value of null) or fails to report what a human needs to see ` +
+      `to know what they are looking at.`,
+  );
   assertSafeActions(error.safeActions, RECOVERY_SAFE_ACTIONS, 'corrupt-recovery');
   assert(
     error.invalid.length >= 1,
