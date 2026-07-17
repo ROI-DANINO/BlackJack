@@ -53,10 +53,25 @@ export type OpenOutcome =
   | { status: 'open'; store: ProgressStore }
   | { status: 'unavailable'; error: StorageUnavailableError };
 
-// A standalone function signature, not an implementation: this task fixes the PORT's shape. An
-// adapter (fake-store.ts, idb-store.ts) provides its own concrete factory conforming to this
-// signature; nothing in cycle 1 calls this declaration at runtime.
-export declare function openProgressStore(config: ProgressStoreConfig): Promise<OpenOutcome>;
+// A call-signature interface, not an implementation: this task fixes the PORT's shape. An adapter
+// (fake-store.ts Task 5, idb-store.ts Task 7) provides its own concrete factory conforming to this
+// type — e.g. `export const openIdbProgressStore: OpenProgressStore = async (config) => {...}`.
+//
+// Deviation from design §3.2's code block, recorded per review ruling: the design writes
+// `export declare function openProgressStore(...): Promise<OpenOutcome>;` verbatim. `declare` is
+// TypeScript's ambient form — it asserts some OTHER artifact supplies this binding at runtime, but
+// nothing in this plan ever does: Task 7 implements the real `openProgressStore` inside
+// idb-store.ts, a second, actually-real export of the same name, so the `declare` here would
+// remain a permanent phantom binding that `tsc --noEmit` cannot catch (a consumer importing it
+// typechecks cleanly and fails only at link/call time). The plan's own file table (:32) calls this
+// file "the port" and Task 3's Produces line (:94) says "openProgressStore signature" — a type is
+// the honest expression of that intent. This interface is structurally identical to the design's
+// signature and satisfies boundary.test.ts's no-callback check (c): it is method-call syntax
+// (`(config): Promise<OpenOutcome>`), not an arrow-typed property, so it contains no `=> Promise`
+// token sequence.
+export interface OpenProgressStore {
+  (config: ProgressStoreConfig): Promise<OpenOutcome>;
+}
 
 // === §3.4 — the five data operations' outcome unions ==========================================
 
