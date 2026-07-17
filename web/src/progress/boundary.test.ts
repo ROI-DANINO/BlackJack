@@ -18,6 +18,13 @@
 //       forbidden shape awkward to write by accident; this check only catches the case where
 //       someone writes it anyway with the exact `=>` + `Promise` token sequence.
 //
+// (a) and (b) are checked by parsing each file with the TypeScript compiler API and comparing
+// exact import/export/require module specifiers (`moduleSpecifiers` below) — not by regex over
+// source text. A same-line regex approach was tried and reverted: it missed multi-line imports
+// (this file's own store.ts formats its type import that way), `import 'idb'` side-effect
+// imports, and `import x = require('idb')`. The AST does not have that failure mode because
+// newlines, comments, and string literals elsewhere in the file are not import nodes.
+//
 // No jsdom pragma: the Vitest environment here is 'node' (web/vite.config.ts), and this file reads
 // its own directory off disk with node:fs — that works under 'node', not under a DOM shim.
 //
@@ -27,10 +34,12 @@
 // "fail for the right reason" state, not a defect in the test: see task-3-report.md.
 
 import { readdirSync, readFileSync } from 'node:fs';
-import { dirname, join, relative, sep } from 'node:path';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import * as ts from 'typescript';
 
 const PROGRESS_DIR = dirname(fileURLToPath(import.meta.url));
+const LEARN_DIR = join(PROGRESS_DIR, '..', 'learn');
 
 /**
  * Every `.ts` file physically present in progress/ right now, recursively — so a future nested
@@ -45,30 +54,26 @@ function progressFiles(): string[] {
 }
 
 /**
- * Strips `//` line comments and `/* *\/` block comments. Used for two things ONLY: (c)'s
- * `=> Promise` / `AsyncIterable` token search (the token can appear anywhere on a line, so it
- * cannot be anchored to statement position) and (a)'s DYNAMIC `import('idb')` sub-check (real
- * usage — `const x = await import('idb')` — does not begin its line either, so it can't be told
- * apart from a comment mentioning the same syntax by position alone). (a)'s static import/require
- * forms and all of (b) do NOT go through this function; they test raw, un-stripped source with
- * line-anchored regexes instead (`IDB_STATIC_IMPORT`, `LEARN_IMPORT` below), specifically to avoid
- * this function's failure mode.
+ * Strips `//` line comments and `/* *\/` block comments. Used for ONLY (c)'s `=> Promise` /
+ * `AsyncIterable` token search (the token can appear anywhere on a line, so it cannot be anchored
+ * to statement position, and comments genuinely can contain the same token sequence). Checks (a)
+ * and (b) no longer use this function at all — they parse the file with the TypeScript compiler
+ * API instead (`moduleSpecifiers` below), which distinguishes real import/require/export nodes
+ * from comments and string literals exactly, by construction, not by textual heuristic. That is
+ * what closed the fix-cycle-1 regression: a line-anchored, same-line regex (`IDB_STATIC_IMPORT`,
+ * `LEARN_IMPORT`) cannot see a multi-line `import {\n  x,\n} from '...'` — the parser does not
+ * care about newlines.
  *
- * That failure mode is one-directional and silent: every assertion built on `read()` is negative
- * (`.not.toMatch`, `.toBe(false)`), so over-stripping can only make a check PASS when it should
- * fail — it can never make one fail spuriously. `.replace(/\/\/.*$/gm, '')` strips to end-of-line
+ * `stripComments`'s failure mode is one-directional and silent: every assertion built on `read()`
+ * is negative (`.not.toMatch`), so over-stripping can only make a check PASS when it should fail —
+ * it can never make one fail spuriously. `.replace(/\/\/.*$/gm, '')` strips to end-of-line
  * unconditionally, so a `//` inside a string literal (e.g. a `'https://...'` URL) truncates
  * whatever real code follows it on that line. `.replace(/\/\*[\s\S]*?\*\//g, '')` will strip
  * everything between a `/*` substring living inside one string literal and a `*\/` substring
  * living inside a LATER, unrelated string literal — including any real code physically between
  * them. Either way, a genuine violation can be erased before the regex ever sees it, and the check
- * goes green having proven nothing.
- *
- * Verified safe against the files present at authoring (store.ts, boundary.test.ts, canonical.ts,
- * canonical.test.ts, fixtures.ts, types.ts, types.test.ts) — none relies on `//` inside a string
- * literal or on `/*`/`*\/` split across separate string literals. That is a property of THOSE
- * files, not a property of this function: re-verify it against any new file (fake-store.ts,
- * idb-store.ts, ...) before trusting (c) or (a)'s dynamic-import sub-check against it.
+ * goes green having proven nothing. Verified safe against store.ts (the only file (c) reads) at
+ * authoring; re-verify before trusting (c) against a new file.
  */
 function stripComments(source: string): string {
   return source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
@@ -82,26 +87,68 @@ function read(file: string): string {
   return stripComments(readRaw(file));
 }
 
-// A real static `idb` import/re-export/require begins its own line (module syntax requires it —
-// this repo has zero comment lines starting with `import`/`export`/`require(`, verified at
-// authoring), so this is tested against RAW source: nothing for `stripComments` to over-reach
-// into, and no self-reference risk from prose describing the pattern.
-const IDB_STATIC_IMPORT =
-  /^\s*(?:import|export)\b[^\n]*\bfrom\s+['"]idb['"]|^\s*(?:const|let|var)\b[^\n]*\brequire\(\s*['"]idb['"]\s*\)|^\s*require\(\s*['"]idb['"]\s*\)/m;
+/**
+ * Parses `file` with the TypeScript compiler API and returns every module specifier it imports,
+ * re-exports, or requires — covering, by construction rather than by regex coverage:
+ *   - `ImportDeclaration`: `import x from 'm'`, `import {a, b} from 'm'` (single- or multi-line,
+ *     the parser does not care), `import type {...} from 'm'`, and side-effect `import 'm'` (an
+ *     `ImportDeclaration` with no `importClause`).
+ *   - `ExportDeclaration` with a `moduleSpecifier`: `export {a} from 'm'`, `export * from 'm'`.
+ *   - `ImportEqualsDeclaration` whose reference is external: `import m = require('m')`.
+ *   - dynamic `import('m')` (a `CallExpression` whose callee is the `import` keyword) and CJS
+ *     `require('m')` (a `CallExpression` to the identifier `require`), wherever in the file they
+ *     appear — not just at statement position.
+ * Comments and string literals elsewhere in the file are not import/require nodes, so they can
+ * never be mistaken for one; there is no comment-stripping step and no false-negative class from
+ * one.
+ */
+function moduleSpecifiers(file: string): string[] {
+  const sourceFile = ts.createSourceFile(file, readRaw(file), ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const specifiers: string[] = [];
 
-// A dynamic `import('idb')` — real usage is NOT line-anchored (`const x = await import('idb')`),
-// so this sub-check is tested against `read()`'s comment-stripped source instead; see
-// `stripComments`'s docstring for the residual risk that carries.
-const IDB_DYNAMIC_IMPORT = /import\(\s*['"]idb['"]\s*\)/;
+  function visit(node: ts.Node): void {
+    if (ts.isImportDeclaration(node)) {
+      if (ts.isStringLiteral(node.moduleSpecifier)) specifiers.push(node.moduleSpecifier.text);
+    } else if (ts.isExportDeclaration(node)) {
+      if (node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) specifiers.push(node.moduleSpecifier.text);
+    } else if (ts.isImportEqualsDeclaration(node)) {
+      const ref = node.moduleReference;
+      if (ts.isExternalModuleReference(ref) && ts.isStringLiteral(ref.expression)) {
+        specifiers.push(ref.expression.text);
+      }
+    } else if (ts.isCallExpression(node)) {
+      const isDynamicImport = node.expression.kind === ts.SyntaxKind.ImportKeyword;
+      const isRequireCall = ts.isIdentifier(node.expression) && node.expression.text === 'require';
+      if (isDynamicImport || isRequireCall) {
+        const arg = node.arguments[0];
+        if (arg && ts.isStringLiteral(arg)) specifiers.push(arg.text);
+      }
+    }
+    ts.forEachChild(node, visit);
+  }
 
-function importsIdb(file: string): boolean {
-  return IDB_STATIC_IMPORT.test(readRaw(file)) || IDB_DYNAMIC_IMPORT.test(read(file));
+  visit(sourceFile);
+  return specifiers;
 }
 
-// A relative import/re-export reaching into '../learn/' or '../learn' exactly (not e.g.
-// '../learning-x'). Anchored to statement start for the same reason as IDB_STATIC_IMPORT above —
-// tested against RAW source, no `stripComments` involved, no self-reference risk.
-const LEARN_IMPORT = /^\s*(?:import|export)\b[^\n]*\bfrom\s+['"]\.\.\/learn(?:\/[^'"]*)?['"]/m;
+// The 'idb' package is a bare specifier — an exact string match, no path resolution needed.
+function importsIdb(file: string): boolean {
+  return moduleSpecifiers(file).includes('idb');
+}
+
+// '../learn/...' is a RELATIVE specifier — resolved against the importing file's own directory
+// (which varies with recursion depth: 'nested/probe.ts' must write '../../learn/...' to reach the
+// same directory that 'store.ts' reaches via '../learn/...'), then compared against the actual
+// learn/ directory on disk. This is exact for any nesting depth the recursive `progressFiles()`
+// scan can produce, unlike a fixed '../learn' string prefix.
+function importsLearn(file: string): boolean {
+  const fileDir = join(PROGRESS_DIR, dirname(file));
+  return moduleSpecifiers(file).some((specifier) => {
+    if (!specifier.startsWith('.')) return false; // only relative specifiers can reach '../learn'
+    const resolved = resolve(fileDir, specifier);
+    return resolved === LEARN_DIR || resolved.startsWith(LEARN_DIR + sep);
+  });
+}
 
 describe('module boundary — only idb-store.ts may import "idb" (design §3.1)', () => {
   it('no file other than idb-store.ts contains an idb import', () => {
@@ -122,7 +169,7 @@ describe('module boundary — only idb-store.ts may import "idb" (design §3.1)'
 describe('module boundary — progress/ never imports web/src/learn/ (design §3.1)', () => {
   it('no file in progress/ imports from ../learn/', () => {
     for (const file of progressFiles()) {
-      expect(LEARN_IMPORT.test(readRaw(file)), `${file} must not import the learn module (../learn)`).toBe(false);
+      expect(importsLearn(file), `${file} must not import the learn module (../learn)`).toBe(false);
     }
   });
 });
