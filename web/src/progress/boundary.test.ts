@@ -102,8 +102,8 @@ function read(file: string): string {
  * never be mistaken for one; there is no comment-stripping step and no false-negative class from
  * one.
  */
-function moduleSpecifiers(file: string): string[] {
-  const sourceFile = ts.createSourceFile(file, readRaw(file), ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+function specifiersOfSource(sourceText: string, fileName: string): string[] {
+  const sourceFile = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
   const specifiers: string[] = [];
 
   function visit(node: ts.Node): void {
@@ -129,6 +129,13 @@ function moduleSpecifiers(file: string): string[] {
 
   visit(sourceFile);
   return specifiers;
+}
+
+// Thin file-reading wrapper around `specifiersOfSource` — the file-path call site used by (a) and
+// (b) below. The canary test at the bottom of this file calls `specifiersOfSource` directly against
+// literal source strings, independent of anything on disk under progress/.
+function moduleSpecifiers(file: string): string[] {
+  return specifiersOfSource(readRaw(file), file);
 }
 
 // The 'idb' package is a bare specifier — an exact string match, no path resolution needed.
@@ -186,5 +193,45 @@ describe('store.ts contains no `=> Promise` / `AsyncIterable` tokens (one shape 
 
   it('contains no AsyncIterable', () => {
     expect(read('store.ts')).not.toMatch(/AsyncIterable/);
+  });
+});
+
+describe('moduleSpecifiers positive control — a permanent, file-state-independent canary', () => {
+  // Every check above is a NEGATIVE assertion (`.toBe(false)`) over whatever files happen to exist
+  // in progress/ right now, plus one check ((b), line 161-166) that is dormant until idb-store.ts
+  // exists (task 7-8) and can never have a positive-control fixture on disk without permanently
+  // violating the rule it enforces. That means nothing here proves `moduleSpecifiers` can find an
+  // 'idb' import at all — a `specifiersOfSource` that silently returned `[]` unconditionally, or
+  // whose `ts.forEachChild(node, visit)` recursion was dropped, would leave every assertion above
+  // passing for the wrong reason. This block is the counterweight: literal source strings, parsed
+  // directly through `specifiersOfSource`, independent of progress/'s file contents.
+  it('detects every import/export/require form that reaches the "idb" specifier', () => {
+    const cases: Array<[label: string, source: string]> = [
+      ['named import', `import { openDB } from 'idb';`],
+      ['multi-line named import', `import {\n  openDB,\n} from 'idb';`],
+      ['side-effect import', `import 'idb';`],
+      ['import-equals require', `import idb = require('idb');`],
+      [
+        'dynamic import nested inside a function body',
+        `function later(): void {\n  async function inner() {\n    const m = await import('idb');\n    return m;\n  }\n}`,
+      ],
+      ['re-export', `export { openDB } from 'idb';`],
+    ];
+
+    for (const [label, source] of cases) {
+      expect(specifiersOfSource(source, 'canary.ts'), label).toContain('idb');
+    }
+  });
+
+  it('does not mistake a comment, a string literal, or a similarly-named specifier for a real "idb" import', () => {
+    const negativeCases: Array<[label: string, source: string]> = [
+      ['comment mentioning the import form', `// import { openDB } from 'idb';\nexport const x = 1;`],
+      ['string literal mentioning the import form', `export const note = "import 'idb'";`],
+      ['relative specifier that merely contains idb as a substring', `import { x } from './idb-store';`],
+    ];
+
+    for (const [label, source] of negativeCases) {
+      expect(specifiersOfSource(source, 'canary.ts'), label).not.toContain('idb');
+    }
   });
 });
