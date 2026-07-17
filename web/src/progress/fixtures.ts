@@ -5,19 +5,16 @@
 // This determinism is what makes structured-clone round-tripping and byte-identical canonical
 // export (design §5.2, §9.2) testable at all.
 //
-// `ProgressAttemptDraft` is defined locally as `Omit<ProgressAttempt, 'committedAtRevision'>`
-// (design §3.4) rather than imported from `progress/store.ts` — that file is a later task in the
-// cycle-1 plan, and this module must not depend on it existing.
+// `ProgressAttemptDraft` (design §3.4) is canonically defined and exported from `progress/store.ts`
+// (Task 3) — imported here, not redeclared, so there is exactly one definition of the alias.
 
 import type {
-  ProgressAttempt,
   SessionRecord,
   LearnerEnvelope,
   LearnerKey,
 } from './types';
 import type { Ruleset } from '../bridge/types';
-
-type ProgressAttemptDraft = Omit<ProgressAttempt, 'committedAtRevision'>;
+import type { ProgressAttemptDraft } from './store';
 
 const FIXTURE_LEARNER_KEY = 'fixture-learner-0001' as LearnerKey;
 
