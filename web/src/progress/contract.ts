@@ -40,10 +40,11 @@
 //     14-gate invariant (below) would break if a 15th were added to cover it. The property IS
 //     covered — by progress/types.test.ts's `structuredClone(makeAttemptDraft())` deep-equality
 //     round-trip (Task 1) — just not by a gate.
-//   - §10 says "§11 makes measuring it a gate" (serialized envelope bytes at 20/1,000/10,000). §11's
-//     table has no such gate, and this file is correct to have exactly 14: the measurement is a
-//     design erratum, not a gap here. It lands as a measurement PASS, not a gate, in Task 10's
-//     Playwright runner (docs/superpowers/plans/2026-07-17-progressstore-cycle1.md, Task 10).
+//   - §10 originally said "§11 makes measuring it a gate" (serialized envelope bytes at
+//     20/1,000/10,000) — corrected; see design §12 register #14. §11's table has no such gate, and
+//     this file is correct to have exactly 14: the measurement is a design erratum, not a gap here.
+//     It lands as a measurement PASS, not a gate, in Task 10's Playwright runner
+//     (docs/superpowers/plans/2026-07-17-progressstore-cycle1.md, Task 10).
 
 import type { LearnerEnvelope, ProgressAttempt, SafeAction, SessionRecord } from './types';
 import type {

@@ -747,9 +747,11 @@ function createStore(config: ProgressStoreConfig, connection: Connection, migrat
         await tx.done;
         return { status: 'reset' };
       } catch {
-        // ResetOutcome's only rejection carrier is StorageUnavailableError (a confirmed reset is the
-        // sanctioned recovery, so it has no newer-schema/quota refusal). A superseded/closed connection
-        // steers to `reload`; any other fault to `retry`.
+        // ResetOutcome's only rejection carrier is StorageUnavailableError. A reset on a
+        // newer-incompatible store is NOT a recovery from that incompatibility — it preserves the
+        // physical schema version, so writes stay refused after it too (store.ts:139-143; design
+        // §3.4 amendment 4; register #12). A superseded/closed connection steers to `reload`; any
+        // other fault to `retry`.
         return {
           status: 'rejected',
           error: storageUnavailable(ns, physicalVersion, 'unknown', connection.superseded ? ['reload'] : ['retry']),

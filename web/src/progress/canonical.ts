@@ -36,7 +36,7 @@ import type {
   AttemptEngineContext,
   JsonValue,
 } from './types';
-import type { Ruleset } from '../bridge/types';
+import type { HandOutcome, Ruleset } from '../bridge/types';
 
 /**
  * Recursively re-emits a `JsonValue` with object keys in lexicographic order. Arrays keep their
@@ -180,6 +180,21 @@ function canonicalBudget(budget: SessionRecord['budget']): AllKeysOf<SessionReco
   };
 }
 
+// Same tripwire class as T2-M1, one level deeper (review finding, fix pass 2 re-judge cycle):
+// `AllKeysOf<AttemptEngineContext>` makes the `outcomes` slot `unknown`, so the inner
+// hand-enumerated literal below was checked only against itself (inferred) — a field added to
+// the bridge's `HandOutcome` would compile cleanly and silently drop from canonical export. Tied
+// to the source type via `HandOutcome` (imported from '../bridge/types', design §3.1) rather than
+// re-declared, so there is only one place this shape is ever spelled out.
+function canonicalOutcome(outcome: HandOutcome): AllKeysOf<HandOutcome> {
+  return {
+    hand_index: outcome.hand_index,
+    result: outcome.result,
+    wager: outcome.wager,
+    delta: outcome.delta,
+  };
+}
+
 function canonicalEngine(engine: AttemptEngineContext | null): AllKeysOf<AttemptEngineContext> | null {
   if (engine === null) return null;
   return {
@@ -187,12 +202,7 @@ function canonicalEngine(engine: AttemptEngineContext | null): AllKeysOf<Attempt
     playerCardIds: [...engine.playerCardIds],
     dealerUpcardId: engine.dealerUpcardId,
     legalActions: [...engine.legalActions],
-    outcomes: engine.outcomes.map((outcome) => ({
-      hand_index: outcome.hand_index,
-      result: outcome.result,
-      wager: outcome.wager,
-      delta: outcome.delta,
-    })),
+    outcomes: engine.outcomes.map(canonicalOutcome),
     wager: engine.wager,
   };
 }
