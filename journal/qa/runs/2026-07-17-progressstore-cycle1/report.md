@@ -3,9 +3,9 @@
 > QA script-suite role `progress`. Spec: `docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md`. Plan: `docs/superpowers/plans/2026-07-17-progressstore-cycle1.md`.
 
 - **Verdict:** PASS
-- Started: 2026-07-18T21:02:22.899Z
-- Finished: 2026-07-18T21:02:31.577Z
-- Commit: `b15e667`
+- Started: 2026-07-18T21:17:34.002Z
+- Finished: 2026-07-18T21:17:58.099Z
+- Commit: `91d9b30`
 - Base URL: http://127.0.0.1:4337/
 - Gates per browser: 14 · Browsers: chromium, firefox
 - chromium (149.0.7827.55): 14 pass / 0 fail / 0 declared-unsupported
@@ -53,3 +53,34 @@ WebKit via the pinned container `mcr.microsoft.com/playwright:v1.61.1-noble`, an
 path stays available if a WebKit-specific doubt ever arises. Nothing here is inherited from
 AL-R2's `idb` evidence — these 28 cells re-prove §5.1's three-store layout and §2.4's append
 deviation on THIS contract, in two engines.
+
+## Serialized envelope bytes — measured, not gated (design §10, Task 10)
+
+A MEASUREMENT pass, not a gate: the 14-gate matrix above (design §11) is the sole pass/fail
+authority (design-erratum ruling — byte tiers are measured, never gated). This turns design
+§10's "no cap" retention decision from an assumption into a measured claim. Each tier commits
+`makeAttemptTier(n)` one attempt at a time into a freshly namespaced, then destroyed, REAL idb
+store; canonical bytes come from the adapter's own `exportSnapshot({mode:'canonical'})` — the
+real committed record shape, round-tripped through IndexedDB — not drafts serialized in memory.
+
+Measured in **chromium** (see the Task 10 comment atop `run.ts` for why
+this is chromium-only rather than duplicated across browsers).
+
+| Tier | Attempts | Canonical bytes | Bytes/attempt | Measured IDB usage delta |
+|------|----------|------------------|----------------|---------------------------|
+| 20 | 20 | 16,324 | 816.20 | 23,112 bytes |
+| 1,000 | 1,000 | 806,954 | 806.95 | 539,693 bytes |
+| 10,000 | 10,000 | 8,096,959 | 809.70 | 2,339,935 bytes |
+
+`navigator.storage.estimate()` is coarse/quantized in real browsers; a zero or non-monotonic
+delta across tiers is a genuine browser observation, recorded as reported — never smoothed or
+fabricated into a cleaner number.
+
+**Conclusion, against design §10:** no cap is imposed. The measured cost is the table above —
+at the 10,000-attempt stress tier (AL-R2's own stress tier), the canonical envelope is the
+measured byte figure shown, not a guess. Three triggers, and only these three, would earn a
+bound: (1) `QUOTA_EXCEEDED` observed in real use (not synthesised); (2) the external-beta
+telemetry trigger firing (`docs/specs/research-brief.md:23`); (3) a measured `load()` latency
+problem. Any future bound must be an **export-first compaction** or an **explicit user
+action** — **never a silent delete** (design §10). This measurement pass does not itself
+trigger any of the three, and asserts no new bound.

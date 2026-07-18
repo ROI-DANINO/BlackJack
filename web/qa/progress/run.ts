@@ -20,6 +20,17 @@
 // report.md — the report JSON keys its browser rows and its two-page-race block separately from any
 // future `measurements`, and the markdown sections are self-contained, so an additive pass fits
 // without rewriting what is here.
+//
+// TASK 10 — SERIALIZED ENVELOPE BYTES (design §10). A MEASUREMENT pass, not a gate: the 14-gate
+// table (design §11) stays the sole pass/fail authority (design-erratum ruling — byte tiers are
+// measured, never gated, so no byte value may flip `passed`/the matrix/the exit code). Hosted in
+// CHROMIUM ONLY (not duplicated in Firefox): `canonicalize()`'s output and idb's on-disk shape are
+// provider-neutral to the design, this is a coarse cost measurement rather than a per-gate
+// conformance matrix requiring cross-engine parity, and 10,000 sequential `appendAttempt` writes in
+// a second real engine would roughly double this run's wall time for no additional evidence. A
+// measurement failure (an unexpected append/export outcome) throws and fails the RUN loudly via the
+// existing fatal-error path (`main().catch` → exit 2) — a DIFFERENT exit path from a gate failure
+// (exit 1), so it never touches the matrix accounting either.
 
 import { build } from 'vite';
 import { chromium, firefox, type Browser, type BrowserContext, type Page } from 'playwright';
@@ -38,9 +49,21 @@ const SPEC_LINK = 'docs/superpowers/specs/2026-07-17-progressstore-cycle1-design
 const PLAN_LINK = 'docs/superpowers/plans/2026-07-17-progressstore-cycle1.md';
 const PORT = 4337;
 const EXPECTED_GATES = 14;
+const MEASUREMENT_TIERS = [20, 1000, 10000] as const;
 
 type GateStatus = 'pass' | 'fail' | 'declared-unsupported';
 type GateResult = { id: string; status: GateStatus; detail?: string };
+
+interface TierMeasurement {
+  tier: number;
+  attempts: number;
+  canonicalBytes: number;
+  bytesPerAttempt: number;
+  estimateBefore: number | null;
+  estimateAfter: number | null;
+  estimateDeltaBytes: number | null;
+  note?: string;
+}
 
 interface RaceEvidence {
   ok: boolean;
@@ -57,6 +80,7 @@ interface BrowserRun {
   race: RaceEvidence;
   consoleErrors: string[];
   launchError?: string;
+  measurements?: TierMeasurement[]; // Task 10 — only the browser passed `measure:true` populates this
 }
 
 function log(msg: string): void {
@@ -153,7 +177,12 @@ async function launchFirefox(): Promise<Browser> {
 
 // === Drive one browser ========================================================================
 
-async function driveBrowser(name: string, launch: () => Promise<Browser>, baseUrl: string): Promise<BrowserRun> {
+async function driveBrowser(
+  name: string,
+  launch: () => Promise<Browser>,
+  baseUrl: string,
+  measure: boolean,
+): Promise<BrowserRun> {
   const consoleErrors: string[] = [];
   let browser: Browser | undefined;
   try {
@@ -201,7 +230,23 @@ async function driveBrowser(name: string, launch: () => Promise<Browser>, baseUr
     const readback = await page1.evaluate(() => window.__raceReadback());
     const race = judgeRace(a, b, readback);
 
-    return { name, version, results, race, consoleErrors };
+    // Task 10 — serialized envelope byte measurement (design §10), hosted in this browser only when
+    // `measure` is set (see the Task 10 comment at the top of this file for why chromium-only). A
+    // fresh page, same origin — never shares a page with the gates or the race, so nothing here can
+    // perturb their evidence.
+    let measurements: TierMeasurement[] | undefined;
+    if (measure) {
+      const measurePage = await context.newPage();
+      attach(measurePage);
+      await measurePage.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+      await measurePage.waitForFunction(() => typeof window.__measureEnvelopeBytes === 'function', undefined, { timeout: 30000 });
+      measurements = (await measurePage.evaluate(
+        (tiers) => window.__measureEnvelopeBytes([...tiers]),
+        MEASUREMENT_TIERS,
+      )) as TierMeasurement[];
+    }
+
+    return { name, version, results, race, consoleErrors, measurements };
   } finally {
     await browser.close().catch(() => {});
   }
@@ -321,6 +366,44 @@ function renderMarkdown(payload: ReportPayload): string {
   lines.push("AL-R2's `idb` evidence — these 28 cells re-prove §5.1's three-store layout and §2.4's append");
   lines.push('deviation on THIS contract, in two engines.');
   lines.push('');
+
+  lines.push('## Serialized envelope bytes — measured, not gated (design §10, Task 10)');
+  lines.push('');
+  lines.push('A MEASUREMENT pass, not a gate: the 14-gate matrix above (design §11) is the sole pass/fail');
+  lines.push('authority (design-erratum ruling — byte tiers are measured, never gated). This turns design');
+  lines.push('§10\'s "no cap" retention decision from an assumption into a measured claim. Each tier commits');
+  lines.push('`makeAttemptTier(n)` one attempt at a time into a freshly namespaced, then destroyed, REAL idb');
+  lines.push('store; canonical bytes come from the adapter\'s own `exportSnapshot({mode:\'canonical\'})` — the');
+  lines.push('real committed record shape, round-tripped through IndexedDB — not drafts serialized in memory.');
+  lines.push('');
+  if (payload.measurements.browser === null) {
+    lines.push(`No browser produced a measurement pass. ${payload.measurements.note}`);
+    lines.push('');
+  } else {
+    lines.push(`Measured in **${payload.measurements.browser}** (see the Task 10 comment atop \`run.ts\` for why`);
+    lines.push('this is chromium-only rather than duplicated across browsers).');
+    lines.push('');
+    lines.push('| Tier | Attempts | Canonical bytes | Bytes/attempt | Measured IDB usage delta |');
+    lines.push('|------|----------|------------------|----------------|---------------------------|');
+    for (const m of payload.measurements.tiers) {
+      const delta = m.estimateDeltaBytes === null ? 'n/a (estimate() unsupported/errored)' : `${m.estimateDeltaBytes.toLocaleString()} bytes`;
+      lines.push(`| ${m.tier.toLocaleString()} | ${m.attempts.toLocaleString()} | ${m.canonicalBytes.toLocaleString()} | ${m.bytesPerAttempt.toFixed(2)} | ${delta} |`);
+    }
+    lines.push('');
+    lines.push('`navigator.storage.estimate()` is coarse/quantized in real browsers; a zero or non-monotonic');
+    lines.push('delta across tiers is a genuine browser observation, recorded as reported — never smoothed or');
+    lines.push('fabricated into a cleaner number.');
+    lines.push('');
+  }
+  lines.push('**Conclusion, against design §10:** no cap is imposed. The measured cost is the table above —');
+  lines.push('at the 10,000-attempt stress tier (AL-R2\'s own stress tier), the canonical envelope is the');
+  lines.push('measured byte figure shown, not a guess. Three triggers, and only these three, would earn a');
+  lines.push('bound: (1) `QUOTA_EXCEEDED` observed in real use (not synthesised); (2) the external-beta');
+  lines.push('telemetry trigger firing (`docs/specs/research-brief.md:23`); (3) a measured `load()` latency');
+  lines.push('problem. Any future bound must be an **export-first compaction** or an **explicit user');
+  lines.push('action** — **never a silent delete** (design §10). This measurement pass does not itself');
+  lines.push('trigger any of the three, and asserts no new bound.');
+  lines.push('');
   return lines.join('\n');
 }
 
@@ -333,6 +416,12 @@ function cellFor(status: GateStatus): string {
     case 'declared-unsupported':
       return 'declared-unsupported';
   }
+}
+
+interface MeasurementBlock {
+  browser: string | null; // which browser hosted the measurement; null if none ran it
+  tiers: TierMeasurement[];
+  note: string;
 }
 
 interface ReportPayload {
@@ -349,6 +438,9 @@ interface ReportPayload {
   matrixPass: number;
   passed: boolean;
   webkitGap: { covered: boolean; reason: string; alternative: string };
+  // Task 10 (design §10). Keyed SEPARATELY from `browsers`/the race block, by design (see the
+  // ADDITIVE-BY-DESIGN comment at the top of this file) — a MEASUREMENT, never a factor in `passed`.
+  measurements: MeasurementBlock;
 }
 
 // === Main =====================================================================================
@@ -366,17 +458,22 @@ async function main(): Promise<number> {
 
   const browsers: BrowserRun[] = [];
   try {
-    for (const [name, launch] of [
-      ['chromium', launchChromium],
-      ['firefox', launchFirefox],
+    for (const [name, launch, measure] of [
+      ['chromium', launchChromium, true],
+      ['firefox', launchFirefox, false],
     ] as const) {
-      log(`──────── ${name} ────────`);
-      const run = await driveBrowser(name, launch, baseUrl);
+      log(`──────── ${name}${measure ? ' (+ byte measurement)' : ''} ────────`);
+      const run = await driveBrowser(name, launch, baseUrl, measure);
       if (run.launchError) log(`  ${name} launch FAILED: ${run.launchError}`);
       else {
         const s = summarise(run.results);
         log(`  ${name} ${run.version}: ${s.pass} pass / ${s.fail} fail / ${s.unsupported} unsupported; race ${run.race.ok ? 'PASS' : 'FAIL'}`);
         for (const r of run.results.filter((x) => x.status === 'fail')) log(`    x ${r.id}: ${r.detail ?? ''}`);
+        if (run.measurements) {
+          for (const m of run.measurements) {
+            log(`    measured tier ${m.attempts}: ${m.canonicalBytes} bytes (${m.bytesPerAttempt.toFixed(1)}/attempt), estimate delta ${m.estimateDeltaBytes ?? 'n/a'}`);
+          }
+        }
       }
       browsers.push(run);
     }
@@ -400,6 +497,13 @@ async function main(): Promise<number> {
   const fullCounts = ranBrowsers.every((b) => b.results.length === EXPECTED_GATES);
   const passed = bothRan && fullCounts && !anyFail && !anyUnsupported && !anyRaceFail;
 
+  // Task 10 — deliberately NOT an input to `passed` above (design-erratum ruling: §11's 14-gate
+  // table is the sole pass/fail authority; byte tiers are measured, never gated).
+  const measuredBrowser = browsers.find((b) => b.measurements);
+  const measurements: MeasurementBlock = measuredBrowser
+    ? { browser: measuredBrowser.name, tiers: measuredBrowser.measurements ?? [], note: 'measured against the real committed idb store; see design §10' }
+    : { browser: null, tiers: [], note: 'no browser produced a measurement pass (see launch issues, if any)' };
+
   const finishedAt = new Date().toISOString();
   const payload: ReportPayload = {
     role: 'progress',
@@ -419,6 +523,7 @@ async function main(): Promise<number> {
       reason: "host Playwright WebKit targets Ubuntu 24.04 libs; cannot launch on CachyOS/Arch ABI (AL-R2 :141-145)",
       alternative: 'AL-R2 proved idb 14/14 in WebKit via mcr.microsoft.com/playwright:v1.61.1-noble; container path available',
     },
+    measurements,
   };
 
   writeFileSync(join(REPORT_DIR, 'report.md'), `${renderMarkdown(payload).replace(/\s+$/, '')}\n`);

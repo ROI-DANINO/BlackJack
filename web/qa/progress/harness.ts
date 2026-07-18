@@ -49,7 +49,7 @@ import type {
 import type { OpenOutcome, ProgressStoreConfig } from '../../src/progress/store';
 import type { LearnerKey } from '../../src/progress/types';
 import { openProgressStore } from '../../src/progress/idb-store';
-import { makeAttemptDraft } from '../../src/progress/fixtures';
+import { makeAttemptDraft, makeAttemptTier } from '../../src/progress/fixtures';
 
 // === Config ===================================================================================
 
@@ -311,6 +311,98 @@ async function raceReadback(): Promise<{ attemptCount: number; revision: number 
   }
 }
 
+// === Serialized envelope byte measurement (Task 10, design §10) ==============================
+//
+// A MEASUREMENT pass, not a gate: the 14-gate table (design §11) is the sole pass/fail authority
+// (design-erratum ruling — byte tiers are measured, never gated). This turns design §10's "no cap"
+// retention decision from an assumption into a measured claim. For each tier, `makeAttemptTier(n)`
+// drafts are committed ONE AT A TIME into a freshly namespaced idb store (never reused across
+// tiers, so no other gate/race/tier data pollutes the byte count or the storage estimate), then the
+// canonical bytes are read back via the REAL adapter's own `exportSnapshot({mode:'canonical'})` —
+// i.e. `canonicalize()` over the REAL committed record shape, round-tripped through IndexedDB, not
+// just the in-memory drafts — and the namespace is destroyed afterward.
+
+const MEASURE_NAMESPACE_PREFIX = 'progress-contract-measure-tier-';
+
+export type TierMeasurement = {
+  tier: number;
+  attempts: number;
+  canonicalBytes: number;
+  bytesPerAttempt: number;
+  estimateBefore: number | null;
+  estimateAfter: number | null;
+  estimateDeltaBytes: number | null;
+  note?: string;
+};
+
+/**
+ * `navigator.storage.estimate()`'s reported usage in bytes, or `null` when the API is unsupported
+ * or itself errors. Recorded honestly per the Task 10 binding: this API is coarse/quantized in real
+ * browsers, so a `null`, a zero, or a nonsensical delta is a genuine OBSERVATION to record, never
+ * papered over with a fabricated number.
+ */
+async function safeStorageUsage(): Promise<number | null> {
+  if (typeof navigator === 'undefined' || !navigator.storage || typeof navigator.storage.estimate !== 'function') {
+    return null;
+  }
+  try {
+    const estimate = await navigator.storage.estimate();
+    return typeof estimate.usage === 'number' ? estimate.usage : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Measure one tier. Any unexpected append/export outcome THROWS — this is a measurement, and an
+ * unexpected outcome here means the measurement itself is untrustworthy, not that a "gate" failed;
+ * the caller (run.ts) lets that propagate to the existing fatal-error path (exit 2), which is
+ * deliberately a DIFFERENT exit path from a gate failure (exit 1) — see run.ts's Task 10 comment.
+ */
+async function measureTier(tier: number): Promise<TierMeasurement> {
+  const namespace = `${MEASURE_NAMESPACE_PREFIX}${tier}`;
+  await deleteDB(namespace).catch(() => {}); // clean starting point — no residue from a prior run
+  const estimateBefore = await safeStorageUsage();
+
+  const outcome = await openProgressStore(configFor(namespace, IDB_SCHEMA_VERSION));
+  if (outcome.status !== 'open') {
+    throw new Error(`measureTier(${tier}): open failed with '${outcome.error.code}'`);
+  }
+  const store = outcome.store;
+  try {
+    for (const draft of makeAttemptTier(tier)) {
+      const appended = await store.appendAttempt(draft);
+      if (appended.status !== 'committed') {
+        throw new Error(`measureTier(${tier}): appendAttempt('${draft.attemptId}') returned '${appended.status}', expected 'committed'`);
+      }
+    }
+    const exported = await store.exportSnapshot({ mode: 'canonical' });
+    if (exported.status !== 'exported') {
+      throw new Error(`measureTier(${tier}): exportSnapshot returned '${exported.status}', expected 'exported'`);
+    }
+    const canonicalBytes = new TextEncoder().encode(exported.json).length;
+    const estimateAfter = await safeStorageUsage();
+    return {
+      tier,
+      attempts: tier,
+      canonicalBytes,
+      bytesPerAttempt: canonicalBytes / tier,
+      estimateBefore,
+      estimateAfter,
+      estimateDeltaBytes: estimateBefore !== null && estimateAfter !== null ? estimateAfter - estimateBefore : null,
+    };
+  } finally {
+    await store.close();
+    await deleteDB(namespace).catch(() => {});
+  }
+}
+
+async function measureEnvelopeBytes(tiers: number[]): Promise<TierMeasurement[]> {
+  const out: TierMeasurement[] = [];
+  for (const tier of tiers) out.push(await measureTier(tier));
+  return out;
+}
+
 // === Window API ===============================================================================
 
 declare global {
@@ -320,6 +412,7 @@ declare global {
     __raceReset: () => Promise<void>;
     __raceAppend: (ordinal: number) => Promise<{ status: string; revision: number | null; attemptId: string }>;
     __raceReadback: () => Promise<{ attemptCount: number; revision: number | null; attemptIds: string[] }>;
+    __measureEnvelopeBytes: (tiers: number[]) => Promise<TierMeasurement[]>;
   }
 }
 
@@ -337,3 +430,4 @@ window.__progressSubject = idbSubject;
 window.__raceReset = raceReset;
 window.__raceAppend = raceAppend;
 window.__raceReadback = raceReadback;
+window.__measureEnvelopeBytes = measureEnvelopeBytes;

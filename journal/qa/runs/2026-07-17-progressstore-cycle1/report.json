@@ -2,9 +2,9 @@
   "role": "progress",
   "spec": "docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md",
   "plan": "docs/superpowers/plans/2026-07-17-progressstore-cycle1.md",
-  "startedAt": "2026-07-18T21:02:22.899Z",
-  "finishedAt": "2026-07-18T21:02:31.577Z",
-  "commit": "b15e667",
+  "startedAt": "2026-07-18T21:17:34.002Z",
+  "finishedAt": "2026-07-18T21:17:58.099Z",
+  "commit": "91d9b30",
   "baseUrl": "http://127.0.0.1:4337/",
   "gateIds": [
     "open-empty",
@@ -112,6 +112,35 @@
         "pageerror: AbortError",
         "pageerror: CONTRACT_ABORT_UPGRADE",
         "pageerror: Uncaught exception in event handler."
+      ],
+      "measurements": [
+        {
+          "tier": 20,
+          "attempts": 20,
+          "canonicalBytes": 16324,
+          "bytesPerAttempt": 816.2,
+          "estimateBefore": 66990,
+          "estimateAfter": 90102,
+          "estimateDeltaBytes": 23112
+        },
+        {
+          "tier": 1000,
+          "attempts": 1000,
+          "canonicalBytes": 806954,
+          "bytesPerAttempt": 806.954,
+          "estimateBefore": 90102,
+          "estimateAfter": 629795,
+          "estimateDeltaBytes": 539693
+        },
+        {
+          "tier": 10000,
+          "attempts": 10000,
+          "canonicalBytes": 8096959,
+          "bytesPerAttempt": 809.6959,
+          "estimateBefore": 629795,
+          "estimateAfter": 2969730,
+          "estimateDeltaBytes": 2339935
+        }
       ]
     },
     {
@@ -213,5 +242,38 @@
     "covered": false,
     "reason": "host Playwright WebKit targets Ubuntu 24.04 libs; cannot launch on CachyOS/Arch ABI (AL-R2 :141-145)",
     "alternative": "AL-R2 proved idb 14/14 in WebKit via mcr.microsoft.com/playwright:v1.61.1-noble; container path available"
+  },
+  "measurements": {
+    "browser": "chromium",
+    "tiers": [
+      {
+        "tier": 20,
+        "attempts": 20,
+        "canonicalBytes": 16324,
+        "bytesPerAttempt": 816.2,
+        "estimateBefore": 66990,
+        "estimateAfter": 90102,
+        "estimateDeltaBytes": 23112
+      },
+      {
+        "tier": 1000,
+        "attempts": 1000,
+        "canonicalBytes": 806954,
+        "bytesPerAttempt": 806.954,
+        "estimateBefore": 90102,
+        "estimateAfter": 629795,
+        "estimateDeltaBytes": 539693
+      },
+      {
+        "tier": 10000,
+        "attempts": 10000,
+        "canonicalBytes": 8096959,
+        "bytesPerAttempt": 809.6959,
+        "estimateBefore": 629795,
+        "estimateAfter": 2969730,
+        "estimateDeltaBytes": 2339935
+      }
+    ],
+    "note": "measured against the real committed idb store; see design §10"
   }
 }
