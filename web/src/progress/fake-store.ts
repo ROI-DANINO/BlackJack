@@ -81,13 +81,19 @@ type PhysicalRecord = { [key: string]: unknown };
 /**
  * One namespace's physical contents: §5.1's three stores plus the version marker.
  *
- * `physicalVersion` is this fake's `db.version` — the schema marker the DATABASE tracks, which is
- * deliberately separate from the `schemaVersion` field inside the `meta` record. The two are equal
- * in every normal state and are kept equal by `openConnection`'s upgrade. They come apart in
- * exactly one place: `setPhysicalSchema` (gate 14) moves the marker and nothing else, which is what
- * a store written by a NEWER build looks like to this build. `physicalVersion` is the detection
- * surface everywhere (`diagnose().detectedSchema`, `RawExport.physicalVersion`, the newer-schema
- * check), because that is what IndexedDB itself would report before any record is readable.
+ * `physicalVersion` is this fake's `db.version` — the schema marker the DATABASE tracks, and the
+ * ONLY schema authority anywhere in this file (`diagnose().detectedSchema`, `RawExport.physicalVersion`,
+ * the newer-schema check, `readEnvelope`'s `schemaVersion`) — never the `schemaVersion` FIELD inside
+ * the `meta` record. That field is written once, at minting, and `openConnection`'s upgrade
+ * deliberately does NOT revise it on an existing meta record: an additive migration is schema-only
+ * (§8.1) — it creates/alters object stores, it does not rewrite a record's own fields. This mirrors
+ * the real idb adapter (T7-M2): `idb-store.ts`'s equivalent upgrade path never touches an existing
+ * `MetaRecord.schemaVersion` either, so `meta.schemaVersion` goes physically stale after a migration
+ * on BOTH subjects — consumers must never read it as schema truth. `physicalVersion` also moves
+ * alone (with `meta.schemaVersion` staying exactly where it was) in `setPhysicalSchema` (gate 14),
+ * which is what a store written by a NEWER build looks like to this build before any record is
+ * readable — the same "marker moves, record doesn't" shape as a real migration, for a different
+ * reason.
  */
 type NamespaceState = {
   physicalVersion: number;
@@ -313,9 +319,14 @@ function metaRecordOf(state: NamespaceState): PhysicalRecord {
 /** Every invalid record in the namespace, itemised by store + key + reason (§3.3, §8.4). */
 function validateAll(state: NamespaceState): InvalidRecordRef[] {
   const invalid: InvalidRecordRef[] = [];
-  const meta = metaRecordOf(state);
-  const metaReason = validateMeta(meta);
-  if (metaReason !== null) invalid.push({ store: 'meta', key: meta['id'] ?? META_SINGLETON_ID, reason: metaReason });
+  // A store-cleared namespace (Task 6.5 ruling 4) has no meta singleton and is EMPTY, not corrupt —
+  // there is nothing to validate. (`load()` already short-circuits empty before reaching here; this
+  // keeps `diagnose()`, which runs on any present namespace, from throwing on the reset state.)
+  const meta = state.meta[0];
+  if (meta !== undefined) {
+    const metaReason = validateMeta(meta);
+    if (metaReason !== null) invalid.push({ store: 'meta', key: meta['id'] ?? META_SINGLETON_ID, reason: metaReason });
+  }
   state.attempts.forEach((record, index) => {
     const reason = validateAttempt(record);
     if (reason !== null) invalid.push({ store: 'attempts', key: record['attemptId'] ?? `<attempts[${index}]>`, reason });
@@ -415,7 +426,12 @@ function noteCurriculumVersion(state: NamespaceState, version: string): void {
  * a half-written state was ever in the realm.
  */
 function candidateFor(config: ProgressStoreConfig, current: NamespaceState | undefined): NamespaceState {
-  return current === undefined ? mintNamespace(config) : structuredClone(current);
+  // `current === undefined` (never written) OR a store-cleared namespace with no meta singleton
+  // (Task 6.5 ruling 4) both mean "no envelope yet": the first write re-mints the key inside its own
+  // transaction (§6). Cloning a meta-empty state instead would leave `metaRecordOf` with nothing to
+  // return. `mintNamespace` sets `physicalVersion` to this build's schema, which equals the
+  // preserved post-reset version, so the marker is unchanged.
+  return current === undefined || current.meta.length === 0 ? mintNamespace(config) : structuredClone(current);
 }
 
 // === The store =================================================================================
@@ -428,6 +444,12 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
   const loadNow = (): LoadOutcome => {
     const state = REALM.get(ns);
     if (state === undefined) return { status: 'empty' };
+    // A physically-present namespace with no `meta` singleton is EMPTY, not loadable — this is the
+    // post-(store-clearing)-reset state (Task 6.5 ruling 4): the database and its schema survive,
+    // but the learner envelope is gone. `load()` mints nothing (§6), so it reports empty exactly as
+    // it does for an absent namespace. `diagnose()` still reports the physical schema (the namespace
+    // EXISTS) — the two surfaces answer different questions; see this file's `reset` and `diagnose`.
+    if (state.meta.length === 0) return { status: 'empty' };
     // The physical marker is the only thing readable before the records are (§3.6's rationale):
     // a store written by a newer build is not corrupt, merely unreadable here (§8.4).
     if (state.physicalVersion > config.schemaVersion) {
@@ -443,15 +465,17 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
   };
 
   /**
-   * A write into a namespace this build cannot read is refused. The design does not pin an outcome
-   * for this (no gate reaches it: gates 13 and 14 never write after the fault), but the alternative
-   * — appending evidence into a store whose schema this build has never heard of — would be a write
-   * the store could not later export or reason about. `rejected` is the only outcome shape
-   * `AppendOutcome`/`CommitOutcome` offer for it.
+   * A write into a namespace physically NEWER than this build is refused with `NewerSchemaError`
+   * (Task 6.5 ruling 2). Appending evidence into a store whose schema this build has never heard of
+   * would be a write the store could not later export or reason about. The refusal is NOT
+   * `STORAGE_UNAVAILABLE`: the storage subsystem is available, the store is merely intentionally
+   * unreadable/unwritable by this version, so `safeActions:['retry']` would be a lie — the write can
+   * never succeed until the app upgrades. `upgrade-app` (not `retry`) is the safe action. Applied to EVERY
+   * evidence-write below — both `appendAttempt` and `commitSessionSummary` — via gate 14.
    */
-  const refuseIfNewer = (current: NamespaceState | undefined): StorageUnavailableError | null =>
+  const refuseIfNewer = (current: NamespaceState | undefined): NewerSchemaError | null =>
     current !== undefined && current.physicalVersion > config.schemaVersion
-      ? storageUnavailable(ns, current.physicalVersion, 'unknown', ['export-raw', 'upgrade-app'])
+      ? newerSchema(ns, current.physicalVersion, config.schemaVersion)
       : null;
 
   return {
@@ -489,6 +513,13 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
       const current = REALM.get(ns);
       const refusal = refuseIfNewer(current);
       if (refusal !== null) return { status: 'rejected', error: refusal };
+
+      // §6 (Task 6.5 ruling 3): the learner key is minted ONLY by the first persisted attempt. A
+      // summary before any attempt — a fresh namespace, or one store-cleared by reset, i.e. no meta
+      // singleton — must mint NOTHING: no key, no namespace, no session record. Returning
+      // 'no-evidence' preserves §4.2 point 2's prohibition on phantom zero-evidence sessions. This
+      // sits AFTER refuseIfNewer (a newer-schema store is refused, not treated as no-evidence).
+      if (current === undefined || current.meta.length === 0) return { status: 'no-evidence' };
 
       const next = candidateFor(config, current);
       const existing = next.sessions.find((record) => record['sessionId'] === write.session.sessionId);
@@ -554,12 +585,13 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
         case 'unavailable':
           return { status: 'unavailable', error: outcome.error };
         case 'empty':
-          // UNSPECIFIED BY THE DESIGN, and reached by no gate: `ExportOutcome` has no 'empty'
-          // branch, and there is no envelope to canonicalise. Reporting the namespace as absent is
-          // the only answer that does not require MINTING a learnerKey to fill an export — which
-          // §6 forbids on a read ("load() on an empty namespace mints NOTHING"). Flagged for Task 7:
-          // the adapter must make the same call, and it should be pinned rather than inferred.
-          return { status: 'unavailable', error: storageUnavailable(ns, null, 'absent') };
+          // Task 6.5 ruling 1: a canonical export of a namespace with no persisted data returns the
+          // explicit `{status:'empty'}` — MINTING a learnerKey to fill an export would be a write on
+          // a read, which §6 forbids ("load() on an empty namespace mints NOTHING"). It is NOT
+          // 'unavailable'/'absent': `absent` (§8.3) means the storage subsystem itself is
+          // unavailable, so a caller must be able to tell "you have no data yet" from "IndexedDB is
+          // unavailable in this browser". This is now pinned by the contract (gate 1), not inferred.
+          return { status: 'empty' };
       }
     },
 
@@ -578,7 +610,17 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
         // for, and the caller reaching here with a number has looked at something this store cannot
         // corroborate. Ungated.
       }
-      REALM.delete(ns);
+      // Task 6.5 ruling 4: CLEAR all three object stores, preserving the database and its schema
+      // version — never `REALM.delete(ns)` (the fake's equivalent of `deleteDatabase`). This mirrors
+      // the constraint on the Task 7 adapter (a transactional clear of meta+attempts+sessions), and
+      // it is what makes "no residual records in any store" (gate 10) FALSIFIABLE against both
+      // subjects: clearing only some stores now strands representable records. The namespace stays
+      // physically present at its schema version, so a subsequent `diagnose()` reports that version
+      // (not null) while `load()` reports empty — the pair that exercises assertNoStoredRecords's
+      // anti-vacuity branch, dead until now. `physicalVersion` is deliberately untouched.
+      state.meta = [];
+      state.attempts = [];
+      state.sessions = [];
       return { status: 'reset' };
     },
 
@@ -665,7 +707,9 @@ function openConnection(config: ProgressStoreConfig, migrations: MigrationMap | 
     replaceRecords(upgraded, step.store, step.transform);
   }
   upgraded.physicalVersion = config.schemaVersion;
-  metaRecordOf(upgraded)['schemaVersion'] = config.schemaVersion;
+  // `meta.schemaVersion` is deliberately LEFT AS IS — see the NamespaceState doc comment above. An
+  // additive migration is schema-only; it never rewrites an existing meta record, on this subject or
+  // the real idb adapter (T7-M2).
 
   // THE COMMIT POINT of the versionchange transaction. The cursor transform and the version bump
   // are one transaction (§8.1): an abort must undo BOTH, and it does here by construction — the

@@ -208,6 +208,17 @@ describe('module boundary — only idb-store.ts may import "idb" (design §3.1)'
     if (!progressFiles().includes('idb-store.ts')) return;
     expect(importsIdb('idb-store.ts')).toBe(true);
   });
+
+  // Task 7 activates the dormant check above. The adapter now EXISTS on disk and its whole reason to
+  // exist is to be the one place `idb` is imported (design §3.1's file table; the single-import rule).
+  // Where the check above is vacuous-until-present, this one is a live positive control: it FAILS if
+  // idb-store.ts is ever deleted or stops importing idb, so the "only idb-store.ts imports idb" rule
+  // can never be satisfied by no file importing idb at all. Paired with the negative check (no OTHER
+  // file imports idb), these two pin "exactly idb-store.ts imports idb".
+  it('idb-store.ts is present and is the file that imports idb (design §3.1)', () => {
+    expect(progressFiles(), 'progress/idb-store.ts must exist as of Task 7').toContain('idb-store.ts');
+    expect(importsIdb('idb-store.ts'), 'idb-store.ts must import the idb package it exists to own').toBe(true);
+  });
 });
 
 describe('module boundary — only progress/contract.test.ts may import fake-store.ts (fake-store.ts header, design §8.3)', () => {

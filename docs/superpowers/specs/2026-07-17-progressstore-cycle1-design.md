@@ -260,6 +260,13 @@ export type ConnectionSupersededError = StoreErrorBase & { code: 'CONNECTION_SUP
 export type InvalidRecordRef = { store: string; key: unknown; reason: string };
 ```
 
+**`NewerSchemaError` is also a *write*-rejection reason (amended 2026-07-17, Task 6.5 ruling 2).** It
+was originally a load/export outcome only. An evidence-write (`appendAttempt`, `commitSessionSummary`)
+into a namespace physically newer than this build is now **refused with `NEWER_SCHEMA`**, not mapped to
+`STORAGE_UNAVAILABLE`: the storage subsystem is available, the store is merely intentionally
+unreadable/unwritable by this version, so `safeActions:['retry']` would loop a write that can never land
+until the app upgrades (`upgrade-app` is the safe action). See §3.4's write unions and §8.4; register #10.
+
 ### 3.4 The five data operations
 
 ```ts
@@ -275,7 +282,7 @@ export type ProgressAttemptDraft = Omit<ProgressAttempt, 'committedAtRevision'>;
 export type AppendOutcome =
   | { status: 'committed'; revision: number }
   | { status: 'duplicate'; revision: number }   // attemptId already present; nothing written
-  | { status: 'rejected'; error: QuotaExceededError | StorageUnavailableError | ConnectionSupersededError };
+  | { status: 'rejected'; error: QuotaExceededError | StorageUnavailableError | ConnectionSupersededError | NewerSchemaError };  // +NewerSchemaError: ruling 2
 
 export type SessionSummaryWrite = {
   session: Omit<SessionRecord, 'committedAtRevision'>;
@@ -287,12 +294,14 @@ export type CommitOutcome =
   | { status: 'committed'; revision: number }
   | { status: 'duplicate'; revision: number }
   | { status: 'conflict'; currentRevision: number }   // REVISION_CONFLICT: reload, re-derive, retry
-  | { status: 'rejected'; error: QuotaExceededError | StorageUnavailableError | ConnectionSupersededError };
+  | { status: 'no-evidence' }                         // ruling 3: no persisted attempt yet ⇒ mints nothing, writes nothing (§6, §4.2)
+  | { status: 'rejected'; error: QuotaExceededError | StorageUnavailableError | ConnectionSupersededError | NewerSchemaError };  // +NewerSchemaError: ruling 2
 
 export type ExportRequest = { mode: 'canonical' } | { mode: 'raw' };
 
 export type ExportOutcome =
   | { status: 'exported'; mode: 'canonical' | 'raw'; json: string }
+  | { status: 'empty' }                                                                        // ruling 1: canonical export, no persisted data — mints NOTHING; NOT 'absent'
   | { status: 'not-canonical-exportable'; error: RecoveryRequiredError | NewerSchemaError }  // → retry with mode:'raw'
   | { status: 'unavailable'; error: StorageUnavailableError };
 
@@ -317,6 +326,30 @@ was offered before reset" — it cannot see the UI. This design refuses to fake 
 `exportOffered: boolean` the caller can lie about. Instead the port guarantees raw export is
 **reachable in every failure state** (§3.6), and "offer export before reset" is a **product obligation
 verified in feature QA**, not a type.
+
+**Amendments (2026-07-17, Task 6.5). Four gaps Task 5 hit that the design left unpinned — resolved so
+the fake and the idb adapter are governed by the SAME contract, not by the fake's incidental choices.
+Each union only GREW; no existing outcome was weakened.**
+
+1. **`ExportOutcome` gains `{status:'empty'}` (ruling 1).** A canonical export of a namespace with no
+   persisted data has no envelope to canonicalise, and minting a `learnerKey` to fill one would be a
+   *write on a read*, which §6 forbids. `empty` is deliberately **distinct from `unavailable`/`absent`**:
+   `absent` (§8.3) is reserved for a storage subsystem that is genuinely unavailable, so a caller can
+   tell "you have no data yet" from "IndexedDB is unavailable in this browser". Raw export is unchanged —
+   a raw dump of an empty namespace is `{status:'exported', mode:'raw'}` with empty stores.
+2. **`AppendOutcome`/`CommitOutcome` `rejected` gains `NewerSchemaError` (ruling 2).** See §3.3 and §8.4.
+   Applied to **every** evidence-write, not only `appendAttempt`.
+3. **`CommitOutcome` gains `{status:'no-evidence'}` (ruling 3).** A `commitSessionSummary` before any
+   persisted attempt must NOT mint the learner key, create the namespace, or write a session record —
+   the key is minted only by the first `appendAttempt` (§6). A no-op summary preserves §4.2 point 2's
+   prohibition on phantom zero-evidence sessions. It is a no-op *outcome*, not an error.
+4. **`reset` becomes store-clearing (ruling 4).** Its *outcome shape is unchanged* — a success is still
+   `{status:'reset'}` — but its *behavior* is pinned: it clears all three object stores transactionally
+   and **preserves the database and its schema version** (never `deleteDatabase`). Rationale and the
+   `detectedSchema` reconciliation are in §3.5; the newer-schema refusal is deliberately NOT extended to
+   `reset` — but because reset preserves the physical schema version, a reset of a v999 store leaves it
+   v999 and still write-refused, so reset is not a recovery from that incompatibility. Gate 14's
+   `NEWER_SCHEMA` safeActions stay `['export-raw','upgrade-app']` only.
 
 ### 3.5 The sixth slot: `diagnose()`, and where migration runs
 
@@ -351,6 +384,18 @@ export type Diagnosis = {
 
 `diagnose()` has real cycle-1 consumers: the migration/recovery gates (§11), the `'unloadable'` reset
 path, and the future recovery UI. It is not speculative surface.
+
+**`detectedSchema: null` after a store-clearing reset — the open question ruling 4 raised, decided
+(2026-07-17, Task 6.5).** Ruling 4 makes `reset` clear the stores while keeping the database. That
+produces one state the two read-surfaces answer differently: `load()` returns `{status:'empty'}` (no
+`meta` singleton ⇒ no envelope to load), yet the namespace **physically exists at its schema version**.
+**Decision: `detectedSchema` reports that physical version (e.g. `1`), not `null`.** This does **not**
+contradict "`null` = namespace absent": `null` still means *absent*, and a store-cleared namespace is
+*present-but-empty*, which is a different fact. The two surfaces measure different things — `load()`
+asks "is there an envelope to read?", `diagnose().detectedSchema` asks "does the database physically
+exist, and at what schema?". Their divergence here is correct, and it is load-bearing: it is exactly
+what brings `assertNoStoredRecords`'s anti-vacuity guard (contract.ts) to life, since post-reset
+`detectedSchema !== null` makes the guard run on every gate-10 pass (register #12).
 
 ### 3.6 Raw export of an *unloadable* envelope
 
@@ -886,6 +931,26 @@ app update, B's upgrade blocks on A (BROWSER-003, "blocked older connections"). 
 `onversionchange` → closes its connection → every subsequent operation returns
 `ConnectionSupersededError` with `safeActions: ['reload']`. **Never block silently, never fight it.**
 
+**Writes into a newer-schema namespace — refuse (amended 2026-07-17, Task 6.5 ruling 2).** The
+multi-tab-after-update case has a write half too: a tab still running the old build may try to append
+into a store another tab upgraded. Appending evidence into a store whose schema this build has never
+heard of would be a record this build could not later export or reason about. Every evidence-write
+(`appendAttempt`, `commitSessionSummary`) therefore **returns `{status:'rejected'}` carrying
+`NewerSchemaError`** — never `STORAGE_UNAVAILABLE`. The storage is available; it is intentionally
+unwritable by this version, so the honest safe action is `upgrade-app`, not `retry`. Gate 14 proves it
+for both write operations.
+
+**Reset is store-clearing, not database-deleting (amended 2026-07-17, Task 6.5 ruling 4).** A confirmed
+`reset` clears the three object stores **inside one transaction** and leaves the database and its schema
+version intact — it never `deleteDatabase`. Two reasons: (a) it removes learner data without churning
+the schema, and (b) it makes "no residual records in *any* store" a *falsifiable* property — a reset
+that clears `attempts` but strands `sessions` is now a representable defect the gate catches, where
+deleting the whole database made stranded records unrepresentable. `deleteDatabase` also blocks on open
+connections; a transactional clear does not. This is **not** a relaxation of "no automatic reset, ever"
+[PINNED] — reset remains explicit and confirmation-gated; only its mechanism changed. Post-reset,
+`load()` is `{status:'empty'}` while `diagnose().detectedSchema` reports the surviving schema version
+(§3.5).
+
 ---
 
 ## 9. Transaction lifetime, expressed in the signatures
@@ -926,9 +991,13 @@ port — it simply cannot *call* it yet, which is cycle 3's problem and not a sh
 
 This is not merely *unauthorized* — it is also probably *fine*. AL-R2's stress tier was 10,000 attempts
 and the harness "records serialized fixture bytes", so the real number is measurable rather than
-guessable. **No byte figure is asserted here; §11 makes measuring it a gate** (serialized envelope bytes
-at 20 / 1,000 / 10,000 against the real record shape). That converts "no cap" from an assumption into a
-measured claim, cheaply.
+guessable. **No byte figure is asserted here; measuring it (serialized envelope bytes at 20 / 1,000 /
+10,000 against the real record shape) is a QA-runner measurement pass, never a gate** — §11's 14-gate
+table stays the sole pass/fail authority; no byte value may flip a gate result, the matrix, or the exit
+code (design-erratum ruling, deviations register #14; evidence: `contract.ts`'s header, which states the
+14-gate invariant and that this file is importable with no test-framework dependency; `run.ts`'s Task 10
+comment, which states the ruling verbatim; and `report.md`'s "measured, not gated" section heading). That
+converts "no cap" from an assumption into a measured claim, cheaply — as a measurement, not a gate.
 
 **Triggers that would earn a bound** — any one, and only with evidence:
 
@@ -976,6 +1045,15 @@ Gates 13–14 carry a clause AL-R2's harness could not: **raw export works in th
 **Gate 7 also closes a standing QA coverage gap** — `journal/qa/ledger.md` carries "multi-tab races
 untried" forward. It closes it for `ProgressStore` specifically, not for the app at large.
 
+**Gates 1, 10, and 14 extended, not added (amended 2026-07-17, Task 6.5).** The suite stays at **14** —
+§11's count is invariant and `contract.ts` throws at import if it moves. The four §3.4 amendments are
+gated by *extending* existing gates: gate 1 (`open-empty`) now also asserts an empty canonical export
+returns `{status:'empty'}` and that `commitSessionSummary` on a fresh namespace is a no-op — both
+minting nothing (rulings 1, 3); gate 14 (`newer-schema-refusal`) now also asserts BOTH writes are
+refused with `NEWER_SCHEMA` and land nothing (ruling 2); gate 10 (`complete-reset`) becomes falsifiable
+because reset is now store-clearing (ruling 4), and its existing per-store residual check is what
+catches a stranded store. No assertion was weakened; each extension names the wrong behavior it catches.
+
 **Fake vs adapter divergence, handled honestly.** The fake is in-memory: gates 2 and 7 cannot pass.
 AL-R2 recorded in-memory as **12/14** (`:162`), and that record is preserved rather than faked. The suite
 reads a declared `capabilities: { durable, multiConnection }`, and for `durable:false` it **asserts the
@@ -999,6 +1077,12 @@ its own sources.
 | 6 | `open`/`close` off the semantic six | AL-R2 `:118-125` | approved | Lifetime, not semantics. A factory makes use-before-open unrepresentable. §3.2 |
 | 7 | Sixth slot = `diagnose()`; migration reported inside `load()` | design `:172` | approved | A `migrate()` would ship with zero producers — the phantom pattern §7 forbids. "Explicit" = never silent, not never automatic. §3.5 |
 | 8 | Raw export inside the port | AL-R2 `:230` (inspector excluded) | approved | `export-raw` is *mandated* at `:226-228` and had no implementation. A bounded read-only dump of our own namespace is the mandated action, not the harness control. §3.6 |
+| 9 | `ExportOutcome` gains `{status:'empty'}` for a canonical export of a namespace with no persisted data | design `:294-297` (original union) | **approved 2026-07-17 — Task 6.5 ruling 1** | An empty canonical export had no branch; the fake shoehorned it into `unavailable/'absent'`, conflating "no data yet" with an unavailable storage subsystem (§8.3). Minting a key to fill an envelope is a write on a read (§6). Gate 1. §3.4 |
+| 10 | `NewerSchemaError` added to `AppendOutcome`/`CommitOutcome` `rejected`; every evidence-write refuses a newer schema | design `:275-278`, `:286-290` (original unions) | **approved 2026-07-17 — Task 6.5 ruling 2** | The fake mapped a newer-schema write into `STORAGE_UNAVAILABLE/'unknown'`, telling the caller to retry a write that can never land. The storage IS available; the store is intentionally unwritable by this version (`upgrade-app`, not `retry`). Applied to both writes, not only `appendAttempt`. Gate 14. §3.3, §8.4 |
+| 11 | `CommitOutcome` gains `{status:'no-evidence'}`; a summary before any persisted attempt mints nothing | §6, §4.2 pt 2 (fake generalized "first write of any kind" mints) | **approved 2026-07-17 — Task 6.5 ruling 3** | The key is minted only by the first `appendAttempt` (§6). A summary that mints creates a phantom zero-evidence session, which §4.2 pt 2 forbids. No-op outcome, not an error. Gate 1. §3.4 |
+| 12 | `reset` is store-clearing (transactional), not `deleteDatabase`; post-reset `detectedSchema` reports the surviving schema version while `load()` is `empty` | AL-R2 reset column; §3.5 "`null` = absent" | **approved 2026-07-17 — Task 6.5 ruling 4 (+ open-question decision)** | A store-clearing reset makes gate 10's "no residual records in *any* store" falsifiable (a stranded store is representable) and brings `assertNoStoredRecords`'s anti-vacuity guard to life. Outcome shape unchanged; still no automatic reset [PINNED]. `null` still means *absent*; *present-but-empty* is a distinct fact. §3.5, §8.4 |
+| 13 | `OpenProgressStore` is a call-signature *interface*, not `export declare function openProgressStore(...)` | design §3.2 `:211` | approved (review ruling; recorded 2026-07-17) | `declare` asserts an ambient runtime binding nothing in this plan supplies — Task 7 exports the real `openProgressStore` in `idb-store.ts`, so the `declare` would be a permanent phantom binding `tsc --noEmit` cannot catch. An interface is the honest expression of "the port's shape" and satisfies boundary.test.ts's no-callback check. Rationale in `store.ts:59-71`; user-approved, never registered until now. §3.2 |
+| 14 | §10's own claim, "§11 makes measuring it a gate" (serialized envelope bytes at 20/1,000/10,000), does not match §11's table: none of the 14 gates measures bytes, and §11's count is invariant. The byte tiers are a measurement PASS hosted by the QA runner, never a gate — no byte value may flip a gate result, the matrix, or the exit code. | design §10 `:992` (this file's own letter) | **design erratum — ruled and implemented before this register caught up; now registered** | `contract.ts`'s own header names this exact gap and rules it a design erratum, not a missing gate, before any gate runs. `run.ts`'s Task 10 comment states the ruling verbatim ("A MEASUREMENT pass, not a gate: the 14-gate table (design §11) stays the sole pass/fail authority ... no byte value may flip `passed`/the matrix/the exit code"). `report.md`'s generated section is headed "Serialized envelope bytes — measured, not gated (design §10, Task 10)". §10 is corrected above to match code and generated output rather than the code being bent to match an unimplementable §10 letter. §10, §11 |
 
 ---
 

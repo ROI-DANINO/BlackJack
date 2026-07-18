@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "roundsChecked": 90,
+  "coverage": [
+    {
+      "id": "soft_hand",
+      "label": "soft player hand",
+      "count": 16,
+      "met": true
+    },
+    {
+      "id": "player_natural",
+      "label": "player natural blackjack (3:2)",
+      "count": 3,
+      "met": true
+    },
+    {
+      "id": "dealer_natural",
+      "label": "dealer natural blackjack",
+      "count": 2,
+      "met": true
+    },
+    {
+      "id": "player_bust",
+      "label": "player bust",
+      "count": 24,
+      "met": true
+    },
+    {
+      "id": "dealer_bust",
+      "label": "dealer bust",
+      "count": 23,
+      "met": true
+    },
+    {
+      "id": "push",
+      "label": "push",
+      "count": 6,
+      "met": true
+    },
+    {
+      "id": "same_rank_split",
+      "label": "same-rank split",
+      "count": 5,
+      "met": true
+    },
+    {
+      "id": "ten_value_split",
+      "label": "mixed ten-value split",
+      "count": 10,
+      "met": true
+    },
+    {
+      "id": "double",
+      "label": "double",
+      "count": 17,
+      "met": true
+    },
+    {
+      "id": "double_after_split",
+      "label": "double after split",
+      "count": 2,
+      "met": true
+    },
+    {
+      "id": "insurance_note",
+      "label": "dealer-ace insurance note",
+      "count": 5,
+      "met": true
+    },
+    {
+      "id": "shoe_reshuffle",
+      "label": "shoe reshuffle",
+      "count": 2,
+      "met": true
+    }
+  ],
+  "violations": []
+}

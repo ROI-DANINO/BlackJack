@@ -13,6 +13,7 @@ const ROLES: Array<{ name: string; entry: string }> = [
   { name: 'flow', entry: 'qa/flow/run.ts' },
   { name: 'breakit', entry: 'qa/breakit/run.ts' },
   { name: 'learn', entry: 'qa/learn/run.ts' },
+  { name: 'progress', entry: 'qa/progress/run.ts' },
 ];
 
 function log(msg: string): void {

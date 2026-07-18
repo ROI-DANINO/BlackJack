@@ -22,6 +22,7 @@ recorded commit (or it has never run); smoke-test otherwise.
 | Product readiness (V1 gate) | whole build | 2026-07-10-v1-remediation-retest | 30ec927 | GO (for V2) | 6-item remediation list all verified 2026-07-10 → V1 gate cleared, V2 Basic Strategy unblocked. Still not external-playtest-ready (QA-006/008/010–014 backlog; styling V3). See `runs/2026-07-09-v1-milestone/product-review.md` |
 | QA script suite (`web/qa/`: rules+flow+breakit+learn) | `web/qa/`, `web/src/` | 2026-07-15-strategy-profile-foundation (re-certification) | d162352 | PASS | Re-run after final code commit `d162352`: `npm --prefix web run qa` passed rules → flow → breakit → learn; each role checked WASM freshness before its production preview. Commands ran from documentation-only descendant `6df126f`; `d162352..6df126f` changes no `web/` or `crates/` code. Reports in `runs/2026-07-15-{rules,flow,breakit,learn}/`. |
 | Agent workflow & handoff | `AGENTS.md`, `journal/ops/tasks.md`, `$CODEX_HOME/skills/codex-{start,next,end}/` | 2026-07-15-agent-kanban | `f12d580`; GREEN reports `98a5d4726bb765b1da17dca86ef7b3d092bf77732e56ea0d18176212193d8306`, `d9392f826b4fb8bb736880da5299883a4a81585baf417ad8955a45dba477304b`, `8ae82f78a14ae2f26dbdeaef99ee73c92d72fddb568076ff1f03a1d3356b9a3e`, `d7ac3daa752e079ca1c440fc0d75513727ba28596c943b257f8996616df270e4`, `8c4b4028b4ece39c711c4f676d2a687dba7d0bea84be167b3a3fb4d1435b1485`, `146e55593526e13aa494fde3dc2359afb4f57dea54176d870524a547152ba46b`; entry/Done report `25845d5fec44b9bd1ccd6eb474ff1f1d61ae4563c2df095ecd42bbb2205ba79f` | PASS | **Deep-tested.** Marked and legacy lifecycles, all invariants/refusals/transitions, explicit Ready entry and Done success/refusal, and all three personal skills passed. Real `$codex-start` stayed read-only with no drift. QA-018 verified closed. See [run report](runs/2026-07-15-agent-kanban/report.md). |
+| Durable learner progress (ProgressStore) | `web/src/progress/`, `web/qa/progress/` | 2026-07-17-progressstore-cycle1 | c8663e1 | PASS | **Deep-tested (new area).** 28/28 real-browser gate matrix (14 contract gates × chromium 149.0.7827.55 + firefox 151.0), plus the separate two-page race in both browsers — closes the ledger's standing "multi-tab races untried" gap for ProgressStore specifically, not the app at large (gate 7 races two `open()` connections in one page; the two-page race is additional same-origin evidence, no runner mutex). Bundle-delta gate PASS: `idb` costs 1,382 bytes gzipped (≈1.35 KB), well under the 5 KB alarm — 3.7× headroom, independently corroborated at 1,476 bytes by a from-scratch reproduction. Three-tier byte measurement recorded as a MEASUREMENT, not a gate (design §10): canonical bytes/attempt held flat (~807-816) across 20/1,000/10,000-attempt tiers; `navigator.storage.estimate()` deltas are coarse/quantized and non-proportional to canonical bytes (this run's fresh re-measurement moved the tier-10,000 estimate delta materially from the prior run — recorded as observed, not smoothed). WebKit is a named, non-blocking coverage gap on this host (Playwright WebKit targets Ubuntu 24.04 libs, incompatible with this CachyOS/Arch ABI); AL-R2 already proved `idb` 14/14 in WebKit via a pinned container, and that path stays available. Player Experience agent skipped — cycle 1 touches no file under `web/src/app/`, so there is no learner-facing surface to judge. Six-row learning-integrity contract mapped with explicit verdicts (2 PASS, 1 PASS-precondition, 3 N/A — no grading/recommendations/UI exist yet); per-row table in [Learning-integrity contract detail](#learning-integrity-contract-detail) below. No product-blocking findings. See [run report](runs/2026-07-17-progressstore-cycle1/report.md) and [bundle-delta](runs/2026-07-17-progressstore-cycle1/bundle-delta.md). |
 
 ## Findings register
 
@@ -75,3 +76,58 @@ resolved rounds).
 | 2026-07-12 | blackjack-basics-feature-qa | scoped feature QA (milestone-adjacent: Blackjack Basics learning system) | 8952828 | `runs/2026-07-12-{rules,flow,breakit,learn}/` | PASS. Gates from fresh state: `cargo fmt --all -- --check` (after resolving pre-existing blackjack-core-only fmt drift), `cargo test -p blackjack-core` 62 pass, `cargo clippy … -D warnings` clean, `npm test` 205/205, `npm run build` clean w/ fresh WASM, `npm run qa` all four roles PASS (rules 90 rounds/514 asserts, flow 273 snaps/1166 asserts, breakit 12/12, learn 9/9 units/28 asserts, 0 violations across all). PX pass cleared all nine units. New finding QA-016 (minor, backlog, not fixed). No product-blocking findings. |
 | 2026-07-15 | strategy-profile-foundation | scoped feature QA | d162352 | `runs/2026-07-15-strategy-profile-foundation/` | PASS. Re-certified final code `d162352` (commands ran from docs-only descendant `6df126f`): focused real-WASM engine/controller suite 34 tests, full web suite 217 tests, and full `npm run qa` all passed. Deep: engine, UI/wire, Blackjack Basics. Smoke-only payout, flow, and robustness retain `8952828`; PX skipped because `web/src/app/` did not change. Every QA role's WASM freshness guard passed; no rebuild was needed. No new findings. |
 | 2026-07-15 | agent-kanban | scoped feature QA (agent workflow & handoff) | f12d580 | `runs/2026-07-15-agent-kanban/` | PASS. Marked/legacy lifecycles, nine invariant cases, duplicate mutation refusals, all legal transitions including Ready entry and Done success/refusal, all three skill validators, and real read-only start passed. Product smoke: 80 Rust, 217 web, and all four QA roles passed. QA-018 found and verified closed. |
+| 2026-07-18 | progressstore-cycle1 | scoped feature QA (new area: durable learner progress / ProgressStore) | c8663e1 | `runs/2026-07-17-progressstore-cycle1/` (dir label hardcoded at `run.ts:47`, set on the design's origin date; this run's own date is the Date column) | PASS — new area, deep-tested. Fresh-evidence Tier-1: `cargo test -p blackjack-core` 80/80; `npm --prefix web run test` 280/280; `npm --prefix web run qa` (rules+flow+breakit+learn+progress) all five roles PASS, exit 0. `qa:progress` 28/28 real-browser gate matrix (chromium + firefox) + two-page race PASS both browsers — closes "multi-tab races untried" for ProgressStore specifically. Bundle-delta gate PASS (1.35 KB gzipped idb cost, <5 KB alarm). Three-tier byte measurement recorded (design §10, not gated). WebKit named non-blocking gap (host ABI). PX skipped (no `web/src/app/` change). Six-row learning-integrity contract mapped: 2 PASS, 1 PASS-precondition, 3 N/A with explicit reasons — per-row table in [Learning-integrity contract detail](#learning-integrity-contract-detail) below. No findings. |
+
+## Learning-integrity contract detail
+
+Per `qa-playtest-process.md:129-147`, any run whose trigger fires must record a verdict for each
+of the six learning-integrity contract checks, with explicit N/A reasons — never a silent
+omission. The coverage-area and run-log rows above only carry the aggregate count; the per-row
+verdicts, reasons, and evidence live here so the committed ledger is a self-contained QA trail,
+not just this file's `report.md`. `web/qa/progress/run.ts`'s `renderMarkdown()` fully overwrites
+`runs/2026-07-17-progressstore-cycle1/report.md` on every `qa:progress` run via a single
+`writeFileSync` (no read-modify-write, no hand-maintained slot) — a table hand-added there would
+be silently lost on the next re-run, so it is recorded here instead, in the durable ledger.
+
+### 2026-07-18 progressstore-cycle1 (commit `c8663e1`)
+
+This is the verdict Task 11 actually mapped from the run's real evidence (28/28 gate matrix,
+`runs/2026-07-17-progressstore-cycle1/report.md`), not the plan's pre-run prediction at
+`docs/superpowers/plans/2026-07-17-progressstore-cycle1.md:292-301`.
+
+| Contract check | Cycle-1 verdict | Evidence |
+|---|---|---|
+| Correct decision stays correct when the hand loses; wrong stays wrong when it wins | **N/A** — no grading and no UI in cycle 1 | Fires in cycle 3 with the mapper/UI consumer |
+| Every recommendation from the ruleset-matched oracle and legal in the evaluated state | **N/A** — cycle 1 produces no recommendations | `gradedBy.profileId` is *stored* and round-trip-proven (gate 8) so cycle 3 can satisfy this |
+| Table visibility and assistance observable when the feature uses them | **PASS** | `tableVisibility` + `assistance` round-trip through append → load → canonical export (gates 3, 8) |
+| Learner comprehension judged separately from strategy fidelity/flow/polish | **N/A** — no learner-facing surface | — |
+| Errors recoverable; progress never lost silently; an unconfirmed or failed save is never presented as saved | **PASS — this is cycle 1's core** | Gates 4, 13, 14 (no automatic reset; typed recoverable errors; raw export in the failure state); result unions force the caller to handle failure (design §3.3); `{status:'rejected'}` is never a success |
+| Any mastery/progress summary shown is reproducible from raw stored evidence and its recorded reducer version | **PASS (precondition)** | Cycle 1 shows nothing, but proves the precondition: `CachedMastery` carries `reducerVersion` + `computedAtRevision`, raw attempts are the sole durable truth, and canonical export (gate 8) contains everything needed to recompute |
+
+Totals: 2 PASS, 1 PASS-precondition, 3 N/A (each with an explicit reason) — matches the aggregate
+figure in both the coverage-area row (`Durable learner progress (ProgressStore)`, above) and the
+2026-07-18 run-log row above.
+
+### T10-M2 — `navigator.storage.estimate()` swing (progressstore-cycle1, commit `c8663e1`)
+
+Same fragility as the six-row table above, same fix: this observation was previously a hand-appended
+paragraph in `runs/2026-07-17-progressstore-cycle1/report.md`, a file `web/qa/progress/run.ts`'s
+`renderMarkdown()` fully regenerates (single `writeFileSync`, no hand-maintained slot) on every
+`qa:progress` run — the next real re-run would have silently deleted it. Recorded here instead, in
+the durable ledger, where a re-run cannot touch it.
+
+The Task 10 byte-measurement table (design §10) is a MEASUREMENT, not a gate; the base
+`navigator.storage.estimate()` coarseness disclaimer is part of `run.ts`'s generated template and
+survives regeneration on its own. This subsection carries only the numeric addendum the template
+does not emit:
+
+On the 2026-07-18 run, the observed `navigator.storage.estimate()` delta/canonical-bytes ratio
+moved **1.42× → 0.67× → 0.64×** across the 20/1,000/10,000-attempt tiers, against a **non-zero
+66,988-byte pre-tier baseline** (`estimate()` already reported storage in use before the first
+tier's writes even started). An earlier run of the same script (commit `91d9b30`, identical
+canonical byte counts) recorded a steeper drop-off, **1.42× → 0.67× → 0.29×** — at tier 10,000,
+`estimateDeltaBytes` was 2,339,935 then vs. 5,212,025 on the 2026-07-18 run, more than double, with
+canonical bytes byte-identical both times. The swing between runs is further first-hand evidence of
+the coarseness the base disclaimer already names, not a new or different behavior, and is not
+attributable to any code change under `web/src/progress/` between the two runs. Not gated; asserts
+no new bound (design §10 erratum, `report.md`'s "Conclusion" section).
