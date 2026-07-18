@@ -128,16 +128,20 @@ mechanics), then:
 
 ### Learning-integrity contract
 
-When a scoped feature adds strategy hints, grading, explanations, or assisted practice, its QA must
-verify all of the following:
+When a scoped feature adds strategy hints, grading, explanations, assisted practice, or durable
+learner progress, its QA must verify all of the following:
 
 - a correct decision remains correct when the hand loses, and a wrong decision remains wrong when
   the hand wins;
 - every recommendation comes from the active ruleset-matched oracle and is legal in the evaluated
   state;
-- table visibility and assistance are observable when the feature uses them; and
+- table visibility and assistance are observable when the feature uses them;
 - learner comprehension is judged separately from strategy fidelity, engine flow, and visual
-  polish.
+  polish;
+- errors are recoverable and never lose learner progress silently — an unconfirmed or failed save
+  is surfaced as such and never presented as saved; and
+- any mastery or progress summary the feature shows is reproducible from the raw stored evidence
+  and its recorded reducer version.
 
 The feature design selects exact scenarios and decides whether these checks belong in a script or a
 judgment pass. Results and findings still follow the ledger-driven process.

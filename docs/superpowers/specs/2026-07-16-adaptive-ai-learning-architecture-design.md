@@ -47,7 +47,8 @@ explicit adaptive-learning mechanics sub-phase rather than hidden inside `STF-02
 - Progression is guided with strict gates for essential prerequisites. Learners may skip a unit by
   passing a deterministic skill test.
 - Learners see simple mastery states backed by richer internal evidence.
-- The local proof uses an anonymous device learner ID and browser-local durable records.
+- The local proof uses a pseudonymous local learner key — scoped to the application origin and
+  browser profile, never to a device — and browser-local durable records.
 - Curriculum is version-controlled structured data now. A future remote curriculum service may
   publish versioned catalogs that a browser-local database caches for speed and offline use.
 
@@ -244,7 +245,7 @@ The first local learner envelope contains:
 ```text
 LearnerRecord
 |-- schema version
-|-- anonymous device learner ID
+|-- pseudonymous local learner key
 |-- reducer version
 |-- curriculum versions encountered
 |-- sessions
@@ -253,8 +254,10 @@ LearnerRecord
 `-- reproducible cached mastery snapshot
 ```
 
-The anonymous learner UUID is generated on first use and treated as pseudonymous rather than as
-personal identity. A later account system must explicitly import or link the local learner record.
+The learner key is a random opaque value minted on first use and treated as pseudonymous rather
+than as personal identity. It is scoped to the application origin and browser profile, so it does
+not follow a learner across scheme, host, port, profile, browser, or device. A later account system
+must explicitly import or link the local learner record.
 
 Every graded attempt records at least:
 
