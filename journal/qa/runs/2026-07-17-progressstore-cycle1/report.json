@@ -1,0 +1,217 @@
+{
+  "role": "progress",
+  "spec": "docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md",
+  "plan": "docs/superpowers/plans/2026-07-17-progressstore-cycle1.md",
+  "startedAt": "2026-07-18T21:02:22.899Z",
+  "finishedAt": "2026-07-18T21:02:31.577Z",
+  "commit": "b15e667",
+  "baseUrl": "http://127.0.0.1:4337/",
+  "gateIds": [
+    "open-empty",
+    "reload-persistence",
+    "atomic-commit",
+    "write-abort-rollback",
+    "idempotency-duplicate",
+    "revision-conflict",
+    "concurrent-appends",
+    "canonical-export-stable",
+    "export-precedes-reset",
+    "complete-reset",
+    "migration-additive",
+    "migration-abort-rollback",
+    "corrupt-recovery",
+    "newer-schema-refusal"
+  ],
+  "browsers": [
+    {
+      "name": "chromium",
+      "version": "149.0.7827.55",
+      "results": [
+        {
+          "id": "open-empty",
+          "status": "pass"
+        },
+        {
+          "id": "reload-persistence",
+          "status": "pass"
+        },
+        {
+          "id": "atomic-commit",
+          "status": "pass"
+        },
+        {
+          "id": "write-abort-rollback",
+          "status": "pass"
+        },
+        {
+          "id": "idempotency-duplicate",
+          "status": "pass"
+        },
+        {
+          "id": "revision-conflict",
+          "status": "pass"
+        },
+        {
+          "id": "concurrent-appends",
+          "status": "pass"
+        },
+        {
+          "id": "canonical-export-stable",
+          "status": "pass"
+        },
+        {
+          "id": "export-precedes-reset",
+          "status": "pass"
+        },
+        {
+          "id": "complete-reset",
+          "status": "pass"
+        },
+        {
+          "id": "migration-additive",
+          "status": "pass"
+        },
+        {
+          "id": "migration-abort-rollback",
+          "status": "pass"
+        },
+        {
+          "id": "corrupt-recovery",
+          "status": "pass"
+        },
+        {
+          "id": "newer-schema-refusal",
+          "status": "pass"
+        }
+      ],
+      "race": {
+        "ok": true,
+        "detail": "two real pages committed at consecutive revisions 1/2; reload sees both attempts [two-page-race-attempt-1, two-page-race-attempt-2]",
+        "a": {
+          "status": "committed",
+          "revision": 1,
+          "attemptId": "two-page-race-attempt-1"
+        },
+        "b": {
+          "status": "committed",
+          "revision": 2,
+          "attemptId": "two-page-race-attempt-2"
+        },
+        "readback": {
+          "attemptCount": 2,
+          "revision": 2,
+          "attemptIds": [
+            "two-page-race-attempt-1",
+            "two-page-race-attempt-2"
+          ]
+        }
+      },
+      "consoleErrors": [
+        "pageerror: AbortError",
+        "pageerror: AbortError",
+        "pageerror: AbortError",
+        "pageerror: CONTRACT_ABORT_UPGRADE",
+        "pageerror: Uncaught exception in event handler."
+      ]
+    },
+    {
+      "name": "firefox",
+      "version": "151.0",
+      "results": [
+        {
+          "id": "open-empty",
+          "status": "pass"
+        },
+        {
+          "id": "reload-persistence",
+          "status": "pass"
+        },
+        {
+          "id": "atomic-commit",
+          "status": "pass"
+        },
+        {
+          "id": "write-abort-rollback",
+          "status": "pass"
+        },
+        {
+          "id": "idempotency-duplicate",
+          "status": "pass"
+        },
+        {
+          "id": "revision-conflict",
+          "status": "pass"
+        },
+        {
+          "id": "concurrent-appends",
+          "status": "pass"
+        },
+        {
+          "id": "canonical-export-stable",
+          "status": "pass"
+        },
+        {
+          "id": "export-precedes-reset",
+          "status": "pass"
+        },
+        {
+          "id": "complete-reset",
+          "status": "pass"
+        },
+        {
+          "id": "migration-additive",
+          "status": "pass"
+        },
+        {
+          "id": "migration-abort-rollback",
+          "status": "pass"
+        },
+        {
+          "id": "corrupt-recovery",
+          "status": "pass"
+        },
+        {
+          "id": "newer-schema-refusal",
+          "status": "pass"
+        }
+      ],
+      "race": {
+        "ok": true,
+        "detail": "two real pages committed at consecutive revisions 1/2; reload sees both attempts [two-page-race-attempt-1, two-page-race-attempt-2]",
+        "a": {
+          "status": "committed",
+          "revision": 1,
+          "attemptId": "two-page-race-attempt-1"
+        },
+        "b": {
+          "status": "committed",
+          "revision": 2,
+          "attemptId": "two-page-race-attempt-2"
+        },
+        "readback": {
+          "attemptCount": 2,
+          "revision": 2,
+          "attemptIds": [
+            "two-page-race-attempt-1",
+            "two-page-race-attempt-2"
+          ]
+        }
+      },
+      "consoleErrors": [
+        "pageerror: AbortError",
+        "pageerror: AbortError",
+        "pageerror: AbortError",
+        "pageerror: CONTRACT_ABORT_UPGRADE",
+        "pageerror: A request was aborted, for example through a call to IDBTransaction.abort."
+      ]
+    }
+  ],
+  "matrixTotal": 28,
+  "matrixPass": 28,
+  "passed": true,
+  "webkitGap": {
+    "covered": false,
+    "reason": "host Playwright WebKit targets Ubuntu 24.04 libs; cannot launch on CachyOS/Arch ABI (AL-R2 :141-145)",
+    "alternative": "AL-R2 proved idb 14/14 in WebKit via mcr.microsoft.com/playwright:v1.61.1-noble; container path available"
+  }
+}
