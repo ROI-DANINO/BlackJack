@@ -404,7 +404,19 @@ function createStore(config: ProgressStoreConfig, connection: Connection, migrat
 
       // §6: `meta` singleton absent ⇒ fresh (or store-cleared) namespace ⇒ `{status:'empty'}`,
       // minting NOTHING. load() is a pure read.
-      const meta = await db.get('meta', META_SINGLETON_ID);
+      //
+      // §3.3: a read failure that is NOT the guarded `superseded` path (e.g. InvalidStateError from
+      // a connection entering closePending after an onversionchange the `blocking` handler hasn't
+      // processed yet, or an eviction/disk fault) is a recoverable STATE, not a bug — it is returned
+      // via LoadOutcome's `unavailable` branch, mirroring appendAttempt's default catch (§8.4: honest
+      // 'unknown' + ['retry'], the same reason this file never guesses a browser-specific cause for a
+      // mid-session fault).
+      let meta: MetaRecord | undefined;
+      try {
+        meta = await db.get('meta', META_SINGLETON_ID);
+      } catch {
+        return { status: 'unavailable', error: storageUnavailable(ns, physicalVersion, 'unknown', ['retry']) };
+      }
       if (meta === undefined) return { status: 'empty' };
 
       // §8.4: a physically-newer store is not corrupt, merely unreadable by this build. Reported
@@ -413,8 +425,14 @@ function createStore(config: ProgressStoreConfig, connection: Connection, migrat
         return { status: 'newer-schema', error: newerSchema(ns, physicalVersion, config.schemaVersion) };
       }
 
-      const attempts = await db.getAll('attempts');
-      const sessions = await db.getAll('sessions');
+      let attempts: ProgressAttempt[];
+      let sessions: SessionRecord[];
+      try {
+        attempts = await db.getAll('attempts');
+        sessions = await db.getAll('sessions');
+      } catch {
+        return { status: 'unavailable', error: storageUnavailable(ns, physicalVersion, 'unknown', ['retry']) };
+      }
 
       // §8.4 fail closed: one bad record fails the WHOLE load, itemised. Skipping it would make
       // mastery non-reproducible AND hide data loss.
