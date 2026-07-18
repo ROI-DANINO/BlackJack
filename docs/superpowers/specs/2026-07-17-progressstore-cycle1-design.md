@@ -264,7 +264,7 @@ export type InvalidRecordRef = { store: string; key: unknown; reason: string };
 was originally a load/export outcome only. An evidence-write (`appendAttempt`, `commitSessionSummary`)
 into a namespace physically newer than this build is now **refused with `NEWER_SCHEMA`**, not mapped to
 `STORAGE_UNAVAILABLE`: the storage subsystem is available, the store is merely intentionally
-unreadable/unwritable by this version, so a `reason:'retry'` would loop a write that can never land
+unreadable/unwritable by this version, so `safeActions:['retry']` would loop a write that can never land
 until the app upgrades (`upgrade-app` is the safe action). See §3.4's write unions and §8.4; register #10.
 
 ### 3.4 The five data operations
@@ -347,7 +347,9 @@ Each union only GREW; no existing outcome was weakened.**
    `{status:'reset'}` — but its *behavior* is pinned: it clears all three object stores transactionally
    and **preserves the database and its schema version** (never `deleteDatabase`). Rationale and the
    `detectedSchema` reconciliation are in §3.5; the newer-schema refusal is deliberately NOT extended to
-   `reset` (a confirmed reset is the sanctioned recovery from a newer-incompatible store).
+   `reset` — but because reset preserves the physical schema version, a reset of a v999 store leaves it
+   v999 and still write-refused, so reset is not a recovery from that incompatibility. Gate 14's
+   `NEWER_SCHEMA` safeActions stay `['export-raw','upgrade-app']` only.
 
 ### 3.5 The sixth slot: `diagnose()`, and where migration runs
 
@@ -989,9 +991,13 @@ port — it simply cannot *call* it yet, which is cycle 3's problem and not a sh
 
 This is not merely *unauthorized* — it is also probably *fine*. AL-R2's stress tier was 10,000 attempts
 and the harness "records serialized fixture bytes", so the real number is measurable rather than
-guessable. **No byte figure is asserted here; §11 makes measuring it a gate** (serialized envelope bytes
-at 20 / 1,000 / 10,000 against the real record shape). That converts "no cap" from an assumption into a
-measured claim, cheaply.
+guessable. **No byte figure is asserted here; measuring it (serialized envelope bytes at 20 / 1,000 /
+10,000 against the real record shape) is a QA-runner measurement pass, never a gate** — §11's 14-gate
+table stays the sole pass/fail authority; no byte value may flip a gate result, the matrix, or the exit
+code (design-erratum ruling, deviations register #14; evidence: `contract.ts`'s header, which states the
+14-gate invariant and that this file is importable with no test-framework dependency; `run.ts`'s Task 10
+comment, which states the ruling verbatim; and `report.md`'s "measured, not gated" section heading). That
+converts "no cap" from an assumption into a measured claim, cheaply — as a measurement, not a gate.
 
 **Triggers that would earn a bound** — any one, and only with evidence:
 
@@ -1076,6 +1082,7 @@ its own sources.
 | 11 | `CommitOutcome` gains `{status:'no-evidence'}`; a summary before any persisted attempt mints nothing | §6, §4.2 pt 2 (fake generalized "first write of any kind" mints) | **approved 2026-07-17 — Task 6.5 ruling 3** | The key is minted only by the first `appendAttempt` (§6). A summary that mints creates a phantom zero-evidence session, which §4.2 pt 2 forbids. No-op outcome, not an error. Gate 1. §3.4 |
 | 12 | `reset` is store-clearing (transactional), not `deleteDatabase`; post-reset `detectedSchema` reports the surviving schema version while `load()` is `empty` | AL-R2 reset column; §3.5 "`null` = absent" | **approved 2026-07-17 — Task 6.5 ruling 4 (+ open-question decision)** | A store-clearing reset makes gate 10's "no residual records in *any* store" falsifiable (a stranded store is representable) and brings `assertNoStoredRecords`'s anti-vacuity guard to life. Outcome shape unchanged; still no automatic reset [PINNED]. `null` still means *absent*; *present-but-empty* is a distinct fact. §3.5, §8.4 |
 | 13 | `OpenProgressStore` is a call-signature *interface*, not `export declare function openProgressStore(...)` | design §3.2 `:211` | approved (review ruling; recorded 2026-07-17) | `declare` asserts an ambient runtime binding nothing in this plan supplies — Task 7 exports the real `openProgressStore` in `idb-store.ts`, so the `declare` would be a permanent phantom binding `tsc --noEmit` cannot catch. An interface is the honest expression of "the port's shape" and satisfies boundary.test.ts's no-callback check. Rationale in `store.ts:59-71`; user-approved, never registered until now. §3.2 |
+| 14 | §10's own claim, "§11 makes measuring it a gate" (serialized envelope bytes at 20/1,000/10,000), does not match §11's table: none of the 14 gates measures bytes, and §11's count is invariant. The byte tiers are a measurement PASS hosted by the QA runner, never a gate — no byte value may flip a gate result, the matrix, or the exit code. | design §10 `:992` (this file's own letter) | **design erratum — ruled and implemented before this register caught up; now registered** | `contract.ts`'s own header names this exact gap and rules it a design erratum, not a missing gate, before any gate runs. `run.ts`'s Task 10 comment states the ruling verbatim ("A MEASUREMENT pass, not a gate: the 14-gate table (design §11) stays the sole pass/fail authority ... no byte value may flip `passed`/the matrix/the exit code"). `report.md`'s generated section is headed "Serialized envelope bytes — measured, not gated (design §10, Task 10)". §10 is corrected above to match code and generated output rather than the code being bent to match an unimplementable §10 letter. §10, §11 |
 
 ---
 
