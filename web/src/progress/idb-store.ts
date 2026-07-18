@@ -3,12 +3,12 @@
 //
 // Design: docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md
 //
-// SCOPE. Task 7 implements exactly three semantic operations — `load`, `appendAttempt` — plus the
-// two lifetime operations `open`/`close`, and the minimum they share (the three-store schema, the
-// error constructors, record validation, envelope materialisation). The remaining four port
-// operations (`commitSessionSummary`, `exportSnapshot`, `reset`, `diagnose`) are Task 8; here they
-// are stubbed only as far as `tsc` demands and throw a clear TASK 8 marker if reached. They are
-// NEVER exercised by Task 7's provable surface (the boundary test + `tsc`).
+// SCOPE. Task 7 implemented `load`, `appendAttempt`, and the lifetime operations `open`/`close`, plus
+// the minimum they share (the three-store schema, the error constructors, record validation, envelope
+// materialisation). Task 8 completes the port — `commitSessionSummary`, `exportSnapshot` (both modes),
+// `reset` (store-clearing per ruling 4), and `diagnose` — reconciled with the design §12 rulings #9–13
+// (empty canonical export mints nothing; every evidence-write refuses a newer schema; a summary with no
+// prior attempt is `no-evidence`; reset clears the three stores and preserves the DB + schema version).
 //
 // WHY THERE IS NO VITEST BEHAVIOURAL TEST HERE (granted exception). The Vitest environment is
 // `node` (web/vite.config.ts) with no IndexedDB, and `fake-indexeddb` is deliberately NOT admitted
@@ -50,10 +50,13 @@ import type {
   ProgressAttemptDraft,
   ProgressStore,
   ProgressStoreConfig,
+  RawExport,
   ResetConfirmation,
   ResetOutcome,
   SessionSummaryWrite,
 } from './store';
+import { canonicalize } from './canonical';
+import type { CanonicalSnapshot } from './canonical';
 
 // === Physical layout (design §5.1) ============================================================
 
@@ -146,6 +149,48 @@ function connectionSuperseded(namespace: string, detectedSchema: number | null):
 
 function errorName(error: unknown): string {
   return error instanceof Error ? error.name : '';
+}
+
+/**
+ * `.name` read straight off the value — robust where `errorName` is not. IndexedDB rejects with a
+ * `DOMException`, which is NOT reliably `instanceof Error` across browsers, so Task-8 write
+ * classification reads the name structurally rather than through the `instanceof` gate. It also reads
+ * the name off a `tx.error` DOMException the same way (T7-M1, below).
+ */
+function nameOf(value: unknown): string {
+  return typeof value === 'object' && value !== null && typeof (value as { name?: unknown }).name === 'string'
+    ? (value as { name: string }).name
+    : '';
+}
+
+/** A `name: message` (or bare message) string for a value that could not be read (raw-export errors). */
+function describeError(error: unknown): string {
+  const name = nameOf(error);
+  const message =
+    typeof error === 'object' && error !== null && typeof (error as { message?: unknown }).message === 'string'
+      ? (error as { message: string }).message
+      : String(error);
+  return name !== '' ? `${name}: ${message}` : message;
+}
+
+/**
+ * Classify a write transaction's failure into the typed `rejected` union — improving on Task 7's
+ * appendAttempt pattern per the T7-M1 review lesson. A quota abort can surface at `tx.done` as an
+ * `AbortError` whose REAL cause — `QuotaExceededError` — sits on `tx.error`, not on the rejection.
+ * So `tx.error` is inspected FIRST, then the rejection's own name; anything else is an honest
+ * `unknown` + `['retry']` (§8.2, §8.4). ConstraintError is handled by the caller before this (it is a
+ * `duplicate`, not a `rejected`).
+ */
+function classifyTxRejection(
+  error: unknown,
+  tx: { error: DOMException | null },
+  namespace: string,
+  physicalVersion: number,
+): QuotaExceededError | StorageUnavailableError {
+  if (nameOf(tx.error) === 'QuotaExceededError' || nameOf(error) === 'QuotaExceededError') {
+    return quotaExceeded(namespace, physicalVersion);
+  }
+  return storageUnavailable(namespace, physicalVersion, 'unknown', ['retry']);
 }
 
 /**
@@ -299,11 +344,18 @@ function validateMeta(value: unknown): string | null {
   );
 }
 
-/** Every invalid record in the loaded namespace, itemised by store + key + reason (§3.3, §8.4). */
-function validateAll(meta: MetaRecord, attempts: ProgressAttempt[], sessions: SessionRecord[]): InvalidRecordRef[] {
+/**
+ * Every invalid record in the namespace, itemised by store + key + reason (§3.3, §8.4). `meta` is
+ * `MetaRecord | undefined` so `diagnose()` can run on a store-cleared namespace (ruling 4): no meta
+ * singleton is EMPTY, not corrupt, so there is nothing to validate. `load()` always passes a defined
+ * meta (it short-circuits `empty` before reaching here).
+ */
+function validateAll(meta: MetaRecord | undefined, attempts: ProgressAttempt[], sessions: SessionRecord[]): InvalidRecordRef[] {
   const invalid: InvalidRecordRef[] = [];
-  const metaReason = validateMeta(meta);
-  if (metaReason !== null) invalid.push({ store: 'meta', key: META_SINGLETON_ID, reason: metaReason });
+  if (meta !== undefined) {
+    const metaReason = validateMeta(meta);
+    if (metaReason !== null) invalid.push({ store: 'meta', key: META_SINGLETON_ID, reason: metaReason });
+  }
   attempts.forEach((record, index) => {
     const reason = validateAttempt(record);
     if (reason !== null) {
@@ -358,6 +410,26 @@ function readEnvelope(
   };
 }
 
+/**
+ * A loaded envelope + the store's namespace → the export-format `CanonicalSnapshot` (§5.2). The store
+ * never stringifies its own object — it hands this to `canonicalize`, so byte-identity (gates 8, 11)
+ * stays a property of the ONE serializer, not of this adapter's read order.
+ */
+function snapshotOf(namespace: string, envelope: LearnerEnvelope): CanonicalSnapshot {
+  return {
+    format: 'blackjack.progress.snapshot',
+    formatVersion: 1,
+    schemaVersion: envelope.schemaVersion,
+    namespace,
+    learnerKey: envelope.learnerKey,
+    revision: envelope.revision,
+    curriculumVersions: envelope.curriculumVersions,
+    attempts: envelope.attempts,
+    sessions: envelope.sessions,
+    cachedMastery: envelope.cachedMastery,
+  };
+}
+
 // === The connection and its lifetime ==========================================================
 
 /**
@@ -372,14 +444,6 @@ type Connection = {
   superseded: boolean;
 };
 
-const TASK_8 = 'progress idb adapter: operation is Task 8, not yet implemented';
-
-function notImplementedInTask8(operation: string): never {
-  // A bug, not a state (§3.3): reaching a Task-8 operation in Task 7 is a wiring error, not a
-  // recoverable storage condition. Task 8 replaces each of these with the real implementation.
-  throw new Error(`${TASK_8} (${operation}).`);
-}
-
 function createStore(config: ProgressStoreConfig, connection: Connection, migrated: { from: number; to: number } | null): ProgressStore {
   const ns = config.namespace;
 
@@ -391,7 +455,7 @@ function createStore(config: ProgressStoreConfig, connection: Connection, migrat
 
   const detectedVersion = (): number | null => (connection.db === null ? null : connection.db.version);
 
-  return {
+  const store: ProgressStore = {
     async load(): Promise<LoadOutcome> {
       // Superseded connection: LoadOutcome has no ConnectionSuperseded branch (only writes carry it,
       // §3.4), so the representable signal is `unavailable` + the `reload` safe action — the caller
@@ -520,18 +584,243 @@ function createStore(config: ProgressStoreConfig, connection: Connection, migrat
       }
     },
 
-    // --- Task 8 (stubbed only as far as `tsc` demands; see notImplementedInTask8) ----------------
-    async commitSessionSummary(_write: SessionSummaryWrite): Promise<CommitOutcome> {
-      return notImplementedInTask8('commitSessionSummary');
+    async commitSessionSummary(write: SessionSummaryWrite): Promise<CommitOutcome> {
+      // §8.4: a superseded connection refuses every write with ConnectionSupersededError (mirrors
+      // appendAttempt) — never block silently, never fight the upgrading tab.
+      if (connection.superseded) return { status: 'rejected', error: connectionSuperseded(ns, detectedVersion()) };
+      const db = requireDb();
+      const physicalVersion = db.version;
+
+      // §8.4 (ruling 2, register #10): a write into a namespace physically NEWER than this build
+      // refuses with NEWER_SCHEMA — never STORAGE_UNAVAILABLE. Applied to every evidence-write, not
+      // only appendAttempt; `upgrade-app` (not `retry`) is the honest safe action.
+      if (physicalVersion > config.schemaVersion) {
+        return { status: 'rejected', error: newerSchema(ns, physicalVersion, config.schemaVersion) };
+      }
+
+      // §5.1, §8.4: ONE readwrite tx over meta + sessions. The revision check lives HERE (§2.4, §8.4):
+      // a summary publishes DERIVED state, so a stale expectedRevision is a genuine lost-update hazard
+      // and is refused — unlike appendAttempt, whose appends commute and take no revision check.
+      const tx = db.transaction(['meta', 'sessions'], 'readwrite');
+      try {
+        const metaStore = tx.objectStore('meta');
+        const sessionsStore = tx.objectStore('sessions');
+
+        // §6 (ruling 3, register #11): the learner key is minted ONLY by the first persisted attempt.
+        // No meta singleton ⇒ no attempt yet (a fresh namespace, or one store-cleared by reset) ⇒ mint
+        // NOTHING: no key, no session record, no meta. `no-evidence` is a no-op OUTCOME, not an error,
+        // and preserves §4.2 point 2's ban on phantom zero-evidence sessions. This read-only exit lets
+        // the readwrite tx auto-commit as a no-op.
+        const existingMeta = await metaStore.get(META_SINGLETON_ID);
+        if (existingMeta === undefined) return { status: 'no-evidence' };
+
+        // §5.1: sessionId is the primary key AND the idempotency key. A re-commit of the same session
+        // is `duplicate` (idempotent), checked BEFORE the revision gate so a legitimate retry after a
+        // lost ack is not misreported as a conflict; `add()` below is the atomic guard for the
+        // concurrent-duplicate race (caught as ConstraintError).
+        const existingSession = await sessionsStore.get(write.session.sessionId);
+        if (existingSession !== undefined) return { status: 'duplicate', revision: existingSession.committedAtRevision };
+
+        const currentRevision = existingMeta.revision;
+        if (write.expectedRevision !== currentRevision) return { status: 'conflict', currentRevision };
+
+        const revision = currentRevision + 1;
+        // add(), not put(): a concurrent tab that landed this sessionId first raises ConstraintError
+        // FROM THE DATABASE, caught below, so the original session survives (gate 5's mechanism).
+        await sessionsStore.add({ ...write.session, committedAtRevision: revision });
+
+        const catalogVersion = write.session.curriculumVersion; // curriculumVersions: "every version encountered" (§4.5)
+        const nextMeta: MetaRecord = {
+          ...existingMeta,
+          revision,
+          // `cachedMastery: null` on the write means "no derived publish", NOT "clear the cache" — the
+          // cache is disposable but discarding it is a decision, not a side effect of a summary (§3.4).
+          cachedMastery: write.cachedMastery !== null ? write.cachedMastery : existingMeta.cachedMastery,
+          curriculumVersions: existingMeta.curriculumVersions.includes(catalogVersion)
+            ? existingMeta.curriculumVersions
+            : [...existingMeta.curriculumVersions, catalogVersion],
+        };
+        await metaStore.put(nextMeta);
+        await tx.done;
+        return { status: 'committed', revision };
+      } catch (error) {
+        // The tx has already aborted; nothing it would have written survives (gate 4 rollback).
+        if (nameOf(error) === 'ConstraintError') {
+          // A concurrent writer landed this sessionId between our read and our add(): report its
+          // revision, the idempotent answer, from a fresh auto-commit read.
+          const existing = await db.get('sessions', write.session.sessionId);
+          if (existing === undefined) {
+            throw new Error(`progress idb adapter: ConstraintError on session '${write.session.sessionId}' but the conflicting record is unreadable.`);
+          }
+          return { status: 'duplicate', revision: existing.committedAtRevision };
+        }
+        return { status: 'rejected', error: classifyTxRejection(error, tx, ns, physicalVersion) };
+      }
     },
-    async exportSnapshot(_request: ExportRequest): Promise<ExportOutcome> {
-      return notImplementedInTask8('exportSnapshot');
+
+    async exportSnapshot(request: ExportRequest): Promise<ExportOutcome> {
+      if (request.mode === 'raw') {
+        // §3.6: open with NO version argument — IndexedDB opens at whatever version is physically
+        // present, NEVER triggering an upgrade and NEVER failing with VersionError. Enumerate
+        // `objectStoreNames`, dump every record UNINTERPRETED, and NEVER validate: applying the schema
+        // is exactly what would break it at schema 999 or on a corrupt store. A FRESH, untyped handle
+        // (not the live typed connection) is what lets it read stores outside ProgressDBSchema and work
+        // even when the live connection is superseded/closed; the namespace already exists (this store
+        // came from a successful open), so a version-less open reopens it rather than minting a phantom.
+        const errors: string[] = [];
+        const stores: Record<string, unknown[]> = {};
+        let physicalVersion: number | null = null;
+        let rawDb: IDBPDatabase | null = null;
+        try {
+          rawDb = await openDB(ns);
+          physicalVersion = rawDb.version;
+          for (const storeName of Array.from(rawDb.objectStoreNames)) {
+            try {
+              stores[storeName] = await rawDb.getAll(storeName);
+            } catch (error) {
+              errors.push(`${storeName}: ${describeError(error)}`);
+            }
+          }
+        } catch (error) {
+          errors.push(`open: ${describeError(error)}`);
+        } finally {
+          rawDb?.close();
+        }
+        const raw: RawExport = { format: 'blackjack.progress.raw', formatVersion: 1, namespace: ns, physicalVersion, stores, errors };
+        return { status: 'exported', mode: 'raw', json: JSON.stringify(raw) };
+      }
+
+      // Canonical (§3.4, §5.2, §9.4): load THROUGH the same read path, then serialize AFTER the read
+      // transaction has closed — nothing async but the load's own idb reads runs before serialization.
+      const outcome = await store.load();
+      switch (outcome.status) {
+        case 'loaded':
+          return { status: 'exported', mode: 'canonical', json: canonicalize(snapshotOf(ns, outcome.envelope)) };
+        case 'recovery-required':
+        case 'newer-schema':
+          // §4.6: you cannot canonicalise a store whose records you cannot read. §3.4 names the retry:
+          // mode:'raw'.
+          return { status: 'not-canonical-exportable', error: outcome.error };
+        case 'unavailable':
+          return { status: 'unavailable', error: outcome.error };
+        case 'empty':
+          // Ruling 1 (register #9): a canonical export of a namespace with no persisted data returns
+          // the explicit `{status:'empty'}` and mints NOTHING — filling an envelope with a fresh
+          // learnerKey would be a write on a read (§6). Distinct from 'unavailable'/'absent' (§8.3), so
+          // a caller can tell "no data yet" from "IndexedDB unavailable". Raw export never returns this.
+          return { status: 'empty' };
+      }
     },
-    async reset(_confirmation: ResetConfirmation): Promise<ResetOutcome> {
-      return notImplementedInTask8('reset');
+
+    async reset(confirmation: ResetConfirmation): Promise<ResetOutcome> {
+      const db = requireDb();
+      const physicalVersion = db.version;
+      try {
+        // Delta 1 / ruling 4 (§8.4, register #12): CLEAR all three object stores in ONE readwrite
+        // transaction, preserving the database and its physical schema version — NEVER
+        // deleteDatabase(namespace). This makes "no residual records in ANY store" (gate 10)
+        // falsifiable (a stranded store is representable) and keeps the schema surviving, so post-reset
+        // `load()` is `{status:'empty'}` while `diagnose().detectedSchema` reports the physical version
+        // (§3.5). A transactional clear also never blocks on open connections, as deleteDatabase would.
+        const tx = db.transaction(['meta', 'attempts', 'sessions'], 'readwrite');
+        const metaStore = tx.objectStore('meta');
+        if (confirmation.expectedRevision !== 'unloadable') {
+          // §3.4: the numeric expectedRevision proves the caller LOOKED first and blocks a reset from
+          // silently destroying a concurrent tab's unseen writes. 'unloadable' (obtainable only from
+          // diagnose()) is the escape for a corrupt/unreadable envelope and bypasses this check.
+          const meta = await metaStore.get(META_SINGLETON_ID);
+          const currentRevision = meta?.revision;
+          if (typeof currentRevision === 'number' && currentRevision !== confirmation.expectedRevision) {
+            // Read-only exit: the tx cleared nothing and auto-commits as a no-op.
+            return { status: 'conflict', currentRevision };
+          }
+          // meta absent, or its revision unreadable: a numeric expectedRevision cannot be corroborated
+          // (that is what 'unloadable' is for). Reaching here with a number simply proceeds — clearing
+          // already-empty stores is an idempotent no-op.
+        }
+        await metaStore.clear();
+        await tx.objectStore('attempts').clear();
+        await tx.objectStore('sessions').clear();
+        await tx.done;
+        return { status: 'reset' };
+      } catch {
+        // ResetOutcome's only rejection carrier is StorageUnavailableError (a confirmed reset is the
+        // sanctioned recovery, so it has no newer-schema/quota refusal). A superseded/closed connection
+        // steers to `reload`; any other fault to `retry`.
+        return {
+          status: 'rejected',
+          error: storageUnavailable(ns, physicalVersion, 'unknown', connection.superseded ? ['reload'] : ['retry']),
+        };
+      }
     },
+
     async diagnose(): Promise<Diagnosis> {
-      return notImplementedInTask8('diagnose');
+      // §3.5: read-only, never mutates, never mints, and works when `load()` cannot. It reads the live
+      // connection (already at the physical version — the VersionError path reopened it version-less
+      // for a newer store, so `db.version` is the true physical marker even at schema 999).
+      const db = requireDb();
+      const detectedSchema = db.version;
+      const physicalStores = Array.from(db.objectStoreNames);
+      const recordCounts: Record<string, number> = {};
+      let meta: MetaRecord | undefined;
+      let attempts: ProgressAttempt[] = [];
+      let sessions: SessionRecord[] = [];
+      try {
+        if (physicalStores.includes('meta')) {
+          const metaAll = await db.getAll('meta');
+          recordCounts.meta = metaAll.length;
+          meta = metaAll.find((record) => record.id === META_SINGLETON_ID);
+        }
+        if (physicalStores.includes('attempts')) {
+          attempts = await db.getAll('attempts');
+          recordCounts.attempts = attempts.length;
+        }
+        if (physicalStores.includes('sessions')) {
+          sessions = await db.getAll('sessions');
+          recordCounts.sessions = sessions.length;
+        }
+      } catch {
+        // A read fault (superseded/closed connection, disk error): report what is known physically and
+        // steer to recovery. diagnose NEVER throws for a storage STATE (§3.3) — it must answer when
+        // load() cannot.
+        return {
+          namespace: ns,
+          expectedSchema: config.schemaVersion,
+          detectedSchema,
+          physicalStores,
+          recordCounts,
+          migration: detectedSchema > config.schemaVersion ? { kind: 'unsupported', reason: 'newer-than-app' } : { kind: 'none' },
+          integrity: { invalid: [] },
+          safeActions: [...RECOVERY_SAFE_ACTIONS],
+        };
+      }
+
+      // Post-(store-clearing)-reset (ruling 4): meta absent ⇒ EMPTY, not corrupt ⇒ nothing to validate,
+      // and `detectedSchema` still reports the SURVIVING physical version with zero record counts
+      // (present-but-empty ≠ absent, §3.5).
+      const invalid = validateAll(meta, attempts, sessions);
+      const migration: Diagnosis['migration'] =
+        detectedSchema > config.schemaVersion
+          ? { kind: 'unsupported', reason: 'newer-than-app' }
+          : detectedSchema < config.schemaVersion
+            ? { kind: 'additive-available', from: detectedSchema, to: config.schemaVersion }
+            : { kind: 'none' };
+      const safeActions: SafeAction[] =
+        detectedSchema > config.schemaVersion
+          ? [...NEWER_SCHEMA_SAFE_ACTIONS]
+          : invalid.length > 0
+            ? [...RECOVERY_SAFE_ACTIONS]
+            : [];
+      return {
+        namespace: ns,
+        expectedSchema: config.schemaVersion,
+        detectedSchema,
+        physicalStores,
+        recordCounts,
+        migration,
+        integrity: { invalid },
+        safeActions,
+      };
     },
 
     async close(): Promise<void> {
@@ -543,6 +832,8 @@ function createStore(config: ProgressStoreConfig, connection: Connection, migrat
       }
     },
   };
+
+  return store;
 }
 
 // === Opening (design §3.2, §6, §8.3, §8.4) ====================================================
