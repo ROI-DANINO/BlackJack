@@ -561,26 +561,22 @@ function createStore(config: ProgressStoreConfig, connection: Connection, migrat
         return { status: 'committed', revision };
       } catch (error) {
         // The tx has already aborted (idb aborts on a failed request or an explicit abort); nothing
-        // it would have written survives (gate 4 rollback). Classify the failure into a typed union.
-        switch (errorName(error)) {
-          case 'ConstraintError': {
-            // §5.1: duplicate attemptId. Read the existing record (a fresh auto-commit read tx) and
-            // report its revision — the same answer AL-R2 returned, from a stronger mechanism.
-            const existing = await db.get('attempts', draft.attemptId);
-            if (existing === undefined) {
-              throw new Error(`progress idb adapter: ConstraintError on '${draft.attemptId}' but the conflicting attempt is unreadable.`);
-            }
-            return { status: 'duplicate', revision: existing.committedAtRevision };
+        // it would have written survives (gate 4 rollback). Classify the failure into a typed union
+        // using the structural `nameOf` (T7-M1 review lesson, §9's tx.error-first classification) —
+        // NOT `errorName`'s `instanceof Error` gate, which a real DOMException can miss cross-browser.
+        if (nameOf(error) === 'ConstraintError') {
+          // §5.1: duplicate attemptId. Read the existing record (a fresh auto-commit read tx) and
+          // report its revision — the same answer AL-R2 returned, from a stronger mechanism.
+          const existing = await db.get('attempts', draft.attemptId);
+          if (existing === undefined) {
+            throw new Error(`progress idb adapter: ConstraintError on '${draft.attemptId}' but the conflicting attempt is unreadable.`);
           }
-          case 'QuotaExceededError':
-            // §8.2: the typed error — NEVER delete evidence to make room. Session continues in memory,
-            // marked unsaved (a UI concern); already-committed attempts remain valid.
-            return { status: 'rejected', error: quotaExceeded(ns, physicalVersion) };
-          default:
-            // An aborted write (gate 4's injected fault surfaces as AbortError) or any other transient
-            // fault: rejected + retry. The rollback is IndexedDB's, by construction.
-            return { status: 'rejected', error: storageUnavailable(ns, physicalVersion, 'unknown', ['retry']) };
+          return { status: 'duplicate', revision: existing.committedAtRevision };
         }
+        // §8.2/§8.4: QuotaExceededError (checked on tx.error first, per classifyTxRejection) → the
+        // typed quota error; anything else (an aborted write, gate 4's injected fault surfacing as
+        // AbortError, or any other transient fault) → honest 'unknown' + ['retry'].
+        return { status: 'rejected', error: classifyTxRejection(error, tx, ns, physicalVersion) };
       }
     },
 
