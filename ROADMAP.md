@@ -46,6 +46,15 @@ not replacements for historical milestone names, phase identifiers, specs, commi
 | Mobile runtime | Mobile becomes an active product slice after the web path is proven. | Run an admission spike for WASM packaging, lifecycle suspension/restore, offline behavior, and update delivery; no framework is selected today. |
 | Competitive/certified authority | Leaderboards, multiplayer, or certified mastery require anti-cheat guarantees. | Research authority, replay validation, seed/shoe secrecy, and abuse handling; ordinary trainer play stays in browser WASM. |
 
+## Delivery map
+
+Numbered delivery steps. `journal/ops/phase.md` binds to these via `roadmap_step:`; each entry
+points at its existing section below, which stays the authority for scope and exit criteria.
+
+1. [x] **V1 — Simulation Foundations** — see `## V1 — Simulation Foundations`
+2. [ ] **V2 — Learning Foundations** (current) — see `## V2 — Learning Foundations`
+3. [ ] **V3 — UX and Game Experience** — see `## V3 — UX and Game Experience`
+
 ## Historical Milestone Record
 
 The established milestone sections remain intact so completed scope, active exit criteria, and QA
