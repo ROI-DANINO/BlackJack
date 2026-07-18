@@ -139,6 +139,47 @@ function canonicalDisposition(disposition: AttemptDisposition): Record<string, u
 // particular runtime shape.
 type AllKeysOf<T> = Record<keyof T, unknown>;
 
+// The same tripwire, applied to every nested inline-typed group on `ProgressAttempt`/`SessionRecord`
+// (review finding T2-M1 — the pass-2 fix above only reached the two TOP-level functions;
+// `evidence`/`gradedBy`/`activity` (on the attempt) and `budget` (on the session) were still plain
+// object literals, so a field added to any of THOSE groups would silently miss the canonical export
+// exactly like the bug this file already fixed once. `ProgressAttempt['evidence']` etc. reach into
+// the source type rather than re-declaring the shape, so there is only one place these fields are
+// ever spelled out.
+function canonicalEvidence(evidence: ProgressAttempt['evidence']): AllKeysOf<ProgressAttempt['evidence']> {
+  return {
+    subjectId: evidence.subjectId,
+    unitId: evidence.unitId,
+    skillId: evidence.skillId,
+    cellId: evidence.cellId,
+  };
+}
+
+function canonicalGradedBy(gradedBy: ProgressAttempt['gradedBy']): AllKeysOf<ProgressAttempt['gradedBy']> {
+  return {
+    authority: gradedBy.authority,
+    profileId: gradedBy.profileId,
+  };
+}
+
+function canonicalActivity(activity: ProgressAttempt['activity']): AllKeysOf<ProgressAttempt['activity']> {
+  return {
+    activityId: activity.activityId,
+    activityVersion: activity.activityVersion,
+    catalogVersion: activity.catalogVersion,
+    seed: activity.seed,
+    params: canonicalizeJsonValue(activity.params),
+  };
+}
+
+function canonicalBudget(budget: SessionRecord['budget']): AllKeysOf<SessionRecord['budget']> {
+  return {
+    presetId: budget.presetId,
+    targetDurationMs: budget.targetDurationMs,
+    maxActivities: budget.maxActivities,
+  };
+}
+
 function canonicalEngine(engine: AttemptEngineContext | null): AllKeysOf<AttemptEngineContext> | null {
   if (engine === null) return null;
   return {
@@ -164,12 +205,7 @@ function canonicalAttempt(attempt: ProgressAttempt): AllKeysOf<ProgressAttempt> 
     sessionId: attempt.sessionId,
     presentationId: attempt.presentationId,
     attemptOrdinal: attempt.attemptOrdinal,
-    evidence: {
-      subjectId: attempt.evidence.subjectId,
-      unitId: attempt.evidence.unitId,
-      skillId: attempt.evidence.skillId,
-      cellId: attempt.evidence.cellId,
-    },
+    evidence: canonicalEvidence(attempt.evidence),
     kind: attempt.kind,
     mode: attempt.mode,
     interaction: attempt.interaction,
@@ -179,18 +215,9 @@ function canonicalAttempt(attempt: ProgressAttempt): AllKeysOf<ProgressAttempt> 
     presentation: attempt.presentation,
     response: canonicalizeJsonValue(attempt.response),
     disposition: canonicalDisposition(attempt.disposition),
-    gradedBy: {
-      authority: attempt.gradedBy.authority,
-      profileId: attempt.gradedBy.profileId,
-    },
+    gradedBy: canonicalGradedBy(attempt.gradedBy),
     engine: canonicalEngine(attempt.engine),
-    activity: {
-      activityId: attempt.activity.activityId,
-      activityVersion: attempt.activity.activityVersion,
-      catalogVersion: attempt.activity.catalogVersion,
-      seed: attempt.activity.seed,
-      params: canonicalizeJsonValue(attempt.activity.params),
-    },
+    activity: canonicalActivity(attempt.activity),
     occurredAt: attempt.occurredAt,
     elapsedMs: attempt.elapsedMs,
   };
@@ -219,11 +246,7 @@ function canonicalSession(session: SessionRecord): AllKeysOf<SessionRecord> {
     openedAt: session.openedAt,
     closedAt: session.closedAt,
     closeReason: session.closeReason,
-    budget: {
-      presetId: session.budget.presetId,
-      targetDurationMs: session.budget.targetDurationMs,
-      maxActivities: session.budget.maxActivities,
-    },
+    budget: canonicalBudget(session.budget),
     ruleset: canonicalRuleset(session.ruleset),
     profileId: session.profileId,
     reducerVersion: session.reducerVersion,

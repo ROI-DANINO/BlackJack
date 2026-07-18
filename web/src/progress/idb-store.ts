@@ -68,6 +68,13 @@ const META_SINGLETON_ID = 'envelope';
  */
 type MetaRecord = {
   id: string;
+  // Set once, at minting (`config.schemaVersion` at that moment). An additive migration (§8.1) bumps
+  // only the physical `db.version` — `runSchema`'s steps create/alter object stores, they never
+  // rewrite an EXISTING meta record's own fields, and `appendAttempt`/`commitSessionSummary` reuse
+  // `existingMeta` as-is when one is already present. This field therefore goes STALE after a
+  // migration and is never the schema authority: `readEnvelope` below derives
+  // `LearnerEnvelope.schemaVersion` from `physicalVersion` (`db.version`), never from this field
+  // (T7-M2). The in-memory fake mirrors this exact staleness — see fake-store.ts's `NamespaceState`.
   schemaVersion: number;
   learnerKey: LearnerKey;
   revision: number;

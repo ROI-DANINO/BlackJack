@@ -136,9 +136,11 @@ export type ResetConfirmation = {
 // Task 6.5 ruling 4 changes reset's IMPLEMENTATION (clear all three object stores TRANSACTIONALLY,
 // preserving the database and its schema version — never deleteDatabase), not its outcome shape: a
 // successful reset is still `{status:'reset'}`. The ruling-2 refusal is deliberately NOT extended to
-// reset: a confirmed reset is the SANCTIONED recovery from a newer-incompatible store (its whole
-// point is to wipe data this build cannot use), so `NewerSchemaError` is not a reset outcome — only
-// evidence-writes (appendAttempt, commitSessionSummary) refuse a newer schema. Register #12.
+// reset — only evidence-writes (appendAttempt, commitSessionSummary) refuse a newer schema — but a
+// reset on a newer-incompatible store is NOT a recovery from that incompatibility: it preserves the
+// physical schema version (a v999 store stays v999), so writes stay refused after it too. Gate 14's
+// `NEWER_SCHEMA` safeActions are `['export-raw','upgrade-app']` only — reset is never offered as a
+// way out of this failure mode. Register #12.
 export type ResetOutcome =
   | { status: 'reset' }
   | { status: 'conflict'; currentRevision: number } // another tab wrote since you looked

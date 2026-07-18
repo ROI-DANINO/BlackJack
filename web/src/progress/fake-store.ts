@@ -81,13 +81,19 @@ type PhysicalRecord = { [key: string]: unknown };
 /**
  * One namespace's physical contents: §5.1's three stores plus the version marker.
  *
- * `physicalVersion` is this fake's `db.version` — the schema marker the DATABASE tracks, which is
- * deliberately separate from the `schemaVersion` field inside the `meta` record. The two are equal
- * in every normal state and are kept equal by `openConnection`'s upgrade. They come apart in
- * exactly one place: `setPhysicalSchema` (gate 14) moves the marker and nothing else, which is what
- * a store written by a NEWER build looks like to this build. `physicalVersion` is the detection
- * surface everywhere (`diagnose().detectedSchema`, `RawExport.physicalVersion`, the newer-schema
- * check), because that is what IndexedDB itself would report before any record is readable.
+ * `physicalVersion` is this fake's `db.version` — the schema marker the DATABASE tracks, and the
+ * ONLY schema authority anywhere in this file (`diagnose().detectedSchema`, `RawExport.physicalVersion`,
+ * the newer-schema check, `readEnvelope`'s `schemaVersion`) — never the `schemaVersion` FIELD inside
+ * the `meta` record. That field is written once, at minting, and `openConnection`'s upgrade
+ * deliberately does NOT revise it on an existing meta record: an additive migration is schema-only
+ * (§8.1) — it creates/alters object stores, it does not rewrite a record's own fields. This mirrors
+ * the real idb adapter (T7-M2): `idb-store.ts`'s equivalent upgrade path never touches an existing
+ * `MetaRecord.schemaVersion` either, so `meta.schemaVersion` goes physically stale after a migration
+ * on BOTH subjects — consumers must never read it as schema truth. `physicalVersion` also moves
+ * alone (with `meta.schemaVersion` staying exactly where it was) in `setPhysicalSchema` (gate 14),
+ * which is what a store written by a NEWER build looks like to this build before any record is
+ * readable — the same "marker moves, record doesn't" shape as a real migration, for a different
+ * reason.
  */
 type NamespaceState = {
   physicalVersion: number;
@@ -463,8 +469,8 @@ function createStore(config: ProgressStoreConfig, migrated: MigrationReport | nu
    * (Task 6.5 ruling 2). Appending evidence into a store whose schema this build has never heard of
    * would be a write the store could not later export or reason about. The refusal is NOT
    * `STORAGE_UNAVAILABLE`: the storage subsystem is available, the store is merely intentionally
-   * unreadable/unwritable by this version, so `reason:'retry'` would be a lie — the write can never
-   * succeed until the app upgrades. `upgrade-app` (not `retry`) is the safe action. Applied to EVERY
+   * unreadable/unwritable by this version, so `safeActions:['retry']` would be a lie — the write can
+   * never succeed until the app upgrades. `upgrade-app` (not `retry`) is the safe action. Applied to EVERY
    * evidence-write below — both `appendAttempt` and `commitSessionSummary` — via gate 14.
    */
   const refuseIfNewer = (current: NamespaceState | undefined): NewerSchemaError | null =>
@@ -701,7 +707,9 @@ function openConnection(config: ProgressStoreConfig, migrations: MigrationMap | 
     replaceRecords(upgraded, step.store, step.transform);
   }
   upgraded.physicalVersion = config.schemaVersion;
-  metaRecordOf(upgraded)['schemaVersion'] = config.schemaVersion;
+  // `meta.schemaVersion` is deliberately LEFT AS IS — see the NamespaceState doc comment above. An
+  // additive migration is schema-only; it never rewrites an existing meta record, on this subject or
+  // the real idb adapter (T7-M2).
 
   // THE COMMIT POINT of the versionchange transaction. The cursor transform and the version bump
   // are one transaction (§8.1): an abort must undo BOTH, and it does here by construction — the
