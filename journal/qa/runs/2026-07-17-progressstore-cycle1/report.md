@@ -3,9 +3,9 @@
 > QA script-suite role `progress`. Spec: `docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md`. Plan: `docs/superpowers/plans/2026-07-17-progressstore-cycle1.md`.
 
 - **Verdict:** PASS
-- Started: 2026-07-18T21:17:34.002Z
-- Finished: 2026-07-18T21:17:58.099Z
-- Commit: `91d9b30`
+- Started: 2026-07-18T21:26:48.699Z
+- Finished: 2026-07-18T21:27:12.711Z
+- Commit: `c8663e1`
 - Base URL: http://127.0.0.1:4337/
 - Gates per browser: 14 · Browsers: chromium, firefox
 - chromium (149.0.7827.55): 14 pass / 0 fail / 0 declared-unsupported
@@ -68,13 +68,20 @@ this is chromium-only rather than duplicated across browsers).
 
 | Tier | Attempts | Canonical bytes | Bytes/attempt | Measured IDB usage delta |
 |------|----------|------------------|----------------|---------------------------|
-| 20 | 20 | 16,324 | 816.20 | 23,112 bytes |
-| 1,000 | 1,000 | 806,954 | 806.95 | 539,693 bytes |
-| 10,000 | 10,000 | 8,096,959 | 809.70 | 2,339,935 bytes |
+| 20 | 20 | 16,324 | 816.20 | 23,117 bytes |
+| 1,000 | 1,000 | 806,954 | 806.95 | 543,509 bytes |
+| 10,000 | 10,000 | 8,096,959 | 809.70 | 5,212,025 bytes |
 
 `navigator.storage.estimate()` is coarse/quantized in real browsers; a zero or non-monotonic
 delta across tiers is a genuine browser observation, recorded as reported — never smoothed or
-fabricated into a cleaner number.
+fabricated into a cleaner number. Carried from Task 10 (T10-M2): on this run the observed
+delta/canonical ratio moved **1.42× → 0.67× → 0.64×** across the 20/1,000/10,000-attempt tiers,
+against a **non-zero 66,988-byte pre-tier baseline** (`estimate()` already reported storage in
+use before the first tier's writes even started) — noted here so a QA-report-only reader sees
+the anomaly directly rather than having to recompute it from `report.json`'s raw
+`estimateBefore`/`estimateAfter` pairs. (An earlier run of this same script recorded a steeper
+drop-off, 1.42× → 0.67× → 0.29×, at the same canonical byte counts — the swing between runs is
+itself further evidence of the coarseness this disclaimer already names, not a new behavior.)
 
 **Conclusion, against design §10:** no cap is imposed. The measured cost is the table above —
 at the 10,000-attempt stress tier (AL-R2's own stress tier), the canonical envelope is the
