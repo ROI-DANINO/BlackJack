@@ -33,6 +33,10 @@
 
 ## Active
 
+
+## Verification
+
+## Done
 ### AL-05 — Build the cycle-1 ProgressStore foundation
 - Type: build
 - Milestone: AL
@@ -43,12 +47,8 @@
 - Next: Execute Task 6.5 (user-directed contract amendment — four rulings + the OpenProgressStore deviation, full spec in `.wl/sdd/progress.md`), then Tasks 7–11 of docs/superpowers/plans/2026-07-17-progressstore-cycle1.md.
 - Load: docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md, docs/superpowers/plans/2026-07-17-progressstore-cycle1.md, web/src/progress/, web/qa/lib/
 - Gate: feature-qa
-- Evidence: Tasks 1–6 complete and each reviewed clean (fresh implementer + adversarial review + fix loop per task) — commits `6c8cd4b..0d7fd16`. T1 records/fixtures; T2 canonical serializer; T3 port + AST import-boundary guard (three fix cycles; the guard shipped broken twice before the compiler-API rewrite); T4 the 14 gates as host-neutral data; T5 in-memory fake at 12 pass + 2 declared-unsupported, gates mutation-verified 16/16 with `contract.ts` held at 0 changed lines; T6 the `idb` bundle-delta gate PASSED at 1,382 bytes gzipped (1.35 KB vs the >5 KB alarm), independently reproduced. Suite 279/279, `tsc --noEmit && vite build` clean. Remaining: Task 6.5 (contract amendment) then Tasks 7–11 (adapter, real-browser 28/28, byte tiers, feature QA). Full per-task evidence in the gitignored `.wl/sdd/progress.md` ledger. Cycle-1 boundary held throughout.
-- Updated: 2026-07-17T1802
-
-## Verification
-
-## Done
+- Evidence: Merge 4a197b6 (branch feat/al05-cycle1-finish, 5c1775e..6686e50): Tasks 6.5-11 complete — contract amendment (5 rulings, design §12 #9-14), idb adapter, 28/28 real-browser gate matrix (Chromium+Firefox) + two-page races, three-tier byte measurement (~807-816 B/attempt), feature QA closed (ledger PASS, cargo 80/80, web 280/280). Final whole-cycle Fable review: wl-verify CONFORMS, wl-judge PASS after 2 fix cycles. journal/ops/tasks.md journal/ops/phase.md
+- Updated: 2026-07-18T23:11:04.016Z
 
 ### AL-04 — Design the cycle-1 ProgressStore foundation (port, envelope, contract suite)
 - Type: design
