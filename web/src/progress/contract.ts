@@ -616,6 +616,44 @@ const openEmpty = gate('open-empty', 'OBSERVED', async (run) => {
   );
   assert(diagnosis.integrity.invalid.length === 0, `open-empty: an empty namespace reported ${diagnosis.integrity.invalid.length} invalid record(s).`);
 
+  // Ruling 1 (deviations register #9): a CANONICAL export of an empty namespace returns
+  // {status:'empty'} and MINTS NOTHING. The wrong behavior this catches is an export that fabricates
+  // a learnerKey to fill an envelope — a write on a read (§6). 'unavailable'/'absent' would be wrong
+  // too: `absent` is reserved for a storage subsystem that is genuinely unavailable (§8.3), so a
+  // caller must be able to tell "you have no data yet" from "IndexedDB is unavailable here".
+  const emptyExport = await store.exportSnapshot({ mode: 'canonical' });
+  assert(
+    emptyExport.status === 'empty',
+    `open-empty: exportSnapshot({mode:'canonical'}) on a fresh namespace must return {status:'empty'}, got ` +
+      `'${emptyExport.status}'${emptyExport.status === 'unavailable' ? ` (${emptyExport.error.code}/${emptyExport.error.reason})` : ''}. ` +
+      `Minting a learnerKey to fill an export is a write on a read (§6); reporting 'absent' would conflate "no data yet" ` +
+      `with an unavailable storage subsystem (§8.3).`,
+  );
+
+  // Ruling 3 (deviations register #11): a commitSessionSummary before any persisted attempt must NOT
+  // mint the learner key or write a session — it returns {status:'no-evidence'} and writes nothing.
+  // The key is minted only by the first appendAttempt (§6); a summary here would create a phantom
+  // zero-evidence session, which §4.2 point 2 forbids. `expectedRevision:0` is what a caller that
+  // (wrongly) believed a fresh namespace sat at revision 0 would pass — the no-op must not depend on
+  // it being right.
+  const prematureSummary = await store.commitSessionSummary({ session: sessionWrite(), expectedRevision: 0, cachedMastery: null });
+  assert(
+    prematureSummary.status === 'no-evidence',
+    `open-empty: commitSessionSummary on a fresh namespace must return {status:'no-evidence'} and write nothing, got ` +
+      `'${prematureSummary.status}'. The learner key is minted ONLY by the first persisted attempt (§6) — a summary before ` +
+      `any attempt that mints a key and a session is the phantom zero-evidence session §4.2 point 2 forbids.`,
+  );
+
+  // Neither the empty export nor the no-evidence summary may have minted anything: the namespace is
+  // still empty on BOTH surfaces — load() (envelope) and diagnose() (physical records).
+  const afterReads = await store.load();
+  assert(
+    afterReads.status === 'empty',
+    `open-empty: after an empty canonical export and a no-evidence commitSessionSummary, load() must STILL be ` +
+      `{status:'empty'}, got '${afterReads.status}' — one of them minted an envelope on a namespace with no persisted attempt.`,
+  );
+  assertNoStoredRecords(await store.diagnose(), 'open-empty: neither an empty export nor a no-evidence summary may mint a record');
+
   // On "no learner key exists": the key's only surface is the loaded envelope, and {status:'empty'}
   // cannot carry one — that half is proven by the TYPE. The physical half is the meta count above:
   // §5.1 puts the learnerKey in the `meta` singleton, so meta=0 is the learner key not existing.
@@ -1110,6 +1148,14 @@ const exportPrecedesReset = gate('export-precedes-reset', 'OBSERVED', async (run
  * ever reveal. That is why all THREE stores are populated first and their counts asserted NON-zero
  * before the reset: "no residual records in any store" proves nothing about a store that was empty
  * to begin with.
+ *
+ * Task 6.5 ruling 4 makes this gate's central clause FALSIFIABLE. Reset now CLEARS the three stores
+ * transactionally and leaves the namespace physically present (never deleteDatabase), so a reset
+ * that strands `sessions` is a representable defect this gate catches — where a delete-the-database
+ * reset made "stranded sessions" unrepresentable. It also brings `assertNoStoredRecords`'s
+ * anti-vacuity branch to life: post-reset `diagnose().detectedSchema` is the physical version (not
+ * null, because the namespace exists), so the branch that guards against a `diagnose()` reporting an
+ * empty map for a present namespace finally executes on every run.
  */
 const completeReset = gate('complete-reset', 'OBSERVED', async (run) => {
   await run.subject.destroy(run.ns);
@@ -1474,6 +1520,48 @@ const newerSchemaRefusal = gate('newer-schema-refusal', 'SYNTHETIC', async (run)
       `No automatic reset, ever (§8.4); the data is not corrupt, it is merely unreadable HERE.`,
   );
   assert(requireCount(diagnosis, 'meta', 'newer-schema-refusal') === 1, `newer-schema-refusal: the meta singleton was removed; ${requireCount(diagnosis, 'meta', 'newer-schema-refusal')} records remain.`);
+
+  // WRITES ARE REFUSED [ruling 2, deviations register #10]. A write into a namespace this build
+  // cannot read must be rejected with NEWER_SCHEMA — appending evidence into a store whose schema
+  // this build has never heard of would be a record the store could not later export or reason about
+  // (§8.4). The refusal must NOT be STORAGE_UNAVAILABLE: the storage subsystem is available, so
+  // telling the caller to `retry` would loop a write that can never land until the app upgrades. The
+  // rule applies to EVERY evidence-write, so both operations are exercised here, not only append.
+  const refusedAppend = await store.appendAttempt(makeAttemptDraft({ attemptId: 'newer-schema-write-probe' }));
+  assert(
+    refusedAppend.status === 'rejected',
+    `newer-schema-refusal: appendAttempt into a schema-${NEWER_PHYSICAL_SCHEMA} namespace must be {status:'rejected'}, got ` +
+      `'${refusedAppend.status}'${refusedAppend.status === 'committed' ? ` at revision ${refusedAppend.revision}` : ''}. A ` +
+      `store this build cannot read is one it must not write (§8.4).`,
+  );
+  assert(
+    refusedAppend.error.code === 'NEWER_SCHEMA',
+    `newer-schema-refusal: the refused append must carry code 'NEWER_SCHEMA' (ruling 2), got '${refusedAppend.error.code}'. ` +
+      `STORAGE_UNAVAILABLE here would misreport an intentionally-unwritable store as a subsystem outage and invite a ` +
+      `retry that can never succeed.`,
+  );
+  const refusedCommit = await store.commitSessionSummary({ session: sessionWrite(), expectedRevision: v1.revision, cachedMastery: null });
+  assert(
+    refusedCommit.status === 'rejected',
+    `newer-schema-refusal: commitSessionSummary into a schema-${NEWER_PHYSICAL_SCHEMA} namespace must be {status:'rejected'} ` +
+      `too — ruling 2 governs EVERY write, not only appendAttempt — got '${refusedCommit.status}'.`,
+  );
+  assert(
+    refusedCommit.error.code === 'NEWER_SCHEMA',
+    `newer-schema-refusal: the refused commit must carry code 'NEWER_SCHEMA', got '${refusedCommit.error.code}'.`,
+  );
+
+  // The refused writes landed NOTHING: the newer store is byte-for-byte what it was.
+  const afterRefused = await store.diagnose();
+  assert(
+    requireCount(afterRefused, 'attempts', 'newer-schema-refusal') === 1,
+    `newer-schema-refusal: a REFUSED append still landed a record — the attempts store holds ` +
+      `${requireCount(afterRefused, 'attempts', 'newer-schema-refusal')}, expected the 1 seeded before the schema bump.`,
+  );
+  assert(
+    requireCount(afterRefused, 'sessions', 'newer-schema-refusal') === 0,
+    `newer-schema-refusal: a REFUSED commitSessionSummary still landed a session record (${requireCount(afterRefused, 'sessions', 'newer-schema-refusal')}).`,
+  );
 
   const canonical = await store.exportSnapshot({ mode: 'canonical' });
   assert(canonical.status === 'not-canonical-exportable', `newer-schema-refusal: a canonical export at schema ${NEWER_PHYSICAL_SCHEMA} must return {status:'not-canonical-exportable'}, got '${canonical.status}'.`);

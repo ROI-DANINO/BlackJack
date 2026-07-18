@@ -90,7 +90,11 @@ export type ProgressAttemptDraft = Omit<ProgressAttempt, 'committedAtRevision'>;
 export type AppendOutcome =
   | { status: 'committed'; revision: number }
   | { status: 'duplicate'; revision: number } // attemptId already present; nothing written
-  | { status: 'rejected'; error: QuotaExceededError | StorageUnavailableError | ConnectionSupersededError };
+  // `NewerSchemaError` (Task 6.5 ruling 2): a write into a namespace physically NEWER than this
+  // build refuses, because the storage IS available — just intentionally unreadable/unwritable by
+  // this version. It is NOT StorageUnavailableError (the subsystem is fine; retrying the write can
+  // never succeed until the app upgrades). §8.4; deviations register #10.
+  | { status: 'rejected'; error: QuotaExceededError | StorageUnavailableError | ConnectionSupersededError | NewerSchemaError };
 
 export type SessionSummaryWrite = {
   session: Omit<SessionRecord, 'committedAtRevision'>;
@@ -102,12 +106,25 @@ export type CommitOutcome =
   | { status: 'committed'; revision: number }
   | { status: 'duplicate'; revision: number }
   | { status: 'conflict'; currentRevision: number } // REVISION_CONFLICT: reload, re-derive, retry
-  | { status: 'rejected'; error: QuotaExceededError | StorageUnavailableError | ConnectionSupersededError };
+  // No persisted attempt yet ⇒ nothing to summarise (Task 6.5 ruling 3). The learner key is minted
+  // only by the first appendAttempt (§6), so a summary before any attempt must NOT mint the key,
+  // create the namespace, or write a session record — that would be exactly the phantom
+  // zero-evidence session §4.2 point 2 forbids. This is a NO-OP outcome, not an error. Register #11.
+  | { status: 'no-evidence' }
+  // See AppendOutcome — ruling 2 applies to EVERY write, not only appendAttempt.
+  | { status: 'rejected'; error: QuotaExceededError | StorageUnavailableError | ConnectionSupersededError | NewerSchemaError };
 
 export type ExportRequest = { mode: 'canonical' } | { mode: 'raw' };
 
 export type ExportOutcome =
   | { status: 'exported'; mode: 'canonical' | 'raw'; json: string }
+  // A CANONICAL export of a namespace with no persisted data (Task 6.5 ruling 1). There is no
+  // envelope to canonicalise and MINTING a learnerKey to fill one would be a write on a read, which
+  // §6 forbids. This is DISTINCT from 'unavailable'/'absent': `absent` (§8.3) is reserved for a
+  // storage subsystem that is genuinely unavailable, so a caller can tell "no data yet" from
+  // "IndexedDB is unavailable in this browser". Raw export never returns this — a raw dump of an
+  // empty namespace is `{status:'exported', mode:'raw'}` with empty stores (§3.6). Register #9.
+  | { status: 'empty' }
   | { status: 'not-canonical-exportable'; error: RecoveryRequiredError | NewerSchemaError } // retry with mode:'raw'
   | { status: 'unavailable'; error: StorageUnavailableError };
 
@@ -116,6 +133,12 @@ export type ResetConfirmation = {
   expectedRevision: number | 'unloadable'; // forces the caller to have LOOKED first
 };
 
+// Task 6.5 ruling 4 changes reset's IMPLEMENTATION (clear all three object stores TRANSACTIONALLY,
+// preserving the database and its schema version — never deleteDatabase), not its outcome shape: a
+// successful reset is still `{status:'reset'}`. The ruling-2 refusal is deliberately NOT extended to
+// reset: a confirmed reset is the SANCTIONED recovery from a newer-incompatible store (its whole
+// point is to wipe data this build cannot use), so `NewerSchemaError` is not a reset outcome — only
+// evidence-writes (appendAttempt, commitSessionSummary) refuse a newer schema. Register #12.
 export type ResetOutcome =
   | { status: 'reset' }
   | { status: 'conflict'; currentRevision: number } // another tab wrote since you looked
