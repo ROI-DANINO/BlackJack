@@ -107,3 +107,27 @@ This is the verdict Task 11 actually mapped from the run's real evidence (28/28 
 Totals: 2 PASS, 1 PASS-precondition, 3 N/A (each with an explicit reason) — matches the aggregate
 figure in both the coverage-area row (`Durable learner progress (ProgressStore)`, above) and the
 2026-07-18 run-log row above.
+
+### T10-M2 — `navigator.storage.estimate()` swing (progressstore-cycle1, commit `c8663e1`)
+
+Same fragility as the six-row table above, same fix: this observation was previously a hand-appended
+paragraph in `runs/2026-07-17-progressstore-cycle1/report.md`, a file `web/qa/progress/run.ts`'s
+`renderMarkdown()` fully regenerates (single `writeFileSync`, no hand-maintained slot) on every
+`qa:progress` run — the next real re-run would have silently deleted it. Recorded here instead, in
+the durable ledger, where a re-run cannot touch it.
+
+The Task 10 byte-measurement table (design §10) is a MEASUREMENT, not a gate; the base
+`navigator.storage.estimate()` coarseness disclaimer is part of `run.ts`'s generated template and
+survives regeneration on its own. This subsection carries only the numeric addendum the template
+does not emit:
+
+On the 2026-07-18 run, the observed `navigator.storage.estimate()` delta/canonical-bytes ratio
+moved **1.42× → 0.67× → 0.64×** across the 20/1,000/10,000-attempt tiers, against a **non-zero
+66,988-byte pre-tier baseline** (`estimate()` already reported storage in use before the first
+tier's writes even started). An earlier run of the same script (commit `91d9b30`, identical
+canonical byte counts) recorded a steeper drop-off, **1.42× → 0.67× → 0.29×** — at tier 10,000,
+`estimateDeltaBytes` was 2,339,935 then vs. 5,212,025 on the 2026-07-18 run, more than double, with
+canonical bytes byte-identical both times. The swing between runs is further first-hand evidence of
+the coarseness the base disclaimer already names, not a new or different behavior, and is not
+attributable to any code change under `web/src/progress/` between the two runs. Not gated; asserts
+no new bound (design §10 erratum, `report.md`'s "Conclusion" section).
