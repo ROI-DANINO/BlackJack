@@ -24,6 +24,13 @@
   strategy profiles, engine-owned full-ruleset compatibility, a guarded Rust/TypeScript wire contract,
   and lesson lifecycle enforcement. Latest close evidence: 80 Rust tests, 217 web tests, and full QA
   pack PASS.
+- **AL-05 / cycle-1 ProgressStore foundation shipped, feature-QA passed, and whole-cycle-reviewed**
+  (`4a197b6`): provider-neutral port + versioned learner envelope, canonical serializer with
+  exhaustiveness tripwires, 14-gate contract suite (fake honestly 12/14; idb adapter **28/28 in
+  real Chromium + Firefox** with mutex-free two-page races), store-clearing revision-checked reset,
+  three-tier byte measurement (~807–816 B/attempt), and a durable QA ledger record. Closed under a
+  user-directed whole-cycle Fable review: wl-verify CONFORMS, wl-judge PASS. No UI consumer and no
+  learner data written — by design; cycle 2+ wires the producer.
 - **Strategy Table Fundamentals lesson-one direction approved, then intentionally paused**: its
   mechanics-first sequence and the Hit-on-16 continuity wording are recorded; the remaining content,
   grading-boundary, and feature-design work resumes after the adaptive mechanics proof establishes
