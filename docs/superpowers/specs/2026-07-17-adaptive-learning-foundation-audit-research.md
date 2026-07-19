@@ -1,6 +1,11 @@
 # Adaptive Learning Foundation Audit — Research Program
 
-> Status: draft 2026-07-17; charter for approval. Phases 2–3 are named pointers, detailed at their gate.
+> Status: draft 2026-07-17, amended 2026-07-19; charter for approval. Phases 2–3 are named pointers,
+> detailed at their gate.
+>
+> *2026-07-19 amendments (pre-approval): added a Phase 1 depth budget; made UNVERIFIED a transient
+> state with a defined resolution path and a no-UNVERIFIED-at-gate rule; gave the load-bearing
+> mastery-model question an explicit non-blocking escape. Acceptance criteria updated to match.*
 > Scope: validate, verify, and expand the adaptive-learning research foundation; fill named evidence gaps.
 > Authority: **research evidence only.** This program never changes adopted product behavior; owned
 > designs remain authoritative. It produces evidence, classification, and *candidate* decisions — not
@@ -109,11 +114,28 @@ re-doing the search.
 | State | Meaning | May feed synthesis / confidence / recommendations? |
 |---|---|---|
 | **VERIFIED** | All three points confirmed, with an exact supporting location recorded. | Yes |
-| **UNVERIFIED** | Collected but not yet independently confirmed, or failed a point. | **No** — quarantined until resolved or downgraded. |
+| **UNVERIFIED** | Collected but not yet independently confirmed, or failed a point. | **No** — quarantined until resolved or downgraded (see below). |
 | **UNVERIFIABLE** | Cannot be reached at all (paywall, dead link, source not locatable). | **No** — kept only in the source-lead register; never silently upgraded. |
 
 - **UNVERIFIABLE** sources may remain in a **quarantine / source-lead register** as leads for future
   work, but they **must not contribute to synthesis, confidence, or recommendations** in any way.
+
+#### Resolving UNVERIFIED — no permanent limbo
+
+UNVERIFIED is a **transient** state, never a resting place. It is owned by the **verifier that
+assigned it**, who must record *which* of the three points failed and why. Before the phase gate,
+every UNVERIFIED citation is driven to a terminal state by one of exactly three moves:
+
+- **One re-check pass**, by the same verifier, if the failure was mechanical (wrong URL, wrong
+  edition, ambiguous location) → resolves to VERIFIED or continues below.
+- **Downgrade the claim** to what the source actually supports, then re-verify the weakened claim
+  → VERIFIED at reduced strength, with the downgrade noted in the Strength check field.
+- **Drop the citation** — the claim loses that support and is re-bucketed accordingly (commonly to
+  Product judgement or Assumption). If the source could not be reached at all, it goes to
+  **UNVERIFIABLE** and the quarantine register.
+
+**A phase gate cannot pass with any citation still UNVERIFIED.** If a citation resists resolution
+within the one re-check pass, it is dropped rather than carried — the register keeps it as a lead.
 - **Reuse of the halted run:** partial dossiers already on disk in `docs/superpowers/research/`
   (`act-r-procedural-skill.md`, `chess-com.md`, `deliberate-practice.md`, `00-baseline-claim-ledger.md`)
   are **untrusted leads only**. Every citation in them passes the *same* independent contract as newly
@@ -197,8 +219,23 @@ the prior phase's output is reviewed.
 | **C5** | Anki as pedagogy & spaced-repetition methodology | — (collect fresh) |
 | **C6** | Blackjack as a teachable cognitive skill | — (collect fresh) |
 
+**Depth budget** — collection is bounded so verification stays affordable and honest. Per dossier:
+
+- **6–12 citations**, hard cap **15**. A collector that wants to exceed the cap stops and reports the
+  overflow as named leads instead of collecting them; the leads go to the source-lead register.
+- Prefer **primary sources and authoritative reviews** over volume. A dossier of 6 well-located
+  primary citations is a better result than 15 thin ones, and is explicitly not a failure to hit a
+  quota — the range is a ceiling on effort, not a target to fill.
+- **C3 (deliberate practice)** is the known-large literature: the replication dispute is bounded to
+  **the original Ericsson position, the Macnamara meta-analyses, and the principal published
+  replies** — not the full downstream citation graph.
+- A collector that finds a topic genuinely thin returns fewer citations plus a **COVERAGE GAP**
+  note. Under-filling with an honest gap is the correct outcome; padding is a defect.
+
 **Verification** — a **separate** agent per dossier (V1…V6), never the collector, applies the
-three-point contract to every citation and produces the per-citation verification record.
+three-point contract to every citation and produces the per-citation verification record. The depth
+budget means a verifier faces at most 15 citations, keeping the per-citation contract rigorous
+rather than rushed.
 
 **Gate** — the orchestrator returns all six dossiers with survivors / kills / quarantine; the user
 approves before Phase 2 or sends cards back.
@@ -226,10 +263,12 @@ approves before Phase 2 or sends cards back.
 
 **Phase 1 done when:**
 
-- All six topic dossiers exist, each with a complete per-citation verification record.
-- Every citation is in exactly one state (VERIFIED / UNVERIFIED / UNVERIFIABLE), with location for
-  VERIFIED ones.
+- All six topic dossiers exist, each with a complete per-citation verification record, each within
+  the depth budget (6–12 citations, hard cap 15) or carrying an honest COVERAGE GAP note instead.
+- Every citation rests in a **terminal** state — **VERIFIED** (with supporting location) or
+  **UNVERIFIABLE** (in the quarantine register). **No citation remains UNVERIFIED at the gate.**
 - Halted-run leads have been through the same independent contract.
+- C1 and C4 each state whether their evidence is sufficient to settle the mastery-model question.
 - The user has reviewed the six dossiers at the gate.
 
 ## Open questions carried into the program
@@ -238,3 +277,14 @@ approves before Phase 2 or sends cards back.
   like chess" assumes a pairwise-comparison (Elo) system needing an opponent pool; a solo trainer vs a
   fixed item bank may instead need an IRT / knowledge-tracing ability estimate. Left open for the **C1
   (Knowledge Tracing)** and **C4 (Chess.com)** evidence to settle; a Decision Candidate in P3.
+
+  **This question is load-bearing, and the program must not let it stall product work.** It gates a
+  real design decision, so C1 and C4 carry an obligation the other cards do not: each must state at
+  its dossier's head whether the evidence it found is **sufficient to settle the model choice**, and
+  say so plainly if it is not.
+
+  If either dossier comes back thin, the P1 gate does **not** hold the decision open indefinitely.
+  The escape is the charter's own vocabulary: the mastery model is decided as a **Product judgement**
+  or an **Assumption** — chosen on product reasoning, labelled honestly, and entered in the
+  Assumption Register with *Validation Method* naming how it would later be tested. An unresolved
+  research question is a reason to label a decision, never a reason to block one.

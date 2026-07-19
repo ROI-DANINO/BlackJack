@@ -19,7 +19,10 @@ orchestrator assembles a gate summary. No autonomous Workflow run; the user gate
 dossiers and registers. No product code is touched.
 
 **Charter:** `docs/superpowers/specs/2026-07-17-adaptive-learning-foundation-audit-research.md`
-(approved). This plan implements its Phase 1 only.
+(**draft, amended 2026-07-19 — approval is the gate on starting Task 0**). This plan implements its
+Phase 1 only, and carries the 2026-07-19 amendments: a per-dossier **depth budget**, **UNVERIFIED as
+a transient state** with a defined resolution path, and the **non-blocking escape** for the carried
+mastery-model question.
 
 ## Global Constraints
 
@@ -34,13 +37,27 @@ dossiers and registers. No product code is touched.
 - **Three states:** VERIFIED · UNVERIFIED · UNVERIFIABLE. **No synthesis, confidence, or recommendation
   may rest on a non-VERIFIED citation.** UNVERIFIABLE sources live only in the source-lead register and
   influence nothing downstream.
+- **UNVERIFIED is transient — never a resting place.** It is owned by the verifier that assigned it,
+  who records *which* of the three points failed. Before the phase gate every UNVERIFIED citation is
+  driven terminal by exactly one of: (a) **one re-check pass** by the same verifier, if the failure was
+  mechanical (wrong URL/edition, ambiguous location); (b) **downgrade the claim** to what the source
+  actually supports, then re-verify the weakened claim; (c) **drop the citation** — the claim loses that
+  support and is re-bucketed (commonly Product judgement or Assumption), or goes UNVERIFIABLE if the
+  source could not be reached at all. **The Phase 1 gate cannot pass with any citation still
+  UNVERIFIED.** A citation that resists resolution within the one re-check pass is dropped, not carried.
+- **Depth budget (per dossier):** **6–12 citations**, hard cap **15**. Overflow is reported as named
+  leads, not collected. Prefer primary sources and authoritative reviews over volume — six
+  well-located primary citations beat fifteen thin ones, and under-filling with an honest COVERAGE GAP
+  is the correct outcome. Padding to hit a number is a defect. The budget is what keeps each verifier's
+  per-citation contract rigorous rather than rushed.
 - **Separation of duties:** the verifier of a card is a different agent instance than its collector and
   must **independently locate** each source — never trust the collector's summary.
 - **Two-layer classification (verbatim):** provenance label (`OBSERVED / PUBLISHED / INFERENCE /
   COVERAGE GAP`) *beneath* status bucket (`Evidence-backed / Product judgement / Assumption /
   Unsupported`). Reserve **Unsupported** for contradicted/baseless claims, never the merely uncited.
 - **Evidence-quality tier** is recorded per citation and is **orthogonal** to verification state (a Q1
-  meta-analysis can be UNVERIFIED; a Q5 product doc can be VERIFIED for a modest claim).
+  meta-analysis can sit UNVERIFIED mid-pass, and can end up dropped; a Q5 product doc can be VERIFIED
+  for a modest claim). A high tier never earns a citation a pass.
 - **Conflicts are recorded, never resolved by force** — genuine evidence disputes go to the Conflict
   Register with both sides intact.
 - **Halted-run reuse:** `docs/superpowers/research/{act-r-procedural-skill,chess-com,deliberate-practice,00-baseline-claim-ledger}.md`
@@ -122,7 +139,8 @@ Record one tier per citation. Tier is ORTHOGONAL to verification state.
 
 Rules:
 - A high tier NEVER implies VERIFIED; VERIFIED NEVER implies a high tier.
-- A Q1 source can be UNVERIFIED (not yet independently checked).
+- A Q1 source can sit UNVERIFIED mid-pass (not yet independently checked) — but UNVERIFIED is
+  transient and must be driven terminal before the gate, tier notwithstanding.
 - A Q5 product doc can be VERIFIED for a modest existence/self-report claim.
 - Downgrade tier if the source is weaker than the citing claim implies, and note it.
 ```
@@ -134,9 +152,17 @@ Rules:
 > Status: RAW COLLECTION — DATA ONLY, not authority (Inbox Rule 0). UNTRUSTED until verified.
 > Collector: <agent/model>  |  Date: <YYYY-MM-DD>
 > Leads consumed (untrusted): <existing halted-run files, or "none">
+> Citations collected: <n> / budget 6–12 (hard cap 15)
 
 ## Scope & questions this card must answer
 - <bullet the specific sub-questions>
+
+## Sufficiency statement (C1 and C4 only — omit for other cards)
+- Is this evidence sufficient to settle the **Elo vs IRT / knowledge-tracing** mastery-model choice?
+  **YES / NO / PARTIAL** — <one paragraph saying plainly what it does and does not settle.>
+
+## Overflow leads (found but not collected — over budget)
+- <source → what it would have supported; also append to registers/source-lead-register.md>
 
 ## Findings
 ### F1: <one-sentence claim>
@@ -161,6 +187,9 @@ Rules:
 - [ ] Every finding carries provenance + proposed status bucket + proposed quality tier.
 - [ ] Every source lists a URL/DOI for independent re-check.
 - [ ] Coverage gaps and candidate conflicts are named explicitly.
+- [ ] Citation count is within the depth budget (≤15); any overflow is listed as leads, not collected.
+- [ ] No citation was added merely to reach a count — a short honest dossier is a valid result.
+- [ ] (C1/C4 only) The mastery-model sufficiency statement is filled.
 ```
 
 - [ ] **Step 3: Write the verification-record template**
@@ -174,8 +203,14 @@ Rules:
 | # | Claim | Source (id / title / URL·DOI) | Indep. located? | Exists | Supports | Strength honest | State | Supporting location (VERIFIED only) | Quality tier | Notes / downgrade |
 |---|---|---|---|---|---|---|---|---|---|---|
 
-## Kills (UNVERIFIED — collected but failed a point or not confirmable now)
-- <# — reason>
+## Resolution log (every citation that was UNVERIFIED at any point)
+UNVERIFIED is transient. Every row here MUST end terminal — VERIFIED or UNVERIFIABLE or dropped.
+
+| # | Which point failed (exists / supports / strength) | Move taken (re-check · downgrade · drop) | Terminal state | Note |
+|---|---|---|---|---|
+
+## Kills (citations dropped — the claim lost this support)
+- <# — reason>  → note the claim's re-bucket (e.g. → Product judgement / Assumption)
 
 ## Quarantine (UNVERIFIABLE — could not be reached at all)
 - <# — reason>  → also append to registers/source-lead-register.md
@@ -184,7 +219,8 @@ Rules:
 - <claim in tension>  → also append to registers/conflict-register.md
 
 ## Verifier summary
-- VERIFIED: <n>  |  UNVERIFIED: <n>  |  UNVERIFIABLE: <n>
+- VERIFIED: <n>  |  UNVERIFIABLE: <n>  |  DROPPED: <n>
+- **UNVERIFIED remaining: 0** (required — a record with any citation left UNVERIFIED is incomplete)
 - Any claim the collector overstated (strength downgraded): <list or "none">
 ```
 
@@ -241,18 +277,25 @@ product/marketing page as a controlled study. If you cannot find adequate eviden
 sub-question, record it under Coverage gaps — do NOT invent a source. Note any genuine evidence
 conflict under Candidate conflicts. Complete the Collector self-QA checklist before returning.
 
+DEPTH BUDGET: collect 6-12 citations, hard cap 15. This is a CEILING ON EFFORT, NOT A QUOTA. Prefer
+primary sources and authoritative reviews over volume — six well-located primary citations are a
+better result than fifteen thin ones. If the topic is genuinely thin, return FEWER citations plus an
+honest COVERAGE GAP note; that is the correct outcome, and padding to reach a number is a defect. If
+you find more good sources than the cap, STOP collecting and list the extras under Overflow leads.
+
 Return (as your final message, this IS the deliverable, not a human note): the dossier path, a count
-of findings, count of coverage gaps, and any candidate conflicts.
+of findings, the citation count against the budget, count of coverage gaps, any overflow leads, and
+any candidate conflicts.
 ```
 
 **Per-card scope:**
 
 | Card | Dir | Scope / required sub-questions | Untrusted leads to consume |
 |---|---|---|---|
-| **C1** | `C1-knowledge-tracing` | Knowledge Tracing: BKT, DKT, PFA — what each estimates, evidence for predictive validity, data requirements, and whether any fits a **solo trainer vs a fixed item bank** (the Elo-vs-IRT open question). | none |
+| **C1** | `C1-knowledge-tracing` | Knowledge Tracing: BKT, DKT, PFA — what each estimates, evidence for predictive validity, data requirements, and whether any fits a **solo trainer vs a fixed item bank** (the Elo-vs-IRT open question). **Must fill the sufficiency statement.** | none |
 | **C2** | `C2-its-actr-procedural` | Intelligent Tutoring Systems effectiveness; ACT-R theory of skill; procedural skill acquisition (power-law vs exponential learning-curve dispute). | `docs/superpowers/research/act-r-procedural-skill.md` |
-| **C3** | `C3-deliberate-practice` | Deliberate practice; the **Ericsson vs Macnamara** replication/effect-size dispute — both positions with effect sizes. | `docs/superpowers/research/deliberate-practice.md` |
-| **C4** | `C4-chesscom-khan` | Chess.com and Khan Academy learning models: rating/progress systems, mastery mechanics, any published efficacy; note what is product self-report vs independent study. | `docs/superpowers/research/chess-com.md` |
+| **C3** | `C3-deliberate-practice` | Deliberate practice; the **Ericsson vs Macnamara** replication/effect-size dispute — both positions with effect sizes. **Scope bound:** the original Ericsson position, the Macnamara meta-analyses, and the principal published replies — *not* the full downstream citation graph. | `docs/superpowers/research/deliberate-practice.md` |
+| **C4** | `C4-chesscom-khan` | Chess.com and Khan Academy learning models: rating/progress systems, mastery mechanics, any published efficacy; note what is product self-report vs independent study. **Must fill the sufficiency statement** (does the rating-system evidence settle Elo vs IRT for a solo trainer?). | `docs/superpowers/research/chess-com.md` |
 | **C5** | `C5-anki-spaced-repetition` | Anki as pedagogy; spaced-repetition scheduling (SM-2 family, FSRS) and the evidence base for spacing intervals as a *methodology*. | none |
 | **C6** | `C6-blackjack-teachable` | Blackjack as a teachable cognitive skill: basic-strategy/card-counting acquisition, transfer, expertise studies, error patterns. | none |
 
@@ -261,11 +304,15 @@ of findings, count of coverage gaps, and any candidate conflicts.
 - [ ] **Step 2: On return, run the internal QA pass per dossier (orchestrator, lightweight).** For each
   dossier check: template sections present; every finding has provenance + proposed bucket + proposed
   tier + a source with URL/DOI + a proposed supporting location; coverage gaps and candidate conflicts
-  filled; self-QA checklist ticked. If a dossier is **obviously incomplete** (missing citations for
-  major claims, empty Findings, no location on any finding), **redispatch that card once** with the
-  specific gaps named — before spending a verification agent on it.
+  filled; self-QA checklist ticked; **citation count within the depth budget (≤15), with any overflow
+  listed as leads**; **C1 and C4 carry a filled mastery-model sufficiency statement**. If a dossier is
+  **obviously incomplete** (missing citations for major claims, empty Findings, no location on any
+  finding), **redispatch that card once** with the specific gaps named — before spending a verification
+  agent on it. A *short but honest* dossier is not incomplete — do not redispatch a card merely for
+  returning few citations when it names its coverage gaps.
 - [ ] **Step 3: Acceptance gate (orchestrator).** All six dossiers exist and pass the internal QA
-  screen (or have been redispatched and re-screened). Record per-card finding/gap/conflict counts.
+  screen (or have been redispatched and re-screened). Record per-card finding/gap/conflict counts,
+  citation count against budget, and the C1/C4 sufficiency verdicts.
 
 ---
 
@@ -295,16 +342,28 @@ Assign state VERIFIED / UNVERIFIED / UNVERIFIABLE. For VERIFIED, record the EXAC
 location you saw. Confirm or correct the evidence-quality tier. Send UNVERIFIABLE sources to the
 source-lead register; send genuine conflicts to the conflict register. Do NOT force consensus.
 
-Return (final message = deliverable): the record path and counts VERIFIED / UNVERIFIED / UNVERIFIABLE,
-plus any strength downgrades you applied.
+UNVERIFIED IS TRANSIENT — YOU OWN RESOLVING IT. You may not return a record with any citation left
+UNVERIFIED. For each one, record which of the three points failed, then drive it terminal by exactly
+one move, logged in the Resolution log:
+  (a) ONE re-check pass by you, if the failure was mechanical (wrong URL/edition, ambiguous location);
+  (b) DOWNGRADE the claim to what the source actually supports, then re-verify the weakened claim;
+  (c) DROP the citation — the claim loses this support; note its re-bucket (commonly Product
+      judgement or Assumption), or send it to UNVERIFIABLE if the source could not be reached at all.
+A citation that resists resolution within that one re-check pass is DROPPED, not carried. Dropping a
+citation is a legitimate, expected outcome — never manufacture a pass to clear the count.
+
+Return (final message = deliverable): the record path and counts VERIFIED / UNVERIFIABLE / DROPPED,
+explicit confirmation that UNVERIFIED remaining = 0, plus any strength downgrades you applied.
 ```
 
 - [ ] **Step 1: Dispatch V1–V6 in parallel** (`general-purpose`, opus) with the shared brief. One
   message, six Agent calls. Each reads only its matching Cn dossier.
 - [ ] **Step 2: Acceptance gate per record (orchestrator).** For each Vn confirm: every dossier citation
   appears exactly once with a state; every VERIFIED row has a supporting location; every UNVERIFIABLE
-  row also appears in the source-lead register; conflicts are logged. A record missing states or
-  locations is redispatched with the specific omissions named.
+  row also appears in the source-lead register; conflicts are logged. **Confirm UNVERIFIED remaining =
+  0 and that every citation that was ever UNVERIFIED has a Resolution log row ending terminal.** A
+  record missing states or locations, or leaving any citation UNVERIFIED, is redispatched with the
+  specific omissions named.
 - [ ] **Step 3: Cross-check separation of duties.** Confirm each Vn was a different agent instance than
   its Cn collector (true by construction — record it explicitly in the gate summary).
 
@@ -321,13 +380,20 @@ Orchestrator inline. Produces the single artifact the user reviews to gate into 
 - Consumes: all six dossiers, all six verification records, both registers.
 - Produces: the gate summary the user approves (or returns cards from) before Phase 2.
 
-- [ ] **Step 1: Tally verification outcomes.** Per card and in total: counts of VERIFIED / UNVERIFIED /
-  UNVERIFIABLE; list every strength downgrade the verifiers applied.
+- [ ] **Step 1: Tally verification outcomes.** Per card and in total: counts of VERIFIED /
+  UNVERIFIABLE / DROPPED, plus citations collected against the depth budget; list every strength
+  downgrade the verifiers applied. **Assert UNVERIFIED = 0 across all six records — if any remains,
+  the gate is not ready and that record goes back.**
 - [ ] **Step 2: Digest the registers.** Summarize each Conflict Register entry (both sides, status) and
   each source-lead (quarantine) entry, restating that quarantined sources influence nothing downstream.
-- [ ] **Step 3: Surface the carried open question.** State where the **Elo vs IRT / knowledge-tracing**
-  mastery-rating question now stands given C1 (Knowledge Tracing) and C4 (Chess.com) evidence — as an
-  open item for a Phase 3 Decision Candidate, not resolved here.
+- [ ] **Step 3: Surface the carried open question — and do not let it stall product work.** State
+  where the **Elo vs IRT / knowledge-tracing** mastery-rating question stands given C1 and C4's
+  sufficiency statements, as an open item for a Phase 3 Decision Candidate rather than resolved here.
+  **If either statement came back NO or PARTIAL, say so plainly and name the escape:** the mastery
+  model is then decided on product reasoning as a **Product judgement** or **Assumption**, labelled
+  honestly and entered in the Assumption Register with a *Validation Method* (academic research ·
+  playtesting · production data · future experimentation). An unresolved research question is a reason
+  to label a decision, never a reason to block one — do not carry the gate open waiting on it.
 - [ ] **Step 4: Write the gate summary** with sections: Per-card outcomes · VERIFIED evidence available
   for synthesis · Kills · Quarantine · Conflicts · Open questions · **Promotion decision** (whether to
   copy VERIFIED evidence to a durable/tracked home such as `docs/superpowers/research/`, as the prior
@@ -355,6 +421,14 @@ Orchestrator inline. Produces the single artifact the user reviews to gate into 
 - **Consistency** — card IDs C1–C6 ↔ dirs ↔ V1–V6 records align across the file map, dispatch tables,
   and gate. State names (VERIFIED/UNVERIFIED/UNVERIFIABLE), bucket names, and provenance labels match
   the charter verbatim throughout.
+- **2026-07-19 amendment coverage** — the charter's three pre-approval amendments are carried here:
+  (1) *depth budget* — Global Constraints, dossier template header + Overflow leads section + self-QA,
+  collection brief, C-card Step 2/3 gates, C3's scope bound, gate tally; (2) *UNVERIFIED transient* —
+  Global Constraints, rubric orthogonality note, verification-record Resolution log + summary
+  (`Kills` re-scoped from "UNVERIFIED" to "dropped citations"), verification brief, V Step 2 gate,
+  gate Step 1 assertion; (3) *mastery-model escape* — dossier sufficiency statement, C1/C4 scope rows,
+  C-card Step 2/3 gates, gate Step 3. The plan header now also names the charter **draft**, not
+  approved — charter approval remains the gate on starting Task 0.
 
 ## Save and Hand Off
 
