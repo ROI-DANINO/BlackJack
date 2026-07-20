@@ -79,16 +79,22 @@ resolved three cards at zero collection cost.
 
 | Card | Citation state | Sufficiency | Independent re-verification |
 |---|---|---|---|
-| C1 | F22–F27 all terminal, 0 kills; F25 body + F29 body UNVERIFIABLE | INSUFFICIENT | V1d ✅ |
-| C2 | 13/13 corrections verified against primaries, 0 dropped | SUFFICIENT | V2c ✅ |
-| C3 | all 14 corrigendum figures exact; 0 kills, 0 figures wrong | SUFFICIENT | V3c ✅ |
-| C4 | F13 VERIFIED — 5/5 quotes verbatim, 7/7 statistics exact, 11/11 pages correct | SUFFICIENT | V4c ✅ |
-| C5 | F16–F19 all VERIFIED, 0 kills, 0 downgrades, **0 corrections** | SUFFICIENT | V5c ✅ |
-| C6 | V6/V6b corrections landed | SUFFICIENT | ⚠️ **not re-verified** |
+| C1 | F22–F27 all terminal, 0 kills; F25 body + F29 body UNVERIFIABLE | INSUFFICIENT | V1d + **W1, W2, W7 ✅** |
+| C2 | 13/13 corrections verified against primaries, 0 dropped | SUFFICIENT | V2c + **W3 FAIL → W3b ✅** |
+| C3 | all 14 corrigendum figures exact; 0 kills, 0 figures wrong | SUFFICIENT | V3c + **W4 ✅** |
+| C4 | F13 VERIFIED — 5/5 quotes verbatim, 7/7 statistics exact, 11/11 pages correct | SUFFICIENT | V4c + **W5, W8 ✅** |
+| C5 | F16–F19 all VERIFIED, 0 kills, 0 downgrades, **0 corrections** | SUFFICIENT | V5c ✅ — *no final-wave record: C5's single pass needed no repair* |
+| C6 | V6/V6b corrections landed | SUFFICIENT | V6b + **W6 ✅** |
 
-**⚠️ Honest gap: six remediation passes have not been independently verified** — C1-EC, C1-W, C2-EC2,
-C3-EC2, C4-ED, C6-EC. Each was dispatched *from* a verifier's findings, and each states it does not
-mark its own work verified. **This is the clearest remaining item before approval.** See §11.
+> **Historical note — this gap is CLOSED.** Before the final verification wave, six remediation
+> passes stood un-verified: C1-EC, C1-W, C2-EC2, C3-EC2, C4-ED, C6-EC. Each had been dispatched *from*
+> a verifier's findings, and each stated it did not mark its own work verified. That was recorded here
+> as the clearest remaining item before approval.
+>
+> **It is now fully discharged.** The wave ran nine records — `W1`, `W2`, `W3`, `W3b`, `W4`, `W5`,
+> `W6`, `W7`, `W8`. Five passes cleared outright; **W3 returned FAIL** and W5 required a reversal;
+> all three resulting repairs were themselves independently verified. **No pass in this program now
+> stands un-verified.** Full results in **§11**.
 
 ---
 
@@ -384,8 +390,11 @@ That is a different defect from the other four and needs a different guard.
 
 ### Calibration held
 
-Four of eight records state plainly that they went looking for a defect and found none. **No fifth
-manufactured defect was produced.** Two corrections ran in the *collector's* favour: W2 downgraded a
+**Three of the nine final-wave records state plainly that they looked for a defect and found none —
+`W4`, `W7`, `W8`** ("I found no defects in this pass"; "I looked for a fifth manufactured defect and
+did not find one to report"; "I looked for one and did not find one"). Two more resisted the same
+pressure without using that formula: `W1` ("no scalp was hunted") and `W6`, which recorded four minor
+residuals and explicitly **declined to charge them**. **No fifth manufactured defect was produced.** Two corrections ran in the *collector's* favour: W2 downgraded a
 conflict after finding a collector had **understated its own case**, and W7 confirmed a legacy
 off-by-one originating in the *initial* collector's self-QA while explicitly **declining to charge it**
 against a later pass. W7 also independently derived the source count — **27 across 29 finding IDs**,
