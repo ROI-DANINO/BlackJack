@@ -3,10 +3,19 @@
 // POSITIVE ENUMERATION ONLY: this walks the units the manifest declares and requires each
 // artifact to be present and terminal. It never greps for the absence of a failure token —
 // that is the defect this script exists to prevent (a missing directory must FAIL, not pass).
-// The same rule governs parsing: a line that cannot be parsed is a FAILURE, never a line that
-// is silently skipped. A dropped row is absence-as-proof wearing a regex.
-import { readFileSync, existsSync } from "node:fs";
-import { resolve, sep } from "node:path";
+// Three class rules govern every check in this file:
+//   1. Parsing: a line the parser cannot place is a FAILURE, never a line that is silently
+//      skipped. A dropped row is absence-as-proof wearing a regex, and "dropped" includes
+//      rows without leading pipes (still a table row in GFM) and pipe look-alike characters
+//      (still a table row to a human reader).
+//   2. Containment: EVERY filesystem path derived from manifest input must be proven to
+//      resolve inside the root the gate was handed — after symlink resolution. resolve()
+//      alone is a lexical answer to a physical question; realpath is the authority.
+//   3. Terminality: where the contract says a value is terminal, the LAST occurrence
+//      governs, never the first. First-match lets an early clean value mask a later
+//      failing one.
+import { readFileSync, existsSync, realpathSync } from "node:fs";
+import { dirname, resolve, sep } from "node:path";
 
 type Manifest = { runDir: string; units: string[] };
 
@@ -17,6 +26,9 @@ const SUFFICIENCIES = ["SUFFICIENT", "INSUFFICIENT"];
 const CORRECTION_HEADER = /^\|\s*ID\s*\|\s*Correction\s*\|\s*State\s*\|\s*$/;
 const CORRECTION_SEPARATOR = /^\|(?:\s*:?-+:?\s*\|){3}\s*$/;
 const CORRECTION_ROW = /^\|\s*(C\d+)\s*\|([^|]*)\|\s*(LANDED|NOT-LANDED)\s*\|\s*$/;
+// Terminal fields carry /g so matchAll can walk every occurrence; the last one governs.
+const VERDICT_LINE = /^VERDICT:\s*(\S+)\s*$/gm;
+const SUFFICIENCY_LINE = /^SUFFICIENCY:\s*(\S+)\s*$/gm;
 
 function usage(msg: string): never {
   console.error(`usage error: ${msg}`);
@@ -60,10 +72,33 @@ if (!obj.units.every((u) => typeof u === "string" && u.length > 0)) {
 const manifest: Manifest = { runDir: obj.runDir, units: obj.units as string[] };
 
 // A manifest must not be able to point the gate outside the root it was handed, or the
-// canonical must-fail fixture can be made to pass by editing only the manifest.
-const root = resolve(rootArg);
+// canonical must-fail fixture can be made to pass by editing only the manifest. Root is
+// canonicalized once; every manifest-derived path must then prove BOTH lexical containment
+// (no ".." survives resolve) and physical containment (the realpath of its deepest existing
+// ancestor stays under root — a symlink inside root pointing outside must fail HERE, not be
+// followed by readFileSync later).
+const rootAbs = resolve(rootArg);
+const root = existsSync(rootAbs) ? realpathSync(rootAbs) : rootAbs;
+
+function insideRoot(p: string): boolean {
+  if (p !== root && !p.startsWith(root + sep)) return false;
+  let probe = p;
+  while (probe !== root && !existsSync(probe)) probe = dirname(probe);
+  if (!existsSync(probe)) return true; // nothing on this branch exists yet — no link to follow
+  const real = realpathSync(probe);
+  return real === root || real.startsWith(root + sep);
+}
+
+// Rule 3: the LAST matching line is the terminal one. String.match() with /m returns the
+// FIRST, which lets an early "SUFFICIENCY: SUFFICIENT" mask a terminal INSUFFICIENT below it.
+function lastMatch(text: string, re: RegExp): RegExpMatchArray | null {
+  let last: RegExpMatchArray | null = null;
+  for (const m of text.matchAll(re)) last = m;
+  return last;
+}
+
 const runDir = resolve(root, manifest.runDir);
-if (runDir !== root && !runDir.startsWith(root + sep)) {
+if (!insideRoot(runDir)) {
   console.error(`ERROR: manifest runDir "${manifest.runDir}" resolves outside root ${root}`);
   console.error("GATE: FAIL (1 of 1 checks failed)");
   process.exit(3);
@@ -71,9 +106,10 @@ if (runDir !== root && !runDir.startsWith(root + sep)) {
 
 const failures: string[] = [];
 let checks = 0;
-function check(ok: boolean, msg: string): void {
+function check(ok: boolean, msg: string): boolean {
   checks++;
   if (!ok) failures.push(msg);
+  return ok;
 }
 
 // A gate over zero units is a gate that cannot fail.
@@ -82,32 +118,43 @@ check(existsSync(runDir), `run directory missing: ${runDir}`);
 
 for (const unit of manifest.units) {
   const unitDir = resolve(runDir, unit);
-
-  const auditPath = resolve(unitDir, "audit.md");
-  if (!existsSync(auditPath)) {
-    check(false, `${unit}: audit.md missing`);
-  } else {
-    const verdict = readFileSync(auditPath, "utf8").match(/^VERDICT:\s*(\S+)\s*$/m);
-    check(
-      verdict !== null && VERDICTS.includes(verdict[1]),
-      `${unit}: audit.md has no terminal VERDICT: line from {${VERDICTS.join(", ")}}` +
-        (verdict ? ` (found "${verdict[1]}")` : ""),
-    );
+  if (!check(insideRoot(unitDir), `${unit}: unit path resolves outside root ${root}`)) {
+    continue; // never read through an escaping path
   }
 
-  const verificationPath = resolve(unitDir, "verification.md");
+  const auditPath = resolve(unitDir, "audit.md");
+  if (check(insideRoot(auditPath), `${unit}: audit.md resolves outside root ${root}`)) {
+    if (!existsSync(auditPath)) {
+      check(false, `${unit}: audit.md missing`);
+    } else {
+      const verdict = lastMatch(readFileSync(auditPath, "utf8"), VERDICT_LINE);
+      check(
+        verdict !== null && VERDICTS.includes(verdict[1]),
+        `${unit}: audit.md has no terminal VERDICT: line from {${VERDICTS.join(", ")}}` +
+          (verdict ? ` (found "${verdict[1]}")` : ""),
+      );
+    }
+  }
+
   let sufficiency: string | null = null;
-  if (!existsSync(verificationPath)) {
-    check(false, `${unit}: verification.md missing`);
-  } else {
-    const m = readFileSync(verificationPath, "utf8").match(/^SUFFICIENCY:\s*(\S+)\s*$/m);
-    const ok = m !== null && SUFFICIENCIES.includes(m[1]);
-    check(ok, `${unit}: verification.md has no terminal SUFFICIENCY: line from {${SUFFICIENCIES.join(", ")}}`);
-    if (ok) sufficiency = m![1];
+  const verificationPath = resolve(unitDir, "verification.md");
+  if (check(insideRoot(verificationPath), `${unit}: verification.md resolves outside root ${root}`)) {
+    if (!existsSync(verificationPath)) {
+      check(false, `${unit}: verification.md missing`);
+    } else {
+      const m = lastMatch(readFileSync(verificationPath, "utf8"), SUFFICIENCY_LINE);
+      const ok = m !== null && SUFFICIENCIES.includes(m[1]);
+      check(ok, `${unit}: verification.md has no terminal SUFFICIENCY: line from {${SUFFICIENCIES.join(", ")}}`);
+      if (ok) sufficiency = m![1];
+    }
   }
 
   const correctionsPath = resolve(unitDir, "corrections.md");
-  const hasCorrections = existsSync(correctionsPath);
+  const correctionsContained = check(
+    insideRoot(correctionsPath),
+    `${unit}: corrections.md resolves outside root ${root}`,
+  );
+  const hasCorrections = correctionsContained && existsSync(correctionsPath);
 
   // An INSUFFICIENT verdict means the verifier raised a problem, so the loop must have closed.
   // Accepting INSUFFICIENT with nothing recorded would make it a terminal state that passes
@@ -121,27 +168,30 @@ for (const unit of manifest.units) {
 
   if (hasCorrections) {
     const lines = readFileSync(correctionsPath, "utf8").split(/\r?\n/);
-    // Enumerate every line that is trying to be a table row. Anything that looks like a row but
-    // does not conform is a FAILURE — it must never be filtered out of existence.
-    const tableLines = lines.filter((l) => l.trim().startsWith("|"));
+    // Rule 1: corrections.md is EXACTLY the table. Every non-blank line must be the header,
+    // then the separator, then conforming correction rows — nothing else. There is no
+    // category of "line the parser ignores": a row without leading pipes still renders as a
+    // table row in GFM, a comment-wrapped or look-alike-pipe row still reads as one to a
+    // human, so any line this parser cannot place is a FAILURE, never a skip.
+    const rows = lines.filter((l) => l.trim().length > 0);
 
     check(
-      tableLines.length >= 3,
-      `${unit}: corrections.md must contain a header row, a separator row, and at least one correction row (found ${tableLines.length} table line(s))`,
+      rows.length >= 3,
+      `${unit}: corrections.md must contain a header row, a separator row, and at least one correction row (found ${rows.length} non-blank line(s))`,
     );
 
-    if (tableLines.length >= 3) {
+    if (rows.length >= 3) {
       check(
-        CORRECTION_HEADER.test(tableLines[0]),
-        `${unit}: corrections.md header row is malformed, expected "| ID | Correction | State |": ${JSON.stringify(tableLines[0])}`,
+        CORRECTION_HEADER.test(rows[0]),
+        `${unit}: corrections.md header row is malformed, expected "| ID | Correction | State |": ${JSON.stringify(rows[0])}`,
       );
       check(
-        CORRECTION_SEPARATOR.test(tableLines[1]),
-        `${unit}: corrections.md separator row is malformed: ${JSON.stringify(tableLines[1])}`,
+        CORRECTION_SEPARATOR.test(rows[1]),
+        `${unit}: corrections.md separator row is malformed: ${JSON.stringify(rows[1])}`,
       );
 
       const terminal = new Map<string, string>();
-      for (const line of tableLines.slice(2)) {
+      for (const line of rows.slice(2)) {
         const m = line.match(CORRECTION_ROW);
         if (m === null) {
           check(false, `${unit}: corrections.md has a non-conforming correction row: ${JSON.stringify(line)}`);
@@ -159,15 +209,17 @@ for (const unit of manifest.units) {
     }
 
     const confirmPath = resolve(unitDir, "landing-confirmation.md");
-    if (!existsSync(confirmPath)) {
-      check(false, `${unit}: corrections raised but landing-confirmation.md missing`);
-    } else {
-      // The whole file must be the confirmation. Matching CONFIRMED *somewhere* lets a file that
-      // repudiates the landing pass on one stray line.
-      check(
-        readFileSync(confirmPath, "utf8").trim() === "CONFIRMED",
-        `${unit}: landing-confirmation.md must contain exactly "CONFIRMED" and nothing else`,
-      );
+    if (check(insideRoot(confirmPath), `${unit}: landing-confirmation.md resolves outside root ${root}`)) {
+      if (!existsSync(confirmPath)) {
+        check(false, `${unit}: corrections raised but landing-confirmation.md missing`);
+      } else {
+        // The whole file must be the confirmation. Matching CONFIRMED *somewhere* lets a file that
+        // repudiates the landing pass on one stray line.
+        check(
+          readFileSync(confirmPath, "utf8").trim() === "CONFIRMED",
+          `${unit}: landing-confirmation.md must contain exactly "CONFIRMED" and nothing else`,
+        );
+      }
     }
   }
 }

@@ -12,7 +12,7 @@ already assume.
 
 **Architecture:** Two executable checks land first and act as the tests for everything after them —
 `research-roles-lint.ts` validates the four role definitions against a hardcoded role contract, and
-`research-gate.ts` is the reference positive-enumeration gate check, proven against five fixtures
+`research-gate.ts` is the reference positive-enumeration gate check, proven against nine fixtures
 including the empty-directory case that shipped broken twice. The three existing role defs are then
 made phase-neutral (static allowlist root, dispatch supplies only a subdirectory name), a new
 program-integrity `audit-auditor` role is added, and the skill itself is written last so it can
@@ -26,7 +26,7 @@ explicit runs with asserted exit codes, matching existing repo practice.
 ## Acceptance criteria (four elements)
 
 1. **Complete** — all four role defs exist and pass the role lint; the gate script returns the
-   required verdict on all five fixtures; the skill exists and names P1–P5, I1–I4, and the D6
+   required verdict on all nine fixtures; the skill exists and names P1–P5, I1–I4, and the D6
    ordering constraint.
 2. **Honest** — the plan does not describe path scoping or instance separation as tool-enforced.
    Both are dispatch discipline checked at the gate, and the artifacts say so.
@@ -69,8 +69,8 @@ inherits these.
 |---|---|
 | `scripts/research-roles-lint.ts` | Validates the four role defs against the role contract. Positively enumerates the four expected roles — a missing def fails. |
 | `scripts/research-gate.ts` | Reference positive-enumeration gate check. Takes a manifest + a root; verifies per-unit artifacts and correction landing. |
-| `scripts/fixtures/research-gate/manifest.json` | Shared one-unit manifest driving all five fixtures. |
-| `scripts/fixtures/research-gate/{empty,clean,violating,retry,malformed-corrections}/` | The five D7 fixtures. |
+| `scripts/fixtures/research-gate/manifest.json` | Shared one-unit manifest driving every fixture that does not carry its own. |
+| `scripts/fixtures/research-gate/{empty,clean,violating,retry,malformed-corrections,unit-traversal,symlink-escape,gfm-escape,non-terminal-verdict}/` | The nine D7 fixtures (`unit-traversal/` carries its own `manifest.json`; `symlink-escape/run` is a committed relative symlink). |
 | `.claude/agents/audit-collector.md` | Collector role, phase-neutral. |
 | `.claude/agents/audit-editor.md` | Editor role, phase-neutral. |
 | `.claude/agents/audit-verifier.md` | Verifier role, phase-neutral. |
@@ -438,7 +438,7 @@ git commit -m "feat(agents): add audit-auditor, the program-integrity role"
 
 ---
 
-### Task 4: The reference gate check and its five fixtures
+### Task 4: The reference gate check and its nine fixtures
 
 **Files:**
 - Create: `scripts/research-gate.ts`
@@ -457,6 +457,14 @@ git commit -m "feat(agents): add audit-auditor, the program-integrity role"
 - Create: `scripts/fixtures/research-gate/malformed-corrections/run/U1/verification.md`
 - Create: `scripts/fixtures/research-gate/malformed-corrections/run/U1/corrections.md`
 - Create: `scripts/fixtures/research-gate/malformed-corrections/run/U1/landing-confirmation.md`
+- Create: `scripts/fixtures/research-gate/unit-traversal/manifest.json`
+- Create: `scripts/fixtures/research-gate/symlink-escape/run` (relative symlink → `../clean/run`)
+- Create: `scripts/fixtures/research-gate/gfm-escape/run/U1/audit.md`
+- Create: `scripts/fixtures/research-gate/gfm-escape/run/U1/verification.md`
+- Create: `scripts/fixtures/research-gate/gfm-escape/run/U1/corrections.md`
+- Create: `scripts/fixtures/research-gate/gfm-escape/run/U1/landing-confirmation.md`
+- Create: `scripts/fixtures/research-gate/non-terminal-verdict/run/U1/audit.md`
+- Create: `scripts/fixtures/research-gate/non-terminal-verdict/run/U1/verification.md`
 
 **Interfaces:**
 - Produces: CLI `node scripts/research-gate.ts <manifest.json> [root]`. Exit `0` = PASS, `3` = gate
@@ -466,7 +474,15 @@ git commit -m "feat(agents): add audit-auditor, the program-integrity role"
   `<unit>/verification.md` with a terminal `SUFFICIENCY:` line, `<unit>/corrections.md` rows
   (required when SUFFICIENCY is INSUFFICIENT, otherwise optional), and
   `<unit>/landing-confirmation.md` containing exactly `CONFIRMED` when corrections exist.
-  A `runDir` that resolves outside `root` is a gate failure; a malformed manifest is a usage error.
+  A malformed manifest is a usage error.
+- Produces: three class rules the gate enforces everywhere they apply, not per-instance —
+  (1) **containment**: every path derived from manifest input (`runDir`, each unit, and every
+  per-unit artifact file) must resolve inside `root` *after symlink resolution*; any escape is a
+  gate failure. (2) **terminality**: `VERDICT:` and `SUFFICIENCY:` are read from the LAST matching
+  line, never the first. (3) **total row enumeration**: `corrections.md` is exactly the table —
+  every non-blank line must be the header, the separator, or a conforming row; a line the parser
+  cannot place (no leading pipe, look-alike pipe characters, comment-wrapped, fenced) is a failure,
+  never a skip.
 
 - [ ] **Step 1: Write the gate check**
 
@@ -478,10 +494,19 @@ Create `scripts/research-gate.ts`:
 // POSITIVE ENUMERATION ONLY: this walks the units the manifest declares and requires each
 // artifact to be present and terminal. It never greps for the absence of a failure token —
 // that is the defect this script exists to prevent (a missing directory must FAIL, not pass).
-// The same rule governs parsing: a line that cannot be parsed is a FAILURE, never a line that
-// is silently skipped. A dropped row is absence-as-proof wearing a regex.
-import { readFileSync, existsSync } from "node:fs";
-import { resolve, sep } from "node:path";
+// Three class rules govern every check in this file:
+//   1. Parsing: a line the parser cannot place is a FAILURE, never a line that is silently
+//      skipped. A dropped row is absence-as-proof wearing a regex, and "dropped" includes
+//      rows without leading pipes (still a table row in GFM) and pipe look-alike characters
+//      (still a table row to a human reader).
+//   2. Containment: EVERY filesystem path derived from manifest input must be proven to
+//      resolve inside the root the gate was handed — after symlink resolution. resolve()
+//      alone is a lexical answer to a physical question; realpath is the authority.
+//   3. Terminality: where the contract says a value is terminal, the LAST occurrence
+//      governs, never the first. First-match lets an early clean value mask a later
+//      failing one.
+import { readFileSync, existsSync, realpathSync } from "node:fs";
+import { dirname, resolve, sep } from "node:path";
 
 type Manifest = { runDir: string; units: string[] };
 
@@ -492,6 +517,9 @@ const SUFFICIENCIES = ["SUFFICIENT", "INSUFFICIENT"];
 const CORRECTION_HEADER = /^\|\s*ID\s*\|\s*Correction\s*\|\s*State\s*\|\s*$/;
 const CORRECTION_SEPARATOR = /^\|(?:\s*:?-+:?\s*\|){3}\s*$/;
 const CORRECTION_ROW = /^\|\s*(C\d+)\s*\|([^|]*)\|\s*(LANDED|NOT-LANDED)\s*\|\s*$/;
+// Terminal fields carry /g so matchAll can walk every occurrence; the last one governs.
+const VERDICT_LINE = /^VERDICT:\s*(\S+)\s*$/gm;
+const SUFFICIENCY_LINE = /^SUFFICIENCY:\s*(\S+)\s*$/gm;
 
 function usage(msg: string): never {
   console.error(`usage error: ${msg}`);
@@ -535,10 +563,33 @@ if (!obj.units.every((u) => typeof u === "string" && u.length > 0)) {
 const manifest: Manifest = { runDir: obj.runDir, units: obj.units as string[] };
 
 // A manifest must not be able to point the gate outside the root it was handed, or the
-// canonical must-fail fixture can be made to pass by editing only the manifest.
-const root = resolve(rootArg);
+// canonical must-fail fixture can be made to pass by editing only the manifest. Root is
+// canonicalized once; every manifest-derived path must then prove BOTH lexical containment
+// (no ".." survives resolve) and physical containment (the realpath of its deepest existing
+// ancestor stays under root — a symlink inside root pointing outside must fail HERE, not be
+// followed by readFileSync later).
+const rootAbs = resolve(rootArg);
+const root = existsSync(rootAbs) ? realpathSync(rootAbs) : rootAbs;
+
+function insideRoot(p: string): boolean {
+  if (p !== root && !p.startsWith(root + sep)) return false;
+  let probe = p;
+  while (probe !== root && !existsSync(probe)) probe = dirname(probe);
+  if (!existsSync(probe)) return true; // nothing on this branch exists yet — no link to follow
+  const real = realpathSync(probe);
+  return real === root || real.startsWith(root + sep);
+}
+
+// Rule 3: the LAST matching line is the terminal one. String.match() with /m returns the
+// FIRST, which lets an early "SUFFICIENCY: SUFFICIENT" mask a terminal INSUFFICIENT below it.
+function lastMatch(text: string, re: RegExp): RegExpMatchArray | null {
+  let last: RegExpMatchArray | null = null;
+  for (const m of text.matchAll(re)) last = m;
+  return last;
+}
+
 const runDir = resolve(root, manifest.runDir);
-if (runDir !== root && !runDir.startsWith(root + sep)) {
+if (!insideRoot(runDir)) {
   console.error(`ERROR: manifest runDir "${manifest.runDir}" resolves outside root ${root}`);
   console.error("GATE: FAIL (1 of 1 checks failed)");
   process.exit(3);
@@ -546,9 +597,10 @@ if (runDir !== root && !runDir.startsWith(root + sep)) {
 
 const failures: string[] = [];
 let checks = 0;
-function check(ok: boolean, msg: string): void {
+function check(ok: boolean, msg: string): boolean {
   checks++;
   if (!ok) failures.push(msg);
+  return ok;
 }
 
 // A gate over zero units is a gate that cannot fail.
@@ -557,32 +609,43 @@ check(existsSync(runDir), `run directory missing: ${runDir}`);
 
 for (const unit of manifest.units) {
   const unitDir = resolve(runDir, unit);
-
-  const auditPath = resolve(unitDir, "audit.md");
-  if (!existsSync(auditPath)) {
-    check(false, `${unit}: audit.md missing`);
-  } else {
-    const verdict = readFileSync(auditPath, "utf8").match(/^VERDICT:\s*(\S+)\s*$/m);
-    check(
-      verdict !== null && VERDICTS.includes(verdict[1]),
-      `${unit}: audit.md has no terminal VERDICT: line from {${VERDICTS.join(", ")}}` +
-        (verdict ? ` (found "${verdict[1]}")` : ""),
-    );
+  if (!check(insideRoot(unitDir), `${unit}: unit path resolves outside root ${root}`)) {
+    continue; // never read through an escaping path
   }
 
-  const verificationPath = resolve(unitDir, "verification.md");
+  const auditPath = resolve(unitDir, "audit.md");
+  if (check(insideRoot(auditPath), `${unit}: audit.md resolves outside root ${root}`)) {
+    if (!existsSync(auditPath)) {
+      check(false, `${unit}: audit.md missing`);
+    } else {
+      const verdict = lastMatch(readFileSync(auditPath, "utf8"), VERDICT_LINE);
+      check(
+        verdict !== null && VERDICTS.includes(verdict[1]),
+        `${unit}: audit.md has no terminal VERDICT: line from {${VERDICTS.join(", ")}}` +
+          (verdict ? ` (found "${verdict[1]}")` : ""),
+      );
+    }
+  }
+
   let sufficiency: string | null = null;
-  if (!existsSync(verificationPath)) {
-    check(false, `${unit}: verification.md missing`);
-  } else {
-    const m = readFileSync(verificationPath, "utf8").match(/^SUFFICIENCY:\s*(\S+)\s*$/m);
-    const ok = m !== null && SUFFICIENCIES.includes(m[1]);
-    check(ok, `${unit}: verification.md has no terminal SUFFICIENCY: line from {${SUFFICIENCIES.join(", ")}}`);
-    if (ok) sufficiency = m![1];
+  const verificationPath = resolve(unitDir, "verification.md");
+  if (check(insideRoot(verificationPath), `${unit}: verification.md resolves outside root ${root}`)) {
+    if (!existsSync(verificationPath)) {
+      check(false, `${unit}: verification.md missing`);
+    } else {
+      const m = lastMatch(readFileSync(verificationPath, "utf8"), SUFFICIENCY_LINE);
+      const ok = m !== null && SUFFICIENCIES.includes(m[1]);
+      check(ok, `${unit}: verification.md has no terminal SUFFICIENCY: line from {${SUFFICIENCIES.join(", ")}}`);
+      if (ok) sufficiency = m![1];
+    }
   }
 
   const correctionsPath = resolve(unitDir, "corrections.md");
-  const hasCorrections = existsSync(correctionsPath);
+  const correctionsContained = check(
+    insideRoot(correctionsPath),
+    `${unit}: corrections.md resolves outside root ${root}`,
+  );
+  const hasCorrections = correctionsContained && existsSync(correctionsPath);
 
   // An INSUFFICIENT verdict means the verifier raised a problem, so the loop must have closed.
   // Accepting INSUFFICIENT with nothing recorded would make it a terminal state that passes
@@ -596,27 +659,30 @@ for (const unit of manifest.units) {
 
   if (hasCorrections) {
     const lines = readFileSync(correctionsPath, "utf8").split(/\r?\n/);
-    // Enumerate every line that is trying to be a table row. Anything that looks like a row but
-    // does not conform is a FAILURE — it must never be filtered out of existence.
-    const tableLines = lines.filter((l) => l.trim().startsWith("|"));
+    // Rule 1: corrections.md is EXACTLY the table. Every non-blank line must be the header,
+    // then the separator, then conforming correction rows — nothing else. There is no
+    // category of "line the parser ignores": a row without leading pipes still renders as a
+    // table row in GFM, a comment-wrapped or look-alike-pipe row still reads as one to a
+    // human, so any line this parser cannot place is a FAILURE, never a skip.
+    const rows = lines.filter((l) => l.trim().length > 0);
 
     check(
-      tableLines.length >= 3,
-      `${unit}: corrections.md must contain a header row, a separator row, and at least one correction row (found ${tableLines.length} table line(s))`,
+      rows.length >= 3,
+      `${unit}: corrections.md must contain a header row, a separator row, and at least one correction row (found ${rows.length} non-blank line(s))`,
     );
 
-    if (tableLines.length >= 3) {
+    if (rows.length >= 3) {
       check(
-        CORRECTION_HEADER.test(tableLines[0]),
-        `${unit}: corrections.md header row is malformed, expected "| ID | Correction | State |": ${JSON.stringify(tableLines[0])}`,
+        CORRECTION_HEADER.test(rows[0]),
+        `${unit}: corrections.md header row is malformed, expected "| ID | Correction | State |": ${JSON.stringify(rows[0])}`,
       );
       check(
-        CORRECTION_SEPARATOR.test(tableLines[1]),
-        `${unit}: corrections.md separator row is malformed: ${JSON.stringify(tableLines[1])}`,
+        CORRECTION_SEPARATOR.test(rows[1]),
+        `${unit}: corrections.md separator row is malformed: ${JSON.stringify(rows[1])}`,
       );
 
       const terminal = new Map<string, string>();
-      for (const line of tableLines.slice(2)) {
+      for (const line of rows.slice(2)) {
         const m = line.match(CORRECTION_ROW);
         if (m === null) {
           check(false, `${unit}: corrections.md has a non-conforming correction row: ${JSON.stringify(line)}`);
@@ -634,15 +700,17 @@ for (const unit of manifest.units) {
     }
 
     const confirmPath = resolve(unitDir, "landing-confirmation.md");
-    if (!existsSync(confirmPath)) {
-      check(false, `${unit}: corrections raised but landing-confirmation.md missing`);
-    } else {
-      // The whole file must be the confirmation. Matching CONFIRMED *somewhere* lets a file that
-      // repudiates the landing pass on one stray line.
-      check(
-        readFileSync(confirmPath, "utf8").trim() === "CONFIRMED",
-        `${unit}: landing-confirmation.md must contain exactly "CONFIRMED" and nothing else`,
-      );
+    if (check(insideRoot(confirmPath), `${unit}: landing-confirmation.md resolves outside root ${root}`)) {
+      if (!existsSync(confirmPath)) {
+        check(false, `${unit}: corrections raised but landing-confirmation.md missing`);
+      } else {
+        // The whole file must be the confirmation. Matching CONFIRMED *somewhere* lets a file that
+        // repudiates the landing pass on one stray line.
+        check(
+          readFileSync(confirmPath, "utf8").trim() === "CONFIRMED",
+          `${unit}: landing-confirmation.md must contain exactly "CONFIRMED" and nothing else`,
+        );
+      }
     }
   }
 }
@@ -741,7 +809,76 @@ node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scrip
 ```
 Expected: `EXIT=3`, with `ERROR: U1: corrections.md has a non-conforming correction row:`
 
-- [ ] **Step 8: Confirm a zero-unit manifest cannot pass**
+- [ ] **Step 8: Build the `unit-traversal` fixture and confirm it FAILS**
+
+A manifest must not be able to point a *unit* outside root either — `runDir` alone guarded is the
+instance, not the class. This fixture carries its own manifest.
+
+```bash
+mkdir -p scripts/fixtures/research-gate/unit-traversal
+printf '{\n  "runDir": ".",\n  "units": ["../clean/run/U1"]\n}\n' > scripts/fixtures/research-gate/unit-traversal/manifest.json
+node scripts/research-gate.ts scripts/fixtures/research-gate/unit-traversal/manifest.json scripts/fixtures/research-gate/unit-traversal; echo "EXIT=$?"
+```
+Expected: `EXIT=3`, with `ERROR: ../clean/run/U1: unit path resolves outside root`
+
+- [ ] **Step 9: Build the `symlink-escape` fixture and confirm it FAILS**
+
+A lexical prefix test is not containment when the threat model includes symlinks. The symlink is
+relative (`../clean/run`) and committed to git, so it survives checkout on any POSIX system.
+
+```bash
+mkdir -p scripts/fixtures/research-gate/symlink-escape
+ln -sfn ../clean/run scripts/fixtures/research-gate/symlink-escape/run
+node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scripts/fixtures/research-gate/symlink-escape; echo "EXIT=$?"
+```
+Expected: `EXIT=3`, with `ERROR: manifest runDir "run" resolves outside root`
+
+- [ ] **Step 10: Build the `gfm-escape` fixture and confirm it FAILS**
+
+GFM does not require leading/trailing pipes on data rows, and Unicode look-alike pipes render as
+table delimiters to a human. Neither shape may be invisible to the parser.
+
+```bash
+mkdir -p scripts/fixtures/research-gate/gfm-escape/run/U1
+printf 'VERDICT: Revise\n' > scripts/fixtures/research-gate/gfm-escape/run/U1/audit.md
+printf 'SUFFICIENCY: INSUFFICIENT\n' > scripts/fixtures/research-gate/gfm-escape/run/U1/verification.md
+printf 'CONFIRMED\n' > scripts/fixtures/research-gate/gfm-escape/run/U1/landing-confirmation.md
+cat > scripts/fixtures/research-gate/gfm-escape/run/U1/corrections.md <<'EOF'
+| ID | Correction | State |
+|----|------------|-------|
+| C1 | trivial typo | LANDED |
+C2 | fabricated citation, unresolved | NOT-LANDED
+｜ C3 ｜ unresolved, look-alike pipes ｜ NOT-LANDED ｜
+EOF
+node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scripts/fixtures/research-gate/gfm-escape; echo "EXIT=$?"
+```
+Expected: `EXIT=3`, with two `ERROR: U1: corrections.md has a non-conforming correction row:` lines
+(one for the pipeless `C2` row, one for the look-alike-pipe `C3` row)
+
+- [ ] **Step 11: Build the `non-terminal-verdict` fixture and confirm it FAILS**
+
+Where the contract says a value is terminal, the last occurrence governs — a first-match read lets
+an early clean value mask a later failing one.
+
+```bash
+mkdir -p scripts/fixtures/research-gate/non-terminal-verdict/run/U1
+cat > scripts/fixtures/research-gate/non-terminal-verdict/run/U1/audit.md <<'EOF'
+VERDICT: Preserve
+
+Reopened after the correction pass:
+VERDICT: Withdrawn
+EOF
+cat > scripts/fixtures/research-gate/non-terminal-verdict/run/U1/verification.md <<'EOF'
+SUFFICIENCY: SUFFICIENT
+
+On review of the corrections:
+SUFFICIENCY: INSUFFICIENT
+EOF
+node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scripts/fixtures/research-gate/non-terminal-verdict; echo "EXIT=$?"
+```
+Expected: `EXIT=3`, with `ERROR: U1: audit.md has no terminal VERDICT: line from {Preserve, Relabel, Revise, Replace, Remove} (found "Withdrawn")` and `ERROR: U1: SUFFICIENCY is INSUFFICIENT but corrections.md is missing — an insufficient verdict must be closed by landed corrections`
+
+- [ ] **Step 12: Confirm a zero-unit manifest cannot pass**
 
 ```bash
 printf '{"runDir":"run","units":[]}\n' > /tmp/zero-manifest.json
@@ -749,11 +886,11 @@ node scripts/research-gate.ts /tmp/zero-manifest.json scripts/fixtures/research-
 ```
 Expected: `EXIT=3`, with `ERROR: manifest enumerates zero units — a gate over nothing cannot pass`
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 13: Commit**
 
 ```bash
 git add scripts/research-gate.ts scripts/fixtures/research-gate/
-git commit -m "feat(research-plan): add positive-enumeration gate check with empty/clean/violating/retry/malformed-corrections fixtures"
+git commit -m "feat(research-plan): add positive-enumeration gate check with its nine fixtures"
 ```
 
 ---
@@ -931,7 +1068,7 @@ always-zero exit status, so the check could never fail), and a gate that certifi
 directory clean. A check whose output cannot vary is untested.
 
 Use `scripts/research-gate.ts` or write a check in its shape. **Every gate check must demonstrate
-the correct verdict on five fixtures before the plan is approved:**
+the correct verdict on nine fixtures before the plan is approved:**
 
 | Fixture | Required verdict |
 |---|---|
@@ -940,6 +1077,10 @@ the correct verdict on five fixtures before the plan is approved:**
 | `violating` — one unresolved correction | **FAIL** |
 | `retry` — a superseded NOT-LANDED row plus a later LANDED row | **PASS** |
 | `malformed-corrections` — a correction row the parser cannot parse | **FAIL** |
+| `unit-traversal` — a manifest unit that resolves outside root | **FAIL** |
+| `symlink-escape` — a runDir symlink that resolves outside root | **FAIL** |
+| `gfm-escape` — a pipeless GFM row and a look-alike-pipe row | **FAIL** |
+| `non-terminal-verdict` — early clean VERDICT/SUFFICIENCY masking a later terminal one | **FAIL** |
 
 Reference fixtures live in `scripts/fixtures/research-gate/`.
 
@@ -1041,16 +1182,21 @@ node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scrip
 ```
 Expected: empty status, `LINT=0`, `GATE=0`
 
-- [ ] **Step 2: Re-run all five gate fixtures in one pass and assert the verdict vector**
+- [ ] **Step 2: Re-run all nine gate fixtures in one pass and assert the verdict vector**
+
+A fixture that carries its own `manifest.json` (currently only `unit-traversal`) is run with it;
+every other fixture uses the shared manifest.
 
 ```bash
-for f in empty clean violating retry malformed-corrections; do
-  node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json \
-    scripts/fixtures/research-gate/$f > /dev/null 2>&1
+for f in empty clean violating retry malformed-corrections unit-traversal symlink-escape gfm-escape non-terminal-verdict; do
+  m=scripts/fixtures/research-gate/$f/manifest.json
+  [ -f "$m" ] || m=scripts/fixtures/research-gate/manifest.json
+  node scripts/research-gate.ts "$m" scripts/fixtures/research-gate/$f > /dev/null 2>&1
   echo "$f=$?"
 done
 ```
-Expected exactly: `empty=3`, `clean=0`, `violating=3`, `retry=0`, `malformed-corrections=3`
+Expected exactly: `empty=3`, `clean=0`, `violating=3`, `retry=0`, `malformed-corrections=3`,
+`unit-traversal=3`, `symlink-escape=3`, `gfm-escape=3`, `non-terminal-verdict=3`
 
 - [ ] **Step 3: Confirm no phase coupling survives**
 
@@ -1082,7 +1228,7 @@ Run against `docs/superpowers/specs/2026-07-20-research-plan-skill-design.md`.
 
 1. **Spec coverage** — D1 → Task 5 "Inherit, don't restate". D2 → Task 2 Step 1 + lint check.
    D3 → Task 3. D4 → Task 3 (war stories retained verbatim). D5 → Task 5 (global skill) + Task 5
-   Step 5 (docs-map row). D6 → Task 5 "The ordering constraint". D7 → Task 4 (five fixtures).
+   Step 5 (docs-map row). D6 → Task 5 "The ordering constraint". D7 → Task 4 (nine fixtures).
    P1–P5 → Task 5 sections. I1–I4 → Task 5 "The loop". Deliverables table → File Structure. **No
    gaps.**
 2. **Placeholder scan** — every step carries its actual command or file content; no "TBD", no
