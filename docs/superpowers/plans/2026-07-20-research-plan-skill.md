@@ -12,7 +12,7 @@ already assume.
 
 **Architecture:** Two executable checks land first and act as the tests for everything after them —
 `research-roles-lint.ts` validates the four role definitions against a hardcoded role contract, and
-`research-gate.ts` is the reference positive-enumeration gate check, proven against twenty-two fixtures
+`research-gate.ts` is the reference positive-enumeration gate check, proven against twenty-seven fixtures
 including the empty-directory case that shipped broken twice. The three existing role defs are then
 made phase-neutral (static allowlist root, dispatch supplies only a subdirectory name), a new
 program-integrity `audit-auditor` role is added, and the skill itself is written last so it can
@@ -26,7 +26,7 @@ explicit runs with asserted exit codes, matching existing repo practice.
 ## Acceptance criteria (four elements)
 
 1. **Complete** — all four role defs exist and pass the role lint; the gate script returns the
-   required verdict on all twenty-two fixtures; the skill exists and names P1–P5, I1–I4, and the D6
+   required verdict on all twenty-seven fixtures; the skill exists and names P1–P5, I1–I4, and the D6
    ordering constraint.
 2. **Honest** — the plan does not describe path scoping or instance separation as tool-enforced.
    Both are dispatch discipline checked at the gate, and the artifacts say so.
@@ -70,7 +70,7 @@ inherits these.
 | `scripts/research-roles-lint.ts` | Validates the four role defs against the role contract. Positively enumerates the four expected roles — a missing def fails. |
 | `scripts/research-gate.ts` | Reference positive-enumeration gate check. Takes a manifest + a root; verifies per-unit artifacts and correction landing. |
 | `scripts/fixtures/research-gate/manifest.json` | Shared one-unit manifest driving every fixture that does not carry its own. |
-| `scripts/fixtures/research-gate/{empty,clean,violating,retry,malformed-corrections,unit-traversal,symlink-escape,gfm-escape,non-terminal-verdict,garbage-terminal-line,verdict-legend,sufficiency-legend,unreadable-artifact,escaped-pipe,titled-corrections,smuggled-correction,id-reuse-mismatch,unitdir-symlink-escape,audit-symlink-escape,verification-symlink-escape,corrections-symlink-escape,confirmation-symlink-escape}/` | The twenty-two D7 fixtures (`unit-traversal/` carries its own `manifest.json`; the six `*symlink-escape` fixtures use committed relative symlinks; `unitdir-annex/` is `unitdir-symlink-escape`'s loop-back helper; `unreadable-artifact` commits `audit.md` as a directory). |
+| `scripts/fixtures/research-gate/{empty,clean,violating,retry,malformed-corrections,unit-traversal,symlink-escape,gfm-escape,non-terminal-verdict,garbage-terminal-line,verdict-legend,sufficiency-legend,unreadable-artifact,escaped-pipe,titled-corrections,smuggled-correction,id-reuse-mismatch,unitdir-symlink-escape,audit-symlink-escape,verification-symlink-escape,corrections-symlink-escape,confirmation-symlink-escape,desc-smuggle,case-colon-signal,zero-units,malformed-separator,empty-table}/` | The twenty-seven D7 fixtures (`unit-traversal/` and `zero-units/` carry their own `manifest.json`; the six `*symlink-escape` fixtures use committed relative symlinks; `unitdir-annex/` is `unitdir-symlink-escape`'s loop-back helper; `unreadable-artifact` commits `audit.md` as a directory). |
 | `scripts/fixtures/research-gate/TEMPLATE-corrections.md` | The canonical corrections.md authoring example, referenced from the gate script's header. |
 | `.claude/agents/audit-collector.md` | Collector role, phase-neutral. |
 | `.claude/agents/audit-editor.md` | Editor role, phase-neutral. |
@@ -439,7 +439,7 @@ git commit -m "feat(agents): add audit-auditor, the program-integrity role"
 
 ---
 
-### Task 4: The reference gate check and its twenty-two fixtures
+### Task 4: The reference gate check and its twenty-seven fixtures
 
 **Files:**
 - Create: `scripts/research-gate.ts`
@@ -473,6 +473,11 @@ git commit -m "feat(agents): add audit-auditor, the program-integrity role"
 - Create: `scripts/fixtures/research-gate/verification-symlink-escape/run/U1/` (`verification.md` → `../../../clean/run/U1/verification.md`, local valid `audit.md`)
 - Create: `scripts/fixtures/research-gate/corrections-symlink-escape/run/U1/` (`corrections.md` → `../../../escaped-pipe/run/U1/corrections.md`, other artifacts local and valid)
 - Create: `scripts/fixtures/research-gate/confirmation-symlink-escape/run/U1/` (`landing-confirmation.md` → `../../../retry/run/U1/landing-confirmation.md`, other artifacts local and valid)
+- Create: `scripts/fixtures/research-gate/desc-smuggle/run/U1/{audit,verification,corrections,landing-confirmation}.md` (a NOT-LANDED signal inside a conforming LANDED row's description cell)
+- Create: `scripts/fixtures/research-gate/case-colon-signal/run/U1/{audit,verification}.md` (a lower-cased `Verdict:` line and a fullwidth-colon `VERDICT：` line — candidate-net variants)
+- Create: `scripts/fixtures/research-gate/zero-units/manifest.json` + `zero-units/run/.gitkeep` (a zero-unit manifest against an existing runDir — regression lock for the zero-units guard)
+- Create: `scripts/fixtures/research-gate/malformed-separator/run/U1/{audit,verification,corrections,landing-confirmation}.md` (header + `|--|` + a LANDED row — regression lock for the separator-row check)
+- Create: `scripts/fixtures/research-gate/empty-table/run/U1/{audit,verification,corrections,landing-confirmation}.md` (header + separator + zero rows closing an INSUFFICIENT verdict — regression lock for the contiguity check)
 
 Every escape-fixture symlink points at content that would make the gate PASS if its
 containment check were deleted — so deleting any single `insideRoot` call flips that
@@ -493,8 +498,11 @@ fixture's verdict from 3 to 0. An escape fixture that would fail anyway tests no
   mechanism —
   (1) **signal lines**: in every artifact, a line that carries a terminal signal but which the
   parser cannot place is a FAILURE, never a skip — a `VERDICT:`/`SUFFICIENCY:` candidate line that
-  is not exactly `FIELD: <value>` (trailing prose, indentation, a foreign field's line), a
-  corrections table line the grammar cannot place, and any out-of-table line carrying `LANDED`/
+  is not exactly `FIELD: <value>` (trailing prose, indentation, a foreign field's line; the
+  candidate net is case-insensitive and also matches the fullwidth colon U+FF1A, while bulleted
+  and blockquoted forms stay outside it as the legitimate quoting escape valve), a
+  corrections table line the grammar cannot place, and any out-of-table line — or conforming
+  row description cell — carrying `LANDED`/
   `NOT-LANDED` or a terminal keyword. (2) **multiplicity**: `audit.md` and `verification.md` must
   each carry EXACTLY ONE conforming terminal line — zero is an unassessed unit, more than one is
   the verdict-legend self-match, and multiplicity cannot be gamed by ordering. (3) **containment**:
@@ -510,6 +518,11 @@ fixture's verdict from 3 to 0. An escape fixture that would fail anyway tests no
   actual offending line.
 - DELIBERATE non-check: the gate verifies a verdict was reached; the downstream consequences of
   the verdict's value are a later-phase concern.
+- DELIBERATE non-check: there is no "table contains no correction rows" check — one existed and
+  was proven unreachable (whenever the block has ≥ 3 contiguous lines, the first post-separator
+  line either fails the row grammar or populates the ledger), and the contiguity check already
+  fails the empty-table case. A check whose output cannot vary is this script's own
+  founding-defect shape.
 
 - [ ] **Step 1: Write the gate check**
 
@@ -533,7 +546,9 @@ Create `scripts/research-gate.ts`:
 //      that is any line-start VERDICT:/SUFFICIENCY: candidate that is not exactly
 //      "FIELD: <value>" with a value from the closed set (terminalValue). In
 //      corrections.md it is any line the table grammar cannot place plus any out-of-table
-//      line carrying correction state or a terminal keyword (parseCorrections). In
+//      line carrying correction state or a terminal keyword (parseCorrections) — and the
+//      same net runs over every conforming row's description cell, so a conforming row is
+//      not a smuggling exemption. In
 //      landing-confirmation.md, whole-file equality makes every line load-bearing by
 //      construction.
 //   2. Multiplicity: audit.md and verification.md must each carry EXACTLY ONE conforming
@@ -573,8 +588,12 @@ const CORRECTION_SEPARATOR = /^\|(?:\s*:?-+:?\s*\|){3}\s*$/;
 const CORRECTION_ROW = /^\|\s*(C\d+)\s*\|((?:\\.|[^|\\])*)\|\s*(LANDED|NOT-LANDED)\s*\|\s*$/;
 // Rule 1's candidate net: any line that LOOKS like it opens a terminal field is a signal
 // line and must be placed by the parser or fail. Deliberately wider than the conforming
-// grammar — an indented or oddly spaced "VERDICT :" still reads as a verdict to a human.
-const SIGNAL_LINE = /^[ \t]*(VERDICT|SUFFICIENCY)[ \t]*:/;
+// grammar — an indented, oddly spaced, lower-cased, or fullwidth-colon (U+FF1A) "VERDICT :"
+// still reads as a verdict to a human, and none of those variants has a legitimate use.
+// Bulleted ("- VERDICT: ...") and blockquoted ("> VERDICT: ...") forms stay OUTSIDE the net
+// by design: the blockquote is the legitimate escape valve for quoting a verdict in prose,
+// and removing it would create a false-fail with no workaround.
+const SIGNAL_LINE = /^[ \t]*(VERDICT|SUFFICIENCY)[ \t]*[:：]/i;
 // A correction-state token anywhere in an out-of-table line is a smuggled correction.
 // LANDED is a substring of NOT-LANDED, so one test covers both states.
 const CORRECTION_SIGNAL = /LANDED/;
@@ -694,7 +713,9 @@ function terminalValue(
   for (const line of text.split(/\r?\n/)) {
     const sig = line.match(SIGNAL_LINE);
     if (sig === null) continue;
-    if (sig[1] !== field) {
+    // SIGNAL_LINE is case-insensitive, so normalize before deciding which field this
+    // candidate claims to be; the conforming grammar below stays exact-case, exact-colon.
+    if (sig[1].toUpperCase() !== field) {
       check(
         false,
         `${unit}: ${artifact} carries a ${sig[1]}: signal line, which does not belong in ${artifact}: ${JSON.stringify(line)}`,
@@ -775,17 +796,22 @@ function parseCorrections(text: string, unit: string): void {
   }
 
   const terminal = new Map<string, { desc: string; state: string }>();
-  let malformedRows = 0;
   for (const line of block.slice(2)) {
     const m = line.match(CORRECTION_ROW);
     if (m === null) {
-      malformedRows++;
       check(false, `${unit}: corrections.md has a non-conforming correction row: ${JSON.stringify(line)}`);
       continue;
     }
     const id = m[1];
     const desc = m[2].trim();
     const state = m[3];
+    // A conforming row is not a smuggling exemption: the description cell gets the same
+    // net as out-of-table prose, or `| C2 | note: C9 remains NOT-LANDED | LANDED |` rides
+    // a LANDED row straight through the gate.
+    check(
+      !CORRECTION_SIGNAL.test(desc) && !SIGNAL_LINE.test(desc),
+      `${unit}: corrections.md row ${id} carries a correction or terminal signal inside its description cell: ${JSON.stringify(line)}`,
+    );
     const prev = terminal.get(id);
     if (prev !== undefined && prev.desc !== desc) {
       // ID reuse must be a genuine retry, or any unresolved correction could be retired
@@ -802,9 +828,12 @@ function parseCorrections(text: string, unit: string): void {
     terminal.set(id, { desc, state });
   }
 
-  if (block.length >= 3 && malformedRows === 0) {
-    check(terminal.size > 0, `${unit}: corrections.md table contains no correction rows`);
-  }
+  // DELIBERATE non-check: there is no "table contains no correction rows" check here.
+  // One existed and was proven unreachable — whenever the block has >= 3 contiguous lines,
+  // the first post-separator line either fails CORRECTION_ROW (its own failure) or
+  // populates `terminal` (the reuse-mismatch `continue` requires a PRIOR entry, so it can
+  // never zero the first row). A check whose output cannot vary is this script's own
+  // founding-defect shape; the contiguity check above already fails the empty-table case.
   for (const [id, { state }] of terminal) {
     check(state === "LANDED", `${unit}: correction ${id} is ${state}`);
   }
@@ -1287,19 +1316,92 @@ done
 Expected: all five print `=3`, each with its own `resolves outside root` error naming the guarded
 path (`unit path`, `audit.md`, `verification.md`, `corrections.md`, `landing-confirmation.md`)
 
-- [ ] **Step 22: Confirm a zero-unit manifest cannot pass**
+- [ ] **Step 22: Build the `zero-units` fixture and confirm it FAILS**
+
+The zero-units guard, regression-locked as a committed fixture (it carries its own manifest):
+deleting the guard flips this fixture — and only this fixture — to exit 0 against a clean tree.
 
 ```bash
-printf '{"runDir":"run","units":[]}\n' > /tmp/zero-manifest.json
-node scripts/research-gate.ts /tmp/zero-manifest.json scripts/fixtures/research-gate/clean; echo "EXIT=$?"
+mkdir -p scripts/fixtures/research-gate/zero-units/run
+printf '{"runDir":"run","units":[]}\n' > scripts/fixtures/research-gate/zero-units/manifest.json
+touch scripts/fixtures/research-gate/zero-units/run/.gitkeep
+node scripts/research-gate.ts scripts/fixtures/research-gate/zero-units/manifest.json scripts/fixtures/research-gate/zero-units; echo "EXIT=$?"
 ```
 Expected: `EXIT=3`, with `ERROR: manifest enumerates zero units — a gate over nothing cannot pass`
 
-- [ ] **Step 23: Commit**
+- [ ] **Step 23: Build the `desc-smuggle` fixture and confirm it FAILS**
+
+A conforming row is not a smuggling exemption: the description cell gets the same signal net as
+out-of-table prose. Removing the description-cell check flips exactly this fixture to exit 0.
+
+```bash
+mkdir -p scripts/fixtures/research-gate/desc-smuggle/run/U1
+printf 'VERDICT: Revise\n' > scripts/fixtures/research-gate/desc-smuggle/run/U1/audit.md
+printf 'SUFFICIENCY: INSUFFICIENT\n' > scripts/fixtures/research-gate/desc-smuggle/run/U1/verification.md
+cat > scripts/fixtures/research-gate/desc-smuggle/run/U1/corrections.md <<'EOF'
+| ID | Correction | State |
+|----|------------|-------|
+| C1 | fixed the effect size | LANDED |
+| C2 | note: C9 remains NOT-LANDED and blocks finding 3 | LANDED |
+EOF
+printf 'CONFIRMED\n' > scripts/fixtures/research-gate/desc-smuggle/run/U1/landing-confirmation.md
+node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scripts/fixtures/research-gate/desc-smuggle; echo "EXIT=$?"
+```
+Expected: `EXIT=3`, with `ERROR: U1: corrections.md row C2 carries a correction or terminal signal inside its description cell:` quoting the C2 row
+
+- [ ] **Step 24: Build the `case-colon-signal` fixture and confirm it FAILS**
+
+The candidate net is case-insensitive and matches the fullwidth colon U+FF1A — a lower-cased
+`Verdict:` or a lookalike-colon `VERDICT：` still reads as a verdict to a human and has no
+legitimate use. Bulleted (`- VERDICT:`) and blockquoted (`> VERDICT:`) forms stay OUTSIDE the
+net by design: the blockquote is the escape valve for legitimately quoting a verdict in prose.
+Reverting the net to the case-sensitive ASCII-colon regex flips exactly this fixture to exit 0.
+
+```bash
+mkdir -p scripts/fixtures/research-gate/case-colon-signal/run/U1
+printf 'VERDICT: Preserve\nVerdict: Withdrawn entirely\n' > scripts/fixtures/research-gate/case-colon-signal/run/U1/audit.md
+printf 'SUFFICIENCY: SUFFICIENT\nVERDICT\xef\xbc\x9a Remove\n' > scripts/fixtures/research-gate/case-colon-signal/run/U1/verification.md
+node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scripts/fixtures/research-gate/case-colon-signal; echo "EXIT=$?"
+```
+Expected: `EXIT=3`, with a `VERDICT: line the parser cannot place` error quoting
+`"Verdict: Withdrawn entirely"` and a `carries a VERDICT: signal line` error quoting the
+fullwidth-colon line
+
+- [ ] **Step 25: Build the `malformed-separator` fixture and confirm it FAILS**
+
+Regression lock for the separator-row check: with that check deleted, `|--|` sits between the
+header and a LANDED row and the gate would pass.
+
+```bash
+mkdir -p scripts/fixtures/research-gate/malformed-separator/run/U1
+printf 'VERDICT: Revise\n' > scripts/fixtures/research-gate/malformed-separator/run/U1/audit.md
+printf 'SUFFICIENCY: INSUFFICIENT\n' > scripts/fixtures/research-gate/malformed-separator/run/U1/verification.md
+printf '| ID | Correction | State |\n|--|\n| C1 | overstated effect size | LANDED |\n' > scripts/fixtures/research-gate/malformed-separator/run/U1/corrections.md
+printf 'CONFIRMED\n' > scripts/fixtures/research-gate/malformed-separator/run/U1/landing-confirmation.md
+node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scripts/fixtures/research-gate/malformed-separator; echo "EXIT=$?"
+```
+Expected: `EXIT=3`, with `ERROR: U1: corrections.md separator row is malformed: "|--|"`
+
+- [ ] **Step 26: Build the `empty-table` fixture and confirm it FAILS**
+
+Regression lock for the contiguity check: an empty ledger (header + separator + zero rows) must
+not close an INSUFFICIENT verdict. With the contiguity check deleted this fixture passes.
+
+```bash
+mkdir -p scripts/fixtures/research-gate/empty-table/run/U1
+printf 'VERDICT: Revise\n' > scripts/fixtures/research-gate/empty-table/run/U1/audit.md
+printf 'SUFFICIENCY: INSUFFICIENT\n' > scripts/fixtures/research-gate/empty-table/run/U1/verification.md
+printf '| ID | Correction | State |\n|----|------------|-------|\n\nLedger opened; corrections to follow.\n' > scripts/fixtures/research-gate/empty-table/run/U1/corrections.md
+printf 'CONFIRMED\n' > scripts/fixtures/research-gate/empty-table/run/U1/landing-confirmation.md
+node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scripts/fixtures/research-gate/empty-table; echo "EXIT=$?"
+```
+Expected: `EXIT=3`, with `ERROR: U1: corrections.md table must be one contiguous block: header row, separator row, and at least one correction row (found 2 contiguous line(s))`
+
+- [ ] **Step 27: Commit**
 
 ```bash
 git add scripts/research-gate.ts scripts/fixtures/research-gate/
-git commit -m "feat(research-plan): add positive-enumeration gate check with its twenty-two fixtures"
+git commit -m "feat(research-plan): add positive-enumeration gate check with its twenty-seven fixtures"
 ```
 
 ---
@@ -1482,7 +1584,7 @@ always-zero exit status, so the check could never fail), and a gate that certifi
 directory clean. A check whose output cannot vary is untested.
 
 Use `scripts/research-gate.ts` or write a check in its shape. **Every gate check must demonstrate
-the correct verdict on the committed twenty-two fixtures before the plan is approved:**
+the correct verdict on the committed twenty-seven fixtures before the plan is approved:**
 
 | Fixture | Required verdict |
 |---|---|
@@ -1508,6 +1610,11 @@ the correct verdict on the committed twenty-two fixtures before the plan is appr
 | `verification-symlink-escape` — verification.md symlinks outside root | **FAIL** |
 | `corrections-symlink-escape` — corrections.md symlinks outside root | **FAIL** |
 | `confirmation-symlink-escape` — landing-confirmation.md symlinks outside root | **FAIL** |
+| `desc-smuggle` — a NOT-LANDED signal inside a conforming row's description cell | **FAIL** |
+| `case-colon-signal` — a lower-cased `Verdict:` line and a fullwidth-colon `VERDICT：` line | **FAIL** |
+| `zero-units` — a zero-unit manifest against an existing runDir | **FAIL** |
+| `malformed-separator` — header + `\|--\|` + a LANDED row | **FAIL** |
+| `empty-table` — header + separator + zero rows closing an INSUFFICIENT verdict | **FAIL** |
 
 Reference fixtures live in `scripts/fixtures/research-gate/`.
 
@@ -1609,17 +1716,18 @@ node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scrip
 ```
 Expected: empty status, `LINT=0`, `GATE=0`
 
-- [ ] **Step 2: Re-run all twenty-two gate fixtures in one pass and assert the verdict vector**
+- [ ] **Step 2: Re-run all twenty-seven gate fixtures in one pass and assert the verdict vector**
 
-A fixture that carries its own `manifest.json` (currently only `unit-traversal`) is run with it;
-every other fixture uses the shared manifest.
+A fixture that carries its own `manifest.json` (currently `unit-traversal` and `zero-units`) is
+run with it; every other fixture uses the shared manifest.
 
 ```bash
 for f in empty clean violating retry malformed-corrections unit-traversal symlink-escape \
          gfm-escape non-terminal-verdict garbage-terminal-line verdict-legend \
          sufficiency-legend unreadable-artifact escaped-pipe titled-corrections \
          smuggled-correction id-reuse-mismatch unitdir-symlink-escape audit-symlink-escape \
-         verification-symlink-escape corrections-symlink-escape confirmation-symlink-escape; do
+         verification-symlink-escape corrections-symlink-escape confirmation-symlink-escape \
+         desc-smuggle case-colon-signal zero-units malformed-separator empty-table; do
   m=scripts/fixtures/research-gate/$f/manifest.json
   [ -f "$m" ] || m=scripts/fixtures/research-gate/manifest.json
   node scripts/research-gate.ts "$m" scripts/fixtures/research-gate/$f > /dev/null 2>&1
@@ -1631,7 +1739,8 @@ Expected exactly: `empty=3`, `clean=0`, `violating=3`, `retry=0`, `malformed-cor
 `garbage-terminal-line=3`, `verdict-legend=3`, `sufficiency-legend=3`, `unreadable-artifact=3`,
 `escaped-pipe=0`, `titled-corrections=0`, `smuggled-correction=3`, `id-reuse-mismatch=3`,
 `unitdir-symlink-escape=3`, `audit-symlink-escape=3`, `verification-symlink-escape=3`,
-`corrections-symlink-escape=3`, `confirmation-symlink-escape=3`
+`corrections-symlink-escape=3`, `confirmation-symlink-escape=3`, `desc-smuggle=3`,
+`case-colon-signal=3`, `zero-units=3`, `malformed-separator=3`, `empty-table=3`
 
 - [ ] **Step 3: Confirm no phase coupling survives**
 
@@ -1663,7 +1772,7 @@ Run against `docs/superpowers/specs/2026-07-20-research-plan-skill-design.md`.
 
 1. **Spec coverage** — D1 → Task 5 "Inherit, don't restate". D2 → Task 2 Step 1 + lint check.
    D3 → Task 3. D4 → Task 3 (war stories retained verbatim). D5 → Task 5 (global skill) + Task 5
-   Step 5 (docs-map row). D6 → Task 5 "The ordering constraint". D7 → Task 4 (twenty-two fixtures).
+   Step 5 (docs-map row). D6 → Task 5 "The ordering constraint". D7 → Task 4 (twenty-seven fixtures).
    P1–P5 → Task 5 sections. I1–I4 → Task 5 "The loop". Deliverables table → File Structure. **No
    gaps.**
 2. **Placeholder scan** — every step carries its actual command or file content; no "TBD", no

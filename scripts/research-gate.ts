@@ -15,7 +15,9 @@
 //      that is any line-start VERDICT:/SUFFICIENCY: candidate that is not exactly
 //      "FIELD: <value>" with a value from the closed set (terminalValue). In
 //      corrections.md it is any line the table grammar cannot place plus any out-of-table
-//      line carrying correction state or a terminal keyword (parseCorrections). In
+//      line carrying correction state or a terminal keyword (parseCorrections) — and the
+//      same net runs over every conforming row's description cell, so a conforming row is
+//      not a smuggling exemption. In
 //      landing-confirmation.md, whole-file equality makes every line load-bearing by
 //      construction.
 //   2. Multiplicity: audit.md and verification.md must each carry EXACTLY ONE conforming
@@ -55,8 +57,12 @@ const CORRECTION_SEPARATOR = /^\|(?:\s*:?-+:?\s*\|){3}\s*$/;
 const CORRECTION_ROW = /^\|\s*(C\d+)\s*\|((?:\\.|[^|\\])*)\|\s*(LANDED|NOT-LANDED)\s*\|\s*$/;
 // Rule 1's candidate net: any line that LOOKS like it opens a terminal field is a signal
 // line and must be placed by the parser or fail. Deliberately wider than the conforming
-// grammar — an indented or oddly spaced "VERDICT :" still reads as a verdict to a human.
-const SIGNAL_LINE = /^[ \t]*(VERDICT|SUFFICIENCY)[ \t]*:/;
+// grammar — an indented, oddly spaced, lower-cased, or fullwidth-colon (U+FF1A) "VERDICT :"
+// still reads as a verdict to a human, and none of those variants has a legitimate use.
+// Bulleted ("- VERDICT: ...") and blockquoted ("> VERDICT: ...") forms stay OUTSIDE the net
+// by design: the blockquote is the legitimate escape valve for quoting a verdict in prose,
+// and removing it would create a false-fail with no workaround.
+const SIGNAL_LINE = /^[ \t]*(VERDICT|SUFFICIENCY)[ \t]*[:：]/i;
 // A correction-state token anywhere in an out-of-table line is a smuggled correction.
 // LANDED is a substring of NOT-LANDED, so one test covers both states.
 const CORRECTION_SIGNAL = /LANDED/;
@@ -176,7 +182,9 @@ function terminalValue(
   for (const line of text.split(/\r?\n/)) {
     const sig = line.match(SIGNAL_LINE);
     if (sig === null) continue;
-    if (sig[1] !== field) {
+    // SIGNAL_LINE is case-insensitive, so normalize before deciding which field this
+    // candidate claims to be; the conforming grammar below stays exact-case, exact-colon.
+    if (sig[1].toUpperCase() !== field) {
       check(
         false,
         `${unit}: ${artifact} carries a ${sig[1]}: signal line, which does not belong in ${artifact}: ${JSON.stringify(line)}`,
@@ -257,17 +265,22 @@ function parseCorrections(text: string, unit: string): void {
   }
 
   const terminal = new Map<string, { desc: string; state: string }>();
-  let malformedRows = 0;
   for (const line of block.slice(2)) {
     const m = line.match(CORRECTION_ROW);
     if (m === null) {
-      malformedRows++;
       check(false, `${unit}: corrections.md has a non-conforming correction row: ${JSON.stringify(line)}`);
       continue;
     }
     const id = m[1];
     const desc = m[2].trim();
     const state = m[3];
+    // A conforming row is not a smuggling exemption: the description cell gets the same
+    // net as out-of-table prose, or `| C2 | note: C9 remains NOT-LANDED | LANDED |` rides
+    // a LANDED row straight through the gate.
+    check(
+      !CORRECTION_SIGNAL.test(desc) && !SIGNAL_LINE.test(desc),
+      `${unit}: corrections.md row ${id} carries a correction or terminal signal inside its description cell: ${JSON.stringify(line)}`,
+    );
     const prev = terminal.get(id);
     if (prev !== undefined && prev.desc !== desc) {
       // ID reuse must be a genuine retry, or any unresolved correction could be retired
@@ -284,9 +297,12 @@ function parseCorrections(text: string, unit: string): void {
     terminal.set(id, { desc, state });
   }
 
-  if (block.length >= 3 && malformedRows === 0) {
-    check(terminal.size > 0, `${unit}: corrections.md table contains no correction rows`);
-  }
+  // DELIBERATE non-check: there is no "table contains no correction rows" check here.
+  // One existed and was proven unreachable — whenever the block has >= 3 contiguous lines,
+  // the first post-separator line either fails CORRECTION_ROW (its own failure) or
+  // populates `terminal` (the reuse-mismatch `continue` requires a PRIOR entry, so it can
+  // never zero the first row). A check whose output cannot vary is this script's own
+  // founding-defect shape; the contiguity check above already fails the empty-table case.
   for (const [id, { state }] of terminal) {
     check(state === "LANDED", `${unit}: correction ${id} is ${state}`);
   }
