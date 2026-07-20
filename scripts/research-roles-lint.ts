@@ -16,10 +16,19 @@ const CONTRACT: Role[] = [
 
 const ALLOWLIST_ROOT = "journal/raw/_inbox/<run-dir>/";
 // Any concrete segment under the inbox root is phase coupling. `<run-dir>` cannot match:
-// `<` is not in the character class.
-const PHASE_COUPLED = /journal\/raw\/_inbox\/[A-Za-z0-9._-]+\//g;
+// `<` is not in the character class. The trailing slash is OPTIONAL — a concrete run-dir
+// mention is coupling whether or not it is slash-terminated (e.g. "...p1, which you should
+// not need to touch" has no trailing slash but still names a concrete directory). A bare
+// mention of the root with nothing after it still can't match: `+` requires at least one
+// segment character.
+const PHASE_COUPLED = /journal\/raw\/_inbox\/[A-Za-z0-9._-]+\/?/g;
 
-const agentsDir = process.argv[2] ?? ".claude/agents";
+const rawArgs = process.argv.slice(2);
+if (rawArgs.length > 1 || (rawArgs[0] !== undefined && rawArgs[0].startsWith("-"))) {
+  console.error("usage: node scripts/research-roles-lint.ts [agentsDir]");
+  process.exit(2);
+}
+const agentsDir = rawArgs[0] ?? ".claude/agents";
 
 const failures: string[] = [];
 let checks = 0;
