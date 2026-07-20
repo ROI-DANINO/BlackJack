@@ -38,8 +38,11 @@ Build a Duolingo-like blackjack training game that feels approachable while mode
 - Before writing the simulator core, run a short stack spike comparing TypeScript, Rust/WASM, and Python roles for the V1 engine boundary.
 
 ## Agent Kanban
-- When `journal/ops/tasks.md` contains `<!-- agent-kanban:v1 -->`, it is the current-phase execution
-  authority. Only the root/orchestrating agent edits it.
+- When `journal/ops/tasks.md` contains `<!-- agent-kanban:v2 -->`, it is the current-phase execution
+  authority. It is written **only** via `scripts/kanban.ts` — never by hand, including by the
+  orchestrator. Single writer, validated path.
+- Cards are scoped to the active ROADMAP delivery step through their `Milestone`, which
+  `journal/ops/phase.md`'s `roadmap_step:` declares. The board cannot span future milestones.
 - Delegated agents may read cards but must return `Card`, `Result`, `Evidence`, `Next`, `Files`, and
   `Blocker`; they never claim, move, or edit cards directly.
 - Finish started work before pulling new work. Respect the board's WIP and transition policies.
@@ -49,7 +52,7 @@ See `journal/ops/phase.md`. Only the current phase gets detailed tasks
 (`journal/ops/tasks.md`); future phases stay in `ROADMAP.md`.
 
 ## Commands
-- `codex-start` — orient & resume (read-only).
-- `codex-next` — cheap cross-chat bridge.
-- `codex-end` — checkpoint; reconcile + blog at a milestone.
-- `codex-init` — first-time setup or structural re-tune.
+- `/wl-start` — orient & resume (read-only).
+- `/wl-next` — cheap cross-chat bridge.
+- `/wl-end` — checkpoint; reconcile + blog at a milestone.
+- `/wl-init` — first-time setup or structural re-tune.

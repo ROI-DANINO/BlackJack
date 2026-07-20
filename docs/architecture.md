@@ -68,12 +68,15 @@ V1 session state is in memory. The web application can export local history as J
 product database, account system, or sync layer. See [data/history/README.md](../data/history/README.md)
 for the exported-data surface.
 
-Learning attempts are also in-memory serializable records today. There is no production
-`ProgressStore`, stable learner identity, or versioned progress-record envelope in the current code.
-`idb` 8.0.3 is admitted as the browser-local adapter for the first durable-progress slice, but the
-approved seam remains an implementation obligation: create the opaque local learner key before the
-first durable `AttemptRecord` write, put persistence behind a `ProgressStore` application port, and
-version the outer progress record. This documentation does not mark that adapter or seam implemented.
+Learning attempts are in-memory `AttemptRecord`s inside the learning controller today; nothing yet
+writes them durably. `web/src/progress/` implements cycle 1 of the durable-progress seam: a
+versioned `LearnerEnvelope`/`ProgressAttempt` schema, a provider-neutral `ProgressStore` application
+port, an in-memory fake and a browser-proven `idb` 8.0.3 adapter, and the opaque pseudonymous local
+learner key minted on the first durable write. It is proven headless — a 14-gate contract suite runs
+against both subjects, in real Chromium and Firefox for the adapter — not yet wired to a real
+producer: the `LessonController.AttemptRecord → ProgressAttempt` mapper and its UI consumer are the
+missing piece (open prerequisite; design in `docs/superpowers/specs/`), so no learner data is written
+by the running app yet.
 
 ## Hosted product posture
 

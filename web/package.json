@@ -15,6 +15,7 @@
     "qa:flow": "tsx qa/flow/run.ts",
     "qa:breakit": "tsx qa/breakit/run.ts",
     "qa:learn": "tsx qa/learn/run.ts",
+    "qa:progress": "tsx qa/progress/run.ts",
     "breakit": "tsx qa/breakit/run.ts"
   },
   "dependencies": {
