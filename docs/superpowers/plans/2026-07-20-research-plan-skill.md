@@ -12,7 +12,7 @@ already assume.
 
 **Architecture:** Two executable checks land first and act as the tests for everything after them —
 `research-roles-lint.ts` validates the four role definitions against a hardcoded role contract, and
-`research-gate.ts` is the reference positive-enumeration gate check, proven against four fixtures
+`research-gate.ts` is the reference positive-enumeration gate check, proven against five fixtures
 including the empty-directory case that shipped broken twice. The three existing role defs are then
 made phase-neutral (static allowlist root, dispatch supplies only a subdirectory name), a new
 program-integrity `audit-auditor` role is added, and the skill itself is written last so it can
@@ -26,7 +26,7 @@ explicit runs with asserted exit codes, matching existing repo practice.
 ## Acceptance criteria (four elements)
 
 1. **Complete** — all four role defs exist and pass the role lint; the gate script returns the
-   required verdict on all four fixtures; the skill exists and names P1–P5, I1–I4, and the D6
+   required verdict on all five fixtures; the skill exists and names P1–P5, I1–I4, and the D6
    ordering constraint.
 2. **Honest** — the plan does not describe path scoping or instance separation as tool-enforced.
    Both are dispatch discipline checked at the gate, and the artifacts say so.
@@ -69,8 +69,8 @@ inherits these.
 |---|---|
 | `scripts/research-roles-lint.ts` | Validates the four role defs against the role contract. Positively enumerates the four expected roles — a missing def fails. |
 | `scripts/research-gate.ts` | Reference positive-enumeration gate check. Takes a manifest + a root; verifies per-unit artifacts and correction landing. |
-| `scripts/fixtures/research-gate/manifest.json` | Shared one-unit manifest driving all four fixtures. |
-| `scripts/fixtures/research-gate/{empty,clean,violating,retry}/` | The four D7 fixtures. |
+| `scripts/fixtures/research-gate/manifest.json` | Shared one-unit manifest driving all five fixtures. |
+| `scripts/fixtures/research-gate/{empty,clean,violating,retry,malformed-corrections}/` | The five D7 fixtures. |
 | `.claude/agents/audit-collector.md` | Collector role, phase-neutral. |
 | `.claude/agents/audit-editor.md` | Editor role, phase-neutral. |
 | `.claude/agents/audit-verifier.md` | Verifier role, phase-neutral. |
@@ -438,7 +438,7 @@ git commit -m "feat(agents): add audit-auditor, the program-integrity role"
 
 ---
 
-### Task 4: The reference gate check and its four fixtures
+### Task 4: The reference gate check and its five fixtures
 
 **Files:**
 - Create: `scripts/research-gate.ts`
@@ -453,14 +453,20 @@ git commit -m "feat(agents): add audit-auditor, the program-integrity role"
 - Create: `scripts/fixtures/research-gate/retry/run/U1/verification.md`
 - Create: `scripts/fixtures/research-gate/retry/run/U1/corrections.md`
 - Create: `scripts/fixtures/research-gate/retry/run/U1/landing-confirmation.md`
+- Create: `scripts/fixtures/research-gate/malformed-corrections/run/U1/audit.md`
+- Create: `scripts/fixtures/research-gate/malformed-corrections/run/U1/verification.md`
+- Create: `scripts/fixtures/research-gate/malformed-corrections/run/U1/corrections.md`
+- Create: `scripts/fixtures/research-gate/malformed-corrections/run/U1/landing-confirmation.md`
 
 **Interfaces:**
 - Produces: CLI `node scripts/research-gate.ts <manifest.json> [root]`. Exit `0` = PASS, `3` = gate
   failed, `2` = usage error.
 - Produces: the artifact contract every research plan's units must satisfy —
-  `<unit>/audit.md` with a `VERDICT:` line, `<unit>/verification.md` with a terminal
-  `SUFFICIENCY:` line, optional `<unit>/corrections.md` rows, and
-  `<unit>/landing-confirmation.md` when corrections exist.
+  `<unit>/audit.md` with a `VERDICT:` line from {Preserve, Relabel, Revise, Replace, Remove},
+  `<unit>/verification.md` with a terminal `SUFFICIENCY:` line, `<unit>/corrections.md` rows
+  (required when SUFFICIENCY is INSUFFICIENT, otherwise optional), and
+  `<unit>/landing-confirmation.md` containing exactly `CONFIRMED` when corrections exist.
+  A `runDir` that resolves outside `root` is a gate failure; a malformed manifest is a usage error.
 
 - [ ] **Step 1: Write the gate check**
 
@@ -472,20 +478,71 @@ Create `scripts/research-gate.ts`:
 // POSITIVE ENUMERATION ONLY: this walks the units the manifest declares and requires each
 // artifact to be present and terminal. It never greps for the absence of a failure token —
 // that is the defect this script exists to prevent (a missing directory must FAIL, not pass).
+// The same rule governs parsing: a line that cannot be parsed is a FAILURE, never a line that
+// is silently skipped. A dropped row is absence-as-proof wearing a regex.
 import { readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { resolve, sep } from "node:path";
 
 type Manifest = { runDir: string; units: string[] };
 
-const manifestPath = process.argv[2];
-const root = process.argv[3] ?? ".";
-if (!manifestPath) {
+// Closed sets. A gate that accepts any non-empty token cannot fail on a typo.
+const VERDICTS = ["Preserve", "Relabel", "Revise", "Replace", "Remove"];
+const SUFFICIENCIES = ["SUFFICIENT", "INSUFFICIENT"];
+
+const CORRECTION_HEADER = /^\|\s*ID\s*\|\s*Correction\s*\|\s*State\s*\|\s*$/;
+const CORRECTION_SEPARATOR = /^\|(?:\s*:?-+:?\s*\|){3}\s*$/;
+const CORRECTION_ROW = /^\|\s*(C\d+)\s*\|([^|]*)\|\s*(LANDED|NOT-LANDED)\s*\|\s*$/;
+
+function usage(msg: string): never {
+  console.error(`usage error: ${msg}`);
   console.error("usage: node scripts/research-gate.ts <manifest.json> [root]");
   process.exit(2);
 }
 
-const manifest: Manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-const runDir = join(root, manifest.runDir);
+const manifestPath = process.argv[2];
+const rootArg = process.argv[3] ?? ".";
+if (!manifestPath) usage("no manifest path given");
+
+let raw: string;
+try {
+  raw = readFileSync(manifestPath, "utf8");
+} catch (err) {
+  usage(`cannot read manifest ${manifestPath}: ${(err as Error).message}`);
+}
+
+let parsed: unknown;
+try {
+  parsed = JSON.parse(raw);
+} catch (err) {
+  usage(`manifest ${manifestPath} is not valid JSON: ${(err as Error).message}`);
+}
+
+// Validate the manifest shape positively: every required field must be present and of the
+// declared type. A malformed manifest is a usage error (2), not a gate verdict (3).
+if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+  usage("manifest must be a JSON object");
+}
+const obj = parsed as Record<string, unknown>;
+if (typeof obj.runDir !== "string" || obj.runDir.length === 0) {
+  usage('manifest must have a non-empty string "runDir"');
+}
+if (!Array.isArray(obj.units)) {
+  usage('manifest must have an array "units"');
+}
+if (!obj.units.every((u) => typeof u === "string" && u.length > 0)) {
+  usage('every entry in manifest "units" must be a non-empty string');
+}
+const manifest: Manifest = { runDir: obj.runDir, units: obj.units as string[] };
+
+// A manifest must not be able to point the gate outside the root it was handed, or the
+// canonical must-fail fixture can be made to pass by editing only the manifest.
+const root = resolve(rootArg);
+const runDir = resolve(root, manifest.runDir);
+if (runDir !== root && !runDir.startsWith(root + sep)) {
+  console.error(`ERROR: manifest runDir "${manifest.runDir}" resolves outside root ${root}`);
+  console.error("GATE: FAIL (1 of 1 checks failed)");
+  process.exit(3);
+}
 
 const failures: string[] = [];
 let checks = 0;
@@ -499,47 +556,92 @@ check(manifest.units.length > 0, "manifest enumerates zero units — a gate over
 check(existsSync(runDir), `run directory missing: ${runDir}`);
 
 for (const unit of manifest.units) {
-  const unitDir = join(runDir, unit);
+  const unitDir = resolve(runDir, unit);
 
-  const auditPath = join(unitDir, "audit.md");
+  const auditPath = resolve(unitDir, "audit.md");
   if (!existsSync(auditPath)) {
     check(false, `${unit}: audit.md missing`);
   } else {
-    check(/^VERDICT:\s*\S+/m.test(readFileSync(auditPath, "utf8")), `${unit}: audit.md has no VERDICT: line`);
-  }
-
-  const verificationPath = join(unitDir, "verification.md");
-  if (!existsSync(verificationPath)) {
-    check(false, `${unit}: verification.md missing`);
-  } else {
+    const verdict = readFileSync(auditPath, "utf8").match(/^VERDICT:\s*(\S+)\s*$/m);
     check(
-      /^SUFFICIENCY:\s*(SUFFICIENT|INSUFFICIENT)\s*$/m.test(readFileSync(verificationPath, "utf8")),
-      `${unit}: verification.md has no terminal SUFFICIENCY: line`,
+      verdict !== null && VERDICTS.includes(verdict[1]),
+      `${unit}: audit.md has no terminal VERDICT: line from {${VERDICTS.join(", ")}}` +
+        (verdict ? ` (found "${verdict[1]}")` : ""),
     );
   }
 
-  const correctionsPath = join(unitDir, "corrections.md");
-  if (existsSync(correctionsPath)) {
-    const rows = [
-      ...readFileSync(correctionsPath, "utf8").matchAll(/^\|\s*(C\d+)\s*\|.*\|\s*(LANDED|NOT-LANDED)\s*\|/gm),
-    ];
-    // Retry path: a later row for the same ID supersedes an earlier one. Without this a
-    // superseded NOT-LANDED row would deadlock the gate forever, because verifiers never edit.
-    const terminal = new Map<string, string>();
-    for (const row of rows) terminal.set(row[1], row[2]);
+  const verificationPath = resolve(unitDir, "verification.md");
+  let sufficiency: string | null = null;
+  if (!existsSync(verificationPath)) {
+    check(false, `${unit}: verification.md missing`);
+  } else {
+    const m = readFileSync(verificationPath, "utf8").match(/^SUFFICIENCY:\s*(\S+)\s*$/m);
+    const ok = m !== null && SUFFICIENCIES.includes(m[1]);
+    check(ok, `${unit}: verification.md has no terminal SUFFICIENCY: line from {${SUFFICIENCIES.join(", ")}}`);
+    if (ok) sufficiency = m![1];
+  }
 
-    check(terminal.size > 0, `${unit}: corrections.md present but contains no correction rows`);
-    for (const [id, state] of terminal) {
-      check(state === "LANDED", `${unit}: correction ${id} is ${state}`);
+  const correctionsPath = resolve(unitDir, "corrections.md");
+  const hasCorrections = existsSync(correctionsPath);
+
+  // An INSUFFICIENT verdict means the verifier raised a problem, so the loop must have closed.
+  // Accepting INSUFFICIENT with nothing recorded would make it a terminal state that passes
+  // unconditionally.
+  if (sufficiency === "INSUFFICIENT") {
+    check(
+      hasCorrections,
+      `${unit}: SUFFICIENCY is INSUFFICIENT but corrections.md is missing — an insufficient verdict must be closed by landed corrections`,
+    );
+  }
+
+  if (hasCorrections) {
+    const lines = readFileSync(correctionsPath, "utf8").split(/\r?\n/);
+    // Enumerate every line that is trying to be a table row. Anything that looks like a row but
+    // does not conform is a FAILURE — it must never be filtered out of existence.
+    const tableLines = lines.filter((l) => l.trim().startsWith("|"));
+
+    check(
+      tableLines.length >= 3,
+      `${unit}: corrections.md must contain a header row, a separator row, and at least one correction row (found ${tableLines.length} table line(s))`,
+    );
+
+    if (tableLines.length >= 3) {
+      check(
+        CORRECTION_HEADER.test(tableLines[0]),
+        `${unit}: corrections.md header row is malformed, expected "| ID | Correction | State |": ${JSON.stringify(tableLines[0])}`,
+      );
+      check(
+        CORRECTION_SEPARATOR.test(tableLines[1]),
+        `${unit}: corrections.md separator row is malformed: ${JSON.stringify(tableLines[1])}`,
+      );
+
+      const terminal = new Map<string, string>();
+      for (const line of tableLines.slice(2)) {
+        const m = line.match(CORRECTION_ROW);
+        if (m === null) {
+          check(false, `${unit}: corrections.md has a non-conforming correction row: ${JSON.stringify(line)}`);
+          continue;
+        }
+        // Retry path: a later row for the same ID supersedes an earlier one. Without this a
+        // superseded NOT-LANDED row would deadlock the gate forever, because verifiers never edit.
+        terminal.set(m[1], m[3]);
+      }
+
+      check(terminal.size > 0, `${unit}: corrections.md present but contains no correction rows`);
+      for (const [id, state] of terminal) {
+        check(state === "LANDED", `${unit}: correction ${id} is ${state}`);
+      }
     }
 
-    const confirmPath = join(unitDir, "landing-confirmation.md");
+    const confirmPath = resolve(unitDir, "landing-confirmation.md");
     if (!existsSync(confirmPath)) {
       check(false, `${unit}: corrections raised but landing-confirmation.md missing`);
     } else {
+      // The whole file must be the confirmation. Matching CONFIRMED *somewhere* lets a file that
+      // repudiates the landing pass on one stray line.
       check(
-        /^CONFIRMED\s*$/m.test(readFileSync(confirmPath, "utf8")),
-        `${unit}: landing-confirmation.md is not CONFIRMED`,
+        readFileSync(confirmPath, "utf8").trim() === "CONFIRMED",
+        `${unit}: landing-confirmation.md must contain exactly "CONFIRMED" and nothing else`,
       );
     }
   }
@@ -619,7 +721,27 @@ node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scrip
 ```
 Expected: `EXIT=0`, ending `GATE: PASS`
 
-- [ ] **Step 7: Confirm a zero-unit manifest cannot pass**
+- [ ] **Step 7: Build the `malformed-corrections` fixture and confirm it FAILS**
+
+A row that cannot be parsed must FAIL, not vanish. This is the absence-as-proof case in the
+parser itself.
+
+```bash
+mkdir -p scripts/fixtures/research-gate/malformed-corrections/run/U1
+printf 'VERDICT: Revise\n' > scripts/fixtures/research-gate/malformed-corrections/run/U1/audit.md
+printf 'SUFFICIENCY: INSUFFICIENT\n' > scripts/fixtures/research-gate/malformed-corrections/run/U1/verification.md
+cat > scripts/fixtures/research-gate/malformed-corrections/run/U1/corrections.md <<'EOF'
+| ID | Correction | State |
+|----|------------|-------|
+| C1 | overstated effect size | LANDED |
+| C2 | unresolved, written in a shape the gate must not silently drop | PENDING |
+EOF
+printf 'CONFIRMED\n' > scripts/fixtures/research-gate/malformed-corrections/run/U1/landing-confirmation.md
+node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scripts/fixtures/research-gate/malformed-corrections; echo "EXIT=$?"
+```
+Expected: `EXIT=3`, with `ERROR: U1: corrections.md has a non-conforming correction row:`
+
+- [ ] **Step 8: Confirm a zero-unit manifest cannot pass**
 
 ```bash
 printf '{"runDir":"run","units":[]}\n' > /tmp/zero-manifest.json
@@ -627,11 +749,11 @@ node scripts/research-gate.ts /tmp/zero-manifest.json scripts/fixtures/research-
 ```
 Expected: `EXIT=3`, with `ERROR: manifest enumerates zero units — a gate over nothing cannot pass`
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add scripts/research-gate.ts scripts/fixtures/research-gate/
-git commit -m "feat(research-plan): add positive-enumeration gate check with empty/clean/violating/retry fixtures"
+git commit -m "feat(research-plan): add positive-enumeration gate check with empty/clean/violating/retry/malformed-corrections fixtures"
 ```
 
 ---
@@ -809,7 +931,7 @@ always-zero exit status, so the check could never fail), and a gate that certifi
 directory clean. A check whose output cannot vary is untested.
 
 Use `scripts/research-gate.ts` or write a check in its shape. **Every gate check must demonstrate
-the correct verdict on four fixtures before the plan is approved:**
+the correct verdict on five fixtures before the plan is approved:**
 
 | Fixture | Required verdict |
 |---|---|
@@ -817,6 +939,7 @@ the correct verdict on four fixtures before the plan is approved:**
 | `clean` — all artifacts present and resolved | **PASS** |
 | `violating` — one unresolved correction | **FAIL** |
 | `retry` — a superseded NOT-LANDED row plus a later LANDED row | **PASS** |
+| `malformed-corrections` — a correction row the parser cannot parse | **FAIL** |
 
 Reference fixtures live in `scripts/fixtures/research-gate/`.
 
@@ -918,16 +1041,16 @@ node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json scrip
 ```
 Expected: empty status, `LINT=0`, `GATE=0`
 
-- [ ] **Step 2: Re-run all four gate fixtures in one pass and assert the verdict vector**
+- [ ] **Step 2: Re-run all five gate fixtures in one pass and assert the verdict vector**
 
 ```bash
-for f in empty clean violating retry; do
+for f in empty clean violating retry malformed-corrections; do
   node scripts/research-gate.ts scripts/fixtures/research-gate/manifest.json \
     scripts/fixtures/research-gate/$f > /dev/null 2>&1
   echo "$f=$?"
 done
 ```
-Expected exactly: `empty=3`, `clean=0`, `violating=3`, `retry=0`
+Expected exactly: `empty=3`, `clean=0`, `violating=3`, `retry=0`, `malformed-corrections=3`
 
 - [ ] **Step 3: Confirm no phase coupling survives**
 
@@ -959,7 +1082,7 @@ Run against `docs/superpowers/specs/2026-07-20-research-plan-skill-design.md`.
 
 1. **Spec coverage** — D1 → Task 5 "Inherit, don't restate". D2 → Task 2 Step 1 + lint check.
    D3 → Task 3. D4 → Task 3 (war stories retained verbatim). D5 → Task 5 (global skill) + Task 5
-   Step 5 (docs-map row). D6 → Task 5 "The ordering constraint". D7 → Task 4 (four fixtures).
+   Step 5 (docs-map row). D6 → Task 5 "The ordering constraint". D7 → Task 4 (five fixtures).
    P1–P5 → Task 5 sections. I1–I4 → Task 5 "The loop". Deliverables table → File Structure. **No
    gaps.**
 2. **Placeholder scan** — every step carries its actual command or file content; no "TBD", no
