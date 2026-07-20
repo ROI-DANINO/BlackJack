@@ -39,3 +39,37 @@
 | 2026-07-17 | The ProgressStore factory is a call-signature **interface** `OpenProgressStore`, not the design's `export declare function openProgressStore(...)`. | `declare` asserts an ambient runtime binding nothing in the plan supplies — Task 7 exports the real `openProgressStore` in `idb-store.ts`, so the `declare` would be a permanent phantom binding `tsc --noEmit` cannot catch (a consumer importing it typechecks cleanly, fails at link/call time). An interface is the honest expression of "the port's shape", is structurally identical to the design's signature, and satisfies boundary.test.ts's no-callback check. User-approved at review; recorded now with the Task 6.5 amendments. Rationale in `store.ts:59-71`; design §3.2/§12 register #13. |
 | 2026-07-18 | Cut the agent kanban over from `agent-kanban:v1` to `v2` in one commit, port `scripts/kanban.ts` from workspace as a **derived port** (regenerate, never patch), and rename the desk's lifecycle command references from `codex-*` to `/wl-*`. Card IDs re-issue in dependency order (AL-01/R1/R2/D1/B1 → AL-01…AL-05). **Deferred:** renaming `docs/superpowers/` and folding the legacy `docs/plans|specs` pair — both ride on a later re-tune. | The CLI refuses writes to a v1 board (exit 4), so no coexistence window exists by design and a staged cutover was never available; 23 v1 archives plus a pre-mutation snapshot keep the full history, and the four dropped fields (`Mode`, `Owner`, `Workspace`, `Done when`) survive there. v2 buys milestone scoping — a card walks up to a numbered ROADMAP step through `Milestone` + `phase.md:roadmap_step`, so the board structurally cannot span future milestones — plus a single validated write path, which is what makes `Updated` trustworthy. The port exists because board steps silently no-op'd on this desk without a CLI; the workspace copy owns the test suite, so patching here would fork the four-family topology. `codex-*` needed no alias shim: no executable by those names has ever existed anywhere, so the rename is pure doc truing. Two plan assertions proved wrong under execution and are corrected in the record: (a) the two stale `phase.md` session pointers were **unrecoverable**, not drifted filenames — those sessions were authored in a parallel branch's working tree and `journal/ops/sessions/` is gitignored, so they crossed no merge and appear in no history; (b) archiving `/.superpowers/` was **not** the zero-git-effect local move the plan claimed — `journal/ops/archive/` is tracked, so the destination arrived unignored and a `git add -A` would have pushed 2.2M of private scratch to the public remote, now closed by its own ignore rule. |
 | 2026-07-19 | Closed AL-05 with a **whole-cycle dual review on Fable** (wl-verify correctness + wl-judge craft over Tasks 1–11, plus the product vision as an explicit lens) rather than the default branch-scoped final review, then merged at `4a197b6`. | User-directed: Tasks 1–6 predated the Task-6.5 contract amendment, so a branch-only review could never check fake↔adapter agreement or the amendment's echo into older surfaces — and both reviewers caught exactly that class (a fake-only `meta.schemaVersion` rewrite; stale pre-correction comment echoes; the §10 "makes measuring it a gate" erratum, now register #14). Verdicts recorded raw: CONFORMS (0C/0I; no over- or under-foundation vs the vision docs) and PASS on judge cycle 3 within the N=3 ceiling. Fix model split held: Fable reviewed and assigned, sonnet applied. |
+
+## 2026-07-20 — Phase 1 foundation audit: approved, with three program-rule amendments
+
+**Chose:** approve Phase 1 with amendments 5–7 — (5) sufficiency top-ups are exempt from the initial
+citation cap; (6) an additional bounded pass is permitted where the prior one was mis-scoped or the
+missing evidence is already identified; (7) **editorial correction is a remedy distinct from
+collection**.
+**Why:** each rule had already bound during the Phase 1 run and caused a defect that could not be
+discharged. The cap made C5's gap unfixable; the one-pass rule blocked C4's fix, which was a single
+citation already in hand; and three cards carried defects needing no new evidence at all. Amendment 7
+alone accounted for **7 of 12 remediation passes** and resolved three cards at **zero collection cost**.
+
+**Chose:** treat C1's remaining INSUFFICIENT as an **approved, honest COVERAGE GAP**, not a blocker.
+**Why:** the question survived three passes plus independent verifier searching. "We looked hard and it
+isn't there" is a research result, and the mastery-model choice can proceed as a labelled Product
+judgement or Assumption rather than waiting on evidence that does not exist.
+
+**Chose:** land already-recorded corrections on C6 despite an instruction barring further work there.
+**Why:** the instruction barred additional *collection*; the corrections had never been applied, so
+landing them **is** preserving them. Ruled correct by the user at the gate.
+
+**Chose:** registers are orchestrator-owned — agents return rows, IDs are assigned centrally.
+**Why:** Phase 1 produced duplicate IDs from concurrent appends, and this run caught a near-miss where
+a *predicted* ID was relayed unchecked and would have written one card's content into another's rows.
+
+**Chose:** publish the evidence to a dedicated branch, excluding session scratch.
+**Why:** the archive is the reviewable product; `.wl/sdd/` is ephemeral. Replaced by a durable
+`PROCESS-AUDIT.md` so the process survives without the scratch.
+
+**New guards for Phase 2:** (a) an explicit **landing step** for verifier corrections plus a check that
+they landed — Phase 1 had neither, and its corrections never reached any of the six dossiers;
+(b) **material corrections must be checked against the primary source, not only against prior review
+records** — a pass reading records alone propagated a verifier's mistake into a false statement about a
+source, and passed every records-based check while doing it.

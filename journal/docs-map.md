@@ -70,4 +70,5 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | docs/plans/ | Implementation plans for active specs. |
 | docs/superpowers/specs/ | Design specs (active superpowers/White Lotus flow) — where current designs land. |
 | docs/superpowers/plans/ | Implementation plans for active specs (superpowers/White Lotus flow). |
+| docs/superpowers/research/foundation-audit-p1/ | **Approved Phase 1 foundation-audit evidence archive** — dossiers, verification records, registers, integrity manifests, gate summary, process audit. Tracked and citable; the git-ignored inbox holds working copies only. |
 | docs/superpowers/specs/2026-07-12-foundation-and-tracks-design.md | Foundation & Tracks: three tracks + contracts, cloud posture, stack Admission Protocol, protocol system, inbox 1-pager. |
