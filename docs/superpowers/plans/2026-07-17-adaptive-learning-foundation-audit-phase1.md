@@ -19,10 +19,11 @@ orchestrator assembles a gate summary. No autonomous Workflow run; the user gate
 dossiers and registers. No product code is touched.
 
 **Charter:** `docs/superpowers/specs/2026-07-17-adaptive-learning-foundation-audit-research.md`
-(**draft, amended 2026-07-19 — approval is the gate on starting Task 0**). This plan implements its
+(**APPROVED 2026-07-19**, amended before approval). This plan implements its
 Phase 1 only, and carries the 2026-07-19 amendments: a per-dossier **depth budget**, **UNVERIFIED as
-a transient state** with a defined resolution path, and the **non-blocking escape** for the carried
-mastery-model question.
+a transient state** with a defined resolution path, the **non-blocking escape** for the carried
+mastery-model question, and the **research sufficiency** rule (SUFFICIENT / INSUFFICIENT as a second
+axis, recorded separately from citation state).
 
 ## Global Constraints
 
@@ -52,6 +53,17 @@ mastery-model question.
   per-citation contract rigorous rather than rushed.
 - **Separation of duties:** the verifier of a card is a different agent instance than its collector and
   must **independently locate** each source — never trust the collector's summary.
+- **Research sufficiency is a SECOND, INDEPENDENT AXIS.** Citation verification asks *"is what is here
+  true?"*; it cannot ask *"is what is here enough?"* A dossier may be entirely VERIFIED and still omit
+  an important body of evidence. **A dossier is sufficiently researched only when additional searching
+  is unlikely to materially change its conclusions.** Each verifier records, separately from citation
+  states, a dossier judgment of **SUFFICIENT / INSUFFICIENT**. INSUFFICIENT is assigned when major
+  evidence traditions, landmark sources, opposing positions, or required sub-questions are still
+  missing, and triggers **one focused collection pass** — recording (1) what important evidence appears
+  missing, (2) why the omission could materially affect the findings, and (3) the exact scope of the
+  additional pass. **Never treat a formally complete dossier as substantively complete.** An honest
+  COVERAGE GAP the collector named is evidence of thorough searching, not insufficiency — insufficiency
+  is about what was *missed*, not what was searched for and honestly reported absent.
 - **Two-layer classification (verbatim):** provenance label (`OBSERVED / PUBLISHED / INFERENCE /
   COVERAGE GAP`) *beneath* status bucket (`Evidence-backed / Product judgement / Assumption /
   Unsupported`). Reserve **Unsupported** for contradicted/baseless claims, never the merely uncited.
@@ -218,9 +230,31 @@ UNVERIFIED is transient. Every row here MUST end terminal — VERIFIED or UNVERI
 ## Conflicts surfaced during verification
 - <claim in tension>  → also append to registers/conflict-register.md
 
+## Dossier sufficiency (SECOND AXIS — judged independently of citation states)
+
+> A dossier is sufficiently researched only when additional searching is unlikely to materially
+> change its conclusions. An all-VERIFIED dossier can still be INSUFFICIENT. A COVERAGE GAP the
+> collector found and named is thoroughness, not insufficiency.
+
+**Verdict: SUFFICIENT | INSUFFICIENT**
+
+Coverage assessed against: major evidence traditions · landmark sources · opposing positions ·
+every required sub-question in the card's scope.
+
+- Traditions/landmarks/positions present: <list what the dossier does cover>
+- Required sub-questions answered: <n of n — name any unanswered>
+
+### If INSUFFICIENT (all three required)
+1. **What important evidence appears missing** — <named traditions, landmark sources, or opposing
+   positions, specific enough to search for>
+2. **Why the omission could materially affect the findings** — <which conclusion would move, and in
+   which direction>
+3. **Exact scope of the one focused collection pass** — <bounded; targeted re-collection, not a re-run>
+
 ## Verifier summary
 - VERIFIED: <n>  |  UNVERIFIABLE: <n>  |  DROPPED: <n>
 - **UNVERIFIED remaining: 0** (required — a record with any citation left UNVERIFIED is incomplete)
+- **Dossier sufficiency: SUFFICIENT | INSUFFICIENT**
 - Any claim the collector overstated (strength downgraded): <list or "none">
 ```
 
@@ -352,8 +386,26 @@ one move, logged in the Resolution log:
 A citation that resists resolution within that one re-check pass is DROPPED, not carried. Dropping a
 citation is a legitimate, expected outcome — never manufacture a pass to clear the count.
 
+THEN JUDGE SUFFICIENCY — a SEPARATE, SECOND AXIS. Verifying citations tells you whether what is in
+the dossier is TRUE. It does not tell you whether it is ENOUGH. Step back from the citation table and
+ask: would additional searching materially change this dossier's conclusions?
+
+Assess coverage against: major evidence traditions · landmark sources · opposing positions · every
+required sub-question in the card's scope. Do a few searches of your own to test for what ISN'T
+there — you cannot judge an omission from inside the dossier.
+
+Assign SUFFICIENT or INSUFFICIENT. If INSUFFICIENT, record all three: (1) what important evidence
+appears missing, named specifically enough to search for; (2) why that omission could materially
+affect the findings — which conclusion moves, and which direction; (3) the exact, bounded scope of
+the ONE focused collection pass that would fix it.
+
+Do NOT mark a dossier INSUFFICIENT for an honest COVERAGE GAP the collector found and named — that
+is evidence of thorough searching. Insufficiency is about what was MISSED. Equally, do not rubber-
+stamp SUFFICIENT because the citations verified: those are different questions.
+
 Return (final message = deliverable): the record path and counts VERIFIED / UNVERIFIABLE / DROPPED,
-explicit confirmation that UNVERIFIED remaining = 0, plus any strength downgrades you applied.
+explicit confirmation that UNVERIFIED remaining = 0, **your SUFFICIENT / INSUFFICIENT verdict** (with
+the missing-evidence scope if INSUFFICIENT), plus any strength downgrades you applied.
 ```
 
 - [ ] **Step 1: Dispatch V1–V6 in parallel** (`general-purpose`, opus) with the shared brief. One
@@ -366,6 +418,13 @@ explicit confirmation that UNVERIFIED remaining = 0, plus any strength downgrade
   specific omissions named.
 - [ ] **Step 3: Cross-check separation of duties.** Confirm each Vn was a different agent instance than
   its Cn collector (true by construction — record it explicitly in the gate summary).
+- [ ] **Step 4: Act on every INSUFFICIENT verdict.** For each dossier marked INSUFFICIENT, confirm the
+  verifier recorded all three required fields (missing evidence · why it is material · exact scope),
+  then **dispatch ONE focused collection pass** (`general-purpose`, sonnet, a fresh instance) scoped
+  *only* to the named gap — not a re-run of the card. On its return, re-verify the new citations and
+  have the sufficiency judgment re-made on the enlarged dossier. **The focused pass is one pass**: if
+  it does not resolve the gap, the residue is recorded as a COVERAGE GAP and carried to the gate
+  honestly rather than looped on.
 
 ---
 
@@ -384,6 +443,11 @@ Orchestrator inline. Produces the single artifact the user reviews to gate into 
   UNVERIFIABLE / DROPPED, plus citations collected against the depth budget; list every strength
   downgrade the verifiers applied. **Assert UNVERIFIED = 0 across all six records — if any remains,
   the gate is not ready and that record goes back.**
+- [ ] **Step 1b: Tally sufficiency separately from citation states.** Per card: SUFFICIENT /
+  INSUFFICIENT, and for every card that was ever INSUFFICIENT, what was missing and what the focused
+  pass recovered. **Assert no dossier reaches the gate INSUFFICIENT and unaddressed.** Report the two
+  axes side by side — a card that is all-VERIFIED but needed a sufficiency pass is exactly the case
+  this rule exists to surface, and the gate reader should see it.
 - [ ] **Step 2: Digest the registers.** Summarize each Conflict Register entry (both sides, status) and
   each source-lead (quarantine) entry, restating that quarantined sources influence nothing downstream.
 - [ ] **Step 3: Surface the carried open question — and do not let it stall product work.** State

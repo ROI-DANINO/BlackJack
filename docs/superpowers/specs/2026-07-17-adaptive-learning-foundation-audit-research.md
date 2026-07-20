@@ -1,11 +1,18 @@
 # Adaptive Learning Foundation Audit — Research Program
 
-> Status: draft 2026-07-17, amended 2026-07-19; charter for approval. Phases 2–3 are named pointers,
-> detailed at their gate.
+> Status: **APPROVED 2026-07-19** (drafted 2026-07-17, amended 2026-07-19 before approval).
+> Phases 2–3 are named pointers, detailed at their gate.
 >
 > *2026-07-19 amendments (pre-approval): added a Phase 1 depth budget; made UNVERIFIED a transient
 > state with a defined resolution path and a no-UNVERIFIED-at-gate rule; gave the load-bearing
 > mastery-model question an explicit non-blocking escape. Acceptance criteria updated to match.*
+>
+> *2026-07-19 amendment (post-approval, user-directed): added the **research sufficiency** rule — a
+> second, independent axis (SUFFICIENT / INSUFFICIENT) judged per dossier by the verifier, because
+> citation verification asks whether what is present is true and cannot ask whether it is enough.*
+>
+> *Approval covers the charter and Phase 1 only. P2 and P3 remain gated — each is detailed and
+> approved at its own boundary, per the phase map.*
 > Scope: validate, verify, and expand the adaptive-learning research foundation; fill named evidence gaps.
 > Authority: **research evidence only.** This program never changes adopted product behavior; owned
 > designs remain authoritative. It produces evidence, classification, and *candidate* decisions — not
@@ -141,6 +148,44 @@ within the one re-check pass, it is dropped rather than carried — the register
   are **untrusted leads only**. Every citation in them passes the *same* independent contract as newly
   collected evidence before it counts.
 
+### Research sufficiency — a second, independent axis
+
+**Citation verification alone is not enough.** A dossier may contain nothing but valid, VERIFIED
+citations and still omit an important body of evidence. Verification asks *"is what is here true?"*
+It cannot ask *"is what is here enough?"* — and a formally complete dossier is not therefore a
+substantively complete one.
+
+**The standard:** a dossier is **sufficiently researched** only when additional searching is unlikely
+to materially change its conclusions.
+
+If an independent verifier finds that **major evidence traditions, landmark sources, opposing
+positions, or required sub-questions** are still missing, the verifier marks the dossier
+**INSUFFICIENT** and returns it for **one focused collection pass**.
+
+**The two judgments are recorded separately and never collapse into one another:**
+
+| Axis | Values | Scope |
+|---|---|---|
+| **Citation state** | VERIFIED / UNVERIFIED / UNVERIFIABLE | Per citation — is this specific claim's source real and honestly used? |
+| **Dossier sufficiency** | SUFFICIENT / INSUFFICIENT | Per dossier — is the body of evidence complete enough to conclude from? |
+
+A dossier can be all-VERIFIED and still INSUFFICIENT; that is the exact case this rule exists to
+catch. It can also be SUFFICIENT while carrying honest COVERAGE GAPs — a gap the collector *found and
+named* is evidence of thorough searching, not of insufficiency. Insufficiency is about what was
+**missed**, not about what was **searched for and honestly reported absent**.
+
+**For an INSUFFICIENT dossier the verifier records:**
+
+1. **what important evidence appears missing** — named traditions, landmark sources, or opposing
+   positions, specifically enough to search for;
+2. **why the omission could materially affect the findings** — which conclusion would move, and in
+   which direction;
+3. **the exact scope of the additional collection pass** — bounded, so the re-collection is targeted
+   rather than an open re-run.
+
+The focused pass is **one pass**. Its output is re-verified for citations, and the sufficiency
+judgment is then re-made on the enlarged dossier.
+
 ### Per-citation verification record (shape)
 
 Each dossier ships a verification record per citation so the trail is auditable for years:
@@ -263,6 +308,9 @@ approves before Phase 2 or sends cards back.
 
 **Phase 1 done when:**
 
+- **Every dossier carries a sufficiency judgment (SUFFICIENT / INSUFFICIENT) recorded separately from
+  its citation states.** Any dossier marked INSUFFICIENT has had its one focused collection pass, been
+  re-verified, and been re-judged. No dossier reaches the gate INSUFFICIENT and unaddressed.
 - All six topic dossiers exist, each with a complete per-citation verification record, each within
   the depth budget (6–12 citations, hard cap 15) or carrying an honest COVERAGE GAP note instead.
 - Every citation rests in a **terminal** state — **VERIFIED** (with supporting location) or
