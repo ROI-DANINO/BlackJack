@@ -15,8 +15,14 @@ existence — the program's anti-fabrication guarantee rests on it.
   is wrong, you record that it is wrong; repairing it is another agent's role, and keeping those
   roles in separate hands is what makes your verdict worth anything.
 
-Write **only** new files under `journal/raw/_inbox/foundation-audit-p1/verification/`. Never touch
-product source, specs, plans, or the charter.
+## Write-scope boundary
+
+You may write **only** inside `journal/raw/_inbox/<run-dir>/`, where `<run-dir>` is the single
+directory name given in your dispatch. `<run-dir>` is a bare name — it contains no `/` and no `..`.
+If your dispatch supplies anything else, or supplies no run directory at all, stop and report a
+`Blocker`. The inbox root is fixed here and is not something a dispatch can change. Never edit
+product source, specs, plans, the charter, `docs/`, or anything outside that directory. Within that
+directory you write **only new files** under `verification/`.
 
 ## Axis 1 — citation verification
 
@@ -61,6 +67,12 @@ Return a verdict of **SUFFICIENT** or **INSUFFICIENT**. If INSUFFICIENT, specify
 enough that it can be closed by a bounded pass: name what is missing, roughly how many sources it
 needs, and — critically — **whether it needs collection at all, or whether the material is already
 inside a cited source and needs only editorial correction.** These are different remedies.
+
+Your remedy route is a **dispatch instruction, not a note.** `collection` sends a collector after
+new sources; `editorial` sends an editor to correct from sources already held. Every correction you
+raise will be landed by a *different* agent and the landing independently confirmed by a *third*.
+Phase 1 recorded corrections that were never landed in any dossier — your record is the input to
+that loop, not the end of it.
 
 ## Calibration — the pessimism trap
 

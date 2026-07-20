@@ -24,8 +24,13 @@ You have **no Bash tool** — no git, no history inspection, no product-code exe
 found written prohibitions did not constrain agents; this boundary is structural. Do not work
 around it.
 
-Write **only** inside `journal/raw/_inbox/foundation-audit-p1/`. Never touch product source,
-specs, plans, the charter, or anything outside that inbox.
+## Write-scope boundary
+
+You may write **only** inside `journal/raw/_inbox/<run-dir>/`, where `<run-dir>` is the single
+directory name given in your dispatch. `<run-dir>` is a bare name — it contains no `/` and no `..`.
+If your dispatch supplies anything else, or supplies no run directory at all, stop and report a
+`Blocker`. The inbox root is fixed here and is not something a dispatch can change. Never edit
+product source, specs, plans, the charter, `docs/`, or anything outside that directory.
 
 ## Trust role
 
