@@ -16,7 +16,9 @@
 > or Assumption.*
 > Assembled 2026-07-19; **rewritten 2026-07-20 after remediation** authorised at the first gate.
 > Authority: **research evidence only** — nothing here changes adopted product behaviour.
-> Everything below lives under the git-ignored inbox. Nothing has been committed.
+> **Working copies originated in the git-ignored inbox** (`journal/raw/_inbox/foundation-audit-p1/`),
+> which remains the local scratch surface. **The curated archive is now tracked** at
+> `docs/superpowers/research/foundation-audit-p1/` and is the citable copy.
 >
 > *Supersedes the 2026-07-19 version. The most consequential change is §4, which previously claimed
 > corrections were "all applied." **That claim was false for all six cards.** See §4.*
@@ -352,7 +354,8 @@ fresh independent instances, with no collection and no scope expansion. **It ran
 | W5 | C4-ED | **PASS** | 1 required reversal → C4-ED-2 → **W8 PASS** |
 | W6 | C6-EC | **PASS** | — |
 
-**Six passes verified. Three repairs dispatched and verified. Eight verification records. No open items.**
+**Six passes verified. Three repairs dispatched and verified. Nine final-wave verification records —
+`W1`, `W2`, `W3`, `W3b`, `W4`, `W5`, `W6`, `W7`, `W8` — bringing the program total to 27. No open items.**
 
 ### The wave earned its cost twice
 

@@ -86,11 +86,51 @@ Executing them would have written one card's content into another's rows.
 Root cause: **each hop stripped the ID's provisional status** — forecast → relayed → about to be
 executed as fact. The return-and-reconcile step is exactly where that forecast gets checked.
 
-### Three manufactured defects
+### Four manufactured defects
 
-Agents found problems that were not there, three times across the program — including an invented
-citation defect that a verifier had to reverse. **The most instructive occurred in a pass explicitly
-briefed about pessimism drift.** Briefing about the bias did not prevent it.
+Agents found problems that were not there, **four times** across the program — including an invented
+citation defect that a verifier had to reverse. **One occurred in a pass explicitly briefed about
+pessimism drift.** Briefing about the bias did not prevent it.
+
+**The fourth, found in the final verification wave, ran in a new direction: a corrector against a
+verifier.** A correction pass claimed a prior verifier had misquoted a passage; the verifier was
+right, and the claim **inverted the paper's actual usage**. The dossier was left carrying a corrupted
+quote inside a block labelled "Verbatim:", plus an assertion impugning a verifier who had committed no
+error. A pass whose purpose was accuracy made the dossier less accurate.
+
+Root cause is worth preserving because it is mechanical, not attitudinal: in the printed two-column
+layout the phrase broke across lines as `…its next` / `nearest neighbor…`, and a **page-image read
+dropped the line-final word** — which was then used to overrule a `pdftotext`-derived quote. The same
+image route was flawless on the tabular figures in the same pass. **The lesson is to scope the route,
+not ban it:** page-image reads are fine for locating folio boundaries and reading tables, and are the
+wrong instrument for verbatim prose spanning a line or column break.
+
+**Implication: the anti-fabrication pressure applies to passes that *correct*, not only to passes
+that *collect*.** Three of the four manufactured defects were produced by correction or verification
+passes, not by collectors.
+
+### The inherited-error class — distinct from fabrication
+
+The final wave surfaced a failure mode that none of the program's existing guards could catch, and it
+is **not** a species of fabrication. Nothing was invented.
+
+A correction pass worded every one of its corrections from text **already quoted inside the
+verification records**, and issued **no WebFetch at all**. That made it *structurally incapable* of
+catching a prior verifier's misquote — it could only propagate one. And it did: a prior verifier had
+matched the wrong sentence and concluded a genuine quotation did not exist, so the pass dutifully
+struck a legitimate quotation and wrote **a false statement about a source** into the dossier. The
+final wave found the originating misattribution pointed at **a page carrying no running prose at all**.
+
+**Why this matters more than the instance:** every other guard in the program checks whether a claim
+matches *what the records say*. This defect passes that check perfectly. The error entered upstream, in
+a record, and inheriting it faithfully is exactly what a well-behaved pass does.
+
+**Phase 2 guard — material corrections must be checked against the source, not only against prior
+records.** A pass that changes a quotation, a figure, a tier, an attribution, or an independence
+judgement must reopen the primary source. Reading verification records alone is sufficient for
+mechanical work (applying an agreed wording, reconciling a count) and **insufficient for anything that
+asserts what a source says**. A correction pass that issues zero retrievals while making material
+claims about sources should be treated as unverified by construction.
 
 ### Two orchestrator errors, disclosed
 
@@ -150,6 +190,18 @@ briefed about pessimism drift.** Briefing about the bias did not prevent it.
    at all.
 8. **Route follow-up messages by dispatch order, not by ID prefix.** Parallel dispatches return
    visually similar identifiers.
+9. **Check material corrections against the source, not only against prior records.** A pass that
+   changes a quotation, figure, tier, attribution, or independence judgement must reopen the primary
+   source. Reading verification records alone suffices for mechanical work and is **insufficient for
+   any claim about what a source says** — a correction pass that issues zero retrievals while making
+   material source claims is unverified by construction. This is the guard against the
+   **inherited-error class**, which no other check in the program could catch.
+10. **Scope an extraction route to the job.** Page-image reads are right for folio boundaries and
+    tables, wrong for verbatim prose crossing a line or column break; `pdftotext` (ideally per-page)
+    is the reverse. Never let one route silently overrule the other — the fourth manufactured defect
+    was exactly that.
+11. **Verify the correctors, not just the collectors.** Three of four manufactured defects came from
+    correction or verification passes. A repair is a claim like any other and needs the same scrutiny.
 
 ---
 

@@ -18,14 +18,14 @@
 ## Layout
 
 - **`dossiers/`** — the six topic dossiers (C1–C6). The evidence itself.
-- **`verification/`** — 21 records. `V1`–`V6` (initial), `*b`/`*c`/`*d` (sufficiency and remediation),
+- **`verification/`** — **27 records**. `V1`–`V6` (initial), `*b`/`*c`/`*d` (sufficiency and remediation),
   `W1`–`W8` (final wave). **Verification records are immutable** — where one was later found to
   contain an error, the correction is recorded in the *dossier*, never retro-edited into the record.
 - **`registers/`** — conflict register (25 rows) and source-lead / quarantine register (47 rows).
   **No duplicate IDs.** Quarantined sources are future leads only and contribute nothing to synthesis.
 - **`remediation/`** — per-pass reports. Preserved as historical records of what each pass claimed at
   the time; where a claim was later found false, a correction notice is **appended**, not rewritten.
-- **`_templates/`** — dossier template, evidence-quality rubric (Q1–Q5), verification-record template.
+- **`_templates/`** — dossier template, evidence-quality rubric (Q1–Q6), verification-record template.
 
 ## How to read a finding honestly
 
@@ -39,7 +39,7 @@ Every finding carries **two independent judgments** that never collapse into one
 A dossier can be all-VERIFIED and still INSUFFICIENT. In Phase 1, **all six were** on first review.
 
 Findings also carry a **provenance label** (Evidence-backed / Product judgement / Assumption /
-Unsupported) and a **quality tier** (Q1–Q5). Superseded text is **struck, not deleted**, with a dated
+Unsupported) and a **quality tier** (Q1–Q6). Superseded text is **struck, not deleted**, with a dated
 pass marker — so any reader can reconstruct what a claim said before it was corrected.
 
 ## Final state
