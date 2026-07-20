@@ -1,268 +1,356 @@
 # Phase 1 Gate Summary — Adaptive Learning Foundation Audit
 
-> **Status: PHASE 1 COMPLETE, AWAITING USER APPROVAL. Phase 2 has NOT begun and will not begin
+> **Status: PHASE 1 REMEDIATED, AWAITING USER APPROVAL. Phase 2 has NOT begun and will not begin
 > without explicit approval.**
-> Assembled 2026-07-19 by the orchestrating session. Authority: **research evidence only** — nothing
-> here changes adopted product behaviour or edits the approved baseline.
-> Everything below lives under the git-ignored inbox. Nothing has been committed or promoted.
+> Assembled 2026-07-19; **rewritten 2026-07-20 after remediation** authorised at the first gate.
+> Authority: **research evidence only** — nothing here changes adopted product behaviour.
+> Everything below lives under the git-ignored inbox. Nothing has been committed.
+>
+> *Supersedes the 2026-07-19 version. The most consequential change is §4, which previously claimed
+> corrections were "all applied." **That claim was false for all six cards.** See §4.*
 
 ---
 
 ## 1. Headline
 
-Six topic dossiers were collected, independently verified citation-by-citation, judged on a separate
-**research-sufficiency** axis, and — where insufficient — sent for one bounded focused pass and
-re-verified by a third independent agent.
+The first gate approved three program-rule amendments and sent five cards back for bounded repair.
+Twelve remediation passes ran — **5 collection, 7 editorial** — plus **5 independent verifications**
+and **1 program-integrity audit**.
 
-**Citation verification came back near-perfect. Sufficiency did not.**
+**The remediation found something larger than the defects it was sent to fix.**
 
-- **73 of 73 citations reached a terminal state. 0 remain UNVERIFIED. 0 UNVERIFIABLE. 0 fabricated
-  sources anywhere in the program.**
-- **All six dossiers were judged INSUFFICIENT on first review.** Every one had missed an important
-  body of evidence while passing citation verification cleanly.
+- **Citation verification was and remains near-perfect.** 0 fabricated sources across the program.
+  Two fabrication *attempts* by tooling were caught in flight and rejected.
+- **Sufficiency is now 5 of 6 SUFFICIENT**, up from 2 of 6.
+- **But: the Phase 1 corrections had never been applied to the dossiers at all.** Not on two cards —
+  on **all six**. There was no landing pass in the program. Verifiers recorded corrections and
+  returned them as text; nothing was ever chartered to write them in. **The gate verdicts were
+  reached against dossiers that did not carry their own corrections.**
 
-**The sufficiency rule is what caught this.** Under citation verification alone, all six dossiers
-would have passed this gate.
+That defect is the single most important output of this phase, and it was invisible to both existing
+axes. Citation verification asks "is what is here true?" Sufficiency asks "is what is here enough?"
+Neither asks **"did the corrections we already made ever land?"**
 
 ---
 
-## 2. Artifact paths
+## 2. Final verdicts and totals
 
-### Dossiers
-| Card | Path | Findings | Citations |
+| Card | Findings | Sufficiency (P1) | Sufficiency (now) | Remedy applied |
+|---|---|---|---|---|
+| **C1** Knowledge tracing | **29** | INSUFFICIENT | **INSUFFICIENT** ⚠️ | collection ×2 + editorial |
+| **C2** ITS / ACT-R | **15** (at cap) | INSUFFICIENT | **SUFFICIENT** ✅ | editorial ×2, **0 new citations** |
+| **C3** Deliberate practice | **11** | SUFFICIENT | **SUFFICIENT** ✅ | editorial ×2, 0 new citations |
+| **C4** Chess.com / Khan | **13** (15 sources — **at cap**) | INSUFFICIENT | **SUFFICIENT** ✅ | collection ×1 + editorial |
+| **C5** Anki / spaced rep | **19** | INSUFFICIENT | **SUFFICIENT** ✅ | collection ×1 (cap exempt) |
+| **C6** Blackjack teachable | **9** | SUFFICIENT | **SUFFICIENT** ✅ | editorial landing pass |
+
+**Sufficiency: 5 of 6.** C1 remains INSUFFICIENT — see §5.
+
+### Citations added (11 total)
+
+| Card | Added | Source |
+|---|---|---|
+| C1 | 7 | F22 Kolesnikova et al. (2026, preprint) · F23 Netík & Martinková (2026, preprint) · F24 van der Velde et al. (2021) · F25 Sense et al. (2016, **body UNVERIFIABLE**) · F26 Sense, Meijer & van Rijn (2018) · F27 *(no new source — material re-read from Pelánek 2017, already held)* · **F28 Wauters, Desmet & Van Den Noortgate (2011), EDM — full text, 20/20 quotations programmatically verbatim** · F29 same authors (2012), *Computers & Education*, **body UNVERIFIABLE after 9 routes** |
+| C4 | 1 | **F13 Kelly & Rutherford (2017), IRRODL 18(4) — the only independent controlled Khan study vs active controls. Result: NULL.** |
+| C5 | 4 | F16 Czyż et al. (2024) *Sci Rep* · F17 Ammar et al. (2024) *EPR* · F18 Latimier et al. (2021) *EPR* · F19 Carpenter et al. (2012) *EPR* (**Q4** — narrative review, pools nothing) |
+| C2, C3, C6 | **0** | Editorial remedies only — the evidence was already held. |
+
+**Amendment 5 (cap exemption) was used twice and needed both times:** C5's gap was unfixable beneath
+the cap; C1 was already over it. **Amendment 7 (editorial remedy) accounts for 7 of 12 passes** and
+resolved three cards at zero collection cost.
+
+---
+
+## 3. Both axes
+
+| Card | Citation state | Sufficiency | Independent re-verification |
 |---|---|---|---|
-| C1 | `journal/raw/_inbox/foundation-audit-p1/C1-knowledge-tracing/dossier.md` | 21 | **21** ⚠️ over cap |
-| C2 | `journal/raw/_inbox/foundation-audit-p1/C2-its-actr-procedural/dossier.md` | 15 | 15 (at cap) |
-| C3 | `journal/raw/_inbox/foundation-audit-p1/C3-deliberate-practice/dossier.md` | 11 | 9 |
-| C4 | `journal/raw/_inbox/foundation-audit-p1/C4-chesscom-khan/dossier.md` | 12 | 12 |
-| C5 | `journal/raw/_inbox/foundation-audit-p1/C5-anki-spaced-repetition/dossier.md` | 15 | 15 (at cap) |
-| C6 | `journal/raw/_inbox/foundation-audit-p1/C6-blackjack-teachable/dossier.md` | 9 | 9 |
+| C1 | F22–F27 all terminal, 0 kills; F25 body + F29 body UNVERIFIABLE | INSUFFICIENT | V1d ✅ |
+| C2 | 13/13 corrections verified against primaries, 0 dropped | SUFFICIENT | V2c ✅ |
+| C3 | all 14 corrigendum figures exact; 0 kills, 0 figures wrong | SUFFICIENT | V3c ✅ |
+| C4 | F13 VERIFIED — 5/5 quotes verbatim, 7/7 statistics exact, 11/11 pages correct | SUFFICIENT | V4c ✅ |
+| C5 | F16–F19 all VERIFIED, 0 kills, 0 downgrades, **0 corrections** | SUFFICIENT | V5c ✅ |
+| C6 | V6/V6b corrections landed | SUFFICIENT | ⚠️ **not re-verified** |
 
-### Verification records (all under `journal/raw/_inbox/foundation-audit-p1/verification/`)
-`V1-knowledge-tracing.md` · `V1b-knowledge-tracing-sufficiency.md` ·
-`V1c-knowledge-tracing-toppedup.md` · `V2-its-actr-procedural.md` ·
-`V2b-its-actr-procedural-toppedup.md` · `V3-deliberate-practice.md` ·
-`V3b-deliberate-practice-toppedup.md` · `V4-chesscom-khan.md` · `V4b-chesscom-khan-toppedup.md` ·
-`V5-anki-spaced-repetition.md` · `V5b-anki-spaced-repetition-toppedup.md` ·
-`V6-blackjack-teachable.md` · `V6b-blackjack-teachable-toppedup.md`
-
-### Registers
-`registers/conflict-register.md` — **22 rows**, IDs unique (reconciled at gate assembly)
-`registers/source-lead-register.md` — **30 rows**, IDs unique (reconciled at gate assembly)
+**⚠️ Honest gap: six remediation passes have not been independently verified** — C1-EC, C1-W, C2-EC2,
+C3-EC2, C4-ED, C6-EC. Each was dispatched *from* a verifier's findings, and each states it does not
+mark its own work verified. **This is the clearest remaining item before approval.** See §11.
 
 ---
 
-## 3. Both axes, side by side
+## 4. Corrections — RECORDED, and only now APPLIED
 
-Citation state and dossier sufficiency are independent judgments. Read them together.
+> **Status correction (2026-07-20).** This section previously read **"(all applied)"**. That was
+> **false for all six cards**. The Phase 1 corrections were recorded in the V1–V6 records and returned
+> as text; **no pass was chartered to write them into the dossiers, and none did.**
 
-| Card | VERIFIED | UNVERIFIABLE | DROPPED | UNVERIFIED | Sufficiency (1st) | Focused pass | Sufficiency (final) |
-|---|---|---|---|---|---|---|---|
-| **C1** Knowledge tracing | 13 + 12 | 0 | 0 | **0** | INSUFFICIENT | ✅ ran | **INSUFFICIENT** ⚠️ |
-| **C2** ITS / ACT-R | 11 + 4 | 0 | 0 | **0** | INSUFFICIENT | ✅ ran | **INSUFFICIENT** ⚠️ |
-| **C3** Deliberate practice | 6 + 4 | 0 | 0 | **0** | INSUFFICIENT | ✅ ran | **SUFFICIENT** ✅ |
-| **C4** Chess.com / Khan | 9 + 3 | 0 | 0 | **0** | INSUFFICIENT | ✅ ran | **INSUFFICIENT** ⚠️ |
-| **C5** Anki / spaced rep | 11 + 4 | 0 | 0 | **0** | INSUFFICIENT | ✅ ran | **INSUFFICIENT** ⚠️ |
-| **C6** Blackjack teachable | 6 + 3 | 0 | 0 | **0** | INSUFFICIENT | ✅ ran | **SUFFICIENT** ✅ |
-| **TOTAL** | **73** | **0** | **0** | **0** | 0/6 | 6 passes | **2/6** |
+Established three independent ways:
 
-Sub-claims killed within otherwise-verified citations: **3** (C3 ×1, C5 ×1, C6 ×1).
+1. **Contemporaneous attestation.** The `*b` records state it directly. V2b: *"Every figure, quote and
+   tier that V2 recorded for F1–F11 still reads **identically** in the current dossier, including the
+   specific values V2 corrected."* V3b enumerates five specific survivals. V4b: *"All four defects V4
+   recorded in F1–F9 are **still present verbatim**."* V5b: *"every quote, tier, bucket and caveat V5
+   verified is still present and unchanged."* V6b: *"F4's quote still missing 'in part'… F1–F6 are
+   unaltered."*
+2. **Byte-level comparison** against a pre-remediation snapshot taken before any edit.
+3. **Correction-marker census — decisive.** Across all six pre-remediation dossiers there were
+   **10 in-place correction markers. Not one named a verifier.** Every one named a collector focused
+   pass (each permitted a single edit responsive to a *sufficiency* finding) or a published
+   corrigendum. **The Axis-1 correction lists had no route into the dossiers.**
 
-### Why the four remaining INSUFFICIENT verdicts differ in kind
+| Card | Pre-remediation state |
+|---|---|
+| C1 | **NOT APPLIED** — all six of V1's corrections; the only dossier with *zero* markers |
+| C2 | **NOT APPLIED** |
+| C3 | **PARTIAL / MISLEADING** — corrigendum content present via an appended finding, while F3 still headlined the superseded figures **unmarked**; V3's own F1–F7 corrections not applied |
+| C4 | **NOT APPLIED** (5 corrections, not the 3 first identified) |
+| C5 | **NOT APPLIED** — its two markers answer a *sufficiency* item, not V5's corrections |
+| C6 | **NOT APPLIED** |
 
-| Card | What is missing | Cost to fix | Blocked by |
-|---|---|---|---|
-| **C2** | Unextracted content **inside sources already cited** (a report-type moderator, robust under both models; a WWC domain rating) | **0 new citations** | nothing — but no mechanism exists for an *editorial* pass |
-| **C4** | **1 citation, already obtained and read by the verifier** — the only independent controlled Khan study vs active controls, result **null** | 1 citation | **one-pass rule** |
-| **C1** | Population-free item-difficulty estimation + the single-learner estimator tradition | 4–6 citations | **one-pass rule** (and would breach cap) |
-| **C5** | Contextual-interference matched pair + 2 landmark reviews | 4 citations | **15-citation cap** |
+**All are now landed**, marked with dated pass attributions, superseded text struck rather than
+deleted, so the same test remains available to the next reader.
 
----
+### What was still wrong, and is now fixed
 
-## 4. Strength downgrades and corrections (all applied)
+**C1** — the "every source calibrates from a population" claim was asserted **falsified**; a verifier
+ruled it is **not** (see §6) and the overstatement was reversed at all three sites it had reached ·
+F22 carried only the abstract's favourable half; it now carries the measured figures **and** that they
+fall **below pooled human judgement (.70) and below an existing automated method (.76)** · F24's 4th
+"exact quote" was a **splice** of two sentences, and the genuine sentence is scoped to Experiment 2 —
+a scope the splice dropped · F24's **COI found** (licensed to Noordhoff Publishers, "partially funded
+by these license fees") so it is **not** independent corroboration · F24's Experiment 1 delayed-recall
+**null** was omitted; the 7.3pp cost is **in-session only** · **F17/F24/F25/F26 are one lab, one
+system, one commercial lineage** — four citations on C1's central question, previously undisclosed.
 
-**C1** — F16 claim narrowed to simulation only · F21a Schroeders & Gnambs **Q2→Q4** (a tutorial's
-summary of others' simulations is not a primary experiment) · F21b Linacre **Q3→Q4** + edition
-corrected · **F12's 3-of-4 authors are Knewton, and F9 comes from the same vendor — must not be
-counted as independent sources.**
+**C2** — the report-type moderator (peer-reviewed g=.28 vs nonjournal g=.02) was extracted from a
+source already cited, **then correctly qualified**: it does **not** replicate under adjustment
+(Table 3, p=.407 fixed / .160 random, peer-reviewed estimate reversing to **−.04**) · all three WWC
+domain ratings extracted, not just the favourable one · **both positive studies in WWC's algebra set
+are vendor-authored** (Carnegie Learning), all three indeterminate ones independent — 5/5 verified ·
+Plano's −0.66 is a **Grubbs-winsorized substitute for −1.57**.
 
-**C2** — **F5 inherited ellipsis reversed the meaning**: Anderson calls the power law a "surface
-contradiction" to ACT's view, i.e. a problem to explain away, not its signature · F4 "three-stage"
-→ Anderson says **two** · F3 **g=.05 not .10** (fixed-effect column reported as random-effects) ·
-F1 Q4→Q5 · **F12 k=2 not 3** — the striking −.42 is essentially **one quasi-experiment; the only
-true experiment in that subgroup is null (g=−0.07)** · **F15's fMRI results are Qin et al. (2003),
-not Anderson's own**, and the paper attributes the speed-up to **base-level declarative learning**,
-not the declarative→procedural transition (**Q3→Q4**) · "Anderson abandoned ACT\*" is Taatgen & Lee's
-characterisation, not Anderson's · retraction over-counts "two empirical tests" — accurate count is
-**one**. *Three upgrades also applied where the collector was too pessimistic.*
+**C3** — all corrigendum figures landed and marked superseded (games 26→24%, music 21→23%, sports
+18→20%, r .35→.38, variance 12→14%) · predictability is a **continuous meta-regression moderator**, so
+the tier figures are **fitted values, not subgroup means**, and **no per-tier k exists — there are no
+bands to place blackjack into, only a slope** · the 61% figure now carries its dependency on a
+reliability assumption (0.60) **below Ericsson's own published 0.70–0.80**; at 0.80 the same data
+yields **49%** · a manufactured "stitched fragment" defect was **struck**.
 
-**C3** — **1 sub-claim KILLED (sign-flip)**: "defensible" appears **nowhere** in Ericsson & Harwell;
-the phrase is Macnamara's, quoted to be rebutted · **all F3 headline figures superseded by the
-authors' own 2018 Corrigendum, which was appended to the PDF already read** (games 26→24%, music
-21→23%, sports 18→20%, r .35→.38, variance 12→14%) · F6 Q2→Q3 · attribution swapped between F3/F7 ·
-three "verbatim quotes" are paraphrases · F9 range 36.0→**32.1**–87.1% · F10 "rankings unchanged"
-true of the **main model only**.
+**C4** — F11 downgraded to **author-independent only** (Gates→Khan funding and site co-selection, p.iii
+of a PDF already read) · F12's Q2 tier-warrant struck — **but its funding resolved clean, making F12
+the strongest of the three C4-FP sources on independence, not the weakest** · counts reconciled to
+13 findings / 15 sources.
 
-**C4** — F6 "**the one** mechanism" contradicted by its own sources · **F7's 0.22 upper bound is a
-middle-school result presented as elementary; and what was randomized is a teacher-coaching program,
-not Khan usage (Q3)** · F9 author list wrong (**Sala & Gobet**, not Sala, Foley & Gobet) ·
-**F11 Gates→Khan funding + site co-selection disclosed on p.iii of the PDF already read** —
-downgraded to *author-independent only* · F12's Q2 warrant contradicted by its own authors
-(nonconcurrent design). *Two corrections ran in the dossier's favour.*
-
-**C5** — **F3's complexity framing inverted**: Donovan's near-zero clusters are **high-physical**;
-the high-mental cluster is **d=0.42**; the paper says mental requirements were **not** significantly
-correlated with effect size · F4 caveat wrong — the study **held spacing fixed by design** ·
-**F6-r's "never replicated" quote is that paper's motivation — it IS the replication** · F8 sub-claim
-dropped · F13 confounds personalisation with temporal distribution (authors' own words) ·
-F10 **upgraded**.
-
-**C6** — **F2's 44%/16% trace to a single *Psychology Today* blog post**, not "three converging
-independent summaries" → **Evidence-backed → Assumption** · F4 dropped the source's own "in part"
-and rendered "suggested" as "found"; omitted that the simulation used **simplified rules with
-computer-controlled win probability** · F3's Study-2 effects are **one-tailed** ·
-**F8's "actual casino" is a MOCK casino** — the money result's setting was upgraded (conflict #28) ·
-"realistic table pace" unsupported at abstract level — **and it is the phrase falsifying the Q2 gap.**
+**C6** — F2's 44%/16% statistics **dropped** and F2 re-bucketed **Evidence-backed → Assumption** (they
+trace to a single blog post, not "three converging independent summaries") · F3's effects disclosed as
+**one-tailed** · F4's "in part" and "suggested" restored, plus the simplified-rules/computer-controlled
+caveat · F7's "realistic table pace" struck · F8's "actual casino" struck (it is a **mock** casino).
 
 ---
 
-## 5. Conflicts (22) and quarantine (30)
+## 5. C1 — the one card still INSUFFICIENT
 
-Both registers are at `registers/`. **No quarantined or unverified source influenced any conclusion
-in this package.** Duplicate IDs arising from concurrent agent appends were reconciled at assembly;
-the remap is recorded in the session ledger.
+C1 has had three passes and stands at 29 findings. **Its remaining gap is not a collection failure.**
 
-Conflicts worth the gate's attention:
-- **#1 / #7** DKT's advantage over shallow models — large-and-general vs scale-conditional vs
-  dissolving entirely.
-- **#2** Piech et al.'s "25% gain" contradicts its own Table 1 (prior best 0.75, not 0.69 → ~15%).
-- **#8** BKT parameter untrustworthiness: non-identifiability vs semantic degeneracy — the two
-  anti-feasibility sources disagree on mechanism.
-- **#10** Spacing's generality: near-universal (verbal recall only) vs collapsing with complexity.
-- **#13 / #18** Macnamara 2014 vs its own 2018 corrigendum, including the predictability moderator.
-- **#14** 61% vs the overcorrection rebuttal — turns on a reliability assumption (0.60) **lower than
-  Ericsson's own published estimates (0.70–0.80)**; at 0.80 the same data yields **49%**.
-- **#28** Mock vs actual casino for C6's money result.
+**The number the program was missing for three passes has now been obtained.** F28 (Wauters et al.,
+EDM 2011, read in full, 20/20 quotations programmatically confirmed verbatim) reports **expert rating
+r(23) = 0.80, p<0.01** against a population-calibrated IRT reference, **consuming zero learner
+responses**. Ranked against its alternatives: proportion correct .90 · learner feedback .88 · Elo .85 ·
+**expert rating .80** · paired comparison .62/.56.
 
----
+**Three counterweights are recorded alongside it, and none may be dropped:**
+1. The authors' own no-generalisation disclaimer (different domain, multi-skill items).
+2. **Learners significantly out-performed experts**, t(22)=2.71, p<0.05.
+3. The reference-population asymmetry makes r=0.80 an **upper bound for this product, not a central
+   estimate** — the expert is asked "what percentage of students will answer correctly," i.e. the
+   expert **simulates a reference population from memory**.
 
-## 6. The Elo vs IRT / knowledge-tracing question — current state
+**Two gaps are now ruled SETTLED — do not re-run:** a small fixed expert-authored item bank, and the
+strategy/card-game domain. Both survived three passes plus a verifier's own independent searching.
+That is "we looked hard and it isn't there," which is a legitimate research result.
 
-**Not settled by evidence. Ready to be decided as a labelled product judgement.**
-
-What Phase 1 established:
-
-1. **The charter's framing was wrong.** Education-Elo treats the **item** as the opponent, not a peer
-   — it does **not** require an opponent pool. Chess.com's puzzle rating is exactly this.
-2. **But it is still population-dependent.** Chess.com's own help docs state a new puzzle's difficulty
-   is set by **crowd-calibration** ("determined by who is able to solve it," then locked).
-3. **Every model examined calibrates from a population** — BKT, PFA, DKT, IRT and education-Elo alike.
-4. **The unevidenced step is narrow and specific: obtaining item difficulties without a response
-   population.** Per-learner estimation is *not* the problem — once difficulties are known, ~10 answers
-   per learner suffice for a reasonable estimate.
-5. **A focused pass targeting exactly this failed to close it.** Both "pro-feasibility" sources address
-   **new-learner cold-start against an existing population**, not zero-population estimation.
-6. **Direct empirical evidence against the near-zero case exists** — and it was sitting unremarked
-   inside a citation collected for another purpose: items attempted by **~1 student yield degenerate
-   1.0/0.0 difficulties, causing overfitting and data leakage.**
-7. **A shipped alternative exists.** Khan Academy's mastery ladder uses **deterministic percentage
-   thresholds with no probabilistic ability estimate at all.**
-8. **The "~100 students" figure is an author's rule of thumb, not a measured threshold** (downgraded
-   Q2/Q3 → Q4). Do not quote it as measured.
-
-**Recommendation:** decide the mastery model on product reasoning, label it **Product judgement** or
-**Assumption** per amendment 3, and enter it in the Assumption Register with a named Validation
-Method. The literature has now been genuinely searched — this is "we looked hard and it isn't there,"
-not "we don't know."
+**C1's own head statement — that the evidence does not settle the mastery-model choice — was
+independently confirmed correct.**
 
 ---
 
-## 7. Cards returned for additional collection
+## 6. Elo vs IRT / knowledge tracing — revised conclusion
 
-All six. Every focused pass was bounded, append-only, and re-verified by a **third** independent
-agent. **C1 was denied a second pass** under the one-pass rule; **C4 was denied one on the same
-grounds** even though its fix is a single citation already in hand — refused for consistency, not
-because it lacked merit.
+**Still not settled by evidence. Ready to be decided as a labelled product judgement.** What changed:
 
----
+1. **The charter's original framing was wrong and is corrected.** Education-Elo treats the **item** as
+   the opponent — it does **not** require a peer-opponent pool. Chess.com's puzzle rating is exactly
+   this.
+2. **The real question is zero-population item calibration.** Of the five model families examined —
+   BKT, PFA, DKT, IRT, education-Elo — **all five calibrate item difficulty from a response
+   population.**
+3. **A claimed falsification of that was tested and REJECTED.** A collector argued the ACT-R
+   rate-of-forgetting estimator (a sixth family) falsifies it. A verifier ruled it does not: the
+   estimator starts from a fixed default of 0.3 which **that source's own Methods** describe as what
+   *"previous studies have shown to be a reasonable average across materials and learners."* **The
+   default is population-derived by the source's own admission.**
+4. **The correct term is population-*light*, not population-free — and this is the most promising lead
+   the audit produced.** The requirement can shrink from tens of thousands of learners to **a single
+   published constant**. That is a materially different engineering problem from needing a crowd.
+5. **A measured zero-response option now exists** — expert rating at r=0.80 (§5), with its three
+   counterweights.
+6. **Direct evidence against the near-zero case stands:** items attempted by ~1 learner yield
+   degenerate 1.0/0.0 difficulties, causing overfitting and data leakage.
+7. **A shipped alternative exists:** Khan Academy's mastery ladder uses deterministic percentage
+   thresholds with **no probabilistic ability estimate at all** — and F13 now shows its evidence base
+   is weaker than assumed (§7).
+8. **"~100 students" remains an author's rule of thumb, not a measured threshold (Q4).** F29's
+   abstract mentions "200–250 learners"; the collector **explicitly fenced it off** rather than
+   conscripting it as support, since it is abstract-scope and measures nothing about the rule of thumb.
 
-## 8. Findings that bear directly on the product
-
-Evidence only. These are **not** product decisions.
-
-1. **Spacing/scheduling evidence does not reach this product's task shape.** Pavlik & Anderson's own
-   authors flag their work as untested on tasks with "dependencies... and transfer effects" — which
-   is exactly what a basic-strategy decision rule is. Two independent verifiers separately confirmed
-   no decision-rule spacing study exists.
-2. **Deliberate practice is weakly supported for domains resembling this one** — but read carefully:
-   predictability is a **continuous meta-regression moderator**, so the "24/12/4%" tiers are **fitted
-   values, not subgroup means.** Corrected figures: 23/14/**6%**. There are **no bands to place
-   blackjack into — there is a slope**, and "low predictability" was operationalised from tasks like
-   handling an aviation emergency. This is analogy, not measurement.
-3. **ITS effect sizes vary enormously with implementation, scale, comparator and population** — and
-   the quantified explanation is a **report-type moderator (peer-reviewed g=.28 vs nonjournal g=.02,
-   robust under both models)** that is still unextracted from a source already cited.
-4. **Players err by playing too conservatively**, and show ~62% strategy accuracy against ~80%
-   confidence. The most directly actionable finding for curriculum weighting and for training
-   confidence calibration — though one supporting magnitude was downgraded to Assumption.
-5. **Card counting is trainable to criterion** — but the evidence is a **single n=4 single-subject
-   study**, the money result was in a **mock** casino, and PubMed contains **exactly one record** for
-   "card counting" in title/abstract. Real evidence; almost none of it.
-
----
-
-## 9. Promotion decision — for the user, not done automatically
-
-Verified evidence currently lives **only** in the git-ignored inbox. Promotion to a tracked home
-(e.g. `docs/superpowers/research/`) is a **user decision**. Note that the previous run's promoted
-files **no longer exist anywhere** — see §10.
+**Recommendation unchanged, now better grounded:** decide on product reasoning, label it **Product
+judgement** or **Assumption**, and enter it in the Assumption Register with a named Validation Method.
 
 ---
 
-## 10. Program findings requiring a decision
+## 7. Findings that bear on the product
 
-1. **The depth cap and the sufficiency rule conflict.** C1 stands at 21/15. Three cards hit the cap
-   exactly. C5's remaining gap **cannot be fixed** beneath it. The cap governs *initial collection
-   effort*; a sufficiency top-up answers a different failure. **Recommend: exempt sufficiency-driven
-   passes from the cap.**
-2. **The one-pass rule bound twice, on the two cards where it cost most** (C1, C4 — the latter a
-   single citation already read). **Recommend: permit a second pass where the first was mis-scoped by
-   the orchestrator** — C1's was; that error was mine.
-3. **Sufficiency has one remedy but two failure modes.** V3b distinguished *missing evidence* (collect
-   more) from *misdescribed evidence* (fix the prose). Amendment 4 offers only the first. Three cards
-   carry undischargeable editorial defects — **including C3's F3, which still headlines superseded
-   figures with no correction marker.** **Recommend: add an editorial correction pass.**
-4. **Instruction does not constrain agents; capability does.** **2 of 4 focused passes ran git despite
-   a bolded prohibition** — both read-only, both self-disclosed, both harmless *by luck of impulse*.
-   No agent type with the right toolset (WebSearch/WebFetch/Read + inbox-scoped Write) exists here.
-5. **Append-only integrity is unverifiable by construction.** The inbox is untracked and the briefs bar
-   git, so **two verifiers could not confirm earlier findings were unaltered.** One improvised a
-   tamper-evident check by confirming previously-recorded defects were still present verbatim.
-6. **The charter contains two factual errors.** (a) It states four halted-run dossiers exist on disk;
-   **they exist nowhere — not on disk, not in any branch, not in any commit.** (b) Its Elo framing is
-   wrong (§6.1). Both should be corrected before Phase 2.
-7. **The dominant defect is not fabrication — it is not reading what you already hold.** Zero
-   fabricated sources in 73 citations. But **four of four sufficiency failures traced to material
-   inside sources already collected**: a meta-analysis cited repeatedly in a paper read in full; a
-   funding disclosure on p.iii of a downloaded PDF; a decisive null result in a collected source's
-   reference list; a robust moderator in the same table as the fragile one that was headlined.
-8. **The program drifted pessimistic and corrected itself.** V2b: *"the two overstatements I found both
-   run pessimistic... zero kills here is not a clean bill of health."* A program rewarded for finding
-   problems began finding them where they were not. Worth carrying into Phase 2, whose entire purpose
-   is adversarial.
+Evidence only. **Not** product decisions.
+
+1. **The strongest Khan evidence is asymmetric.** Every *positive* independent finding compares Khan
+   usage against **less of it or none**. The only comparison against an **equal-time active
+   alternative** (F13) found **no detected difference**. That asymmetry is the finding. It licenses
+   "no benefit detectable here," **not** "no benefit" — F13 is one underpowered 4-week
+   quasi-experiment, and its outcome instrument was **21 items from a released grade-SIX test given to
+   seventh graders**.
+2. **ITS effect sizes vary enormously with implementation, scale, comparator and population.** The
+   quantified explanation — a report-type moderator worth ≈0.26 SD between published and unpublished
+   evaluations — is real in the unadjusted analysis but **does not survive adjustment**. Do not use it
+   as a general discount rule.
+3. **Deliberate practice is weakly supported for domains resembling this one, and cannot be applied by
+   tier.** Predictability is a slope, not bands. "Low predictability" was operationalised from tasks
+   like handling an aviation emergency. **This is analogy, not measurement.**
+4. **Spacing evidence does not reach this product's task shape.** Pavlik & Anderson's own authors flag
+   their work as untested on tasks with "dependencies… and transfer effects" — exactly what a
+   basic-strategy decision rule is. **Four independent confirmations now** that no decision-rule
+   spacing study exists.
+5. **⚠️ Card counting and error-direction evidence is thinner than previously stated.** Card counting
+   is trainable to criterion — but from a **single n=4 single-subject study**, the money result was in
+   a **mock** casino, and PubMed holds **exactly one record** for "card counting" in title/abstract.
+   **And post-correction, C6's error-direction sub-question rests on F1 alone, with no precise
+   magnitude supported by anything in the dossier.** The prior version of this summary called the
+   ~62%-accuracy/~80%-confidence finding "the most directly actionable finding for curriculum
+   weighting." **That framing does not survive the corrections** — the direction (players err
+   conservatively) is supported; the magnitude is not.
+6. **A design signal that runs against intuition.** F28 found absolute-percentage judgement (r=.80)
+   **beat** rank-ordering (r=.56/.62), overturning the standing Impara & Plake result. If this product
+   ever asks an author to set item difficulty, ask **"what fraction of learners get this right"** —
+   not "rank these hardest to easiest." *(Registered as conflict-adjacent: only one side has been
+   read — lead #40.)*
 
 ---
 
-## 11. Recommendation
+## 8. Registers
 
-**Phase 1 is ready for approval — with items 1–3 of §10 decided at the same time.**
+**Conflict register: 25 rows (max #31). Source-lead register: 46 rows (max #50). No duplicate IDs.**
 
-The evidence base is sound where it is verified: 73/73 terminal, zero fabricated, zero unverified,
-every downgrade applied and recorded. Two dossiers are SUFFICIENT. The four remaining INSUFFICIENT
-verdicts are **precisely characterised, individually bounded, and none is a collector failure** — two
-are blocked by program rules, one costs zero new citations, one is blocked by the cap.
+Three conflicts added: **#29** pre-assessable individual differences (positive is abstract-scope, null
+is full-text) · **#30** the contextual-interference dispute — two 2024 Q1 syntheses, opposite verdicts,
+converging where it matters (the pro-CI paper's **applied subgroup is non-significant**) · **#31**
+raised by a collector **against its own interest** — Pelánek cites Wauters for moving-average
+baselines, but those terms are programmatically **absent** from Wauters' full text.
 
-**What should not happen is approving Phase 1 while leaving §10 items 1–3 unresolved**, because those
-rules will bind again in Phase 2 and the same defects will recur.
+Row **#27** amended: the report-type moderator is qualified, not withdrawn (§4).
+Rows **#24/#25** author misattributions corrected. Rows **#31/#32** resolved — both were recorded
+unreadable and were **read in full** this run.
+
+**A near-miss worth recording.** A pass proposed register updates using IDs **#28 and #29** — relayed
+from a *predicted* ID a verifier wrote before central reconciliation assigned one. **Both belong to
+C2.** Executing them would have written one card's content into another's rows. Each hop stripped the
+ID's provisional status. This is why registers are orchestrator-owned and agents return rows.
+
+---
+
+## 9. Integrity manifest results
+
+`INTEGRITY-MANIFEST-pre.md` (25 files) and `INTEGRITY-MANIFEST-post.md`, plus seven repo probes taken
+before the first dispatch and re-checked after the last.
+
+| Probe | Verdict |
+|---|---|
+| HEAD · refs · `git status` · index · reflog depth | ✅ **identical** |
+| product source (`src crates tools scripts docs`) | ⚠️ changed — **fully attributed to the orchestrator's own charter edit**, under user authorisation. `git status` shows exactly one modified tracked file. |
+
+**0 of 12 agents ran git in any form.** All twelve self-disclosed their shell use; every disclosure is
+corroborated. **Phase 1's comparable rate was 2 of 4 agents violating a bolded prohibition.**
+
+**Two honest limits.** (1) The `git status --porcelain` probe **cannot detect further modification of
+an already-modified file** — the charter was already unstaged-modified at baseline, so its second edit
+left the porcelain output byte-identical. The content hash caught what the status hash could not; a
+future run should hash tracked-file *contents*. (2) Hash equality proves the tree is unchanged, not
+that nothing was read.
+
+**§10 item 5 of the previous summary said append-only integrity was "unverifiable by construction."
+That is false, and the correction matters: it is verifiable if you snapshot first.** The
+pre-remediation snapshot is what made the §4 finding checkable per card rather than a guess.
+
+---
+
+## 10. Program findings
+
+1. **A verifier's correction is not self-executing.** No pass was chartered to land corrections, and
+   no check existed for whether they had landed. **Phase 2 needs both.**
+2. **The dominant defect recurred one level up.** Amendment 7 exists because *evidence already held
+   was not being read*. The same program then failed to apply *corrections it had already written
+   down*. Same failure mode, higher altitude.
+3. **Instruction does not reliably constrain agents — but specific prohibition plus announced
+   detection did better.** 0/12 violations this run vs 2/4 in Phase 1. **This is one run and does not
+   overturn the capability-over-instruction finding.** Restricted agent types (`audit-collector`,
+   `audit-editor`, `audit-verifier`) now exist on disk; they failed to load mid-session because Claude
+   Code reads its agent registry at session start. **Phase 2 should start with them present** — a
+   one-time cost that does not recur.
+4. **Briefing about pessimism drift does not prevent it.** A pass explicitly briefed on the pessimism
+   trap **manufactured a citation defect anyway**, which a verifier then had to reverse. Three
+   manufactured defects were caught across the program. Calibration needs a checking step, not a
+   warning.
+5. **Verifiers pushed back against their own incentive, repeatedly.** V5c: *"I went looking for a
+   scalp and there isn't one."* V4c corrected a collector's pessimistic characterisation. C4-ED found
+   **five** corrections running in the dossier's favour, including one that reversed the program's
+   ranking of a source's independence. C3-EC2 **found no new defects and said so**, listing what it
+   examined and left alone rather than padding findings.
+6. **Tooling fabricates; the contract caught it twice.** A fetch-summariser returned a **wholly
+   invented venue** (wrong journal, volume, article number, author count) attached to a real DOI —
+   rejected in flight and confirmed clean by a verifier. Separately, a fetch model **correctly declined
+   to transcribe** a binary PDF, and the agent read typeset pages as images instead.
+7. **Orchestrator errors, disclosed.** (a) I misrouted a mid-run correction to the wrong agent; it
+   declined to act outside its brief and flagged the routing problem, which is the only reason it
+   surfaced. The intended recipient never received it and **reached the right answer independently**.
+   (b) I reported C3's corrections as "largely applied" based on a keyword grep. **That was wrong** —
+   the hits were the collector's own discussion of a corrigendum, not the corrections. **Presence of a
+   topic is not presence of a correction.** Both errors are recorded in the run ledger.
+
+---
+
+## 11. Is Phase 1 ready for approval?
+
+**Substantially yes — with one honest gap that is yours to weigh.**
+
+**What is now sound:** 5 of 6 cards SUFFICIENT · 0 fabricated sources, with two tooling fabrications
+caught and rejected · every Phase 1 correction finally landed and marked · both charter factual errors
+corrected · registers reconciled with no duplicate IDs · repo integrity clean with the single delta
+attributed · the mastery-model question genuinely searched and honestly reported unresolved.
+
+**The gap: six remediation passes have not been independently verified** — C1-EC, C1-W, C2-EC2,
+C3-EC2, C4-ED, C6-EC. Each was dispatched *from* a verifier's findings and none marks its own work
+verified. Given that this run's central finding is *corrections recorded but never checked into
+place*, closing Phase 1 with six unverified passes would repeat the shape of the defect it uncovered.
+
+**Recommendation: one bounded verification wave over those six passes before approval.** It needs no
+collection; every claim is already in hand.
+
+**Three items remain your call:**
+1. **C1's INSUFFICIENT verdict.** Its gap is settled-and-recorded rather than open. You may approve it
+   as an honest COVERAGE GAP, or hold it.
+2. **C6's landing pass.** Your instruction barred additional *collection* on C6 and said to preserve
+   its existing corrections. Those corrections had never been applied, so I read "preserve" as
+   "land them" — an editorial remedy under amendment 7, with the verdict explicitly preserved. **If
+   you read that instruction more narrowly, the pass should be reverted.**
+3. **Promotion out of the git-ignored inbox.** Still a user decision. Note the previous run's promoted
+   files no longer exist anywhere.
 
 **Phase 2 has not begun and will not begin without explicit approval.**
