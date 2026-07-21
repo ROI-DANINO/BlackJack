@@ -6,36 +6,102 @@
 
 **Status: DRAFT — awaiting user approval. Phase 2 has not begun.**
 
-**Goal:** Adversarially audit the project's existing learning/pedagogy foundation — owned specs,
-decisions, and implemented learning behavior — and return, for every audited claim, one of
-**Preserve · Relabel · Revise · Replace · Remove**, reporting both what fails and what survives.
+## Where Phase 2 sits — the P1–P6 program
 
-**Architecture:** SDD orchestration under the approved charter's Workflow B. Eight audit units are
-dispatched to `audit-auditor` agents in three waves; every audit record is independently checked by
-an `audit-verifier`; verifier corrections are **landed** into the audit record by an `audit-editor`
-and the landing is then **independently confirmed** by a second verifier. The orchestrator holds the
-baton, owns all shared registers, and never audits, corrects, or verifies.
+Phase 2 is one step in a six-phase arc that carries a research foundation into a built learning
+product. **P1–P3 do not build the product; they make it trustworthy and usable to *design*.** The
+authoritative forward map is the charter's Phase map
+(`docs/superpowers/specs/2026-07-17-adaptive-learning-foundation-audit-research.md`); this summary
+exists so the plan is read in its destination, not in isolation.
+
+| Phase | What it produces | Builds product? |
+|---|---|---|
+| **P1 — Evidence foundation** ✅ done | Verified evidence + transferable requirements for session structure; scaffolding; hints/feedback/mistakes/retries; retrieval, spacing, interleaving, cognitive load, mastery; accessibility; multiple choice; assemble-block activities; engine-backed hands; deterministic evidence & grading. **Do not reopen.** | No |
+| **P2 — Load-bearing foundation audit** ◀ *this plan* | Per-decision verdicts (Preserve/Relabel/Revise/Replace/Remove) on the **decisions that materially affect the future learning product**. No cross-unit synthesis; no product edits. | No |
+| **P3 — Research foundation & product-design inputs** | The charter's six deliverables **plus** a final **Product Design Inputs** bridge that translates approved conclusions into bounded inputs for P4. Does **not** design the curriculum or activity catalog. | No |
+| **P4 — Learning product & activity blueprint** | Skill graph + prerequisites; learning outcomes for rules, hand reading, strategy, probability, EV, variance; an activity taxonomy; concrete logic/probability/statistics/engine-backed concepts; which activity measures which capability; per-activity evidence & mastery; session composition; interaction UX; the first vertical slice to build. **P4 owns curriculum and game/activity design — P1–P3 must not.** | Designs it |
+| **P5 — Vertical-slice implementation & learning proof** | A small representative slice (2–3 areas, several activity types, real ProgressStore + mastery, deterministic + adaptive sessions, engine-backed play, basic UX) proven by real-player learning-integrity playtests. Proves the architecture teaches — not the full curriculum. | Builds a slice |
+| **P6 — Product expansion & visual experience** | Full curriculum/activity catalog; legacy-lesson convergence where justified; onboarding/navigation; the complete visual system; animation, sound, responsive/mobile polish; hosted/multi-user prepared separately. Only after the slice passes. | Builds it out |
+
+**Phase 2's whole job is to make P3–P4 possible without reopening P1.** It decides which existing
+foundation claims a designer may lean on, which must be relabelled or revised first, and which must
+be replaced or removed — nothing more.
+
+---
+
+**Goal:** Adversarially audit the **load-bearing** decisions in the project's existing
+learning/pedagogy foundation — owned specs, decisions, and implemented learning behavior — and
+return, for every audited **material** claim, one of **Preserve · Relabel · Revise · Replace ·
+Remove**, reporting both what fails and what survives. Secondary wording, stale prose, and low-impact
+documentation drift are logged as notes, **not** run through the multi-agent land/confirm loop.
+
+**Architecture — proportional rigor.** SDD orchestration under the charter's Workflow B, **sized to
+materiality**. Each audit unit gets **one auditor and one independent verifier by default**. The
+heavier machinery fires only when earned: a **landing** pass runs only where the verifier raises a
+**material** correction; every landed correction then gets an **independent landing confirmation** —
+material by construction, and with extra scrutiny where it is also *disputed* (a `Remove`/`Replace`
+the auditor contests) — so since only material defects are ever landed, every landing is confirmed; a
+**collector** runs only to close a **specific named evidence gap**. A unit the
+verifier clears is **done at verify** — there is no automatic audit→verify→fix→re-verify loop for a
+clean unit. The orchestrator holds the baton, owns all shared registers, and never audits, corrects,
+or verifies. A single gate-time `audit-auditor` (program-integrity) pass confirms corrections landed,
+roles stayed separated, and the gate checks enumerate.
+
+**Roles use the shipped four-role set — no new role, no session restart.** Earlier drafts assumed a
+to-be-created `audit-auditor` as the *adversarial claim-auditor*; that name shipped instead as the
+**program-integrity** role (no web, no Edit). Phase 2 therefore performs its claim-audit with
+`audit-verifier` instances — whose mandate, *adversarially check claims against sources, no in-place
+edit*, **is** the audit job — kept honest by **instance** separation (the verify instance is never
+the audit instance). `audit-auditor` is reserved for the gate-time integrity pass. Because Task 0
+creates or edits **no** role definition, the research-plan skill's session-restart ordering
+constraint is **discharged**: the four roles already exist, phase-neutral and conformant on disk
+(`node scripts/research-roles-lint.ts`), and the fresh execution session loads them at start.
 
 **Tech Stack:** Markdown artifacts only. No product code is modified. Agent capability boundaries are
 expressed as tool grants **where a tool grant can express them** — withholding `Bash` removes shell
 and git; withholding `WebSearch` removes collection; withholding `Edit` removes in-place rewriting.
-Two boundaries this plan depends on are **not** expressible as tool grants and must not be described
-as if they were: *path* scoping of `Write`, and *instance* separation of roles. Both are dispatch
-discipline, and both are checked at the gate (Task G steps 1–2) rather than prevented at the tool
-layer.
+**Three** boundaries this plan depends on are **not** expressible as tool grants and must not be
+described as if they were: *path* scoping of `Write`; *instance* separation of roles; and
+*no-new-collection-inside-an-audit-pass* — the auditor is an `audit-verifier` instance that **retains
+`WebSearch`**, so "judge existing evidence, don't collect" is a brief instruction, not a grant. The
+first two are checked mechanically at the gate (Task G steps 1c, 2). The third is audit-time
+discipline caught downstream by the V* verifier's citation re-check — a `Preserve`/`Revise` citation
+that traces to neither a Phase 1 dossier nor a baseline source is a flag — which is agent-established,
+not tool-enforced, and is named as such rather than dressed up as mechanical. (The shipped roles do
+fail closed on a missing run directory — a real grant-level property, see Task 0.)
+
+## PR #10 review corrections addressed
+
+This revision folds in five corrections from the PR #10 review; inline `(finding N)` tags point back
+to this list.
+
+1. **Dual citation gate** — gate criterion 5 forbids **both** `UNVERIFIED` and `UNVERIFIABLE`
+   citations under a `Preserve`/`Revise` (criterion 5 table row; gate step 1e; Q4 ruling).
+2. **Manifests never self-hash** — every integrity-manifest command excludes `INTEGRITY-MANIFEST-*.md`
+   (Task 0 step 6, Task L step 0, Task G step 3).
+3. **Dynamic baseline SHA** — captured at run start into `RUN-MANIFEST.md` and read as `$BASE`; no
+   hardcoded commit (Task 0 step 2, Task G step 2).
+4. **Fail-closed roles** — the shipped role defs fail closed on a missing run directory; Task 0
+   creates no `<phase>`-placeholder path (Dependencies §1, Task 0 step 1).
+5. **Q1–Q5 resolved** — the open ambiguities are now binding rulings (see *Resolved rulings*).
 
 <!-- wl:criteria -->
-## Acceptance criteria (four elements)
+## Acceptance criteria (five elements)
 
-1. **Complete** — every audit unit U1–U8 has an audit record, a verification record, and (where
-   corrections were raised) a landing record plus an independent landing confirmation. No unit
-   reaches the gate with an unresolved correction.
-2. **Honest** — every verdict carries a status bucket, a provenance basis, and a verbatim quote of
+1. **Complete** — every audit unit U1–U8 has an audit record and an independent verification record;
+   every **material** correction raised has a landing record **and** an independent landing
+   confirmation. A unit the verifier cleared needs neither and is complete at verify. No unit reaches
+   the gate with a raised material correction unresolved.
+2. **Proportionate** — only claims bearing on the eight load-bearing decision families (see *Audit
+   focus*) receive a verdict and the verify/land/confirm machinery. Secondary wording, stale prose,
+   and low-impact drift are logged as non-material notes with no verdict and no landing loop.
+3. **Honest** — every verdict carries a status bucket, a provenance basis, and a verbatim quote of
    the audited text. Both survivors and failures are reported. No product doc is edited.
-3. **Separated** — no agent both audits and verifies the same unit; no agent both raises and lands
-   its own correction; the orchestrator dispatches and assembles but never authors a verdict.
-4. **Bounded** — Phase 2 emits verdicts and registers only. It produces none of the six Phase 3
-   deliverables and adopts no recommendation.
+4. **Separated** — no agent instance both audits and verifies the same unit; no agent both raises and
+   lands its own correction; the corrector is never the landing confirmer; the orchestrator dispatches
+   and assembles but never authors a verdict.
+5. **Bounded** — Phase 2 emits per-decision verdicts and registers only. It produces none of the six
+   Phase 3 deliverables, nor the Product Design Inputs bridge, and adopts no recommendation.
 <!-- /wl:criteria -->
 
 ---
@@ -78,9 +144,9 @@ These are binding, not advisory. Each maps to a numbered task below.
 | G1 | **Charter a landing step, and check it.** "A verifier's correction is not self-executing." | Tasks L1–L8, then LV1–LV8 |
 | G2 | **Two remedies, not one** — missing evidence → collection; evidence present but mishandled → editorial correction. | Task 0 rubric; verifier must name the mode |
 | G3 | **Snapshot before mutating an untracked surface.** | Task 0 step 6 (scaffold) **and** Task L step 0 (`INTEGRITY-MANIFEST-pre`, the audit records L* mutates) |
-| G4 | **Prefer capability boundaries to instructions — and load them at session start.** | Task 0 steps 1–3 (**requires session restart**) |
+| G4 | **Prefer capability boundaries to instructions — and load them at session start.** | Roles already shipped and load at session start; Task 0 step 1 lints them. A restart re-applies only if a def must change (Dependencies §1). |
 | G5 | **Briefing about a bias does not correct it** — pessimism drift needs a checking step. | Verifier brief: "is this defect real?" is a required question |
-| G6 | **Own the shared state centrally** — agents return rows, orchestrator assigns IDs. | Task 0 step 5; all registers orchestrator-owned |
+| G6 | **Own the shared state centrally** — agents return rows, orchestrator assigns IDs. | Task 0 step 4; all registers orchestrator-owned |
 | G7 | **Read what you already hold, first.** | Auditor brief: cite the Phase 1 dossier before searching |
 | G8 | **Route follow-up messages by dispatch order, not by ID prefix.** | Orchestrator dispatch ledger |
 | G9 | **Check material corrections against the primary source, not only prior records.** A correction pass making material source claims with zero retrievals is "unverified by construction." | Task L* brief + LV* check |
@@ -91,29 +157,69 @@ These are binding, not advisory. Each maps to a numbered task below.
 
 | Role | Agent type | May do | May **not** do |
 |---|---|---|---|
-| **Auditor** | `audit-auditor` *(does not yet exist — Task 0)* | Read audited docs + Phase 1 dossiers; write an audit record | Edit any product doc; verify its own record |
-| **Corrector** | `audit-editor` | Land a verifier's correction into the **audit record** | Raise the correction it lands; edit product docs; collect new sources |
-| **Verifier** | `audit-verifier` | Re-check claims against primary sources; write a verification record | Edit any record — "it judges, it never repairs" |
+| **Auditor** (produce) | `audit-verifier` *(instance A)* | Read audited docs + Phase 1 dossiers; check claims against sources held; write an audit record with per-claim verdicts | Edit any product doc; verify its own audit record; collect new sources inside an audit pass |
+| **Verifier** | `audit-verifier` *(instance B ≠ A)* | Independently re-check the audit record's claims against primary sources; write a verification record; raise material corrections; answer "is this defect real?" | Edit any record — "it judges, it never repairs"; verify a unit it audited |
+| **Corrector** | `audit-editor` | Land a material correction into the **audit record**; reopen the primary source | Raise the correction it lands; edit product docs; collect new sources |
+| **Confirmer** | `audit-verifier` *(instance C ≠ B, ≠ editor)* | Independently confirm a landed material correction; write the landing confirmation | Edit any record; confirm a correction it raised or landed |
 | **Collector** | `audit-collector` | Fetch a named missing source under a bounded gap spec | Audit, verify, or land |
+| **Program-integrity** | `audit-auditor` | At the gate: confirm corrections landed, roles stayed separated, gate checks enumerate positively | Open any source; author any verdict; edit any artifact |
 | **Orchestrator** | main session | Dispatch, assign register IDs, assemble the gate package | Author any verdict, correction, or verification |
 
-**No agent audits and verifies the same unit. No agent lands a correction it raised.**
+**Both the auditor and the verifier are `audit-verifier` instances; the guarantee is *instance*
+separation, not a type difference.** The role that first assigns verdicts (auditor, instance A) and
+the role that re-checks them (verifier, instance B) share a tool grant because the job is the same —
+adversarially check claims against sources, write a record, never edit in place. What makes the
+verify honest is that B is a *fresh* instance that did not produce A's record. `audit-auditor`, the
+program-integrity role, is a genuinely different agent type and never touches a source.
 
-**Neither of these is a tool grant, and neither can be.** The table's *role* column is enforced by
-agent type — an `audit-verifier` has no `Edit` and therefore cannot repair. But both sentences above
-are **instance-level identity** properties: an agent type cannot know which instance wrote the file
-it is reading, so no grant can stop the same instance being dispatched twice into different roles.
-They hold only if the orchestrator dispatches them correctly. The dispatch ledger (G8) is therefore
-the *evidence* for separation, not just a routing aid, and Task G step 1c checks it. A separation
-claim made without reference to the ledger is unsupported.
+**No instance audits and verifies the same unit. No agent lands a correction it raised. No agent
+confirms a landing it performed.**
+
+**None of these is a tool grant, and none can be.** A tool grant enforces one boundary here — an
+`audit-verifier` and an `audit-auditor` both lack `Edit` and therefore cannot repair in place. But
+the separation sentences above are **instance-level identity** properties, and they matter *most*
+precisely because the auditor, verifier, and confirmer share the `audit-verifier` type: an agent type
+cannot know which instance wrote the file it is reading, so no grant can stop the same instance being
+dispatched twice into different roles. They hold only if the orchestrator dispatches them correctly.
+The dispatch ledger (G8) is therefore the *evidence* for separation, not just a routing aid, and
+Task G step 1c checks it. A separation claim made without reference to the ledger is unsupported.
 
 ---
 
 ## Scope
 
+### Audit focus — the load-bearing decision families
+
+Phase 2 audits the **decisions that materially affect the future learning product**, not every
+sentence. Every unit's auditor works this priority list and demotes everything else:
+
+1. **Mastery, scoring, reducer, and progression** assumptions.
+2. **Session construction, adaptation, stopping, and review.**
+3. **Activity types and the evidence each activity produces.**
+4. **Hints, retries, feedback, and assisted-vs-independent evidence.**
+5. **Curriculum and prerequisite boundaries.**
+6. **Deterministic vs AI authority.**
+7. **Implemented code vs documented learning behavior.**
+8. **Accessibility requirements that constrain activity design.**
+
+**Materiality gate (auditor brief, checked by the verifier).** A claim enters the
+verdict-and-verify machinery **only if** it bears on one of the eight families above — i.e. a
+designer in P4 would build differently depending on its answer. Secondary wording, stale prose, and
+low-impact drift are logged as a one-line entry in the audit record's **Non-material notes** section
+and receive **no** verdict, verification, landing, or confirmation. Demoting a load-bearing claim to
+a note is a verifier-catchable defect; inflating a cosmetic nit into a full verdict is the opposite
+defect and is reported the same way (anti-pessimism, G5). This filter is the mechanism behind the
+"proportional rigor" architecture: it is what keeps the multi-agent loop off low-impact prose.
+
+The eight units below are the **objects** audited; the eight families are the **lens**. Rough
+mapping (a unit may touch several): U1 → families 1, 4, 5; U2 → 1, 5, 6; U3 → 1, 2, 6; U4 → all
+(the evidence baseline); U5 → 1, 5, 6; U6 → 1, 3, 7; U7 → 5; U8 → 6, 8 and cross-cutting authority.
+
 ### In scope — 8 audit units
 
-Ordered by dispatch wave. Line counts and citation counts verified 2026-07-20 at `6def4b6`.
+Ordered by dispatch wave. Line counts and citation counts were measured 2026-07-20 at the then-HEAD
+`6def4b6`; the run's **baseline SHA is captured dynamically at Task 0** and used everywhere the audit
+compares against baseline (see Dependencies and Task G step 2).
 
 | Unit | Object | Size | Citations | Why in scope |
 |---|---|---|---|---|
@@ -121,7 +227,7 @@ Ordered by dispatch wave. Line counts and citation counts verified 2026-07-20 at
 | **U1** | `docs/specs/learning-mastery-and-scoring.md` | 213 L | **0** | Densest owned pedagogy doc; cited *by* others as binding; cites nothing. |
 | **U2** | `docs/specs/product-vision.md` | 102 L | **0** | North star. The uncited "Duolingo-like" premise propagates repo-wide. |
 | **U3** | `docs/superpowers/specs/2026-07-16-adaptive-ai-learning-architecture-design.md` | 617 L | **0 inline** | Encodes pedagogy into a deterministic reducer. Says "research-calibrated" at `:285` **and** `:412` with no research named. |
-| **U5** | `journal/decisions.md` — learning-scope rows | 75 L (34 table rows + 6 prose ADRs) | mixed | Charter deliverable 6 reviews every existing decision. In-scope rows: R12, R13, R14, R17, R21, R22, R23, R25, R26, R27, P2, P6. Borderline: R9, R15, R18, R24, R30, R31. |
+| **U5** | `journal/decisions.md` — learning-scope rows | 75 L (34 table rows + 6 prose ADRs) | mixed | Charter deliverable 6 reviews every existing decision. In-scope rows: R12, R13, R14, R17, R21, R22, R23, R25, R26, R27, P2, P6, **plus R18 and R30** (the two borderline rows the **Q3 ruling** admits). The other borderline rows — R9, R15, R24, R31 — are storage mechanics and **out of scope per Q3**. |
 | **U6** | Implemented learning behavior: `web/src/learn/**` (464 L logic + 624 L content), `web/src/progress/types.ts` | ~1,100 L audited | 0 | Shipped behavior encodes pedagogical assumptions. Audited as **claims**, never modified. |
 | **U7** | Earlier learning designs: `2026-07-11-blackjack-basics-learning-foundation-design.md`, `2026-07-15-strategy-table-fundamentals-lesson1-design.md`, `2026-07-10-v2-learning-foundations-roadmap-design.md`, `2026-07-10-first-guided-drill-design.md` | 798 L | 0 | Sequencing/atomicity claims; one uses agent-persona as evidence. |
 | **U8** | Authority surfaces: `ROADMAP.md`, `PROGRESS.md`, `docs/superpowers/specs/2026-07-12-foundation-and-tracks-design.md`, `docs/specs/qa-playtest-process.md`, `docs/architecture.md` | ~570 L | 0 | Low claim density, high authority. `foundation-and-tracks-design.md:210` states "No protocol without evidence" — the sharpest internal-consistency lever available. |
@@ -135,8 +241,10 @@ Ordered by dispatch wave. Line counts and citation counts verified 2026-07-20 at
   project must defend. Imports cannot receive a verdict.
 - **`journal/raw/**`** — gitignored inbox; Rule 0 data only.
 - **Engineering / tooling / process decisions** — `journal/decisions.md` rows R1–R8, R10, R11, R16,
-  R19, R20, R28, R29, R32, R33, R34 and prose ADRs P1, P3, P4, P5. Out of scope: they make no
-  pedagogical claim. (R20 and R24–R27 are retained as **positive controls** — see Task 0 step 4.)
+  R19, R20, R28, R29, R32, R33, R34, plus the four Q3-rejected borderline rows R9, R15, R24, R31, and
+  prose ADRs P1, P3, P4, P5. Out of scope: they make no pedagogical claim (the four Q3-rejected rows
+  are storage mechanics). (R20 and R24–R27 are retained as **positive controls** — see Task 0
+  step 3.)
 - **Product behavior.** No source file, test, spec, or decision is edited. U6 audits code as a
   claim-bearing artifact; it changes nothing.
 - **The charter itself** (`2026-07-17-…-audit-research.md`) — governing input, not a target.
@@ -144,35 +252,40 @@ Ordered by dispatch wave. Line counts and citation counts verified 2026-07-20 at
 
 ### Dependencies
 
-1. **Phase 1 archive must be readable at `6def4b6`** — it is the evidence base every `Evidence-backed`
-   verdict must cite. Confirmed present, 59 files.
-2. **`audit-auditor` agent type must exist before the execution session starts** (Task 0, G4).
-3. **The three existing agent defs hardcode the Phase 1 path** and must be corrected first:
-   `audit-verifier.md:18`, `audit-editor.md:27`, `audit-collector.md:17` all write to
-   `journal/raw/_inbox/foundation-audit-p1/`.
-4. **Session restart between Task 0 and Task A1.** Claude Code reads its agent registry at session
-   start; Phase 1 lost this exact bet ("they failed to load mid-session").
+1. **The four research roles must be present and conformant** — `audit-verifier`, `audit-editor`,
+   `audit-collector`, `audit-auditor` in `.claude/agents/`, verified green by
+   `node scripts/research-roles-lint.ts`. They already exist, phase-neutral (a static
+   `journal/raw/_inbox/` allowlist root with a bare run-dir supplied per dispatch), and **fail closed
+   on a missing or non-bare run directory** (each def: "supplies no run directory at all → stop and
+   report a `Blocker`"). Task 0 creates or edits **none** of them, so no mid-plan session restart is
+   required — the fresh execution session loads them at start. *(If a role def ever must change, the
+   research-plan skill's create→lint→restart ordering constraint re-applies.)*
+2. **Phase 1 archive must be readable at the captured baseline** — it is the evidence base every
+   `Evidence-backed` verdict must cite (`docs/superpowers/research/foundation-audit-p1/`, 59 files).
+3. **Baseline SHA captured dynamically at run start.** Task 0 records `BASE=$(git rev-parse HEAD)`
+   into the run manifest; every "modified since baseline" and "readable at baseline" check reads that
+   recorded `$BASE`, never a hardcoded commit. A pinned SHA rots the moment the branch advances.
 
-### Ambiguities requiring a user ruling before dispatch
+### Resolved rulings (Q1–Q5) — decided by the user 2026-07-21
 
-These are **not** resolved by this plan. Each changes the work materially.
+These were open ambiguities in the prior draft; the user has now ruled. Each is binding on dispatch.
 
-| # | Ambiguity | Options | Plan's recommendation |
-|---|---|---|---|
-| **Q1** | **U6 (code) is not obviously in charter scope.** The charter's Workflow B says "existing foundation — especially older uncited pedagogy documents." Code is arguably a *document* of pedagogy, arguably out. | (a) audit U6 as planned; (b) drop U6 to Phase 3; (c) audit U6 read-only with verdicts restricted to `Relabel` | **(a).** The strongest finding available is in code: the entire shipped mastery model is one line (`controller.ts:361`), while `progress/types.ts` (178 L, in U6 scope) declares a durable-evidence vocabulary that no app code consumes — the module implementing it is imported only by `web/qa/progress/harness.ts`. A schema this deliberate with no reducer behind it is a pedagogical claim the docs do not make anywhere. Auditing docs while ignoring that is auditing the map, not the territory. |
-| **Q2** | **The `Replace` verdict has no defined actor.** `Preserve/Relabel/Revise/Remove` are all recordable as candidates; `Replace` implies substitute content, which is authoring — arguably Phase 3. | (a) `Replace` = "recommend replacement, name the successor claim, do not write it"; (b) drop `Replace`; (c) allow drafting | **(a).** Keeps Phase 2 non-authoring while preserving the charter's five-verdict taxonomy verbatim. |
-| **Q3** | **Borderline U5 rows** (R9, R15, R18, R24, R30, R31) touch learner-evidence semantics through the persistence seam but are engineering decisions. | (a) audit all six; (b) audit none; (c) audit only R18 + R30 | **(c).** R18 governs how learning evidence is admitted and R30 prevents phantom zero-evidence sessions; the other four are storage mechanics. Cheap to widen later; expensive to unwind scope creep. |
-| **Q4** | **Does Phase 2 re-verify the 24 baseline sources, or only audit how they are *used*?** Full re-verification is ~24 × 3-point contract — a Phase-1-sized effort on already-approved-by-another-process material. | (a) audit usage only; (b) full re-verification; (c) re-verify only sources whose claims changed downstream | **(c).** Bounded, and targets the actual failure mode (drift), not the source register. Expect ~6–9 sources. |
-| **Q5** | **Stale memory file.** `journal/memory/v2-learning-foundations-roadmap.md` (updated 2026-07-15) says the active task is Strategy Table Fundamentals; `ROADMAP.md:92-95` and `PROGRESS.md:34-37` record it as intentionally paused. | (a) fix now as prep; (b) audit-unit finding under U8; (c) leave | **(b).** It is a live instance of the drift class Phase 2 exists to find; fixing it silently would destroy the specimen. |
+| # | Question | **Ruling** |
+|---|---|---|
+| **Q1** | Is implemented learning code (U6) an audit unit? | **Audit U6 as a read-only, claim-bearing artifact.** Code is read and audited *as claims* — nothing in `web/src/**` is modified. The full verdict vocabulary applies. The strongest single finding available lives here: the entire shipped mastery model is one line (`controller.ts:361`), while `progress/types.ts` declares a durable-evidence vocabulary no app code consumes (imported only by `web/qa/progress/harness.ts`). Auditing docs while ignoring that audits the map, not the territory. |
+| **Q2** | What does the `Replace` verdict authorise? | **`Replace` names the required successor claim but does not author replacement content.** Naming the successor is Phase 2; drafting it is Phase 4. Keeps Phase 2 non-authoring while preserving the charter's five-verdict taxonomy verbatim. |
+| **Q3** | Which borderline U5 rows are in scope? | **Only R18 and R30.** R18 governs how learning evidence is admitted; R30 prevents phantom zero-evidence sessions — both bear on family 1 (mastery/progression). R9, R15, R24, R31 are storage mechanics and stay out. Cheap to widen later; expensive to unwind scope creep. |
+| **Q4** | Re-verify the 24 baseline sources, or only audit their use? | **Re-verify only sources whose downstream use materially changed** (drift), **applying the corrected citation gate** (criterion 5 below: neither `UNVERIFIED` nor `UNVERIFIABLE` may support a `Preserve` or `Revise`). Bounded to the actual failure mode; expect ~6–9 sources. |
+| **Q5** | Handle the stale memory file (`journal/memory/v2-learning-foundations-roadmap.md`, updated 2026-07-15, says Strategy Table Fundamentals is active while `ROADMAP.md` / `PROGRESS.md` record it paused). | **Preserve the drift as evidence, then correct the operational memory *before* audit dispatches.** The stale text is captured verbatim into the run as a U8 drift specimen (so the finding is not destroyed), and only then is the live memory file corrected — so agents reading memory during the run are not misled by a known-false pointer. Both acts happen in Task 0, before any audit dispatch. *(Memory lives under the gitignored `journal/memory/` private surface; correcting it is not a product-doc edit.)* |
 
-### Approval decisions required from the user
+### Approval decisions still required from the user
 
 1. **Approve Phase 2 beginning at all** — the charter gates it and `phase.md` records "Phase 2 must not
-   begin without explicit user approval."
-2. **Rule on Q1–Q5.**
-3. **Approve creating `audit-auditor`** and editing the three existing agent definitions (Task 0) —
-   these are the only file writes before the gate, and they are tooling, not product.
-4. **Approve the wave structure and the ~45-dispatch budget** (see Economics).
+   begin without explicit user approval." This plan remains a **DRAFT** until then.
+2. **Approve the Task 0 prep writes** — verifying the roles, capturing the baseline SHA, seeding
+   templates/registers, and the Q5 memory correction. These are the only writes before the gate, and
+   none touches a product document. *(Q1–Q5 are now resolved above; no separate ruling is pending.)*
+3. **Approve the wave structure and the reduced ~24–31-dispatch budget** (see Economics).
 
 ---
 
@@ -186,7 +299,7 @@ provenance basis. Verdict and bucket are different axes and never substitute for
 | **Preserve** | The claim stands as written. | `Evidence-backed`, or a correctly-labelled `Product judgement` | Must cite the Phase 1 dossier or baseline source that supports it, with an exact location. |
 | **Relabel** | The claim is fine; its *epistemic label* is wrong. | usually `Evidence-backed` → `Product judgement` / `Assumption` | **This is the default remedy for an uncited-but-reasonable claim.** Never escalate to Remove for want of a citation. |
 | **Revise** | The claim overstates what its basis supports; weaken it. | `Evidence-backed` at reduced strength | Must name the *specific* overstatement and the honest wording. |
-| **Replace** | The claim is wrong but the topic still needs a claim. | `Unsupported` → successor named | Per **Q2(a)**: name the successor claim; **do not author it**. |
+| **Replace** | The claim is wrong but the topic still needs a claim. | `Unsupported` → successor named | Per the **Q2 ruling**: name the successor claim; **do not author it** (drafting is P4). |
 | **Remove** | The claim is contradicted or baseless and nothing should stand in its place. | `Unsupported` | Reserved for contradicted/baseless only. A `Remove` on a merely-uncited claim is a **defect** and the verifier must reject it. |
 
 **Anti-pessimism rule (G5).** `Remove` and `Replace` are the manufactured-defect-prone verdicts —
@@ -238,24 +351,33 @@ Binding on every audit record.
 recorded corrections, returned them as text, and no pass was ever chartered to write them in — so
 gate verdicts were reached against dossiers that did not carry their own corrections.
 
+**Corrections are material defects only.** The verifier raises a *numbered correction* (`C-U<n>-NNN`)
+**only** for a material defect — one that changes a quotation, figure, attribution, tier,
+independence judgement, or the basis of a verdict. Mechanical and cosmetic observations (formatting,
+anchors, ID hygiene) go in a **Non-material notes** list, un-numbered, and are **not landed, not
+confirmed, not gated**. This is the proportional-rigor rule in mechanism: every correction that
+exists is worth landing and confirming, because only material defects ever become corrections.
+
 ```
-A*  audit          → audit-auditor writes  audit/U<n>-audit.md
-V*  verify         → audit-verifier writes verification/V-U<n>.md   (raises corrections; repairs nothing)
+A*  audit          → audit-verifier (instance A) writes audit/U<n>-audit.md (per-claim verdicts)
+V*  verify         → audit-verifier (instance B ≠ A) writes verification/V-U<n>.md
+      │                (raises MATERIAL corrections only; logs mechanical nits as notes; repairs nothing)
       │
-      ├─ no corrections ─────────────────────────────► unit CLEARED
+      ├─ no material corrections ───────────────────► unit CLEARED at verify
+      │                (no land, no confirm, no re-verify — this is the common case)
       │
-L*  land           → audit-editor applies each correction INTO audit/U<n>-audit.md,
+L*  land           → audit-editor applies each material correction INTO audit/U<n>-audit.md,
       │              marking each in place; writes landing/L-U<n>.md listing every
       │              correction + the anchor where it landed.
-      │              For MATERIAL corrections it MUST reopen the primary source (G9)
-      │              and record the retrieval; zero-retrieval material landings are rejected.
+      │              It MUST reopen the primary source (G9) and record the retrieval;
+      │              zero-retrieval material landings are rejected.
       │
-LV* confirm landing → a SECOND, different audit-verifier opens audit/U<n>-audit.md and
-                     confirms each correction is actually present. Writes landing/LV-U<n>.md
-                     with a per-correction LANDED / NOT-LANDED / ALTERED verdict.
-                     NOT-LANDED or ALTERED → back to L*, once (bounded); the first
-                     confirmation is archived as LV-U<n>-r1.md and the retry writes
-                     the current LV-U<n>.md (LV* step 4).
+LV* confirm landing → a THIRD instance (audit-verifier, instance C ≠ B, ≠ editor) opens
+                     audit/U<n>-audit.md and confirms each correction is actually present.
+                     Writes landing/LV-U<n>.md with a per-correction LANDED / NOT-LANDED / ALTERED
+                     verdict. NOT-LANDED or ALTERED → back to L*, once (bounded); the first
+                     confirmation is archived as LV-U<n>-r1.md and the retry writes the
+                     current LV-U<n>.md (LV* step 4).
 ```
 
 **Landing target — the boundary that differs from Phase 1.** Corrections land into the **audit
@@ -301,31 +423,38 @@ human read rather than a command, that is stated plainly rather than dressed as 
 
 | # | Criterion | How it is established |
 |---|---|---|
-| 1 | Every unit U1–U8 has an audit record, a verification record, and — where corrections were raised — a landing record **and** an independent landing confirmation. | **Mechanical**, in two halves. Presence: Task G step **1-pre** asserts `audit/U<n>-audit.md` and `verification/V-U<n>.md` exist and are non-empty for all of U1–U8, and it runs **first** — without it every later enumeration is vacuous on a unit whose records were never written. Accounting: Task G step **1a** — every correction ID in `verification/` has a `LANDED` row in the current landing confirmation. |
+| 1 | Every unit U1–U8 has an audit record, a verification record, and — where a **material** correction was raised — a landing record **and** an independent landing confirmation. (A unit cleared at verify has neither, correctly.) | **Mechanical**, in two halves. Presence: Task G step **1-pre** asserts `audit/U<n>-audit.md` and `verification/V-U<n>.md` exist and are non-empty for all of U1–U8, and it runs **first** — without it every later enumeration is vacuous on a unit whose records were never written. Accounting: Task G step **1a** — every correction ID in `verification/` has a `LANDED` row in the current landing confirmation. |
 | 2 | **Zero corrections in NOT-LANDED or ALTERED state.** | **Mechanical**, Task G step 1b (row-scoped, so the verdict legend cannot self-match). |
 | 3 | No agent both audits and verifies a unit; no agent both raises and lands a correction. | **Mechanical read of recorded fact**, Task G step 1c: distinct agent handles per role in the dispatch ledger. Unlogged dispatch ⇒ unproven ⇒ fail. |
 | 4 | Every `Remove` and `Replace` carries an independent verifier's written "is this defect real?" answer. | **Agent-established, mechanically accounted**: the answer is written by the V* verifier (V* step 2); Task G step **1d** enumerates the `Remove`/`Replace` claim IDs out of the audit records and requires a matching answered ID in `verification/`. The *substance* of the answer is the verifier's; only its existence is mechanical. |
-| 5 | No citation used to support a `Preserve` or `Revise` is in `UNVERIFIED` state. | **Mechanical against `registers/citation-state-register.md`**, Task G step **1e** — see below. Uncheckable without that register, which is why it exists. |
+| 5 | No citation used to support a `Preserve` or `Revise` is in `UNVERIFIED` **or `UNVERIFIABLE`** state. | **Mechanical against `registers/citation-state-register.md`**, Task G step **1e** — see below. Uncheckable without that register, which is why it exists. |
 | 6 | Both survivors and failures are reported per unit; no unit reports only failures without stating what it examined and left alone. | **Agent-established** at audit time (A* brief) and confirmed by the V* verifier for its unit. Not orchestrator self-attestation. |
-| 7 | **No product document has been modified.** | **Mechanical**, Task G step 2 — working-tree diff **and** `git status --porcelain`, both against `6def4b6`. A commit-range diff cannot establish this. |
+| 7 | **No product document has been modified.** | **Mechanical**, Task G step 2 — working-tree diff **and** `git status --porcelain`, both against the dynamically-captured baseline `$BASE` (Task 0 step 2). A commit-range diff cannot establish this. |
 | 8 | Conflict, source-lead, and citation-state registers are complete and orchestrator-owned. | **Orchestrator self-attestation.** The orchestrator owns these registers, so no independent check exists; recorded as attested, not proven. |
 | 9 | `INTEGRITY-MANIFEST-post.md` reconciles against `-scaffold.md` and `-pre.md`. | **Mechanical**, Task G step 3: hash comparison; every moved audit-record hash explained by a landed correction. |
-| 10 | A `P2-gate-summary.md` states, per unit, what survived and what did not, discloses orchestrator errors, and breaches none of the five Phase 3 **must not** bullets. | **Independently reviewed**, Task G step 4a — an `audit-verifier` checks the boundary; the per-unit content and error disclosure remain orchestrator-attested. |
+| 10 | A `P2-gate-summary.md` states, per unit, what survived and what did not, discloses orchestrator errors, and breaches none of the six Phase 3 **must not** bullets. | **Independently reviewed**, Task G step 4a — an `audit-verifier` checks the boundary; the per-unit content and error disclosure remain orchestrator-attested. |
+| 11 | A **program-integrity** pass confirms material corrections landed, roles stayed separated in the dispatch ledger, and every gate check enumerates positively (not absence-of-a-token). | **Agent-established**, Task G step **4b** — one `audit-auditor` (no web, no Edit) audits the *process*, not the evidence, and returns a sound/unsound finding per area. It is the role built for exactly the defect class this program fears; its record is promoted with the run. |
 
-**Criterion 5 needs a register to be checkable at all.** Q4(c) bounds re-verification to sources whose
-claims changed downstream (~6–9 expected). Each such citation gets a row in
+**Criterion 5 needs a register to be checkable at all.** The Q4 ruling bounds re-verification to
+sources whose downstream use materially changed (~6–9 expected). Each such citation gets a row in
 `registers/citation-state-register.md` — citation ID, the verdict it supports, the unit, and its state
 (`VERIFIED` / `UNVERIFIED` / `UNVERIFIABLE`) — assigned by the verifier that judged it, per the
-charter's rule that UNVERIFIED is owned by the verifier that assigned it. The gate check is then a
-read of that register against the `Preserve`/`Revise` verdicts, run as Task G step 1e. Without it,
-criterion 5 names a state no Phase 2 artifact records.
+charter's rule that a non-terminal state is owned by the verifier that assigned it. The gate check is
+then a read of that register against the `Preserve`/`Revise` verdicts, run as Task G step 1e. Per the
+Q4 ruling it forbids a `Preserve` or `Revise` resting on **either** an `UNVERIFIED` **or an
+`UNVERIFIABLE`** citation: a surviving claim may lean only on a citation a verifier actually
+confirmed. `VERIFIED` is the only permissible support; `UNVERIFIABLE` is an honest recorded outcome
+but not a foundation a survivor may stand on. Without this register, criterion 5 names a state no
+Phase 2 artifact records.
 
-**Three of ten rest wholly or partly on orchestrator attestation** (6, 8, 10). Criterion 4 no longer
-does: step 1d accounts mechanically for the *existence* of every answer, leaving only the answer's
-quality to the verifier who wrote it — which is agent-established, not self-attested. That is a known,
-accepted weakness of a design whose orchestrator is also its assembler — it is written down here so a
-reader knows which parts of the gate are proven and which are asserted, rather than discovering the
-difference later.
+**Two of eleven rest wholly or partly on orchestrator attestation** (8, 10). Criteria 4 and 6 do
+**not**: step 1d accounts mechanically for the *existence* of every `Remove`/`Replace` answer, and
+criterion 6 is agent-established (survivors-and-failures reported at audit time, confirmed by the V*
+verifier for the unit). What remains asserted is the *quality* of those agent judgements and the
+per-unit content of the gate summary — agent-established, not orchestrator self-attestation. That is a
+known, accepted weakness of a design whose orchestrator is also its assembler — it is written down
+here so a reader knows which parts of the gate are proven and which are asserted, rather than
+discovering the difference later.
 
 ---
 
@@ -334,25 +463,32 @@ difference later.
 Working copies live in the **gitignored** inbox during the run; a curated archive is promoted at the
 gate (the Phase 1 pattern).
 
+Landing artifacts (`landing/`) exist only for units with a material correction; a unit cleared at
+verify has an audit record and a verification record and nothing more.
+
 ```
 journal/raw/_inbox/foundation-audit-p2/          # gitignored working area
+  RUN-MANIFEST.md                                # Task 0 step 2 — captured baseline SHA + run-dir
+  evidence/U8-memory-drift-specimen.md           # Task 0 step 5 — Q5 drift preserved before correction
   audit/U1-audit.md … U8-audit.md
   verification/V-U1.md … V-U8.md
-  landing/L-U1.md … L-U8.md
-  landing/LV-U1.md … LV-U8.md                    # current landing confirmation per unit
+  landing/L-U<n>.md                              # only for units with a material correction
+  landing/LV-U<n>.md                             # current landing confirmation, material corrections only
   landing/LV-U<n>-r1.md                          # only where a bounded retry occurred: the
                                                  #   superseded first confirmation, kept as evidence
+  integrity/…                                    # Task G step 4b — audit-auditor program-integrity record
   registers/conflict-register.md
   registers/source-lead-register.md
   registers/citation-state-register.md
-  INTEGRITY-MANIFEST-scaffold.md                 # Task 0 step 6 — templates + registers
+  INTEGRITY-MANIFEST-scaffold.md                 # Task 0 step 6 — templates + registers + manifest
   INTEGRITY-MANIFEST-pre.md                      # Task L step 0 — audit records, pre-landing
 
 docs/superpowers/research/foundation-audit-p2/   # TRACKED, promoted at the gate
   README.md
   P2-gate-summary.md
   PROCESS-AUDIT.md
-  audit/  verification/  landing/  registers/
+  RUN-MANIFEST.md
+  audit/  verification/  landing/  registers/  evidence/  integrity/
   INTEGRITY-MANIFEST-scaffold.md  INTEGRITY-MANIFEST-pre.md  INTEGRITY-MANIFEST-post.md
   _templates/
 ```
@@ -361,8 +497,10 @@ docs/superpowers/research/foundation-audit-p2/   # TRACKED, promoted at the gate
 
 ## Branch and commit strategy
 
-- **Branch:** `audit/p2-adversarial-foundation` (exists, at `6def4b6`, tracking origin).
-- **Task 0 commit** — agent definitions only (`.claude/agents/`), before the session restart.
+- **Branch:** `audit/p2-adversarial-foundation` (exists, tracking origin). The baseline SHA is
+  whatever `git rev-parse HEAD` returns at run start (Task 0 step 2), not a pinned commit.
+- **No Task 0 commit.** Task 0 creates or edits no agent definition and writes only to gitignored
+  surfaces, so nothing tracked changes and there is nothing to commit (and no session restart).
 - **No commits during the audit run.** Working artifacts are gitignored; committing mid-run would
   publish unverified verdicts.
 - **Gate commit** — promote the curated archive in one commit after the gate criteria pass.
@@ -378,20 +516,33 @@ docs/superpowers/research/foundation-audit-p2/   # TRACKED, promoted at the gate
 
 ## Phase 3 boundary — explicit
 
-**Phase 2 produces verdicts. Phase 3 produces meaning.** The following are **Phase 3 deliverables and
-are forbidden in Phase 2 output**, per the charter's "Deliverables (6)":
+**Phase 2 produces verdicts. Phase 3 produces meaning; Phase 4 designs the product.** The following are
+**Phase 3 deliverables and are forbidden in Phase 2 output**, per the charter's six deliverables plus
+the **Product Design Inputs** bridge the charter now adds:
 
 1. Evidence Summary · 2. Research Synthesis · 3. Project Implications · 4. Gap Map ·
-5. Assumption Register · 6. Decision Candidates
+5. Assumption Register · 6. Decision Candidates · **7. Product Design Inputs** (the P3→P4 bridge:
+   confirmed learning principles, unresolved product assumptions, mastery/progression constraints,
+   session/adaptation constraints, activity-evidence requirements, AI-authority boundaries,
+   accessibility constraints, and the decisions that need playtesting rather than more research).
 
 Concretely, a Phase 2 artifact **must not**:
 
 - integrate findings **across** units into a combined conclusion (that is deliverable 2);
 - state what the project **should now do** (deliverable 3);
+- translate conclusions into design inputs for the product (that is deliverable 7, Product Design
+  Inputs — and even that bridge stops short of designing the curriculum or activity catalog);
 - classify a decision `Confirm / Revise / Reconsider / Remove` — that is deliverable 6's vocabulary
   and is **deliberately different** from Phase 2's `Preserve / Relabel / Revise / Replace / Remove`;
-- author replacement content for anything it marks `Replace` (Q2);
+- author replacement content for anything it marks `Replace` (Q2) — **naming a successor claim is
+  Phase 2; drafting it is Phase 4**, which owns curriculum and game/activity design;
 - edit any audited document.
+
+**Where the arc goes next (so no one mistakes a verdict for a design).** P3 turns these verdicts into
+the seven deliverables above — the Product Design Inputs bridge being the artifact that makes P4
+possible *without reopening P1–P3*. **P4 owns the curriculum, the activity taxonomy, the skill graph,
+and every concrete game/activity design.** A Phase 2 record that starts designing an activity, naming
+a curriculum sequence, or specifying replacement content has jumped two phases.
 
 **The one-sentence test:** if a sentence would still make sense with every other unit's findings
 deleted, it belongs in Phase 2; if it needs them, it is Phase 3.
@@ -404,18 +555,21 @@ never resolved.
 is the artifact most likely to breach the boundary — it is the only Phase 2 output that ranges over
 all eight units, and its sole author is the orchestrator, i.e. the same party being asked to
 restrain itself. Self-restraint by the author of the highest-risk artifact is not enforcement. So the
-gate summary is reviewed against the five **must not** bullets by an independent `audit-verifier`
+gate summary is reviewed against the six **must not** bullets by an independent `audit-verifier`
 before promotion (Task G step 4a). The verifier does not rewrite it — "it judges, it never repairs";
 it returns per-breach line references and the orchestrator revises.
 
 **Where that review does not reach.** Task G step 4a covers one artifact, and the argument for
 concentrating on it — that the gate summary is the only Phase 2 output ranging over all eight units —
-holds for the cross-unit synthesis bullet and only for it. Two bullets are breachable inside a single
-audit record with no cross-unit reach: stating what the project should now do, and authoring
-replacement content for a `Replace`. Those are checked per record by each unit's own verifier
-(V* step 5), which is reading the record anyway. The remaining two need no separate actor: the
-Phase 3 decision vocabulary is a whole-program classification, and "edit any audited document" is
-caught mechanically by Task G step 2 against the working tree.
+holds for the two **cross-unit** bullets and only for them: cross-unit synthesis, and translating
+conclusions into Product Design Inputs (deliverable 7), both of which need the whole picture the gate
+summary alone ranges over. **Three** more bullets are breachable inside a single audit record with no
+cross-unit reach: stating what the project should now do; authoring replacement content for a
+`Replace`; and stamping a decision row with the Phase 3 `Confirm/Revise/Reconsider/Remove` vocabulary
+— a single U5 record can do that locally, so it is not, as an earlier draft claimed, a whole-program
+classification beyond a single record's reach. All three are checked per record by each unit's own
+verifier (V* step 5), which is reading the record anyway. The remaining bullet needs no separate
+actor: "edit any audited document" is caught mechanically by Task G step 2 against the working tree.
 
 ---
 
@@ -423,90 +577,75 @@ caught mechanically by Task G step 2 against the working tree.
 
 | File | Responsibility |
 |---|---|
-| `.claude/agents/audit-auditor.md` | **New.** Adversarial auditor role; read + write-audit-record only. |
-| `.claude/agents/audit-{verifier,editor,collector}.md` | **Modify.** Repoint hardcoded `foundation-audit-p1` paths to a phase-neutral path. |
-| `journal/raw/_inbox/foundation-audit-p2/_templates/audit-record-template.md` | Audit record shape. |
-| `journal/raw/_inbox/foundation-audit-p2/_templates/verification-record-template.md` | Verification record shape. |
-| `journal/raw/_inbox/foundation-audit-p2/_templates/landing-record-template.md` | **New in Phase 2.** Landing + landing-confirmation shape. |
+| `.claude/agents/audit-{verifier,editor,collector,auditor}.md` | **Already shipped — verify only.** The four phase-neutral, fail-closed roles. Task 0 runs the lint; it edits none of them. |
+| `journal/raw/_inbox/foundation-audit-p2/RUN-MANIFEST.md` | **New.** Records the baseline SHA (`$BASE`) captured at run start plus the run-dir name. |
+| `journal/raw/_inbox/foundation-audit-p2/_templates/audit-record-template.md` | Audit record shape, incl. a **Non-material notes** section (materiality-gate sink). |
+| `journal/raw/_inbox/foundation-audit-p2/_templates/verification-record-template.md` | Verification record shape (marks each correction MATERIAL; mechanical items go to notes). |
+| `journal/raw/_inbox/foundation-audit-p2/_templates/landing-record-template.md` | Landing + landing-confirmation shape. |
 | `journal/raw/_inbox/foundation-audit-p2/registers/*.md` | Orchestrator-owned shared state (G6). |
+| `journal/raw/_inbox/foundation-audit-p2/evidence/U8-memory-drift-specimen.md` | **New (Q5).** Verbatim capture of the stale memory before it is corrected. |
 
 ---
 
 ## Tasks
 
-### Task 0: Prepare roles, templates, registers, and the integrity snapshot
+### Task 0: Verify roles, capture the baseline, seed scaffolding, preserve-and-correct the memory drift
+
+No role definition is created or edited here — the four roles already ship phase-neutral and
+fail-closed. Task 0 is prep only: it proves the roles, pins the baseline, builds the templates and
+registers, and discharges the Q5 memory ruling. **Because it edits no agent definition, no session
+restart is required** (Dependencies §1).
 
 **Files:**
-- Create: `.claude/agents/audit-auditor.md`
-- Modify: `.claude/agents/audit-verifier.md:18`, `audit-editor.md:27`, `audit-collector.md:17`
+- Verify (no edit): the four `.claude/agents/audit-*.md` roles
+- Create: `journal/raw/_inbox/foundation-audit-p2/RUN-MANIFEST.md`
 - Create: `journal/raw/_inbox/foundation-audit-p2/_templates/{audit-record,verification-record,landing-record}-template.md`
 - Create: `journal/raw/_inbox/foundation-audit-p2/registers/{conflict-register,source-lead-register,citation-state-register}.md`
+- Create: `journal/raw/_inbox/foundation-audit-p2/evidence/U8-memory-drift-specimen.md`
 - Create: `journal/raw/_inbox/foundation-audit-p2/INTEGRITY-MANIFEST-scaffold.md`
+- Correct (gitignored, non-product): `journal/memory/v2-learning-foundations-roadmap.md`
 
 **Interfaces:**
-- Produces: the four agent types, loaded at session start; the record templates every later task fills.
+- Produces: a proven role set, a pinned baseline, the record templates every later task fills, and a
+  memory file that no longer misleads a dispatched agent.
 
-- [ ] **Step 1: Write `audit-auditor.md`**
+- [ ] **Step 1: Prove the four roles are present and conformant (no edit)**
 
-Frontmatter follows the existing three verbatim in shape:
+Run: `node scripts/research-roles-lint.ts`
+Expected: green — all four defs present and conformant. Confirm the four types (`audit-verifier`,
+`audit-editor`, `audit-collector`, `audit-auditor`) appear in the session's available agent types. If
+the lint fails or a type is missing, **STOP**: a role def would need changing, which re-triggers the
+create→lint→**restart** ordering constraint (Dependencies §1) before any dispatch.
 
-```markdown
----
-name: audit-auditor
-description: Foundation-audit ADVERSARIAL AUDITOR role. Audits an existing project document or
-  implemented behavior for uncited, overstated, outdated, or contradicted learning claims, and
-  returns a per-claim verdict. Has no shell and cannot edit a file in place.
-tools: WebFetch, Read, Write, Glob, Grep
----
-```
+**Do not create an `audit-auditor` adversarial-auditor role.** That name is the shipped
+program-integrity role. Phase 2's claim-audit is performed by `audit-verifier` instances (see
+*Architecture* and *Role boundaries*). No `sed`, no repoint, no new role — the defs already carry a
+static `journal/raw/_inbox/` allowlist root and fail closed on a missing run directory, so the
+`<phase>`-placeholder hazard the prior draft introduced does not arise.
 
-**What the tool grant actually enforces.** No `Bash` — no shell, no git, no product code execution.
-No `WebSearch` — an auditor judges existing claims against evidence already held; searching is the
-collector's role. No `Edit` — it cannot revise an audited document in place. These are capability
-boundaries, not requests (G4).
-
-**What the tool grant does not enforce, stated plainly.** `Write` is not path-scoped by any tool
-grant, and withholding `Edit` while granting `Write` does not prevent an agent clobbering an audited
-document by writing over its path. The description above says "cannot edit in place" rather than
-"cannot edit the audited artifact" because only the former is true of the grant.
-
-Body must therefore state, as **instructions** the gate checks rather than boundaries the platform
-holds: writes only under the `audit/` subdirectory of the run directory named in its brief; must
-consult the Phase 1 dossier before any web retrieval (G7); must quote verbatim with `file:line`; must
-report what it examined and left alone; `Remove` requires a contradiction, not an absence. The
-backstop is Task G step 2, which reads the working tree and fails the gate on any write outside the
-audit output paths.
-
-- [ ] **Step 2: Repoint the three hardcoded Phase 1 paths to a phase-neutral placeholder**
+- [ ] **Step 2: Capture the baseline SHA dynamically and record it (finding 3)**
 
 ```bash
-sed -i 's#foundation-audit-p1#foundation-audit-<phase>#g' \
-  .claude/agents/audit-verifier.md .claude/agents/audit-editor.md .claude/agents/audit-collector.md
+BASE=$(git rev-parse HEAD)
+mkdir -p journal/raw/_inbox/foundation-audit-p2
+printf '# Run manifest\n\nbaseline_sha: %s\nrun_dir: foundation-audit-p2\ncaptured: run start\n' \
+  "$BASE" > journal/raw/_inbox/foundation-audit-p2/RUN-MANIFEST.md
 ```
 
-**Neutral, not re-pinned.** Substituting `p2` for `p1` would leave Phase 3 with the identical defect
-dependency 3 flags as blocking here — the same one-line-per-agent fix, rediscovered at the next phase
-boundary. The agent definitions instead carry `foundation-audit-<phase>` and each dispatch brief
-supplies the concrete run directory (`foundation-audit-p2` for this phase). The definitions state
-that an agent writes only under the run directory named in its brief and nowhere else.
+Every later "modified since baseline" / "readable at baseline" check reads `baseline_sha` from this
+file — never a literal commit. Capturing at run start is the whole point: the branch advances, and a
+pinned SHA (the prior draft's `6def4b6`) would silently compare against the wrong tree.
 
-- [ ] **Step 3: Verify the edit landed and nothing else changed**
-
-Run: `grep -rn 'foundation-audit-' .claude/agents/`
-Expected: three hits, all `foundation-audit-<phase>`, at `audit-verifier.md:18`, `audit-editor.md:27`,
-`audit-collector.md:17`.
-
-Then run: `grep -rn 'foundation-audit-p[0-9]' .claude/agents/`
-Expected: **no matches, exit 1** — no phase number survives anywhere in the agent definitions.
-
-- [ ] **Step 4: Seed the positive-control list into the audit template**
+- [ ] **Step 3: Seed the positive-control list and the Non-material notes sink into the audit template**
 
 `journal/decisions.md` rows **R20, R24, R25, R26, R27** cite doc paths, section numbers, line
 numbers, or measured figures, and two self-correct prior errors in-record. They are the standard the
 audit holds others to. The template's calibration field names them so an auditor can anchor
-"good looks like this" without the orchestrator seasoning the finding.
+"good looks like this" without the orchestrator seasoning the finding. The template also carries the
+**Non-material notes** section — the sink for demoted cosmetic observations (materiality gate); items
+there get no verdict and no landing loop.
 
-- [ ] **Step 5: Create the three registers, orchestrator-owned (G6)**
+- [ ] **Step 4: Create the three registers, orchestrator-owned (G6)**
 
 `conflict-register.md`, `source-lead-register.md`, and `citation-state-register.md`.
 
@@ -514,49 +653,72 @@ Header must state verbatim: `Agents return rows. IDs are assigned by the orchest
 predicts an ID has made an error.` Seed the conflict register with the known `SCI-005` vs
 `how-to-teach.md` feedback-timing conflict.
 
-The **citation-state register** carries one row per citation Phase 2 re-checks under Q4(c), in this
-column order, which Task G step 1e reads positionally:
+The **citation-state register** carries one row per citation Phase 2 re-checks under the Q4 ruling, in
+this column order, which Task G step 1e reads positionally:
 
 `| <citation ID> | <verdict it supports> | <unit> | <state> |`
 
-— four cells, `<state>` being exactly one of `VERIFIED` / `UNVERIFIED` / `UNVERIFIABLE`, recorded by
-the verifier that judged it. Gate criterion 5 forbids an
-`UNVERIFIED` citation beneath a `Preserve` or `Revise`; without this register that criterion names a
-state no artifact records and cannot be checked. The column order is fixed because the check is
+— four cells, `<state>` being exactly one of `VERIFIED` / `UNVERIFIED` / `UNVERIFIABLE`. The state is
+**judged by the verifier and returned as a row; the orchestrator writes it into the register** — the
+verifier never edits the shared register directly (G6, and this register is orchestrator-owned like
+the other two). Gate criterion 5 forbids **either** an `UNVERIFIED` **or an `UNVERIFIABLE`** citation
+beneath a `Preserve` or `Revise`; without this register that criterion names a state no artifact
+records and cannot be checked. The column order is fixed because the check is
 positional: a register that reorders its columns silently disarms step 1e.
 
-- [ ] **Step 6: Snapshot the scaffold before mutating it (G3) — first of two snapshots**
+- [ ] **Step 5: Preserve the memory drift as evidence, then correct the operational memory (Q5) — ordered, blocking**
+
+The order is load-bearing: **preserve first, correct second.**
+
+1. Copy the stale text **verbatim** from `journal/memory/v2-learning-foundations-roadmap.md` into
+   `.../evidence/U8-memory-drift-specimen.md`, with the file's own line anchors and the contradicting
+   `ROADMAP.md` / `PROGRESS.md` locations. This is the U8 drift specimen — the very finding Phase 2
+   exists to catch, kept intact so correcting the live file does not destroy it.
+2. **Then** correct `journal/memory/v2-learning-foundations-roadmap.md` so it no longer says Strategy
+   Table Fundamentals is the active task, bringing it into line with `ROADMAP.md` / `PROGRESS.md`.
+   Agents read memory during the run; a known-false pointer left live would mislead them.
+
+`journal/memory/` is a gitignored private surface (manifest `private:`), so this correction is **not**
+a product-doc edit and does not touch criterion 7. Record the specimen path in the source-lead register.
+
+- [ ] **Step 6: Snapshot the scaffold before mutating it (G3) — first of two snapshots (finding 2)**
 
 ```bash
-find journal/raw/_inbox/foundation-audit-p2 -type f -exec sha256sum {} \; \
+find journal/raw/_inbox/foundation-audit-p2 -type f \
+  -not -name 'INTEGRITY-MANIFEST-*.md' -exec sha256sum {} \; \
   | sort -k2 > journal/raw/_inbox/foundation-audit-p2/INTEGRITY-MANIFEST-scaffold.md
 ```
 
-**What this snapshot does and does not cover.** At this point the directory holds only templates and
-registers, so this manifest protects the *scaffold* — it proves the templates and register headers a
-later run was working from were not quietly rewritten. It is **not** a before-image of any audit
-record: every audit record is created later in A1–A8 and then deliberately mutated in place by L1–L8.
-The snapshot that makes the `ALTERED` verdict falsifiable is the second one, taken in Task L step 0
-after the audit records exist and before any editor touches them. Taking only this one would invert
-Phase 1's ordering — there the snapshot preceded the mutation of already-existing dossiers — and
-would leave the load-bearing surface unprotected.
+**The `-not -name 'INTEGRITY-MANIFEST-*.md'` exclusion is not optional.** The `>` redirection creates
+the manifest file before `find` finishes walking, so without the exclusion `find` hashes the manifest
+*it is currently writing* — a self-reference whose recorded hash can never match the file's final
+content, breaking every later reconciliation. Every integrity-manifest command in this plan (here,
+Task L step 0, Task G step 3) carries the same exclusion for the same reason.
 
-- [ ] **Step 7: Commit the agent definitions only**
+**What this snapshot does and does not cover.** At this point the directory holds only templates,
+registers, the run manifest, and the drift specimen, so this manifest protects the *scaffold* — it
+proves the templates and register headers a later run was working from were not quietly rewritten. It
+is **not** a before-image of any audit record: every audit record is created later in A1–A8 and then
+deliberately mutated in place by any L1–L8 landing. The snapshot that makes the `ALTERED` verdict
+falsifiable is the second one, taken in Task L step 0 after the audit records exist and before any
+editor touches them. Taking only this one would invert Phase 1's ordering — there the snapshot
+preceded the mutation of already-existing dossiers — and would leave the load-bearing surface
+unprotected.
 
-```bash
-git add .claude/agents/
-git commit -m "chore(audit): add audit-auditor role and repoint agent paths to phase 2"
-```
+- [ ] **Step 7: Commit nothing yet**
 
-- [ ] **Step 8: RESTART THE SESSION (G4) — blocking**
-
-Claude Code reads its agent registry at session start. Phase 1 lost this exact bet: the restricted
-types "failed to load mid-session." **Do not dispatch Task A1 in the same session as Task 0.**
-Confirm after restart that `audit-auditor` appears in the available agent types before proceeding.
+Task 0 writes only to the gitignored inbox and the gitignored memory surface — **nothing tracked
+changes**, so there is nothing to commit before the gate. (The prior draft committed agent-def edits
+here; there are none now — the roles already shipped.) The promotion commit at Task G step 6 is the
+first and only commit of the run.
 
 ---
 
 ### Tasks A1–A8: Audit dispatches (three waves)
+
+Each audit is an `audit-verifier` instance in its **produce** role (see *Role boundaries*), briefed
+to audit one unit's load-bearing claims and assign verdicts. The independent verify pass (V1–V8) is a
+**different** `audit-verifier` instance.
 
 **Files:**
 - Create: `journal/raw/_inbox/foundation-audit-p2/audit/U<n>-audit.md`
@@ -578,10 +740,13 @@ Four concurrent dispatches is the ceiling; iroh's guidance is to re-decompose be
 
 - [ ] **Step 1: Dispatch W1 (U4) and wait**
 
-Brief must include, verbatim: the unit's path; the verdict taxonomy table; the anti-pessimism rule;
-"read what you hold first"; the requirement to quote verbatim with `file:line`; and the instruction
-to report survivors as well as failures. Per **Q4(c)**, U4's citation re-verification is bounded to
-sources whose claims changed downstream.
+Brief must include, verbatim: the unit's path; the **materiality gate** (only claims bearing on the
+eight decision families get a verdict; everything else goes to Non-material notes); the verdict
+taxonomy table; the anti-pessimism rule; "read what you hold first"; the requirement to quote verbatim
+with `file:line`; the run-dir name (`foundation-audit-p2`) so the fail-closed write scope resolves;
+and the instruction to report survivors as well as failures. Per the **Q4 ruling**, U4's citation
+re-verification is bounded to sources whose downstream use materially changed, and any citation it
+leaves `UNVERIFIED` or `UNVERIFIABLE` may not support a `Preserve` or `Revise` (criterion 5).
 
 - [ ] **Step 2: Orchestrator assigns register IDs from W1's returned rows (G6)**
 
@@ -651,27 +816,38 @@ Either **evidence missing** → collection, or **evidence present but mishandled
 correction. "Do not dispatch a collector when the needed information is already inside a cited
 source" — four of four Phase 1 sufficiency failures traced to material already in hand.
 
-- [ ] **Step 4: Each verifier marks every correction MATERIAL or MECHANICAL (G9)**
+- [ ] **Step 4: Only material defects become numbered corrections; mechanical items are notes (G9, proportional rigor)**
 
-**Material** = changes a quotation, figure, attribution, tier, or independence judgement — anything
-that is a claim about what a source says. **Mechanical** = formatting, anchors, ID hygiene. This flag
-sets the landing requirement in Task L*.
+**Material** = changes a quotation, figure, attribution, tier, independence judgement, or the basis of
+a verdict — anything that is a claim about what a source says or that a designer would build
+differently for. **A material defect gets a numbered correction (`C-U<n>-NNN`), which is landed and
+independently confirmed.** **Mechanical** items — formatting, anchors, ID hygiene — get a one-line
+entry in the verification record's non-material notes; they are **not** numbered, **not** landed, and
+**not** gated. This is the mechanism that keeps the land/confirm loop off low-impact drift: a
+correction exists only where it is worth landing. A verifier that finds only mechanical issues clears
+the unit (a clean-at-verify result is valid — anti-pessimism, G5); a verifier that demotes a genuinely
+material defect to a note has made a catchable error.
 
 - [ ] **Step 5: Each verifier checks its own unit's record against the two per-record Phase 3 bullets**
 
-Three of the five **must not** bullets cannot be breached inside a single audit record: cross-unit
-synthesis needs other units, the `Confirm/Revise/Reconsider/Remove` vocabulary is a whole-program
-classification, and editing an audited document is caught mechanically by Task G step 2. Two **can**
-be breached by one record on its own, with no cross-unit reach:
+Three of the six **must not** bullets are not V* step 5's job: cross-unit synthesis and translating
+conclusions into Product Design Inputs (deliverable 7) both need other units and are checked at the
+gate summary (Task G step 4a), and editing an audited document is caught mechanically (Task G step 2).
+The other **three** can be breached by a single record on its own, so the verifier checks all three
+per record:
 
 - **"state what the project should now do"** — a unit-local recommendation is Phase 3 deliverable 3
   arriving early;
-- **"author replacement content for anything it marks `Replace`"** — per Q2(a) a `Replace` names its
-  successor claim and stops. Drafting the successor is authoring.
+- **"author replacement content for anything it marks `Replace`"** — per the Q2 ruling a `Replace`
+  names its successor claim and stops. Drafting the successor is authoring (that is P4's job);
+- **"stamp a decision row with the Phase 3 `Confirm/Revise/Reconsider/Remove` vocabulary"** — a single
+  U5 record can classify a decision in Phase 3's decision vocabulary, which is deliberately distinct
+  from Phase 2's `Preserve/Relabel/Revise/Replace/Remove`. Gate step 1d enumerates only `Remove`/
+  `Replace`, so the Phase 3 words would otherwise pass unchecked; the verifier catches them here.
 
 The verifier returns these as line references, does not rewrite them, and the orchestrator routes them
 to L* like any other correction. This adds no dispatch and no pass: the verifier already reads the
-whole record to do its existing four duties. It exists because the alternative is what this plan
+whole record to do its existing duties. It exists because the alternative is what this plan
 refuses elsewhere — a boundary that lives only as an instruction in a brief, with nothing that checks
 it.
 
@@ -698,11 +874,15 @@ invisible to the gate and is returned to the verifier.
 Run **after** every audit record exists and **before** the first `audit-editor` is dispatched:
 
 ```bash
-find journal/raw/_inbox/foundation-audit-p2/audit -type f -exec sha256sum {} \; \
+find journal/raw/_inbox/foundation-audit-p2/audit -type f \
+  -not -name 'INTEGRITY-MANIFEST-*.md' -exec sha256sum {} \; \
   | sort -k2 > journal/raw/_inbox/foundation-audit-p2/INTEGRITY-MANIFEST-pre.md
 ```
 
-This is the before-image of the surface L1–L8 deliberately mutate. Without it the `ALTERED` verdict
+The output lands in the parent directory, not the `audit/` tree this `find` walks, so it is already
+outside its own scan; the `-not -name` guard is kept anyway so every integrity-manifest command in
+the plan reads identically and none can regress into hashing its own output. This is the before-image
+of the surface any L1–L8 landing deliberately mutates. Without it the `ALTERED` verdict
 is not falsifiable: LV* can confirm the corrections it was told about are present, but nothing shows
 whether the editor also changed something it was never asked to change. Task G step 3 reconciles the
 post-manifest against this file, and any audit-record hash that moved without a correction landing at
@@ -728,8 +908,9 @@ inherited-error class that no other check in the program can catch.
 
 - [ ] **Step 4: Write the landing record**
 
-One row per correction: correction ID, MATERIAL/MECHANICAL, the anchor where it landed, and for
-MATERIAL the retrieval performed.
+One row per correction: correction ID, the anchor where it landed, and the retrieval performed. Every
+landed correction is material by construction — mechanical items were logged as non-material notes and
+never entered this loop — so every landing row carries a retrieval.
 
 ---
 
@@ -742,9 +923,12 @@ MATERIAL the retrieval performed.
 - Consumes: `audit/U<n>-audit.md` (post-landing) and `landing/L-U<n>.md`.
 - Produces: the gate's blocking precondition.
 
-- [ ] **Step 1: Dispatch a SECOND `audit-verifier` — not the one that raised the corrections**
+- [ ] **Step 1: Dispatch a THIRD `audit-verifier` instance — not the raiser, not the editor**
 
-"Verify the correctors, not just the collectors. A repair is a claim like any other."
+The confirmer (instance C) must differ from **both** the verifier that raised the correction (instance
+B) and the `audit-editor` that landed it. "Verify the correctors, not just the collectors. A repair is
+a claim like any other." Instance separation is dispatch discipline, recorded in the ledger and checked
+at Task G step 1c.
 
 - [ ] **Step 2: Confirm each correction against the audit record itself**
 
@@ -905,47 +1089,71 @@ a claim that ended up `Preserve` is harmless, a pessimistic verdict with no answ
 establishes only that an answer **exists**; whether the answer is any good is the verifier's judgement
 and is not claimed here as proof.
 
-**1e — no `UNVERIFIED` citation under a `Preserve` or `Revise` (criterion 5).** A positional read of
-the register Task 0 step 5 builds for exactly this purpose:
+**1e — no `UNVERIFIED` *or* `UNVERIFIABLE` citation under a `Preserve` or `Revise` (criterion 5,
+Q4 ruling; finding 1).** A positional read of the register Task 0 step 4 builds for exactly this purpose:
 
 ```bash
-grep -nE '^\|[^|]*\| *(Preserve|Revise) *\|[^|]*\| *UNVERIFIED *\|' \
+grep -nE '^\|[^|]*\| *(Preserve|Revise) *\|[^|]*\| *(UNVERIFIED|UNVERIFIABLE) *\|' \
   registers/citation-state-register.md
 ```
 
-Expected: **no matches, exit 1.** Each match is a citation propping up a surviving claim that no
-verifier could confirm. `UNVERIFIABLE` does not match `UNVERIFIED` and is not a failure — it is an
-honest recorded outcome, and conflating the two would punish the verifier for saying "unknown." The
-check depends on the register's fixed column order; if the register is empty because Q4(c) bounded
-re-verification to zero citations, this passes truthfully — 1-pre has already established the register
-itself exists.
+Expected: **no matches, exit 1.** Each match is a surviving claim (`Preserve`/`Revise`) resting on a
+citation a verifier did **not** confirm — `UNVERIFIED` (not yet checked) or `UNVERIFIABLE` (checked,
+could not be obtained). The Q4 ruling forbids **both**: only a `VERIFIED` citation may support a
+survivor. `UNVERIFIABLE` remains an honest recorded outcome elsewhere — a claim may still be
+`Relabel`led to Product judgement or carried as an Assumption — but it may not prop up a claim the
+audit lets stand as evidence-backed. The two states are anchored by the `( … | … )` alternation so a
+`VERIFIED` cell never matches. The check depends on the register's fixed column order; if the register
+is empty because the Q4 ruling bounded re-verification to zero citations, this passes truthfully —
+1-pre has already established the register itself exists.
 
-- [ ] **Step 2: Verify gate criterion 7 — no product document modified**
+- [ ] **Step 2: Verify gate criterion 7 — no product document modified (finding 3: dynamic baseline)**
 
-**The working tree is the thing under test, not the commit history.** The plan commits nothing during
-the audit run, so `HEAD` never moves past the Task 0 commit and a commit-range diff
-(`6def4b6..HEAD`) is structurally blind to exactly the failure this check exists to catch: an agent
-writing into a product doc in the working tree produces no entry in it at all. Diff the tree against
-the baseline commit, and list untracked files separately — `git diff` does not see a new file.
+**The working tree is the thing under test, not the commit history.** The run commits nothing until
+promotion, so `HEAD` never moves and a commit-range diff is structurally blind to exactly the failure
+this check exists to catch: an agent writing into a product doc in the working tree produces no commit
+at all. Diff the tree against the **captured baseline**, and list untracked files separately —
+`git diff` does not see a new file.
+
+**Return to the repo root first.** Step 1 ends inside `journal/raw/_inbox/foundation-audit-p2`; if
+this check ran from there, `git diff -- .` would scope to a *gitignored* directory and read clean no
+matter what a run wrote elsewhere — the exact cwd hazard the plan warns about at step 1. Re-anchor
+explicitly:
 
 ```bash
-git diff --stat 6def4b6 -- . ':(exclude).claude/agents' ':(exclude)docs/superpowers/plans'
-git status --porcelain -- . ':(exclude).claude/agents' ':(exclude)docs/superpowers/plans'
+cd "$(git rev-parse --show-toplevel)"
+BASE=$(grep -oE '^baseline_sha: .*' journal/raw/_inbox/foundation-audit-p2/RUN-MANIFEST.md \
+  | awk '{print $2}')
+git diff --stat "$BASE" -- .
+git status --porcelain
 ```
 
-Expected from both: empty, or paths confined to `docs/superpowers/research/foundation-audit-p2/`.
-`git status --porcelain` is the one that catches an untracked file; the diff is the one that catches
-an in-place edit. **Any other path is a gate failure**, not a rounding error.
+`$BASE` is read from the run manifest Task 0 pinned — **never a hardcoded commit** — so the check
+stays correct as the branch advances. Expected from both: empty, or paths confined to
+`docs/superpowers/research/foundation-audit-p2/` (the promoted archive). Everything else the run
+writes lives under the gitignored `journal/raw/` and `journal/memory/`, which `git status --porcelain`
+does not surface; `git status` is the one that catches an untracked *tracked-path* file, the diff the
+one that catches an in-place edit. **Any tracked path outside the promoted archive is a gate
+failure**, not a rounding error.
 
 Run this **before** the promotion commit in step 6, while the working tree still holds whatever the
 run actually did.
 
-- [ ] **Step 3: Write `INTEGRITY-MANIFEST-post.md` and reconcile against both earlier manifests**
+- [ ] **Step 3: Write `INTEGRITY-MANIFEST-post.md` and reconcile against both earlier manifests (finding 2)**
 
-Reconcile against `-scaffold.md` (templates and registers must be unchanged or changed only by the
-orchestrator) and against `-pre.md` (every audit-record hash that moved must be explained by a
-correction that landed at that anchor per its `L-U<n>.md`). An audit record whose hash changed with
-no corresponding landed correction is an unexplained mutation and is reported, not absorbed.
+```bash
+find journal/raw/_inbox/foundation-audit-p2 -type f \
+  -not -name 'INTEGRITY-MANIFEST-*.md' -exec sha256sum {} \; \
+  | sort -k2 > journal/raw/_inbox/foundation-audit-p2/INTEGRITY-MANIFEST-post.md
+```
+
+The `-not -name 'INTEGRITY-MANIFEST-*.md'` exclusion is the same guard as Task 0 step 6 and Task L
+step 0: the three manifests never hash one another or themselves, so the reconciliation compares only
+the artifacts they exist to protect. Reconcile the post-manifest against `-scaffold.md` (templates and
+registers must be unchanged or changed only by the orchestrator) and against `-pre.md` (every
+audit-record hash that moved must be explained by a correction that landed at that anchor per its
+`L-U<n>.md`). An audit record whose hash changed with no corresponding landed correction is an
+unexplained mutation and is reported, not absorbed.
 
 - [ ] **Step 4: Write `P2-gate-summary.md`**
 
@@ -955,13 +1163,28 @@ is why they are known.
 
 - [ ] **Step 4a: Independent Phase-3-boundary review of the gate summary — blocking**
 
-Dispatch one `audit-verifier` against the drafted `P2-gate-summary.md` with the five **must not**
+Dispatch one `audit-verifier` against the drafted `P2-gate-summary.md` with the six **must not**
 bullets from the Phase 3 boundary section as its checklist. It returns, per breach, the line and
-which bullet it violates; it edits nothing. The orchestrator revises and re-submits until clean.
+which bullet it violates; it edits nothing. The orchestrator revises and re-submits, **bounded to two
+review rounds**; a summary still breaching after the second round is escalated to the user at the gate
+rather than re-dispatched (the Economics row books the typical single pass; a second is the ceiling).
 This is the only check on the **cross-unit synthesis** bullet — it exists because the artifact's
 author is the party the boundary constrains, and the gate summary is the only output that ranges over
 all eight units. It is not the only check on the boundary as a whole: the two per-record-breachable
 bullets are checked per unit at V* step 5, and "edit any audited document" at Task G step 2.
+
+- [ ] **Step 4b: Program-integrity audit (criterion 11) — blocking**
+
+Dispatch **one** `audit-auditor` (program-integrity: no web, no Edit) against the run's process
+records, not its evidence. It audits four things and returns a sound/unsound finding per area with the
+locus it checked: (1) every material correction landed in the artifact it targets; (2) roles stayed in
+separate hands per the dispatch ledger — no instance both audited and verified a unit, none both
+raised and landed a correction, none confirmed a landing it performed; (3) every gate check above
+positively enumerates and has been shown to fail on empty (not absence-of-a-token); (4) shared state
+stayed orchestrator-owned with unique, densely-assigned IDs. It **cannot** open a source, so any
+finding that turns on what a source says it returns as `OUT-OF-ROLE — needs a verifier` rather than
+guessing. A sound process is a valid result it must state plainly (anti-pessimism). This is the role
+built for the exact defect class this program fears; its record is promoted with the run.
 
 - [ ] **Step 5: Write `PROCESS-AUDIT.md` with methodological lessons for Phase 3**
 
@@ -972,43 +1195,73 @@ before committing, reading the exit code directly.
 
 - [ ] **Step 7: STOP. Present to the user. Do not begin Phase 3.**
 
-The charter gates P3 at its own boundary: "User reviews audit verdicts before P3."
+The charter gates P3 at its own boundary: "User reviews per-decision verdicts before P3."
 
 ---
 
 ## Economics (estimate)
 
-| Stage | Dispatches |
-|---|---|
-| Audits A1–A8 | 8 |
-| Verifications V1–V8 | 8 |
-| Landings L1–L8 | ≤8 |
-| Landing confirmations LV1–LV8 | ≤8 |
-| Bounded extra passes | ≤8 |
-| Collections (verifier-called only) | ~4 |
-| Phase-3-boundary review of the gate summary (Task G step 4a) | 1 |
-| **Total** | **~45** |
+Sized by proportional rigor: only material defects trigger landing and confirmation, so the land/
+confirm rows are conditional, not per-unit.
 
-Phase 1 ran 12 remediation passes + 5 verifications + 9 final-wave records. Phase 2 is comparable,
-with more of the budget spent on landing and confirmation — the steps Phase 1 lacked.
+| Stage | Dispatches | Note |
+|---|---|---|
+| Audits A1–A8 | 8 | one `audit-verifier` (produce) per unit |
+| Verifications V1–V8 | 8 | one fresh `audit-verifier` per unit |
+| Landings L (material defects only) | ~2–4 | fires only where a verifier raises a material correction |
+| Landing confirmations LV | ~2–4 | one fresh `audit-verifier` per landed unit (all landed corrections are material) |
+| Bounded extra passes | ≤3 | mis-scope / already-identified-gap only |
+| Collections (verifier-called, named gap only) | ~2 | closes a specific evidence gap |
+| Phase-3-boundary review of the gate summary (step 4a) | 1 | `audit-verifier` |
+| Program-integrity audit (step 4b) | 1 | `audit-auditor` |
+| **Total** | **~24–31** | typically ~24; as low as ~18 if every unit clears at verify; down from ~45 |
+
+The reduction from ~45 is the whole point of proportional rigor: clean units stop at verify, and the
+land→confirm machinery runs only where a material defect earns it. Phase 1 ran 12 remediation passes +
+5 verifications + a 9-record final wave; Phase 2 spends far less because most units are expected to
+clear at verify, and the budget that remains is concentrated on the material corrections that matter.
+If W1+W2 surface more material defects than expected, re-scope W3 rather than absorbing the overrun.
 
 ---
 
 ## Self-Review
 
+Runs `writing-plans`' three checks, then the four `research-plan` additions (loop closure, role fit,
+gate falsifiability, tool-enforcement honesty).
+
 1. **Charter coverage** — Workflow B ✓ (scope + taxonomy); five-verdict taxonomy ✓ (verbatim);
    two-layer classification ✓ (Global Constraints); three-point contract ✓ (Evidence requirements);
    amendments 5–7 ✓ (Stop conditions); "does not edit the baseline" ✓ (landing-target boundary);
-   Phase 3 gate ✓ (explicit section + Task G step 7).
-2. **User's four guards** — landing ✓ (L1–L8); independently verified ✓ (LV1–LV8); primary source for
-   material corrections ✓ (L* step 3, LV* step 3); role separation — **not enforceable by tool
-   grants**, since it is an instance-level property no agent type can hold. It rests on orchestrator
-   dispatch discipline and is *checked* against the dispatch ledger at Task G step 1c. Recorded here
-   as a guard with a gate check, not as a guard the platform prevents violating.
-3. **Placeholder scan** — no TBDs. Q1–Q5 are *flagged open questions with recommendations*, not
-   placeholders; each names its options and a default.
-4. **Consistency** — verdict vocabulary (`Preserve/Relabel/Revise/Replace/Remove`) is kept
-   deliberately distinct from Phase 3's decision vocabulary (`Confirm/Revise/Reconsider/Remove`); the
-   overlap on `Revise`/`Remove` is called out in the Phase 3 boundary so the two are not conflated.
-5. **Known weakness** — the ~45-dispatch estimate is extrapolated from Phase 1's shape, not measured.
-   If W1+W2 run materially over, re-scope W3 rather than absorbing the overrun silently.
+   Phase 3 gate ✓ (explicit section + Task G step 7); the added **Product Design Inputs** bridge and
+   P4 ownership ✓ (Phase 3 boundary; charter Phase map).
+2. **User's four guards** — landing ✓ (L*, material corrections only); independently verified ✓ (LV*,
+   a third instance); primary source for material corrections ✓ (L* step 3, LV* step 3); role
+   separation — **not enforceable by tool grants**, since it is an instance-level property no agent
+   type can hold (and the auditor/verifier/confirmer share the `audit-verifier` type). It rests on
+   orchestrator dispatch discipline, is *checked* against the dispatch ledger at Task G step 1c, and
+   is independently re-audited by the program-integrity pass (step 4b).
+3. **Loop closure (research-plan I1)** — every unit has a produce (A*) and an independent verify (V*)
+   by a different instance; every **material** correction has a land (L*) and a landing confirmation
+   (LV*) by a third. A clean unit correctly has no landing artifacts — proportional rigor, not a gap.
+4. **Role fit (research-plan)** — no task asks a role past its grant. `audit-editor` (no `WebSearch`)
+   never collects; `audit-verifier` (no `Edit`) never repairs; `audit-auditor` (no web) never opens a
+   source, and its OUT-OF-ROLE escape hatch is stated (step 4b). The one reconciliation — using
+   `audit-verifier` to *produce* the audit — is within its grant and mandate and is flagged, not
+   hidden.
+5. **Gate falsifiability (research-plan I5 / P5)** — every criterion names a failing input: crit 1
+   fails on a missing record (1-pre) or an unlanded correction (1a); crit 2 on a NOT-LANDED row (1b);
+   crit 3 on a repeated handle (1c); crit 4 on an unanswered Remove/Replace (1d); crit 5 on an
+   `UNVERIFIED`/`UNVERIFIABLE` citation under a survivor (1e); crit 7 on any tracked path outside the
+   archive (step 2). No absence-of-a-token check remains; the manifests exclude themselves (finding 2).
+6. **Tool-enforcement honesty** — the plan states plainly that *path* scoping of `Write` and
+   *instance* separation are **not** tool-enforced; both are dispatch discipline checked at the gate.
+   The roles' fail-closed-on-missing-run-dir behavior is a real grant-level property and is named as
+   such (finding 4).
+7. **Resolved, not placeholder** — Q1–Q5 are **resolved rulings** (user, 2026-07-21), not open
+   questions; each is binding on dispatch. No TBDs remain.
+8. **Consistency** — verdict vocabulary (`Preserve/Relabel/Revise/Replace/Remove`) is kept distinct
+   from Phase 3's decision vocabulary (`Confirm/Revise/Reconsider/Remove`); the overlap on
+   `Revise`/`Remove` is called out in the Phase 3 boundary so the two are not conflated.
+9. **Known weakness** — the ~24–31-dispatch estimate assumes most units clear at verify; it is
+   extrapolated, not measured. If W1+W2 surface more material defects than expected, re-scope W3
+   rather than absorbing the overrun silently.

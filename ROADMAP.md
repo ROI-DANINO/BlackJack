@@ -94,6 +94,22 @@ mechanics sub-phase will prove the smallest reusable evidence, activity, session
 deterministic-fallback contracts against one or two existing Blackjack Foundations units. This is a
 bounded retrofit, not a new subject or a generic course platform.
 
+**How the adaptive-learning foundation is being built — the P1–P6 research→product program.** This
+V2 learning-architecture work runs through a six-phase arc that turns a research foundation into a
+built learning product. **P1–P3 do not build the product; they make it trustworthy and usable to
+design.** Authority for the phase map, deliverables, and gates is the charter
+(`docs/superpowers/specs/2026-07-17-adaptive-learning-foundation-audit-research.md`); ROADMAP owns
+the P4–P6 product scope.
+
+| Phase | Role | Builds product? |
+|---|---|---|
+| **P1 — Evidence foundation** ✅ | Verified evidence + transferable learning requirements. | No |
+| **P2 — Load-bearing foundation audit** | Per-decision verdicts on the decisions that materially affect the product. | No |
+| **P3 — Research foundation & product-design inputs** | The six research deliverables + a **Product Design Inputs** bridge into P4. | No |
+| **P4 — Learning product & activity blueprint** | **Owns** the skill graph, curriculum, activity taxonomy, and the first vertical slice. | Designs it |
+| **P5 — Vertical-slice implementation & learning proof** | A small representative slice proven by real-player learning-integrity playtests. | Builds a slice |
+| **P6 — Product expansion & visual experience** | Full curriculum/activity catalog and the complete visual system; aligns with the V3 UX milestone. | Builds it out |
+
 Build the learning loop in this order: verify and encode one ruleset-matched strategy source;
 ship one guided drill loop; add brief feedback and targeted repetition; add persisted progress
 and checkpoints only when that progression needs them; then expand strategy content gradually.
