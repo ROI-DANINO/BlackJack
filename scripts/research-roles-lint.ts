@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Role-contract lint for the research-plan role set.
-// Positively enumerates the four required roles: a missing definition FAILS.
+// Positively enumerates the five required roles: a missing definition FAILS.
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
@@ -12,6 +12,7 @@ const CONTRACT: Role[] = [
   { name: "audit-editor",    tools: ["WebFetch", "Read", "Write", "Edit", "Glob", "Grep"] },
   { name: "audit-verifier",  tools: ["WebSearch", "WebFetch", "Read", "Write", "Glob", "Grep"] },
   { name: "audit-auditor",   tools: ["Read", "Write", "Glob", "Grep"] },
+  { name: "audit-examiner",  tools: ["WebFetch", "Read", "Write", "Glob", "Grep"] },
 ];
 
 const ALLOWLIST_ROOT = "journal/raw/_inbox/<run-dir>/";
