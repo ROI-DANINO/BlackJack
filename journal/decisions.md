@@ -73,3 +73,43 @@ they landed — Phase 1 had neither, and its corrections never reached any of th
 (b) **material corrections must be checked against the primary source, not only against prior review
 records** — a pass reading records alone propagated a verifier's mistake into a false statement about a
 source, and passed every records-based check while doing it.
+
+## 2026-07-21 — Phase 2 planned & approved: product-forward reframe, proportional rigor
+
+**Chose:** reframe the research program from three research phases (collect / audit / synthesize) into
+a **six-phase research→product arc (P1–P6)**: P3 gains a **Product Design Inputs** bridge, **P4 owns
+curriculum and activity design**, P5 builds a vertical slice + learning proof, P6 expands. P1–P5
+advance V2, P6 = V3. Written into plan + charter + ROADMAP.
+**Why:** the research was drifting product-agnostic — the over-foundation risk the vision names as #1.
+Ending the arc at a built slice keeps the foundation subordinate to the product it must serve, and
+makes P1–P3's job explicit: make *designing* the product safe, not build it.
+
+**Chose:** Phase 2 = a **proportional-rigor, load-bearing** audit (eight decision families), not a
+sentence-level one — one auditor + one verifier per unit by default, land/confirm only on **material**
+defects (~45 → ~24–31 dispatches). **APPROVED 2026-07-21**, executes next session.
+**Why:** auditing every sentence of a foundation you already trust has diminishing returns; the value
+is in the decisions a P4 designer will lean on.
+
+**Chose:** Phase 2's **produce** role is a new **`audit-examiner`** (adversarial claim-auditor,
+`WebFetch/Read/Write/Glob/Grep`, write-scoped to `audit/`), created in Task 0 → lint → **session
+restart**; `audit-auditor` stays the program-integrity role; LV landing-confirmation records live under
+`verification/`.
+**Why:** the shipped `audit-verifier` is write-scoped to `verification/` and **cannot** produce
+`audit/` records — a Fable conformance loop caught the overload as a def-violation (twice). A purpose-
+built role also makes "no collection" grant-enforced (no `WebSearch`). Fable verdict: **ALIGNED**.
+
+**Chose:** the P2 gate must **demonstrate every bespoke check on fixtures before dispatch** (Task 0
+`1c-gate`, the D7 floor), and gained a new **`1-pre-b`** check — each audit record must carry ≥1 real
+verdict row, not merely be non-empty.
+**Why:** the review found a real hole — a non-empty **legend-only** record (verdicts as prose, none
+assessed) passed every mechanical check; and "the gate is trusted" was asserted, never demonstrated.
+`research-gate.ts` is a reference *shape*, not a runtime backstop (it never runs here and can't parse
+the P2 layout).
+
+**Chose (P1 fit-to-purpose, Fable):** treat P1 as a **mechanics** foundation, not a subject-matter
+one — reusable for the mastery/adaptivity decision, but it holds **nothing** on teaching
+probability/EV/variance/risk, and the activity/hints/accessibility evidence lives in **U4** (a P2
+target, product-blog + inference grade), not the P1 archive. Do **not** reopen P1; U4 is P2's priority
+unit (relabel honestly), and a **bounded P3 subject-matter top-up** is scheduled.
+**Why:** P1 was scoped around learning mechanics before the reframe made probability/EV/risk
+first-class *subjects*; a P4 designer must not inherit evidence that is not there.

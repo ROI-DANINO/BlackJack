@@ -4,7 +4,9 @@
 > `executing-plans` to run this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for
 > tracking.
 
-**Status: DRAFT — awaiting user approval. Phase 2 has not begun.**
+**Status: APPROVED 2026-07-21 (user). Phase 2 executes in the next session; it has not begun.**
+Conformance to the `research-plan` scheme was independently verified (Fable: ALIGNED); craft review
+closed at PASS-after-fixes. Carry-in from the P1 fit-to-purpose review is folded below.
 
 ## Where Phase 2 sits — the P1–P6 program
 
@@ -16,7 +18,7 @@ exists so the plan is read in its destination, not in isolation.
 
 | Phase | What it produces | Builds product? |
 |---|---|---|
-| **P1 — Evidence foundation** ✅ done | Verified evidence + transferable requirements for session structure; scaffolding; hints/feedback/mistakes/retries; retrieval, spacing, interleaving, cognitive load, mastery; accessibility; multiple choice; assemble-block activities; engine-backed hands; deterministic evidence & grading. **Do not reopen.** | No |
+| **P1 — Evidence foundation** ✅ done | The approved archive holds verified evidence for **mastery/adaptivity models, retrieval/spacing/interleaving/cognitive-load, deliberate practice, and blackjack trainability** — strong on the mastery/progression family. **What it does *not* hold** (per the P1 fit-to-purpose review, see note): activity-type, hints/feedback/assisted-evidence, and accessibility evidence (that content lives in **U4**, a P2 audit target of product-blog + inference grade), and **nothing** on teaching probability/EV/variance/risk intuition. **Do not reopen** — top up in P3 (note below). | No |
 | **P2 — Load-bearing foundation audit** ◀ *this plan* | Per-decision verdicts (Preserve/Relabel/Revise/Replace/Remove) on the **decisions that materially affect the future learning product**. No cross-unit synthesis; no product edits. | No |
 | **P3 — Research foundation & product-design inputs** | The charter's six deliverables **plus** a final **Product Design Inputs** bridge that translates approved conclusions into bounded inputs for P4. Does **not** design the curriculum or activity catalog. | No |
 | **P4 — Learning product & activity blueprint** | Skill graph + prerequisites; learning outcomes for rules, hand reading, strategy, probability, EV, variance; an activity taxonomy; concrete logic/probability/statistics/engine-backed concepts; which activity measures which capability; per-activity evidence & mastery; session composition; interaction UX; the first vertical slice to build. **P4 owns curriculum and game/activity design — P1–P3 must not.** | Designs it |
@@ -26,6 +28,24 @@ exists so the plan is read in its destination, not in isolation.
 **Phase 2's whole job is to make P3–P4 possible without reopening P1.** It decides which existing
 foundation claims a designer may lean on, which must be relabelled or revised first, and which must
 be replaced or removed — nothing more.
+
+**In roadmap terms:** the P-phases are the research→product execution arc *inside* the V-milestones —
+**P1–P5 advance V2 — Learning Foundations**, and **P6 is the V3 — UX and Game Experience** milestone.
+This plan is P2, under `phase.md`'s `roadmap_step: 2` (V2). See `ROADMAP.md` for the full mapping.
+
+> **Carried from the P1 fit-to-purpose review (Fable, 2026-07-21).** Phase 1 is strong on *mechanics*
+> (mastery/adaptivity, spacing, trainability) but is a **mechanics foundation, not a subject-matter
+> one**. Two directives for this program, both bounded — do **not** reopen P1:
+> 1. **P2 emphasis — U4 is the load-bearing unit.** The activity-type, hints/feedback/assisted-evidence,
+>    and accessibility evidence a P4 designer will lean on lives in U4, resting on product
+>    self-descriptions (Duolingo/Brilliant blogs) + medium-low-confidence `INFERENCE` rows. Audit those
+>    rows hardest and **relabel honestly** (`Product judgement`/`Assumption`, not `Evidence-backed`) so
+>    P4 does not inherit evidence that is not there. This is already U4's job; it is now its **priority**.
+> 2. **P3 top-up (bounded, new-gap collection — not re-audit).** Schedule a small collection on
+>    **teaching probability / EV / variance / risk intuition** — the product's actual statistical
+>    subjects, on which P1 holds nothing (statistics-education, numeracy/risk-literacy, natural-frequency
+>    representation). This belongs in P3 (or a small "P1b"), fed into the Product Design Inputs bridge;
+>    it is out of P2 scope (P2 audits *existing* claims, and there are none here to audit).
 
 ---
 
@@ -39,36 +59,46 @@ documentation drift are logged as notes, **not** run through the multi-agent lan
 materiality**. Each audit unit gets **one auditor and one independent verifier by default**. The
 heavier machinery fires only when earned: a **landing** pass runs only where the verifier raises a
 **material** correction; every landed correction then gets an **independent landing confirmation** —
-material by construction, and with extra scrutiny where it is also *disputed* (a `Remove`/`Replace`
-the auditor contests) — so since only material defects are ever landed, every landing is confirmed; a
+and since only material defects are ever landed, every landing is confirmed; a
 **collector** runs only to close a **specific named evidence gap**. A unit the
 verifier clears is **done at verify** — there is no automatic audit→verify→fix→re-verify loop for a
 clean unit. The orchestrator holds the baton, owns all shared registers, and never audits, corrects,
 or verifies. A single gate-time `audit-auditor` (program-integrity) pass confirms corrections landed,
 roles stayed separated, and the gate checks enumerate.
 
-**Roles use the shipped four-role set — no new role, no session restart.** Earlier drafts assumed a
-to-be-created `audit-auditor` as the *adversarial claim-auditor*; that name shipped instead as the
-**program-integrity** role (no web, no Edit). Phase 2 therefore performs its claim-audit with
-`audit-verifier` instances — whose mandate, *adversarially check claims against sources, no in-place
-edit*, **is** the audit job — kept honest by **instance** separation (the verify instance is never
-the audit instance). `audit-auditor` is reserved for the gate-time integrity pass. Because Task 0
-creates or edits **no** role definition, the research-plan skill's session-restart ordering
-constraint is **discharged**: the four roles already exist, phase-neutral and conformant on disk
-(`node scripts/research-roles-lint.ts`), and the fresh execution session loads them at start.
+**Phase 2 uses a purpose-built adversarial claim-auditor role, created in Task 0.** Earlier drafts
+assumed a to-be-created `audit-auditor` as the *adversarial claim-auditor*; that name shipped instead
+as the **program-integrity** role (no web, no Edit). An earlier revision of this plan then tried to
+overload `audit-verifier` for the produce step — but that role's definition write-scopes it to
+`verification/` only, so it **cannot** produce an `audit/` record without violating its own def.
+Phase 2 therefore introduces a purpose-built **`audit-examiner`** role: tools
+`WebFetch, Read, Write, Glob, Grep` — **no `WebSearch`** (so collection is *tool-blocked*, not merely
+discouraged), **no `Edit`** (it cannot rewrite an audited doc in place), **no `Bash`** — write-scoped
+to `audit/`. It reads a unit's claims and the Phase 1 dossiers, checks them against evidence held, and
+assigns per-claim verdicts. The **verify** and **landing-confirm** passes remain `audit-verifier`
+instances (both writing `verification/` — the confirm pass's LV records live there too, inside the
+verifier's own write-scope; only the editor's L records live in `landing/`); `audit-auditor` remains
+the gate-time integrity role. Because Task 0 now **creates a role definition** and extends the role lint to cover it, the
+research-plan skill's create→lint→**session-restart** ordering constraint **applies** (Task 0 ends the
+session; dispatch begins fresh) — the earlier "no restart" claim was wrong, since a producer role the
+plan depends on did not yet exist.
 
 **Tech Stack:** Markdown artifacts only. No product code is modified. Agent capability boundaries are
 expressed as tool grants **where a tool grant can express them** — withholding `Bash` removes shell
 and git; withholding `WebSearch` removes collection; withholding `Edit` removes in-place rewriting.
-**Three** boundaries this plan depends on are **not** expressible as tool grants and must not be
-described as if they were: *path* scoping of `Write`; *instance* separation of roles; and
-*no-new-collection-inside-an-audit-pass* — the auditor is an `audit-verifier` instance that **retains
-`WebSearch`**, so "judge existing evidence, don't collect" is a brief instruction, not a grant. The
-first two are checked mechanically at the gate (Task G steps 1c, 2). The third is audit-time
-discipline caught downstream by the V* verifier's citation re-check — a `Preserve`/`Revise` citation
-that traces to neither a Phase 1 dossier nor a baseline source is a flag — which is agent-established,
-not tool-enforced, and is named as such rather than dressed up as mechanical. (The shipped roles do
-fail closed on a missing run directory — a real grant-level property, see Task 0.)
+**Two** boundaries this plan depends on are **not** expressible as tool grants and must not be
+described as if they were: *path* scoping of `Write` (a grant cannot confine `Write` to a
+subdirectory — each role's def *states* its subdirectory, and intra-run-dir subdirectory confinement
+is checked by the **record-path gate checks** (Task G step 1-pre expects each record at its named
+subdirectory, so a misfiled record fails), the **integrity manifests** (scaffold/pre/post
+reconciliation flags an unexpected or misplaced file, Task G step 3), and the **program-integrity
+pass** (Task G step 4b); Task G step **2** checks only the *outer* boundary — that no *tracked
+product* path was touched), and *instance* separation of the same-type roles (the verify and
+landing-confirm passes are both `audit-verifier`, and no grant can stop one instance being dispatched
+twice — checked against the dispatch ledger at **Task G step 1c**). Both are dispatch discipline. Three boundaries the earlier draft leaned on as mere instructions are
+now **grant-enforced** by the dedicated `audit-examiner`: it cannot collect (no `WebSearch`), cannot
+edit an audited doc in place (no `Edit`), and cannot run git or product code (no `Bash`). And every
+role **fails closed on a missing run directory** — a real grant-level property (see Task 0).
 
 ## PR #10 review corrections addressed
 
@@ -81,8 +111,9 @@ to this list.
    (Task 0 step 6, Task L step 0, Task G step 3).
 3. **Dynamic baseline SHA** — captured at run start into `RUN-MANIFEST.md` and read as `$BASE`; no
    hardcoded commit (Task 0 step 2, Task G step 2).
-4. **Fail-closed roles** — the shipped role defs fail closed on a missing run directory; Task 0
-   creates no `<phase>`-placeholder path (Dependencies §1, Task 0 step 1).
+4. **Fail-closed roles** — every role def (the four shipped **and** the new `audit-examiner`) fails
+   closed on a missing run directory; no `<phase>`-placeholder writable path exists (Dependencies §1,
+   Task 0 step 1).
 5. **Q1–Q5 resolved** — the open ambiguities are now binding rulings (see *Resolved rulings*).
 
 <!-- wl:criteria -->
@@ -144,7 +175,7 @@ These are binding, not advisory. Each maps to a numbered task below.
 | G1 | **Charter a landing step, and check it.** "A verifier's correction is not self-executing." | Tasks L1–L8, then LV1–LV8 |
 | G2 | **Two remedies, not one** — missing evidence → collection; evidence present but mishandled → editorial correction. | Task 0 rubric; verifier must name the mode |
 | G3 | **Snapshot before mutating an untracked surface.** | Task 0 step 6 (scaffold) **and** Task L step 0 (`INTEGRITY-MANIFEST-pre`, the audit records L* mutates) |
-| G4 | **Prefer capability boundaries to instructions — and load them at session start.** | Roles already shipped and load at session start; Task 0 step 1 lints them. A restart re-applies only if a def must change (Dependencies §1). |
+| G4 | **Prefer capability boundaries to instructions — and load them at session start.** | Four roles shipped; Task 0 step 1 **creates** the fifth (`audit-examiner`) and lints all five. Because a new def is created, the create→lint→**session-restart** is unconditional and blocking — Task 0 ends the session and dispatch begins fresh so the new role loads at start (Dependencies §1, Task 0 steps 1 and 7). |
 | G5 | **Briefing about a bias does not correct it** — pessimism drift needs a checking step. | Verifier brief: "is this defect real?" is a required question |
 | G6 | **Own the shared state centrally** — agents return rows, orchestrator assigns IDs. | Task 0 step 4; all registers orchestrator-owned |
 | G7 | **Read what you already hold, first.** | Auditor brief: cite the Phase 1 dossier before searching |
@@ -157,32 +188,30 @@ These are binding, not advisory. Each maps to a numbered task below.
 
 | Role | Agent type | May do | May **not** do |
 |---|---|---|---|
-| **Auditor** (produce) | `audit-verifier` *(instance A)* | Read audited docs + Phase 1 dossiers; check claims against sources held; write an audit record with per-claim verdicts | Edit any product doc; verify its own audit record; collect new sources inside an audit pass |
-| **Verifier** | `audit-verifier` *(instance B ≠ A)* | Independently re-check the audit record's claims against primary sources; write a verification record; raise material corrections; answer "is this defect real?" | Edit any record — "it judges, it never repairs"; verify a unit it audited |
+| **Auditor** (produce) | `audit-examiner` *(new — Task 0)* | Read audited docs + Phase 1 dossiers; check claims against sources held; write an audit record under `audit/` with per-claim verdicts | Collect new sources (**no `WebSearch`**); edit any doc in place (**no `Edit`**); run git/product code (**no `Bash`**) |
+| **Verifier** | `audit-verifier` *(instance B)* | Independently re-check the audit record's claims against primary sources; write a verification record; raise material corrections; answer "is this defect real?" | Edit any record — "it judges, it never repairs"; verify a unit it will also confirm the landing for |
 | **Corrector** | `audit-editor` | Land a material correction into the **audit record**; reopen the primary source | Raise the correction it lands; edit product docs; collect new sources |
-| **Confirmer** | `audit-verifier` *(instance C ≠ B, ≠ editor)* | Independently confirm a landed material correction; write the landing confirmation | Edit any record; confirm a correction it raised or landed |
+| **Confirmer** | `audit-verifier` *(instance C ≠ B, ≠ editor)* | Independently confirm a landed material correction; write the landing confirmation under `verification/` (its own write-scope) | Edit any record; confirm a correction it raised or landed |
 | **Collector** | `audit-collector` | Fetch a named missing source under a bounded gap spec | Audit, verify, or land |
 | **Program-integrity** | `audit-auditor` | At the gate: confirm corrections landed, roles stayed separated, gate checks enumerate positively | Open any source; author any verdict; edit any artifact |
 | **Orchestrator** | main session | Dispatch, assign register IDs, assemble the gate package | Author any verdict, correction, or verification |
 
-**Both the auditor and the verifier are `audit-verifier` instances; the guarantee is *instance*
-separation, not a type difference.** The role that first assigns verdicts (auditor, instance A) and
-the role that re-checks them (verifier, instance B) share a tool grant because the job is the same —
-adversarially check claims against sources, write a record, never edit in place. What makes the
-verify honest is that B is a *fresh* instance that did not produce A's record. `audit-auditor`, the
-program-integrity role, is a genuinely different agent type and never touches a source.
+**The producer is now a distinct type (`audit-examiner`), so produce-vs-verify is partly
+type-enforced.** The examiner writes `audit/` and lacks `WebSearch`/`Edit`; the verifier writes
+`verification/`. What is **not** type-enforced is **instance** separation between the verifier and the
+confirmer — both are `audit-verifier`, and an agent type cannot know which instance wrote the file it
+is reading. That separation (instance B ≠ instance C, and neither is the editor) holds only if the
+orchestrator dispatches correctly.
 
 **No instance audits and verifies the same unit. No agent lands a correction it raised. No agent
 confirms a landing it performed.**
 
-**None of these is a tool grant, and none can be.** A tool grant enforces one boundary here — an
-`audit-verifier` and an `audit-auditor` both lack `Edit` and therefore cannot repair in place. But
-the separation sentences above are **instance-level identity** properties, and they matter *most*
-precisely because the auditor, verifier, and confirmer share the `audit-verifier` type: an agent type
-cannot know which instance wrote the file it is reading, so no grant can stop the same instance being
-dispatched twice into different roles. They hold only if the orchestrator dispatches them correctly.
-The dispatch ledger (G8) is therefore the *evidence* for separation, not just a routing aid, and
-Task G step 1c checks it. A separation claim made without reference to the ledger is unsupported.
+**Instance separation is not a tool grant, and cannot be.** Tool grants enforce the *type* boundaries
+(the examiner cannot collect or edit; the verifier and integrity auditor cannot edit). But the
+instance-identity properties above are dispatch discipline: they hold only if the orchestrator
+dispatches them correctly. The dispatch ledger (G8) is therefore the *evidence* for separation, not
+just a routing aid, and Task G step 1c checks it. A separation claim made without reference to the
+ledger is unsupported.
 
 ---
 
@@ -252,14 +281,17 @@ compares against baseline (see Dependencies and Task G step 2).
 
 ### Dependencies
 
-1. **The four research roles must be present and conformant** — `audit-verifier`, `audit-editor`,
-   `audit-collector`, `audit-auditor` in `.claude/agents/`, verified green by
-   `node scripts/research-roles-lint.ts`. They already exist, phase-neutral (a static
-   `journal/raw/_inbox/` allowlist root with a bare run-dir supplied per dispatch), and **fail closed
-   on a missing or non-bare run directory** (each def: "supplies no run directory at all → stop and
-   report a `Blocker`"). Task 0 creates or edits **none** of them, so no mid-plan session restart is
-   required — the fresh execution session loads them at start. *(If a role def ever must change, the
-   research-plan skill's create→lint→restart ordering constraint re-applies.)*
+1. **Five roles must be present and conformant before dispatch** — the four shipped
+   (`audit-verifier`, `audit-editor`, `audit-collector`, `audit-auditor`) **plus a new
+   `audit-examiner`** (the adversarial claim-auditor / produce role) created in Task 0. All live in
+   `.claude/agents/`, phase-neutral (a static `journal/raw/_inbox/` allowlist root with a bare run-dir
+   per dispatch), and **fail closed on a missing or non-bare run directory** ("supplies no run
+   directory at all → stop and report a `Blocker`"). Because Task 0 **creates `audit-examiner`** and
+   extends `scripts/research-roles-lint.ts` to cover it, the research-plan skill's
+   create→lint→**session-restart** ordering constraint **applies**: Task 0 writes the def and lints
+   green, the session ends, and dispatch begins in a fresh session that loads the new role at start.
+   *(This corrects an earlier draft that overloaded `audit-verifier` — whose def write-scopes it to
+   `verification/` only — to produce `audit/` records, which its own definition forbids.)*
 2. **Phase 1 archive must be readable at the captured baseline** — it is the evidence base every
    `Evidence-backed` verdict must cite (`docs/superpowers/research/foundation-audit-p1/`, 59 files).
 3. **Baseline SHA captured dynamically at run start.** Task 0 records `BASE=$(git rev-parse HEAD)`
@@ -282,9 +314,12 @@ These were open ambiguities in the prior draft; the user has now ruled. Each is 
 
 1. **Approve Phase 2 beginning at all** — the charter gates it and `phase.md` records "Phase 2 must not
    begin without explicit user approval." This plan remains a **DRAFT** until then.
-2. **Approve the Task 0 prep writes** — verifying the roles, capturing the baseline SHA, seeding
-   templates/registers, and the Q5 memory correction. These are the only writes before the gate, and
-   none touches a product document. *(Q1–Q5 are now resolved above; no separate ruling is pending.)*
+2. **Approve the Task 0 prep writes** — creating `audit-examiner.md`, extending the role lint
+   (`scripts/research-roles-lint.ts`), building the gate-check fixtures
+   (`scripts/fixtures/research-gate-p2/**`), verifying the four shipped roles, capturing the baseline
+   SHA, seeding templates/registers, and the Q5 memory correction. These are the only writes before the
+   gate — tooling, not product; none touches a product document. *(Q1–Q5 are now resolved above; no
+   separate ruling is pending.)*
 3. **Approve the wave structure and the reduced ~24–31-dispatch budget** (see Economics).
 
 ---
@@ -359,8 +394,8 @@ confirmed, not gated**. This is the proportional-rigor rule in mechanism: every 
 exists is worth landing and confirming, because only material defects ever become corrections.
 
 ```
-A*  audit          → audit-verifier (instance A) writes audit/U<n>-audit.md (per-claim verdicts)
-V*  verify         → audit-verifier (instance B ≠ A) writes verification/V-U<n>.md
+A*  audit          → audit-examiner writes audit/U<n>-audit.md (per-claim verdicts)
+V*  verify         → audit-verifier (a different type) writes verification/V-U<n>.md
       │                (raises MATERIAL corrections only; logs mechanical nits as notes; repairs nothing)
       │
       ├─ no material corrections ───────────────────► unit CLEARED at verify
@@ -374,10 +409,10 @@ L*  land           → audit-editor applies each material correction INTO audit/
       │
 LV* confirm landing → a THIRD instance (audit-verifier, instance C ≠ B, ≠ editor) opens
                      audit/U<n>-audit.md and confirms each correction is actually present.
-                     Writes landing/LV-U<n>.md with a per-correction LANDED / NOT-LANDED / ALTERED
+                     Writes verification/LV-U<n>.md with a per-correction LANDED / NOT-LANDED / ALTERED
                      verdict. NOT-LANDED or ALTERED → back to L*, once (bounded); the first
-                     confirmation is archived as LV-U<n>-r1.md and the retry writes the
-                     current LV-U<n>.md (LV* step 4).
+                     confirmation is archived as verification/LV-U<n>-r1.md and the retry writes the
+                     current verification/LV-U<n>.md (LV* step 4).
 ```
 
 **Landing target — the boundary that differs from Phase 1.** Corrections land into the **audit
@@ -404,8 +439,8 @@ Carried from charter amendments 5–7 and Phase 1's rulings.
 - **Landing loop is bounded to one retry** (L* → LV* → L* → LV*). A correction still NOT-LANDED after
   the second attempt is escalated to the user at the gate, never silently dropped. The retry's
   confirmation supersedes the first by name, not by edit (LV* step 4) — the superseded record is
-  archived as `LV-U<n>-r1.md`, since otherwise a correctly remediated unit could never clear gate
-  step 1b.
+  archived as `verification/LV-U<n>-r1.md`, since otherwise a correctly remediated unit could never
+  clear gate step 1b.
 - **Hard ceiling: 3 passes per unit** (audit + verify + at most one bounded extra), excluding the
   landing loop. Exceeding it stops the unit and surfaces it.
 - **No unbounded search.** An auditor may not open a topic the unit does not contain. Scope creep
@@ -423,7 +458,7 @@ human read rather than a command, that is stated plainly rather than dressed as 
 
 | # | Criterion | How it is established |
 |---|---|---|
-| 1 | Every unit U1–U8 has an audit record, a verification record, and — where a **material** correction was raised — a landing record **and** an independent landing confirmation. (A unit cleared at verify has neither, correctly.) | **Mechanical**, in two halves. Presence: Task G step **1-pre** asserts `audit/U<n>-audit.md` and `verification/V-U<n>.md` exist and are non-empty for all of U1–U8, and it runs **first** — without it every later enumeration is vacuous on a unit whose records were never written. Accounting: Task G step **1a** — every correction ID in `verification/` has a `LANDED` row in the current landing confirmation. |
+| 1 | Every unit U1–U8 has an audit record, a verification record, and — where a **material** correction was raised — a landing record **and** an independent landing confirmation. (A unit cleared at verify has neither, correctly.) | **Mechanical**, in two halves. Presence: Task G step **1-pre** asserts `audit/U<n>-audit.md` and `verification/V-U<n>.md` exist and are non-empty for all of U1–U8, and step **1-pre-b** asserts each audit record carries at least one real verdict row — so presence means records exist **and** each assesses ≥1 claim (a non-empty legend-only record is not an assessed unit). Both run **first**, because without them every later enumeration is vacuous on a unit whose records were never written or never assessed. Accounting: Task G step **1a** — every correction ID in `verification/` has a `LANDED` row in the current landing confirmation. |
 | 2 | **Zero corrections in NOT-LANDED or ALTERED state.** | **Mechanical**, Task G step 1b (row-scoped, so the verdict legend cannot self-match). |
 | 3 | No agent both audits and verifies a unit; no agent both raises and lands a correction. | **Mechanical read of recorded fact**, Task G step 1c: distinct agent handles per role in the dispatch ledger. Unlogged dispatch ⇒ unproven ⇒ fail. |
 | 4 | Every `Remove` and `Replace` carries an independent verifier's written "is this defect real?" answer. | **Agent-established, mechanically accounted**: the answer is written by the V* verifier (V* step 2); Task G step **1d** enumerates the `Remove`/`Replace` claim IDs out of the audit records and requires a matching answered ID in `verification/`. The *substance* of the answer is the verifier's; only its existence is mechanical. |
@@ -472,10 +507,10 @@ journal/raw/_inbox/foundation-audit-p2/          # gitignored working area
   evidence/U8-memory-drift-specimen.md           # Task 0 step 5 — Q5 drift preserved before correction
   audit/U1-audit.md … U8-audit.md
   verification/V-U1.md … V-U8.md
-  landing/L-U<n>.md                              # only for units with a material correction
-  landing/LV-U<n>.md                             # current landing confirmation, material corrections only
-  landing/LV-U<n>-r1.md                          # only where a bounded retry occurred: the
+  verification/LV-U<n>.md                        # current landing confirmation, material corrections only
+  verification/LV-U<n>-r1.md                     # only where a bounded retry occurred: the
                                                  #   superseded first confirmation, kept as evidence
+  landing/L-U<n>.md                              # only for units with a material correction
   integrity/…                                    # Task G step 4b — audit-auditor program-integrity record
   registers/conflict-register.md
   registers/source-lead-register.md
@@ -499,10 +534,13 @@ docs/superpowers/research/foundation-audit-p2/   # TRACKED, promoted at the gate
 
 - **Branch:** `audit/p2-adversarial-foundation` (exists, tracking origin). The baseline SHA is
   whatever `git rev-parse HEAD` returns at run start (Task 0 step 2), not a pinned commit.
-- **No Task 0 commit.** Task 0 creates or edits no agent definition and writes only to gitignored
-  surfaces, so nothing tracked changes and there is nothing to commit (and no session restart).
-- **No commits during the audit run.** Working artifacts are gitignored; committing mid-run would
-  publish unverified verdicts.
+- **One Task 0 commit — the role def, lint, and gate-check fixtures.** Task 0 creates
+  `audit-examiner.md`, extends `research-roles-lint.ts`, and builds the D7-floor gate-check fixtures
+  (`scripts/fixtures/research-gate-p2/`), then commits them (step 1d) and **ends the session** so the
+  new role loads. This is tooling, not product; the baseline is captured immediately after it (step 2),
+  so the audit run compares against a tree that already contains all of it.
+- **No commits during the audit run.** After the Task 0 commit, working artifacts are gitignored;
+  committing mid-run would publish unverified verdicts.
 - **Gate commit** — promote the curated archive in one commit after the gate criteria pass.
 - **Secret scan before every commit**, per `modules.secret_scan`. **Run the grep and read its exit
   code directly — never pipe it into `head`.** A prior session's scan reported a false clean because
@@ -578,6 +616,9 @@ actor: "edit any audited document" is caught mechanically by Task G step 2 again
 | File | Responsibility |
 |---|---|
 | `.claude/agents/audit-{verifier,editor,collector,auditor}.md` | **Already shipped — verify only.** The four phase-neutral, fail-closed roles. Task 0 runs the lint; it edits none of them. |
+| `.claude/agents/audit-examiner.md` | **New — Task 0.** The adversarial claim-auditor (produce role): `WebFetch, Read, Write, Glob, Grep`; no `WebSearch`/`Edit`/`Bash`; write-scoped to `audit/`; fail-closed on missing run-dir. |
+| `scripts/research-roles-lint.ts` | **Extend — Task 0.** Add `audit-examiner` to the linted role set so the new role is held to the same contract. |
+| `scripts/fixtures/research-gate-p2/**` + `DEMO.md` | **New — Task 0 step 1c-gate.** D7-floor fixtures demonstrating each bespoke record/register-parsing gate check returns the right verdict on `empty/clean/violating/retry` (+ adversarial variants) before dispatch. |
 | `journal/raw/_inbox/foundation-audit-p2/RUN-MANIFEST.md` | **New.** Records the baseline SHA (`$BASE`) captured at run start plus the run-dir name. |
 | `journal/raw/_inbox/foundation-audit-p2/_templates/audit-record-template.md` | Audit record shape, incl. a **Non-material notes** section (materiality-gate sink). |
 | `journal/raw/_inbox/foundation-audit-p2/_templates/verification-record-template.md` | Verification record shape (marks each correction MATERIAL; mechanical items go to notes). |
@@ -589,15 +630,18 @@ actor: "edit any audited document" is caught mechanically by Task G step 2 again
 
 ## Tasks
 
-### Task 0: Verify roles, capture the baseline, seed scaffolding, preserve-and-correct the memory drift
+### Task 0: Create the examiner role, capture the baseline, seed scaffolding, correct the memory drift, restart
 
-No role definition is created or edited here — the four roles already ship phase-neutral and
-fail-closed. Task 0 is prep only: it proves the roles, pins the baseline, builds the templates and
-registers, and discharges the Q5 memory ruling. **Because it edits no agent definition, no session
-restart is required** (Dependencies §1).
+Task 0 creates the one missing role (`audit-examiner`, the produce role), extends the lint to cover
+it, pins the baseline, builds the templates and registers, discharges the Q5 memory ruling, and
+**ends the session** so the new role loads. **Because it creates a role definition, the
+create→lint→session-restart ordering constraint applies** (Dependencies §1) — do not dispatch A1 in
+the same session as Task 0.
 
 **Files:**
-- Verify (no edit): the four `.claude/agents/audit-*.md` roles
+- Create: `.claude/agents/audit-examiner.md`; Modify: `scripts/research-roles-lint.ts`
+- Create: `scripts/fixtures/research-gate-p2/**` (D7-floor gate-check fixtures + `DEMO.md`)
+- Verify (no edit): the four shipped `.claude/agents/audit-{verifier,editor,collector,auditor}.md`
 - Create: `journal/raw/_inbox/foundation-audit-p2/RUN-MANIFEST.md`
 - Create: `journal/raw/_inbox/foundation-audit-p2/_templates/{audit-record,verification-record,landing-record}-template.md`
 - Create: `journal/raw/_inbox/foundation-audit-p2/registers/{conflict-register,source-lead-register,citation-state-register}.md`
@@ -609,32 +653,118 @@ restart is required** (Dependencies §1).
 - Produces: a proven role set, a pinned baseline, the record templates every later task fills, and a
   memory file that no longer misleads a dispatched agent.
 
-- [ ] **Step 1: Prove the four roles are present and conformant (no edit)**
+- [ ] **Step 1: Create `audit-examiner`, extend the lint, prove all five roles, and commit**
 
-Run: `node scripts/research-roles-lint.ts`
-Expected: green — all four defs present and conformant. Confirm the four types (`audit-verifier`,
-`audit-editor`, `audit-collector`, `audit-auditor`) appear in the session's available agent types. If
-the lint fails or a type is missing, **STOP**: a role def would need changing, which re-triggers the
-create→lint→**restart** ordering constraint (Dependencies §1) before any dispatch.
+The producer role Phase 2 depends on does not yet exist; create it here (the ordering constraint's
+create step). **Do not reuse the name `audit-auditor`** — that is the shipped program-integrity role.
 
-**Do not create an `audit-auditor` adversarial-auditor role.** That name is the shipped
-program-integrity role. Phase 2's claim-audit is performed by `audit-verifier` instances (see
-*Architecture* and *Role boundaries*). No `sed`, no repoint, no new role — the defs already carry a
-static `journal/raw/_inbox/` allowlist root and fail closed on a missing run directory, so the
-`<phase>`-placeholder hazard the prior draft introduced does not arise.
+**1a — write `.claude/agents/audit-examiner.md`.** Frontmatter, matching the shipped roles' shape:
+
+```markdown
+---
+name: audit-examiner
+description: Research-program ADVERSARIAL CLAIM-AUDITOR role. Reads an existing project document or
+  implemented behavior, checks each learning claim against evidence already held, and returns a
+  per-claim verdict (Preserve/Relabel/Revise/Replace/Remove). Cannot collect, cannot edit in place,
+  has no shell.
+tools: WebFetch, Read, Write, Glob, Grep
+---
+```
+
+*What the grant enforces:* no `WebSearch` → cannot collect (that is the collector's job); no `Edit` →
+cannot rewrite an audited doc in place; no `Bash` → no git, no product-code execution. `WebFetch`
+reopens only a *named* source a unit or Phase 1 dossier already cites (G9), never to go looking. *What
+the grant does not enforce:* `Write` is not path-scoped, so the body must state — as an instruction
+whose confinement the gate checks by record-path (Task G step 1-pre expects the record at `audit/`,
+so a misfiled one fails), by integrity-manifest reconciliation (Task G step 3), and by the
+program-integrity pass (Task G step 4b) — that it writes **only new files under the `audit/`
+subdirectory** of the run directory named in its brief, and **fails closed** if none is supplied
+("stop and report a `Blocker`"), matching the four shipped roles' write-scope boundary. (Task G step 2
+checks only the *outer* boundary — that no tracked product path was touched — not this intra-run-dir
+confinement.) The body also carries: read the
+Phase 1 dossier before any retrieval (G7); quote verbatim with `file:line`; apply the materiality gate
+(only load-bearing claims get a verdict; the rest go to Non-material notes); `Remove` requires a
+contradiction, not an absence; report survivors as well as failures.
+
+**1b — extend `scripts/research-roles-lint.ts`** to add `audit-examiner` to the linted role set, so
+the new role is held to the same contract as the four shipped (static allowlist root, fail-closed on
+missing run-dir, no forbidden tools). A role outside the lint is an unproven role.
+
+**Class-level write-scope guard.** Every role's dispatched output subdirectory must lie within its
+def's stated write-scope — examiner → `audit/`; verifier (both the V pass and the LV landing
+confirmation) → `verification/`; editor → `landing/` plus its in-place audit-record edits; auditor →
+`integrity/`. No task may dispatch a role to write outside its scope; this is verified when the lint
+runs over all five roles.
+
+**1c — lint green:** `node scripts/research-roles-lint.ts` → green over **five** roles. Any failure
+STOPS Task 0 — a non-conformant role cannot be carried into the dispatch session.
+
+**1c-gate — demonstrate the bespoke record/register-parsing gate checks on fixtures (D7 floor) — blocking.** The
+research-plan skill requires each gate check to demonstrate the correct verdict on the reference
+fixtures **before any audit dispatch** — a check whose verdict was never
+observed is asserted, not proven. The demonstration is blocking and runs pre-dispatch (Task 0, before
+any audit dispatch), which is the D7 floor's intent for fixtures the plan itself creates. Build
+fixtures under `scripts/fixtures/research-gate-p2/<case>/`
+matching the Phase-2 record layout (`audit/U<n>-audit.md`, `verification/V-U<n>.md`,
+`verification/LV-U<n>.md`, `registers/citation-state-register.md`) and run the
+**record/register-parsing** checks a static fixture can exercise
+(Task G steps 1-pre, 1-pre-b, 1a, 1b, 1d, 1e) against each, asserting
+the verdict matrix:
+
+| Fixture | Required verdict |
+|---|---|
+| `empty` — no records | **FAIL** |
+| `clean` — all records present and resolved | **PASS** |
+| `violating` — one raised correction with no `LANDED` confirmation | **FAIL** |
+| `retry` — a superseded `NOT-LANDED` (`LV-U<n>-r1.md`) plus a later `LANDED` (`LV-U<n>.md`) | **PASS** |
+| `verdict-legend` — a `Preserve/…/Remove` legend, no unit assessed | **FAIL** (1-pre-b) |
+| `citation-unverifiable` — a `Preserve` row over an `UNVERIFIABLE` citation | **FAIL** (1e) |
+| `unanswered-remove` — an audit record carrying a `Remove`-verdict row with no matching `DEFECT-REAL` answer in `verification/` | **FAIL** (1d) |
+| `escaped-pipe` — a `\|`-escaped description cell in a conforming row | **PASS** |
+
+A check that does not produce its expected verdict **STOPS the plan** until fixed. Record the matrix in
+`scripts/fixtures/research-gate-p2/DEMO.md`.
+
+**Step-2, step-3, and check 1c are scoped OUT of this record-fixture matrix, honestly.** Step 2 is a
+working-tree `git diff`/`git status` against `$BASE` — it has no expressible input in a static fixture
+directory, so it is exercised at gate time against the real tree, not a static fixture. Step 3 is
+integrity-manifest hash reconciliation — its own mechanism (the self-hash exclusion is already reasoned
+in Task 0 step 6 / Task L step 0 / Task G step 3). Check 1c is an orchestrator read of the **dispatch
+ledger** (agent handles per role), not a parse of the audit/verification records — so, like step-2 and
+step-3, it has no expressible input in a static record fixture; it is exercised against the recorded
+ledger at gate time under its stated fail-closed rule ("unlogged ⇒ unproven ⇒ fail"). None of the
+three is a record-parsing grep, so none belongs in this record-fixture matrix.
+
+`scripts/research-gate.ts` — already green over its own full adversarial suite
+(`scripts/fixtures/research-gate/`) — is the **reference shape** these bespoke checks are modelled on:
+positive enumeration, terminal-signal-line discipline, adversarial fixtures. It is a shape precedent,
+**not** a runtime backstop that covers any P2 check — it is never invoked anywhere in Task G and cannot
+parse the P2 record layout. **All** the P2 checks demonstrated here are bespoke and demonstrated here on
+their own fixtures. This is the step whose absence made the gate "trusted by argument" rather than
+proven.
+
+**1d — commit the role def, the lint extension, and the gate-check fixtures** (the only pre-gate
+commit; tooling, not product):
+
+```bash
+git add .claude/agents/audit-examiner.md scripts/research-roles-lint.ts scripts/fixtures/research-gate-p2/
+git commit -m "chore(audit): add audit-examiner role, extend role lint, demonstrate P2 gate checks on fixtures"
+```
 
 - [ ] **Step 2: Capture the baseline SHA dynamically and record it (finding 3)**
 
 ```bash
 BASE=$(git rev-parse HEAD)
 mkdir -p journal/raw/_inbox/foundation-audit-p2
-printf '# Run manifest\n\nbaseline_sha: %s\nrun_dir: foundation-audit-p2\ncaptured: run start\n' \
+printf '# Run manifest\n\nbaseline_sha: %s\nrun_dir: foundation-audit-p2\ncaptured: run start (post role-commit)\n' \
   "$BASE" > journal/raw/_inbox/foundation-audit-p2/RUN-MANIFEST.md
 ```
 
-Every later "modified since baseline" / "readable at baseline" check reads `baseline_sha` from this
-file — never a literal commit. Capturing at run start is the whole point: the branch advances, and a
-pinned SHA (the prior draft's `6def4b6`) would silently compare against the wrong tree.
+Captured **after** the step-1d commit, so `$BASE` already contains the role def, the lint extension,
+and the gate-check fixtures (`scripts/fixtures/research-gate-p2/`); every later
+"modified since baseline" check then sees only the promoted archive, never a literal commit. Capturing
+at run start is the whole point: a pinned SHA (the prior draft's `6def4b6`) would compare against the
+wrong tree as the branch advances.
 
 - [ ] **Step 3: Seed the positive-control list and the Non-material notes sink into the audit template**
 
@@ -705,20 +835,23 @@ editor touches them. Taking only this one would invert Phase 1's ordering — th
 preceded the mutation of already-existing dossiers — and would leave the load-bearing surface
 unprotected.
 
-- [ ] **Step 7: Commit nothing yet**
+- [ ] **Step 7: RESTART THE SESSION (ordering constraint) — blocking**
 
-Task 0 writes only to the gitignored inbox and the gitignored memory surface — **nothing tracked
-changes**, so there is nothing to commit before the gate. (The prior draft committed agent-def edits
-here; there are none now — the roles already shipped.) The promotion commit at Task G step 6 is the
-first and only commit of the run.
+Claude Code reads its agent registry at session start; `audit-examiner` was created in step 1 this
+session and will **not** load until a fresh one. **End the session here.** In the new session, confirm
+`audit-examiner` appears in the available agent types **before** dispatching A1. Phase 1 lost exactly
+this bet — restricted types "failed to load mid-session." After the step-1d commit, no further commit
+happens until the gate promotion (Task G step 6); the run's remaining writes are all gitignored.
 
 ---
 
 ### Tasks A1–A8: Audit dispatches (three waves)
 
-Each audit is an `audit-verifier` instance in its **produce** role (see *Role boundaries*), briefed
-to audit one unit's load-bearing claims and assign verdicts. The independent verify pass (V1–V8) is a
-**different** `audit-verifier` instance.
+Each audit is an `audit-examiner` dispatch (the produce role created in Task 0; see *Role
+boundaries*), briefed to audit one unit's load-bearing claims and assign verdicts, writing under
+`audit/`. The independent verify pass (V1–V8) is an `audit-verifier` — a different agent type — so
+produce-vs-verify separation here is type-enforced; only verify-vs-confirm relies on instance
+separation.
 
 **Files:**
 - Create: `journal/raw/_inbox/foundation-audit-p2/audit/U<n>-audit.md`
@@ -828,7 +961,7 @@ correction exists only where it is worth landing. A verifier that finds only mec
 the unit (a clean-at-verify result is valid — anti-pessimism, G5); a verifier that demotes a genuinely
 material defect to a note has made a catchable error.
 
-- [ ] **Step 5: Each verifier checks its own unit's record against the two per-record Phase 3 bullets**
+- [ ] **Step 5: Each verifier checks its own unit's record against the three per-record Phase 3 bullets**
 
 Three of the six **must not** bullets are not V* step 5's job: cross-unit synthesis and translating
 conclusions into Product Design Inputs (deliverable 7) both need other units and are checked at the
@@ -917,7 +1050,7 @@ never entered this loop — so every landing row carries a retrieval.
 ### Tasks LV1–LV8: Independent landing confirmation (G1, G11)
 
 **Files:**
-- Create: `journal/raw/_inbox/foundation-audit-p2/landing/LV-U<n>.md`
+- Create: `journal/raw/_inbox/foundation-audit-p2/verification/LV-U<n>.md`
 
 **Interfaces:**
 - Consumes: `audit/U<n>-audit.md` (post-landing) and `landing/L-U<n>.md`.
@@ -982,9 +1115,9 @@ still failing after `LV-U<n>-r1.md` is escalated to the user at the gate, not re
 
 - [ ] **Step 1: Verify gate criteria 1, 2, 3, 4, and 5 mechanically — positive enumeration, not absence-of-a-token**
 
-**The check must be able to fail, and must be able to pass.** An absence-of-a-token grep certifies an
-empty or missing `landing/` directory as clean — it tests for the presence of a failure marker, never
-for the presence of a confirmation. That is the same class as the `head`-pipe defect below: the
+**The check must be able to fail, and must be able to pass.** An absence-of-a-token grep certifies a
+`verification/` directory with no confirmation records as clean — it tests for the presence of a
+failure marker, never for the presence of a confirmation. That is the same class as the `head`-pipe defect below: the
 `head`-pipe was the symptom, absence-as-proof is the disease. Every correction raised must be
 positively accounted for.
 
@@ -1019,13 +1152,36 @@ an empty one alike, so a record that was created but never written is caught too
 deliberately *not* in this list — a unit the verifier cleared correctly has none; their accounting is
 1a's job, which derives from the verification records this check has just proven exist.
 
+**1-pre-b — each in-scope audit record actually assesses at least one claim (criterion 1, presence
+half). Blocking; run right after 1-pre, before 1a and 1d.** `[ -s ]` catches an absent or empty
+record, but it cannot catch a record that is non-empty yet assesses *nothing* — one carrying only a
+verdict *legend* (the verdict words in prose), no verdict *row*. Such a record is a unit that reached
+the gate never actually audited. Positively enumerate that every in-scope audit record carries at
+least one valid verdict row **for the unit it belongs to** (`K-U<n>-…`, anchored to the loop's `$n`):
+
+```bash
+for n in 1 2 3 4 5 6 7 8; do
+  grep -qE "^\| *K-U$n-[0-9]{3} *\| *(Preserve|Relabel|Revise|Replace|Remove) *\|" "audit/U$n-audit.md" \
+    || echo "UNASSESSED audit/U$n-audit.md"
+done | grep .
+```
+
+Expected: **no output, exit 1.** An `UNASSESSED` line is an audit record that exists but assesses
+nothing. This is **positive enumeration** — it requires a real `| K-U<n>-… | <verdict> |` row for
+*that* unit to *exist*, not the absence of a token — so a legend-only, zero-claim record (verdict
+words in prose, not in a `| K-U<n>-… | <verdict> |` row), or one carrying only another unit's rows,
+fails here, exactly the case `[ -s ]` waves through. This is why the
+`verdict-legend` fixture's FAIL is attributed to **1-pre-b**, not to 1-pre: 1-pre's `[ -s ]` cannot
+fail a non-empty legend-only record, so without this check the P2 gate would have no mechanical
+"this unit was actually assessed" test at all.
+
 **1a — every raised correction has a `LANDED` confirmation (criterion 1).** Derive the correction set
 from the verification records and require a matching row in the *current* landing confirmations:
 
 ```bash
 diff \
-  <(grep -rhoE 'C-U[0-9]+-[0-9]{3}' verification/ | sort -u) \
-  <(grep -rhoE --include='LV-U[1-8].md' 'C-U[0-9]+-[0-9]{3}[^|]*\| *LANDED' landing/ \
+  <(grep -rhoE --include='V-U[1-8].md' 'C-U[0-9]+-[0-9]{3}' verification/ | sort -u) \
+  <(grep -rhoE --include='LV-U[1-8].md' 'C-U[0-9]+-[0-9]{3}[^|]*\| *LANDED' verification/ \
     | grep -oE 'C-U[0-9]+-[0-9]{3}' | sort -u)
 ```
 
@@ -1041,7 +1197,7 @@ see the supersession rule under 1b.
 to any occurrence of the token, and to the *current* confirmation, not to superseded ones:
 
 ```bash
-grep -rnE --include='LV-U[1-8].md' 'C-U[0-9]+-[0-9]{3}[^|]*\| *(NOT-LANDED|ALTERED)' landing/
+grep -rnE --include='LV-U[1-8].md' 'C-U[0-9]+-[0-9]{3}[^|]*\| *(NOT-LANDED|ALTERED)' verification/
 ```
 
 Expected: **no matches, exit 1.** Two scopings, each load-bearing:
@@ -1058,9 +1214,9 @@ Expected: **no matches, exit 1.** Two scopings, each load-bearing:
   reads the former and skips the latter. The archived record is retained as evidence and is read by a
   human at the gate, never by this check.
 
-**Read the exit codes directly; do not pipe into `head`.** 1-pre, 1a and 1b are complementary —
-1-pre catches the record that was never written, 1a the missing confirmation, 1b the recorded
-failure. None alone is sufficient.
+**Read the exit codes directly; do not pipe into `head`.** 1-pre, 1-pre-b, 1a and 1b are
+complementary — 1-pre catches the record that was never written, 1-pre-b the record written but never
+assessed, 1a the missing confirmation, 1b the recorded failure. None alone is sufficient.
 
 **1c — role separation actually held (criterion 3).** Read the dispatch ledger and confirm, per unit:
 the `V-U<n>` agent handle differs from the `A-U<n>` handle; the `L-U<n>` handle differs from the
@@ -1168,10 +1324,13 @@ bullets from the Phase 3 boundary section as its checklist. It returns, per brea
 which bullet it violates; it edits nothing. The orchestrator revises and re-submits, **bounded to two
 review rounds**; a summary still breaching after the second round is escalated to the user at the gate
 rather than re-dispatched (the Economics row books the typical single pass; a second is the ceiling).
-This is the only check on the **cross-unit synthesis** bullet — it exists because the artifact's
-author is the party the boundary constrains, and the gate summary is the only output that ranges over
-all eight units. It is not the only check on the boundary as a whole: the two per-record-breachable
-bullets are checked per unit at V* step 5, and "edit any audited document" at Task G step 2.
+This is the only check on the two **cross-unit** bullets — cross-unit synthesis, and translating
+conclusions into Product Design Inputs (deliverable 7) — it exists because the artifact's author is
+the party the boundary constrains, and the gate summary is the only output that ranges over all eight
+units. It is not the only check on the boundary as a whole: the three per-record-breachable bullets
+are checked per unit at V* step 5, and "edit any audited document" at Task G step 2. That accounts for
+all six must-not bullets — 2 cross-unit here + 3 per-record at V* step 5 + 1 edit-audited-doc at Task
+G step 2 — consistent with the Phase-3-boundary section.
 
 - [ ] **Step 4b: Program-integrity audit (criterion 11) — blocking**
 
@@ -1206,7 +1365,7 @@ confirm rows are conditional, not per-unit.
 
 | Stage | Dispatches | Note |
 |---|---|---|
-| Audits A1–A8 | 8 | one `audit-verifier` (produce) per unit |
+| Audits A1–A8 | 8 | one `audit-examiner` (produce) per unit |
 | Verifications V1–V8 | 8 | one fresh `audit-verifier` per unit |
 | Landings L (material defects only) | ~2–4 | fires only where a verifier raises a material correction |
 | Landing confirmations LV | ~2–4 | one fresh `audit-verifier` per landed unit (all landed corrections are material) |
@@ -1236,23 +1395,35 @@ gate falsifiability, tool-enforcement honesty).
    P4 ownership ✓ (Phase 3 boundary; charter Phase map).
 2. **User's four guards** — landing ✓ (L*, material corrections only); independently verified ✓ (LV*,
    a third instance); primary source for material corrections ✓ (L* step 3, LV* step 3); role
-   separation — **not enforceable by tool grants**, since it is an instance-level property no agent
-   type can hold (and the auditor/verifier/confirmer share the `audit-verifier` type). It rests on
-   orchestrator dispatch discipline, is *checked* against the dispatch ledger at Task G step 1c, and
-   is independently re-audited by the program-integrity pass (step 4b).
+   separation — the produce role is a distinct type (`audit-examiner`), so produce-vs-verify is
+   type-enforced; **verify-vs-confirm is not** (both are `audit-verifier`), and that instance-level
+   property no grant can hold. It rests on orchestrator dispatch discipline, is *checked* against the
+   dispatch ledger at Task G step 1c, and is independently re-audited by the program-integrity pass
+   (step 4b).
 3. **Loop closure (research-plan I1)** — every unit has a produce (A*) and an independent verify (V*)
    by a different instance; every **material** correction has a land (L*) and a landing confirmation
    (LV*) by a third. A clean unit correctly has no landing artifacts — proportional rigor, not a gap.
-4. **Role fit (research-plan)** — no task asks a role past its grant. `audit-editor` (no `WebSearch`)
-   never collects; `audit-verifier` (no `Edit`) never repairs; `audit-auditor` (no web) never opens a
-   source, and its OUT-OF-ROLE escape hatch is stated (step 4b). The one reconciliation — using
-   `audit-verifier` to *produce* the audit — is within its grant and mandate and is flagged, not
-   hidden.
-5. **Gate falsifiability (research-plan I5 / P5)** — every criterion names a failing input: crit 1
-   fails on a missing record (1-pre) or an unlanded correction (1a); crit 2 on a NOT-LANDED row (1b);
+4. **Role fit (research-plan)** — no task asks a role past its grant, and the produce role is now a
+   purpose-built type rather than an overload: `audit-examiner` (no `WebSearch`, no `Edit`) produces
+   audit records under `audit/`; `audit-editor` (no `WebSearch`) never collects; `audit-verifier` (no
+   `Edit`) never repairs; `audit-auditor` (no web) never opens a source, and its OUT-OF-ROLE escape
+   hatch is stated (step 4b). Task 0 creates `audit-examiner` and extends the lint to hold it to the
+   same contract, so the earlier draft's producer/write-scope contradiction (`audit-verifier` scoped
+   to `verification/` being asked to write `audit/`) is gone.
+5. **Gate falsifiability (research-plan P5, D7 floor)** — every criterion names a failing input: crit 1
+   fails on a missing record (1-pre), an unassessed legend-only record (1-pre-b), or an unlanded
+   correction (1a); crit 2 on a NOT-LANDED row (1b);
    crit 3 on a repeated handle (1c); crit 4 on an unanswered Remove/Replace (1d); crit 5 on an
    `UNVERIFIED`/`UNVERIFIABLE` citation under a survivor (1e); crit 7 on any tracked path outside the
    archive (step 2). No absence-of-a-token check remains; the manifests exclude themselves (finding 2).
+   And this is no longer asserted by argument alone: **Task 0 step 1c-gate demonstrates the bespoke
+   record/register-parsing checks (1-pre, 1-pre-b, 1a, 1b, 1d, 1e) on `empty/clean/violating/retry`
+   (plus `verdict-legend`, `citation-unverifiable`, `unanswered-remove`, `escaped-pipe`) fixtures
+   before dispatch** — the D7 floor. Step-2 (working-tree diff) and step-3 (integrity-manifest
+   reconciliation) are scoped out of the record-fixture matrix and exercised by their own mechanisms;
+   `research-gate.ts` is the reference *shape* these checks are modelled on, **not** a runtime backstop
+   (it is never invoked in Task G and cannot parse the P2 layout) — all the demonstrated P2 checks are
+   bespoke.
 6. **Tool-enforcement honesty** — the plan states plainly that *path* scoping of `Write` and
    *instance* separation are **not** tool-enforced; both are dispatch discipline checked at the gate.
    The roles' fail-closed-on-missing-run-dir behavior is a real grant-level property and is named as

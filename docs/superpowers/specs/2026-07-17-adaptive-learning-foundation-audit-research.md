@@ -309,11 +309,15 @@ P4–P6 are the *product* phases that consume that foundation; their detailed sc
 exit criteria live in `ROADMAP.md` — this table is a **forward map, not their authority**. The bridge
 between the two is deliverable 7, **Product Design Inputs**, produced at the end of P3.
 
+**Relation to the V-milestones.** The P-phases are the execution arc *inside* `ROADMAP.md`'s delivery
+steps, not a rival numbering: **P1–P5 advance V2 — Learning Foundations**, and **P6 is the V3 — UX and
+Game Experience** milestone. `phase.md`'s `roadmap_step: 2` (V2) is correct through P5.
+
 | Phase | Workflow / object | Mode | Builds product? | Gate |
 |---|---|---|---|---|
 | **P1 — Evidence foundation** | A — collect & verify | SDD, parallel fan-out + separate verify pass | No | ✅ done — dossiers + verification approved (2026-07-20). Cards detailed below. |
 | **P2 — Load-bearing foundation audit** | B — adversarial audit | SDD, **proportional rigor**: one auditor + one independent verifier per unit; land/confirm only on material defects | No | User reviews per-decision verdicts before P3. Plan: `docs/superpowers/plans/2026-07-20-adaptive-learning-foundation-audit-phase2.md`. |
-| **P3 — Research foundation & product-design inputs** | Synthesis + bridge | Inline + review each deliverable | No | User reviews the 6 deliverables **and** the Product Design Inputs bridge before P4. |
+| **P3 — Research foundation & product-design inputs** | Synthesis + bridge (+ one **bounded** subject-matter top-up: teaching probability/EV/variance/risk intuition — the P1 fit-to-purpose review, 2026-07-21, found P1 holds none, and P4 needs it) | Inline + review each deliverable | No | User reviews the 6 deliverables **and** the Product Design Inputs bridge before P4. |
 | **P4 — Learning product & activity blueprint** | Design | **Owns** curriculum, skill graph, activity taxonomy, per-activity evidence/mastery, session composition, interaction UX, first vertical slice | Designs it | User approves the blueprint and the slice to build. Scope: `ROADMAP.md`. |
 | **P5 — Vertical-slice implementation & learning proof** | Build | 2–3 areas, several activity types, real ProgressStore + mastery, deterministic + adaptive sessions, engine-backed play, basic UX | Builds a slice | Real-player learning-integrity playtests pass before expansion. Scope: `ROADMAP.md`. |
 | **P6 — Product expansion & visual experience** | Build | Full curriculum/activity catalog, legacy-lesson convergence, onboarding/navigation, complete visual system, animation/sound/responsive polish; hosted/multi-user prepared separately | Builds it out | Per-feature QA + milestone QA. Scope: `ROADMAP.md`. |
