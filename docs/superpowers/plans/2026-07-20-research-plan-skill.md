@@ -4,7 +4,22 @@
 > `executing-plans` to run this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for
 > tracking.
 
-**Status: DRAFT — awaiting user approval.**
+**Status: EXECUTED 2026-07-21.**
+
+> **Execution note (2026-07-21 final pass).** A whole-branch review ruled two follow-ups, applied as
+> one change on top of the original execution: (1) the role-contract lint was extended from a
+> path-only check to also police **program-scope residue** as a class (`Adaptive Learning Foundation
+> Audit`, the `Foundation-audit <ROLE>` frontmatter form, `program amendment N`, and hardcoded
+> `_templates/…​.md` paths), growing it from 19 to 40 checks; and (2) the three original role defs were
+> fully scope-neutralized (frontmatter descriptions, identity lines, the amendment-5 budget note, the
+> `_templates/…` verifier path, and the "integrity manifest" assumption), matching the program-neutral
+> `audit-auditor`. The skill also gained three clarity fixes (lint proves *present and conformant on
+> disk*, not *loaded*; the auditor's "No Edit" reworded to "no surgical in-place edit"; the
+> orchestrator named as owner of the per-unit gate artifacts; and a repo-relative-commands caveat).
+> The embedded lint / auditor / skill blocks below were then re-synced byte-for-byte to the shipped
+> artifacts. **The inline expected-output snapshots in Tasks 1–2 capture the ORIGINAL execution run
+> (19-check lint, path-coupled defs) and predate this extension; the embedded code blocks and the
+> shipped defs reflect the final state.**
 
 **Goal:** Ship a phase-neutral `research-plan` skill and its four-role agent set, so a research plan
 cannot dispatch those roles without closing the produce → verify → land → confirm loop the roles
@@ -130,6 +145,31 @@ const ALLOWLIST_ROOT = "journal/raw/_inbox/<run-dir>/";
 // segment character.
 const PHASE_COUPLED = /journal\/raw\/_inbox\/[A-Za-z0-9._-]+\/?/g;
 
+// Program-SCOPE residue: text that states the operating parameters of one specific research
+// program as if they were the role's identity. Neutral roles let the dispatch supply the program
+// name and its parameters. Each pattern is PRECISE enough to catch scope residue without ever
+// matching a legitimate war story — provenance keeps generic words ("Phase 1", "audit",
+// "sufficiency"), so none of those are forbidden here. Scanned over the whole file (frontmatter
+// description AND body). Each entry is a separately load-bearing check.
+const SCOPE_RESIDUE: { pattern: RegExp; label: string }[] = [
+  {
+    pattern: /Adaptive Learning Foundation Audit/,
+    label: "names a specific program (\"Adaptive Learning Foundation Audit\") as the role's identity — the program name is supplied at dispatch, not baked into the role",
+  },
+  {
+    pattern: /Foundation-audit\b/,
+    label: "frontmatter scopes the role to one program (\"Foundation-audit …\") — use the neutral \"Research-program …\" form",
+  },
+  {
+    pattern: /program amendment \d/i,
+    label: "cites a specific program's amendment number — describe the budget/exemption as dispatch-supplied instead",
+  },
+  {
+    pattern: /_templates\/[^\s`]*\.md/,
+    label: "hardcodes a program-specific template path (_templates/….md) that resolves to nothing in a fresh run — name the template the dispatch supplies instead",
+  },
+];
+
 const rawArgs = process.argv.slice(2);
 if (rawArgs.length > 1 || (rawArgs[0] !== undefined && rawArgs[0].startsWith("-"))) {
   console.error("usage: node scripts/research-roles-lint.ts [agentsDir]");
@@ -177,6 +217,14 @@ for (const role of CONTRACT) {
 
   const coupled = body.match(PHASE_COUPLED);
   check(coupled === null, `${role.name}: phase-coupled path(s) present: ${coupled?.join(", ")}`);
+
+  // Program-scope residue. Each pattern is one check so a reintroduced instance flips exactly
+  // one check — the enumeration is positive: every role must be provably free of every residue
+  // class, not merely "no residue was found".
+  for (const { pattern, label } of SCOPE_RESIDUE) {
+    const hit = src.match(pattern);
+    check(hit === null, `${role.name}: program-scope residue — ${label}: ${hit ? JSON.stringify(hit[0]) : ""}`);
+  }
 }
 
 console.log(`research-roles-lint: ${checks} checks over ${CONTRACT.length} roles in ${agentsDir}`);
@@ -226,6 +274,12 @@ git commit -m "feat(research-plan): add role-contract lint for the four research
 
 ### Task 2: Make the three existing role defs phase-neutral
 
+Phase-neutrality is **two** things, and the original execution did only the first: the write **path**
+(Step 1) and the program **scope text** (Step 1b, added in the 2026-07-21 final pass). A role that
+still opens "You are a collector in the Adaptive Learning Foundation Audit" or cites "program
+amendment 5" is coupled to one program even with a neutral write path. Both are now policed by the
+lint's scope-residue class (Task 1).
+
 **Files:**
 - Modify: `.claude/agents/audit-collector.md`
 - Modify: `.claude/agents/audit-editor.md`
@@ -259,6 +313,32 @@ verification-subdirectory scope:
 ```markdown
 Within that directory you write **only new files** under `verification/`.
 ```
+
+- [ ] **Step 1b: Neutralize the program-scope text (2026-07-21 final pass)**
+
+Path-neutral is not scope-neutral. In each of the three defs, neutralize the residue the lint's
+`SCOPE_RESIDUE` class now forbids, letting the program name and its parameters be supplied at
+dispatch. The `audit-auditor` def is the program-neutral model to match.
+
+- **Frontmatter description** — `Foundation-audit <ROLE> role.` → `Research-program <ROLE> role.`
+  (collector, editor, verifier).
+- **Identity line** — "You are a **collector** in the Adaptive Learning Foundation Audit." →
+  "You are a **collector** in the research program named in your dispatch." (and the editor/verifier
+  equivalents). Keep the role noun.
+- **Collector budget note** — "Sufficiency top-ups are exempt from the initial 15-source cap
+  (program amendment 5)" → "Sufficiency top-ups may be exempted from that budget **only** when your
+  dispatch says so". The budget and its exemption are dispatch-supplied, not a fixed amendment.
+- **Verifier record template** — "Write a verification record following
+  `_templates/verification-record-template.md`" → "…following the verification-record template your
+  dispatch names". The concrete `_templates/…` path resolves to nothing in a fresh run.
+- **Integrity-manifest assumption** — collector's "a separate integrity manifest will detect
+  unexplained changes" and editor's "reconciled against the integrity manifest" → an "integrity
+  check may compare your output against a pre-mutation snapshot" phrasing that presupposes no
+  specific named artifact.
+
+Provenance war stories (the `2 of 4 focused passes ran git`, `73 Phase 1 citations`, `g=.05`,
+`four of four sufficiency failures`, `k=2`, the pessimism quote, etc.) are the admission evidence for
+the rules and stay **verbatim** — the lint's residue patterns are precise enough not to touch them.
 
 - [ ] **Step 2: Add the loop's routing contract to the verifier**
 
@@ -328,15 +408,17 @@ program still be broken — Phase 1 ended exactly there.
   boundary is structural. Do not attempt to work around it.
 - **No WebSearch and no WebFetch** — you never open a source. You are not checking evidence, and a
   source you retrieved would tempt you into a verifier's job.
-- **No Edit** — you cannot modify an artifact. You report; repair is another role's hand.
+- **No Edit** — you cannot surgically alter an artifact in place; you write only new records, never
+  rewriting an existing artifact. You report; repair is another role's hand.
+
+## Write-scope boundary
 
 You may write **only** inside `journal/raw/_inbox/<run-dir>/`, where `<run-dir>` is the single
 directory name given in your dispatch. `<run-dir>` is a bare name — it contains no `/` and no `..`.
 If your dispatch supplies anything else, or supplies no run directory at all, stop and report a
 `Blocker`. The inbox root is fixed here and is not something a dispatch can change. Never edit
-product source, specs, plans, the charter, `docs/`, or anything outside that directory.
-
-Within that directory you write **only new files** under `integrity/`.
+product source, specs, plans, the charter, `docs/`, or anything outside that directory. Within that
+directory you write **only new files** under `integrity/`.
 
 ## What you audit
 
@@ -1456,7 +1538,8 @@ deliverable is code.
 
 **Everything in `writing-plans` applies unchanged** — the plan header, File Structure, Task
 Right-Sizing, No Placeholders, Self-Review, Save and Hand Off. Read that skill and follow it. This
-skill adds five sections it has no concept of and changes nothing else.
+skill adds the loop, five primitives (P1–P5), and an ordering constraint it has no concept of, and
+changes nothing else.
 
 ## The loop every research plan must close
 
@@ -1502,11 +1585,20 @@ a general-purpose agent to do their jobs.
 | `audit-verifier` | WebSearch, WebFetch, Read, Write, Glob, Grep | Judges citations and sufficiency; routes remedy | **No Edit** — cannot repair |
 | `audit-auditor` | Read, Write, Glob, Grep | Audits the *process*: did corrections land, were roles separated, do gate checks enumerate | **No web, no Edit** — never touches sources |
 
-**Verify the roles are loaded before planning dispatch:**
+**Verify the roles are present and conformant before planning dispatch:**
 
 ```bash
 node scripts/research-roles-lint.ts
 ```
+
+The lint proves the four defs are **present and conformant on disk** — not that the running session
+has loaded them into its agent registry. Loading happens at session start (see the ordering
+constraint below), so a def edited this session is on disk but not yet dispatchable.
+
+**These commands are repo-relative.** The four role defs (`.claude/agents/`), the lint, and the gate
+live in the **consuming repo** — today that is `blackjack`, its only consumer (design D5; promotion
+to a global location needs a second consumer). Run them from that repo. A reader in another repo
+must not follow `node scripts/…` or `.claude/agents/` paths that resolve to nothing there.
 
 **Two boundaries are NOT tool-enforced.** No tool grant expresses *path scoping* of `Write` or
 *instance separation* of roles. Both are dispatch discipline, checked at the gate. Never write plan
@@ -1573,6 +1665,10 @@ The step whose absence broke a program.
   could be retired by appending a trivial row under its ID.
 - **The ledger's shape is written down.** `scripts/fixtures/research-gate/TEMPLATE-corrections.md`
   is the canonical `corrections.md` example; point every verifier and editor at it.
+- **The orchestrator owns the per-unit gate artifacts.** The roles return rows; the **orchestrator**
+  assembles each unit's `verification.md`, `corrections.md`, and `landing-confirmation.md` from those
+  returned rows (I4). The gate reads files, but no role writes them directly — that assembly is a
+  named orchestrator responsibility, not an unowned step.
 
 ## P5 — Gate criteria with falsifiable procedures
 
@@ -1584,7 +1680,8 @@ always-zero exit status, so the check could never fail), and a gate that certifi
 directory clean. A check whose output cannot vary is untested.
 
 Use `scripts/research-gate.ts` or write a check in its shape. **Every gate check must demonstrate
-the correct verdict on the committed twenty-seven fixtures before the plan is approved:**
+the correct verdict on the reference fixtures under `scripts/fixtures/research-gate/` before the
+plan is approved** — four conceptual categories, each with adversarial variants:
 
 | Fixture | Required verdict |
 |---|---|
@@ -1616,7 +1713,16 @@ the correct verdict on the committed twenty-seven fixtures before the plan is ap
 | `malformed-separator` — header + `\|--\|` + a LANDED row | **FAIL** |
 | `empty-table` — header + separator + zero rows closing an INSUFFICIENT verdict | **FAIL** |
 
-Reference fixtures live in `scripts/fixtures/research-gate/`.
+The first four rows (`empty` / `clean` / `violating` / `retry`) are the four conceptual verdict
+categories every gate check must demonstrate. The remaining rows are the reference implementation's
+adversarial hardening on top of those categories — path traversal, symlink escape, terminal-signal-
+line masking, smuggled signals, and regression locks. Reference fixtures live in
+`scripts/fixtures/research-gate/`.
+
+**Which fixtures a plan must pass:** a bespoke check written "in its shape" must demonstrate at
+minimum the four categories (this is D7's floor). A check that reuses this ledger format — or
+`research-gate.ts` itself — must pass the full suite, since the adversarial rows are how that format
+is known not to silently pass. When in doubt, use `research-gate.ts` and inherit all of them.
 
 ## The ordering constraint — read before you sequence anything
 

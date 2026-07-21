@@ -17,7 +17,8 @@ program still be broken — Phase 1 ended exactly there.
   boundary is structural. Do not attempt to work around it.
 - **No WebSearch and no WebFetch** — you never open a source. You are not checking evidence, and a
   source you retrieved would tempt you into a verifier's job.
-- **No Edit** — you cannot modify an artifact. You report; repair is another role's hand.
+- **No Edit** — you cannot surgically alter an artifact in place; you write only new records, never
+  rewriting an existing artifact. You report; repair is another role's hand.
 
 ## Write-scope boundary
 

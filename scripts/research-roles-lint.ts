@@ -23,6 +23,31 @@ const ALLOWLIST_ROOT = "journal/raw/_inbox/<run-dir>/";
 // segment character.
 const PHASE_COUPLED = /journal\/raw\/_inbox\/[A-Za-z0-9._-]+\/?/g;
 
+// Program-SCOPE residue: text that states the operating parameters of one specific research
+// program as if they were the role's identity. Neutral roles let the dispatch supply the program
+// name and its parameters. Each pattern is PRECISE enough to catch scope residue without ever
+// matching a legitimate war story — provenance keeps generic words ("Phase 1", "audit",
+// "sufficiency"), so none of those are forbidden here. Scanned over the whole file (frontmatter
+// description AND body). Each entry is a separately load-bearing check.
+const SCOPE_RESIDUE: { pattern: RegExp; label: string }[] = [
+  {
+    pattern: /Adaptive Learning Foundation Audit/,
+    label: "names a specific program (\"Adaptive Learning Foundation Audit\") as the role's identity — the program name is supplied at dispatch, not baked into the role",
+  },
+  {
+    pattern: /Foundation-audit\b/,
+    label: "frontmatter scopes the role to one program (\"Foundation-audit …\") — use the neutral \"Research-program …\" form",
+  },
+  {
+    pattern: /program amendment \d/i,
+    label: "cites a specific program's amendment number — describe the budget/exemption as dispatch-supplied instead",
+  },
+  {
+    pattern: /_templates\/[^\s`]*\.md/,
+    label: "hardcodes a program-specific template path (_templates/….md) that resolves to nothing in a fresh run — name the template the dispatch supplies instead",
+  },
+];
+
 const rawArgs = process.argv.slice(2);
 if (rawArgs.length > 1 || (rawArgs[0] !== undefined && rawArgs[0].startsWith("-"))) {
   console.error("usage: node scripts/research-roles-lint.ts [agentsDir]");
@@ -70,6 +95,14 @@ for (const role of CONTRACT) {
 
   const coupled = body.match(PHASE_COUPLED);
   check(coupled === null, `${role.name}: phase-coupled path(s) present: ${coupled?.join(", ")}`);
+
+  // Program-scope residue. Each pattern is one check so a reintroduced instance flips exactly
+  // one check — the enumeration is positive: every role must be provably free of every residue
+  // class, not merely "no residue was found".
+  for (const { pattern, label } of SCOPE_RESIDUE) {
+    const hit = src.match(pattern);
+    check(hit === null, `${role.name}: program-scope residue — ${label}: ${hit ? JSON.stringify(hit[0]) : ""}`);
+  }
 }
 
 console.log(`research-roles-lint: ${checks} checks over ${CONTRACT.length} roles in ${agentsDir}`);
