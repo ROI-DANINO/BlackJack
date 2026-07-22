@@ -113,3 +113,31 @@ target, product-blog + inference grade), not the P1 archive. Do **not** reopen P
 unit (relabel honestly), and a **bounded P3 subject-matter top-up** is scheduled.
 **Why:** P1 was scoped around learning mechanics before the reframe made probability/EV/risk
 first-class *subjects*; a P4 designer must not inherit evidence that is not there.
+
+## 2026-07-22 — Phase 2 approved; Phase 3 run lean and banked with known defects
+
+**Chose:** approve the Phase 2 verdicts and close the phase; keep the P1–P6 sequence but drop the
+multi-agent apparatus for Phase 3; fold the charter's seven P3 deliverables into one Product Design
+Inputs bridge; stop the Phase 3 polish pass with ten specified corrections unapplied.
+**Why:** P3 and P4 are *design* phases, not more auditing — skipping them would mean improvising the
+curriculum, which is the hard part of a learning product. But the role-separated apparatus exists to
+guard against fabricated citations, a risk new collection carries and translation-into-design does
+not. Two phases had produced verdicts rather than product; the value of another polish round was below
+the value of reaching Phase 4 with an honestly-labelled evidence base. The cost is recorded where it
+cannot be missed: the archive README and the bridge both enumerate every unfixed defect and the one
+known-missing study, and every bridge input is tagged verified / unverified / defective-source.
+
+## 2026-07-22 — CFL-007 resolved: block to introduce, interleave to practise
+
+**Chose:** a Basic Strategy category may be introduced in isolation so the concept lands; once
+introduced, **all** practice and review draws from a mixed pool and the learner must classify the hand
+before choosing an action. Mixed review is the steady state, not a final stage. The roadmap's
+"hard totals → hard doubles → soft totals → pairs/splits, then mixed review" is revised accordingly in
+Phase 4, which owns sequence design.
+**Why:** the project's own held evidence has interleaved practice beating blocked 72% vs 38% (d=1.05)
+on a choose-the-right-strategy task, and the mechanism the authors name — discrimination between
+problem kinds — is exactly what basic strategy is. Blocked practice removes the discrimination step:
+inside a block labelled "hard totals," classification is free. Full interleaving from lesson one was
+rejected because the transfer (grade-7 maths → adult blackjack) is untested and removing the on-ramp
+bets the beginner experience on it. Recorded as playtest item P-3; if learners handle full mixing,
+widen it.
