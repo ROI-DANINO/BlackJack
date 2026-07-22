@@ -101,6 +101,54 @@ The envelope and shared state are plain serializable data mirrored by hand-autho
 Rust-emitted golden fixtures, runtime validation, and compile-time contract tests. Every new wire
 variant must extend that evidence in its own feature plan.
 
+## Banked evidence for future triggers
+
+Evidence gathered **before** a trigger fires, so a later admission is not decided under pressure.
+None of this admits anything. Nothing below is a decision.
+
+### Mobile runtime (trigger not fired)
+
+Scan 2026-07-23, 24 sources opened; record `journal/raw/_inbox/2026-07-23-mobile-stack-scan.md`.
+
+- **The best-evidenced "shared Rust core, native UI" production example is Element X** — one Rust
+  core (`matrix-rust-sdk`) exposed via UniFFI, with fully native SwiftUI and Jetpack Compose UIs.
+  That is the shape this project already has, which means the **UI is expected to be rewritten per
+  platform and the core is not.**
+- **Comparable learning/content apps ship fully native per platform.** Duolingo, Brilliant, and
+  Reddit showed no cross-platform framework, shared compiled core, or webview shell in any source
+  opened. Sourcing is uneven and must not be overstated: Duolingo's *current iOS* architecture is
+  unsourced, Brilliant rests on one job posting, and Reddit's own domains were unreachable (nothing
+  newer than April 2025).
+- **Watch, do not bet on:** `uniffi-bindgen-react-native` (v0.31.0-3, 2026-05-28) now emits a
+  `wasm-bindgen` crate *alongside* native mobile bindings — one binding set spanning web and mobile
+  from the same Rust core. Still 0.x with three small named users.
+- **Two negatives that matter more than the positives.** Tauri v2's *mobile* production users are
+  **completely unestablished** — the names in circulation are desktop-first products sourced only
+  from a search summary. UniFFI's own documentation makes **no** production-readiness claim and names
+  **no** users; its credibility rests on observed usage, not self-declaration.
+- **Design consequence available today at zero cost:** keep learning logic in plain TypeScript
+  modules rather than inside React components, so logic survives a UI platform change. This is the
+  only part of the mobile question that constrains present work.
+
+The trade-off to carry into the eventual gate: the **proven** pattern is expensive (an additional
+native UI codebase per platform); the **cheap** patterns are unproven.
+
+## Corrections to the record
+
+- **`idb` 8.0.3 is now installed** in `web/package.json` `dependencies` (observed 2026-07-23). The
+  "Storage and hosted services" section above says the application dependency is not installed yet;
+  that sentence is stale. The **conditional** part of the admission is unchanged and still
+  outstanding: the first slice that ships a real consumer must measure the production bundle delta,
+  and a material unacceptable delta reverses the choice to native IndexedDB.
+- **Bun is written in Rust, not Zig**, as of Bun's own "Rewriting Bun in Rust" post (2026-07-08),
+  corroborated by the README on `main`. Recorded only to keep the record accurate — Bun is not
+  admitted, is not a candidate for any active task, and this changes nothing. Relevant only if the
+  future backend trigger fires, where Bun is one of several listed candidates.
+- **The Rust rewrite of SQLite is "Turso Database"** (formerly codenamed Limbo). Its own README
+  (v0.7.1, 2026-07-22) claims named production deployments while declining a 1.0 and advising
+  independent backups; older secondary sources still say "not production ready." Not a candidate for
+  any active task.
+
 ## Revising a current result
 
 The current roster may change whenever an active task passes the gate. A later mobile runtime,

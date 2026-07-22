@@ -41,11 +41,35 @@ relying on any of F15–F20, read that record. Specifically:
 - **F19** — the verbatim quote is real, but the dossier glosses it as "the field has no controlled
   experiments" while the same review cites two. **Also pessimistic.**
 
-**One study is known missing.** Floyd, Whelan & Meyers (2006), *Psychology of Addictive Behaviors*
-20(1), 69–74, **PMID 16536667** — a randomised controlled trial of instruction on irrational gambling
-beliefs, reporting positive effects on beliefs *and* on play. The collector claimed no such study
-existed; the verifier found it at a PMID **one greater** than a paper already cited in the dossier —
-same journal, same issue, immediately following pages.
+**One study was known missing — it has since been retrieved, and it is not what this page said it
+was.** Floyd, Whelan & Meyers (2006), *Psychology of Addictive Behaviors* 20(1), 69–74,
+**PMID 16536667**. The collector claimed no such study existed; the verifier found it at a PMID **one
+greater** than a paper already cited in the dossier — same journal, same issue, immediately following
+pages.
+
+**RESOLVED 2026-07-23 (record: `journal/raw/_inbox/foundation-audit-p3/C8-floyd-2006.md`).** Both this
+page and the bridge spec described it as *"a randomised controlled trial of instruction on irrational
+gambling beliefs, positive on beliefs and play."* Its actual title is **"Use of warning messages to
+modify gambling beliefs and behavior in a laboratory investigation."** It is a lab study of **warning
+messages during simulated roulette played for imaginary money**: N=120 undergraduates, randomised
+against an *active* control that received a history-of-roulette lesson (no untrained arm). The
+treatment **bundles** pre-play education with in-play warning messages, so it cannot separate teaching
+from cueing-at-the-moment-of-decision. The behavioural outcome, "less risky gambling behavior," is
+in-session, imaginary-stakes, single-occasion, with no follow-up, and is never operationally defined
+in the abstract. Full text is closed-access; nine retrieval routes failed, so **the record is
+abstract-only and labelled as such**.
+
+**Consequence: it does not overturn §1.7 of the bridge spec.** A one-session lab endpoint on play
+money does not refute a six-month real-behaviour null. G5/§2.5 remains OPEN, but the "it may well cut
+the other way" framing was not supported and has been corrected in the bridge spec. The outstanding
+task, if ever pursued, is full text via institutional access to recover the operational definition of
+"less risky gambling behavior" — the one unknown that could still move the verdict.
+
+**The process point worth keeping:** this is the *third* absence-or-characterisation claim in this
+program to collapse on independent re-checking. Here the paper's *existence* was correctly flagged by
+the verifier, but its *content* was then described by two separate documents without anyone opening
+it — a citation inherited twice. That is this program's founding error class, appearing again in a
+place nobody had marked as risky.
 
 **Sufficiency:** G1 closed · G2 closed · G3 **evidenced absence** (do not re-collect) · G4, G5, G6
 **open**.

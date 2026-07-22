@@ -30,9 +30,14 @@ stopped (user decision, 2026-07-22) in favour of reaching design. What that cost
 - **Two of those defects run pessimistic** — the dossier understates its own evidence (a quote
   truncated just before the sample size the paper does print; a review glossed as having "no
   controlled experiments" when it cites two).
-- **One known-missing study**: Floyd, Whelan & Meyers (2006), PMID 16536667 — a randomised
-  controlled trial of instruction on irrational gambling beliefs, positive on beliefs *and* play. It
-  is not in the dossier. It bears on §2.5.
+- ~~**One known-missing study**: Floyd, Whelan & Meyers (2006), PMID 16536667 — a randomised
+  controlled trial of instruction on irrational gambling beliefs, positive on beliefs *and* play.~~
+  **RETRIEVED AND CORRECTED 2026-07-23.** The description above was wrong — inherited, never checked
+  against the paper. It is *"Use of warning messages to modify gambling beliefs and behavior in a
+  laboratory investigation"*: simulated roulette, imaginary money, N=120 undergraduates, active
+  control, education bundled with in-play warnings, in-session endpoint with no follow-up.
+  **It does not overturn §1.7.** See §2.5 and
+  `docs/superpowers/research/foundation-audit-p3/README.md`.
 - Sufficiency stands at **G1 closed; G2 closed; G3 evidenced-absence; G4, G5, G6 open.**
 
 **Rule for Phase 4:** anything below marked `[VERIFIED]` was independently checked against the opened
@@ -160,10 +165,26 @@ EV reasoning.** The follow-up shares authors with the original and evaluates the
 Prevalence is strongly established, including in the field (real casino patrons, own money).
 Correction is thinly evidenced.
 
-### 2.5 Randomness instruction — **OPEN, with a known-missing source**
-See §0: Floyd et al. (2006) is a randomised controlled trial reporting positive effects on both
-beliefs and play, and it is **not in the dossier**. Before Phase 4 designs anything resting on
-"teaching randomness doesn't change behaviour," **open that paper.** It may well cut the other way.
+### 2.5 Randomness instruction — **OPEN** (the missing source has been opened; it does not close it)
+**Corrected 2026-07-23.** This section previously said Floyd et al. (2006) was an RCT positive on
+beliefs *and* play, and that it "may well cut the other way." **Both claims were wrong**, and neither
+came from the paper — the characterisation was inherited from a verification record and repeated here
+without anyone opening the source.
+
+What it actually is: warning messages shown during **simulated roulette played for imaginary money**,
+N=120 undergraduates, randomised against an active history-of-roulette control. Pre-play education and
+in-play warnings are **bundled**, so it cannot distinguish *teaching* from *reminding at the moment of
+decision* — and the second is not what §1.7 is about. The endpoint is in-session, single-occasion, no
+follow-up, never operationally defined in the abstract. Access achieved: **abstract only** (closed
+access; nine retrieval routes failed).
+
+**Ruling: §1.7 stands.** A one-session lab result on play money does not refute a six-month
+real-behaviour null. §2.5 stays OPEN because nothing has *positively* established that randomness
+instruction changes play — not because a contrary finding is waiting to be read. Phase 4 may design on
+§1.7 as written.
+
+*Reopening condition:* full text via institutional access, to recover the operational definition of
+"less risky gambling behavior." That single unknown is the only thing that could move this verdict.
 
 ---
 
