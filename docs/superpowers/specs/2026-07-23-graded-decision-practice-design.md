@@ -140,23 +140,57 @@ Attempts where the oracle returns `null` are re-dealt and record nothing.
 
 ## 5. Evidence model
 
-One decision produces one `DecisionAttempt`. Deliberately **not** the prototype's `AttemptRecord`,
-whose `outcomeId` means "skill" while sitting one field away from `engine.outcomes` meaning
-win/loss/push. PROGRESS flags that collision and directs a rename rather than a re-derivation.
+> **CORRECTED 2026-07-23, before implementation.** This section originally specified a new
+> `DecisionAttempt` type. **That was wrong: the record already exists.** `web/src/progress/types.ts`
+> defines `ProgressAttempt`, and it already carries almost everything specified below — including the
+> two fields this design treated as novel. Defining a parallel type would have produced a *third*
+> record shape for the same evidence. The corrected design is: **this slice produces
+> `ProgressAttempt` values.** The original field list is kept below only as the requirements it must
+> satisfy.
+>
+> This is the same error the slice exists to fix — designing a shape without checking what was
+> already built — caught here by reading the code before planning rather than after.
+
+**The durable record is `ProgressAttempt`** (`web/src/progress/types.ts`), already designed,
+type-tested, and covered by the 14-gate contract suite. What it already provides:
+
+| Requirement | Already in `ProgressAttempt` |
+|---|---|
+| skill id, renamed from `outcomeId` | `evidence.skillId` — *"Today's `outcomeId`, renamed"* |
+| table open vs closed | `tableVisibility: 'open' \| 'hidden' \| 'not-applicable'` |
+| graded by the oracle, profile pinned | `gradedBy: { authority: 'oracle', profileId }` |
+| decision correct / incorrect | `disposition` — a union that also expresses *ungraded* and *abandoned* |
+| hand outcome, never an input | `engine.outcomes` |
+| identity & ordering | `attemptId`, `committedAtRevision`, `learnerKey`, `sessionId`, `occurredAt` |
+| honest assistance | `assistance` |
+| shoe traceability | `engine.seed`, `playerCardIds`, `dealerUpcardId`, `legalActions` |
+
+Two notes on fit:
+
+- **`errorClass` already includes `'outcome-bias'`** — the taxonomy anticipated this activity.
+- **Confidence is the one genuine gap.** No field exists for it, because P-5 was not in view when
+  that schema was written. It is added as an optional top-level `confidence: number | null`, which
+  is free right now: `schemaVersion` is 1, there are **zero persisted learners**, and no consumer
+  exists. It goes top-level rather than inside the opaque `response` because it is a property of the
+  *attempt*, not of the response content, and P-5 must be answerable without parsing activity-owned
+  JSON.
+
+The chosen action and the oracle's action go in `response` (activity-owned, per ALR-008); the
+classification step is a separate `ProgressAttempt` with `kind: 'classification'`.
+
+**Original requirement list, retained as the acceptance target:**
 
 ```
-DecisionAttempt {
-  id, learnerKey, sessionId, timestamp, schemaVersion   // identity
-  skillId                       // renamed from outcomeId
-  profileId                     // 'h17' | 's17'  — pinned
-  seed, playerCardIds, dealerUpcardId, legalActions
-  classification { asked, response, correct }
-  decision { chosen, oracle, correct }
-  confidence                    // 1–5, captured pre-reveal
-  handOutcome                   // recorded. never an input.
-  tableOpen                     // strategy table visible? assisted vs independent
-  assistance                    // only what was actually delivered
-}
+identity          attemptId, learnerKey, sessionId, occurredAt, schemaVersion
+skillId           renamed from outcomeId
+profileId         'h17' | 's17'  — pinned
+engine facts      seed, playerCardIds, dealerUpcardId, legalActions
+classification    asked, response, correct
+decision          chosen, oracle, correct
+confidence        1–5, captured pre-reveal
+handOutcome       recorded. never an input.
+tableOpen         strategy table visible? assisted vs independent
+assistance        only what was actually delivered
 ```
 
 **Identity fields.** Today's record has no id, timestamp, schema version, or learner key, so two
