@@ -1,7 +1,14 @@
 # Adaptive Learning Foundation Audit — Research Program
 
 > Status: **APPROVED 2026-07-19** (drafted 2026-07-17, amended 2026-07-19 before approval).
-> Phases 2–3 are named pointers, detailed at their gate.
+> The phase map now runs **P1–P6** (research P1–P3 + product P4–P6); P2–P3 are detailed at their gate,
+> P4–P6 are a forward map whose scope authority is `ROADMAP.md`.
+>
+> *2026-07-21 amendment (user-directed, DRAFT — pending approval with the Phase 2 plan revision):
+> extended the phase map from P1–P3 to **P1–P6** to make the research→product direction explicit;
+> added deliverable **7, Product Design Inputs**, as the bounded P3→P4 bridge; recorded that **P4 owns
+> curriculum and activity design**. Phase 2 itself is re-scoped to a proportional-rigor, load-bearing
+> audit in its own plan. These additions are DRAFT until approved alongside that plan.*
 >
 > *2026-07-19 amendments (pre-approval): added a Phase 1 depth budget; made UNVERIFIED a transient
 > state with a defined resolution path and a no-UNVERIFIED-at-gate rule; gave the load-bearing
@@ -257,10 +264,11 @@ goal is **which conclusions survive scrutiny**, reporting both what fails and wh
 each audited item recommend one of: **Preserve · Relabel · Revise · Replace · Remove**. An
 unsupported *product judgement* is not a defect — presenting judgement *as evidence* is.
 
-## Deliverables (6)
+## Deliverables (6 + the product-design bridge)
 
-All land in `docs/superpowers/specs/` under **research-evidence-only** authority. Each uses the
-two-layer classification verbatim.
+The six research deliverables land in `docs/superpowers/specs/` under **research-evidence-only**
+authority; each uses the two-layer classification verbatim. The seventh, **Product Design Inputs**, is
+the bounded P3→P4 handoff added 2026-07-21 (see below).
 
 1. **Evidence Summary** — verified findings only, each with provenance + status bucket + supporting
    location. UNVERIFIED/UNVERIFIABLE items are listed separately and excluded from conclusions.
@@ -281,17 +289,38 @@ two-layer classification verbatim.
    **Confirm · Revise · Reconsider · Remove**, with the reason. These are *candidates*; adoption is a
    separate approval.
 
+**7. Product Design Inputs — the P3→P4 bridge.** *Added 2026-07-21.* Translates the approved research
+conclusions into **bounded inputs** for the product-design phase (P4): confirmed learning principles;
+unresolved product assumptions; mastery and progression constraints; session and adaptation
+constraints; activity-evidence requirements; AI-authority boundaries; accessibility constraints; and
+the decisions that need **playtesting rather than more research**. It is a handoff, not a design — it
+**must not** author the curriculum or the activity catalog (that is P4). Its purpose is to make P4
+possible without reopening P1–P3.
+
 ## Phase map
 
 Execution engine: **SDD orchestration** — the orchestrating session holds the baton, dispatches
 subagents, and **gates at every phase boundary**. No autonomous Workflow run; no phase begins until
 the prior phase's output is reviewed.
 
-| Phase | Workflow | Mode | Detail state | Gate |
+**Research → product.** P1–P3 are the *research* program this charter governs: they establish a
+**trustworthy, usable foundation for designing** the learning product — they do **not** build it.
+P4–P6 are the *product* phases that consume that foundation; their detailed scope, milestones, and
+exit criteria live in `ROADMAP.md` — this table is a **forward map, not their authority**. The bridge
+between the two is deliverable 7, **Product Design Inputs**, produced at the end of P3.
+
+**Relation to the V-milestones.** The P-phases are the execution arc *inside* `ROADMAP.md`'s delivery
+steps, not a rival numbering: **P1–P5 advance V2 — Learning Foundations**, and **P6 is the V3 — UX and
+Game Experience** milestone. `phase.md`'s `roadmap_step: 2` (V2) is correct through P5.
+
+| Phase | Workflow / object | Mode | Builds product? | Gate |
 |---|---|---|---|---|
-| **P1** | A — collect & verify | SDD, parallel fan-out + separate verify pass | **Detailed below** | User reviews dossiers + verification before P2. |
-| **P2** | B — adversarial audit | SDD, adversarial panel | Named pointer — detailed at its gate | User reviews audit verdicts before P3. |
-| **P3** | Synthesis | Inline + review each deliverable | Named pointer — detailed at its gate | User reviews each of the 6 deliverables. |
+| **P1 — Evidence foundation** | A — collect & verify | SDD, parallel fan-out + separate verify pass | No | ✅ done — dossiers + verification approved (2026-07-20). Cards detailed below. |
+| **P2 — Load-bearing foundation audit** | B — adversarial audit | SDD, **proportional rigor**: one auditor + one independent verifier per unit; land/confirm only on material defects | No | User reviews per-decision verdicts before P3. Plan: `docs/superpowers/plans/2026-07-20-adaptive-learning-foundation-audit-phase2.md`. |
+| **P3 — Research foundation & product-design inputs** | Synthesis + bridge (+ one **bounded** subject-matter top-up: teaching probability/EV/variance/risk intuition — the P1 fit-to-purpose review, 2026-07-21, found P1 holds none, and P4 needs it) | Inline + review each deliverable | No | User reviews the 6 deliverables **and** the Product Design Inputs bridge before P4. |
+| **P4 — Learning product & activity blueprint** | Design | **Owns** curriculum, skill graph, activity taxonomy, per-activity evidence/mastery, session composition, interaction UX, first vertical slice | Designs it | User approves the blueprint and the slice to build. Scope: `ROADMAP.md`. |
+| **P5 — Vertical-slice implementation & learning proof** | Build | 2–3 areas, several activity types, real ProgressStore + mastery, deterministic + adaptive sessions, engine-backed play, basic UX | Builds a slice | Real-player learning-integrity playtests pass before expansion. Scope: `ROADMAP.md`. |
+| **P6 — Product expansion & visual experience** | Build | Full curriculum/activity catalog, legacy-lesson convergence, onboarding/navigation, complete visual system, animation/sound/responsive polish; hosted/multi-user prepared separately | Builds it out | Per-feature QA + milestone QA. Scope: `ROADMAP.md`. |
 
 ### Phase 1 — cards (detailed)
 
