@@ -1,8 +1,8 @@
 # Graded Decision Practice — Phase 4 first slice
 
-> **Status: DESIGN, awaiting approval.** Phase 4 of the adaptive-learning arc, bounded to one
-> activity type. Designs from `docs/superpowers/specs/2026-07-22-product-design-inputs.md`
-> without reopening Phases 1–3.
+> **Status: APPROVED 2026-07-25** (owner, as-is; recorded in `journal/decisions.md`). Phase 4 of
+> the adaptive-learning arc, bounded to one activity type. Designs from
+> `docs/superpowers/specs/2026-07-22-product-design-inputs.md` without reopening Phases 1–3.
 >
 > **Authority:** this document owns the graded-decision activity, its evidence record, and its
 > practice pool. It does **not** own the skill graph, the activity taxonomy, session composition,
@@ -298,16 +298,20 @@ variants rotate so the pool cannot be learned by position.
 <!-- wl:criteria -->
 ## Acceptance criteria (four elements)
 
-1. **Complete** — a learner is dealt a hand from a real shoe, classifies it, chooses freely from
+> Element mapping added at approval (2026-07-25). The criteria themselves are unchanged from the
+> authored design; only the element each one discharges is named, so the craft judge can measure
+> against them.
+
+1. **Complete — Fire** — a learner is dealt a hand from a real shoe, classifies it, chooses freely from
    legal actions, rates confidence before any reveal, and receives a grade computed by
    `basic_strategy_action` over the wire; the attempt persists through `ProgressStore` and is
    readable in a later session.
-2. **Honest** — decision-correctness is never derived from `handOutcome`; confidence never enters a
+2. **Honest — Water** — decision-correctness is never derived from `handOutcome`; confidence never enters a
    progress figure; assistance is recorded only when delivered; no strategy answer is ever produced
    by TypeScript. Each is asserted by a test, not by convention.
-3. **Bounded** — one activity type. No skill graph, no activity taxonomy, no curriculum sequence, no
+3. **Bounded — Air** — one activity type. No skill graph, no activity taxonomy, no curriculum sequence, no
    mastery declaration, no gating or unlocks, and no change to the existing `learn/` prototype.
-4. **Answerable** — the recorded evidence is sufficient to answer P-3 and P-5 from data alone,
+4. **Answerable — Earth** — the recorded evidence is sufficient to answer P-3 and P-5 from data alone,
    without further instrumentation.
 <!-- /wl:criteria -->
 

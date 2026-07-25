@@ -53,7 +53,7 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | journal/ops/sessions/ | /wl-end handoff files (history). |
 | journal/context/next.md | Cheap cross-chat bridge (`/wl-next`); consumed + reset by `/wl-end`. |
 | journal/decisions.md | ADR sink — terse "why we chose X", appended by `/wl-end` at milestones. |
-| journal/memory/ | Recall index + atomic fact files. |
+| journal/memory/ | Recall index + atomic fact files for **project/phase** facts (this repo's work). Cross-cutting user/feedback/environment facts live in the **global store** (`~/.claude/projects/-home-roking-Desktop-Projects-blackjack/memory/`), which auto-loads every session. Two stores by role, not by accident; a `[[wikilink]]` resolves in-repo only, so name the global store inline when pointing at it. |
 | journal/raw/ | Local inbox for unprocessed raw imports; fold useful details into owned docs before relying on them. |
 | docs/imports/initial-product-notes/ | Indexed original pre-init source notes and their folded destinations. |
 | docs/imports/v2-research-2026-07-11/ | Indexed V2 research imports, dispositions, and folded destinations; not authoritative over owned docs. |

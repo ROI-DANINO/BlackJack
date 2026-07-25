@@ -141,3 +141,21 @@ inside a block labelled "hard totals," classification is free. Full interleaving
 rejected because the transfer (grade-7 maths → adult blackjack) is untested and removing the on-ramp
 bets the beginner experience on it. Recorded as playtest item P-3; if learners handle full mixing,
 widen it.
+
+## 2026-07-25 — Graded Decision Practice design approved as-is
+
+**Chose:** approve `docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md` **as-is**,
+unblocking its 11-task plan. Approved with the design's judgement calls explicitly in view: *16 vs 10*
+stays in the launch pool; `confidence` is added now as a top-level schema field; the slice declares
+only the `skillId` values its own pool needs; retention is uncapped; and a second progression concept
+alongside the prototype's `requiredChecks` is accepted debt.
+**Why:** the approval act itself was the gap. The plan cited the spec as "(approved, `d10e8d3`)", but
+`d10e8d3` is the spec's **own authoring commit** — a circular citation, and no approval existed
+anywhere: no `decisions.md` row, no session file after `2026-07-22T2203`. The design commit recorded
+only four scoped owner rulings made *during* drafting, which is participation, not approval. Rather
+than infer approval from a document's claim about itself — this program's founding error class — the
+spec was read in full and ruled on. This row is now the approval; the spec header and the plan both
+point here instead of at the authoring commit. One defect fixed at approval: the acceptance-criteria
+block was labelled "four elements" but named Complete / Honest / Bounded / Answerable with no mapping;
+the criteria text is unchanged and each now names the element it discharges (Fire / Water / Air /
+Earth).

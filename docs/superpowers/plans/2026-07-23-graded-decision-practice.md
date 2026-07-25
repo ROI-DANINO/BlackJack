@@ -18,7 +18,10 @@ port — giving both orphaned foundations their first real consumer.
 Playwright, `idb` 8.0.3. No new language, runtime, database, or boundary — the Tool & Runtime
 Admission Protocol does not fire.
 
-**Spec:** `docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md` (approved, `d10e8d3`)
+**Spec:** `docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md` — **approved as-is by
+the owner 2026-07-25**, recorded in `journal/decisions.md`. (This line previously cited `d10e8d3` as
+the approval; `d10e8d3` is the spec's own authoring commit, so that citation was circular — no
+approval act existed at the time the plan was written.)
 
 ## Global Constraints
 
