@@ -159,3 +159,51 @@ point here instead of at the authoring commit. One defect fixed at approval: the
 block was labelled "four elements" but named Complete / Honest / Bounded / Answerable with no mapping;
 the criteria text is unchanged and each now names the element it discharges (Fire / Water / Air /
 Earth).
+
+## 2026-07-25 — Phase 4 is design and mostly unbuilt; the motivation economy is an owner premise
+
+**Chose:** treat the Graded Decision Practice approval as **one of Phase 4's eight deliverables, not
+the end of Phase 4.** The seven undesigned ones — skill graph and prerequisites, learning outcomes,
+activity taxonomy, which activity measures which capability, per-activity evidence and mastery rules,
+session composition, interaction UX — remain open, and the approved spec defers them explicitly in
+its §9. The board's `GD-01`–`GD-11` cards implement that one approved slice and are therefore
+**P5-shaped execution work**, held in Ready and deliberately not started.
+**Why:** after the board was shaped, the phase pointers had begun to read as "P4 approved, execute" —
+which would have run an eleven-task build with no curriculum, progression, or session shape behind
+it. The charter splits **P4 = Design** from **P5 = Build** (`ROADMAP.md:110-111`), and P4's gate is
+"User approves the blueprint **and the slice to build**"
+(`2026-07-17-adaptive-learning-foundation-audit-research.md:321`). One slice is approved; the
+blueprint is not. Caught by the owner asking whether P4 was not a design phase.
+
+**Chose:** the product's motivation system **is** an XP-and-chips economy, taken as an **owner
+premise** for Phase 4 design rather than reopened as a question. Chips are **earned by completing
+lessons and units** and are **spent only in Free Play**; learning activities never cost the learner
+chips. The product is "learn to earn table time," never "buy chips to play." Playability and
+learnability are **co-equal priorities that feed each other** — fun comes from competence at a
+genuinely hard game, and competence is what the learning delivers — so the economy is an *instrument*
+of that reciprocal loop, not the motivation itself.
+**Why:** the constraint text does not forbid this, and a prior session reading of it as a ban was
+wrong. `product-vision.md:27` forbids a product **"centered on** chips, bankroll, or casino fantasy";
+`ROADMAP.md:76` puts **"chips-first** gameplay" out of V1 scope; `ROADMAP.md:130` lists "rank/XP
+systems" among **V2** non-goals under a section that then says each V2 feature gets its own design
+cycle when it becomes active; and V3's likely scope already names "progression, rank/mastery
+presentation." None of that bans an economy — they fence chips-as-the-point and defer XP. Positively,
+`product-vision.md:78` states motivation "should reward practice, comprehension, and improving
+decision quality," which chips-earned-by-learning implements directly. The engine already carries the
+mechanism: `bankroll` is first-class (`bankroll_before/after/delta`) and split/double legality is
+already gated on `bankroll_available` (`rules.rs:92,103,111`); Free Play has an economy today with no
+source for it.
+
+**Chose:** record the four problems the premise opens as **the design work itself**, not as settled:
+(1) whether Free Play **returns** chips on a won hand — if it does, the loop self-funds and the
+product rewards *outcome*, the exact thing the learning design decouples (§1.3, and P-1 is the
+load-bearing playtest question); if it does not, Free Play stops being a real bankroll simulation,
+against the vision's "training for a real table"; (2) whether "empty wallet → go learn" is a healthy
+loop or a free-to-play energy gate, given `product-vision.md:79-80` forbids encouraging loss chasing
+and punishing a learner for ending a session; (3) how XP (rewards showing up) stays separate from
+mastery (computed from recorded decision evidence, bridge §3/§5) when §1.5 warns the *feeling* of
+progress rises whether or not skill does — and which of the two gates content; (4) how the
+reciprocity is designed for rather than assumed.
+**Why:** the premise is the owner's to set and is now set. What is not settled is the system that
+implements it without violating the four motivation prohibitions, and naming these as open keeps a
+later session from mistaking the premise for a finished design.
