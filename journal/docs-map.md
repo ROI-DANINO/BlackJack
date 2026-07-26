@@ -79,6 +79,7 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | docs/superpowers/research/evidence-index/ | **Navigation index over the research archives** — every finding, requirement, verdict, and unlanded correction, with its archive locus. A pointer layer, never a warrant: its README states the citation rule. Cite findings from here; verify against the archive. |
 | docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md | The chips/XP/rating motivation model as an owner premise, with open questions `E-1`–`E-7` and the constraints that bind them. Not a design and not a research conclusion. |
 | docs/superpowers/plans/2026-07-26-repo-restructure.md | The layers-and-phases restructure: why, the decisions taken, the four stages, and what must not break in the White Lotus machinery. The resume point while it runs. |
+| docs/superpowers/audits/2026-07-26-restructure-review.md | Independent adversarial review of the restructure against the owner's sufficiency criterion — can the plan be followed literally without improvising. Verdict **not yet**, with F1–F18 and a shortest-path-to-yes. Authoritative for what the restructure still owes. |
 
 Two authoritative surfaces live outside this repository and therefore carry no table row (the
 manifest lint resolves first cells as repo-relative paths):
