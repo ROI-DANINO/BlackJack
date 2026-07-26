@@ -225,3 +225,43 @@ superseded in spirit and deleted in fact. An independent review caught the loss.
 survives anywhere else, and a session-composition design that reinvents early coaching would have
 nothing to stop it. Recorded here rather than re-inserted into ROADMAP because they are decisions,
 not scope, and `journal/decisions.md` is the ADR sink.
+
+## 2026-07-26 — Two commits closed as deliberately uncarded, and the drift window's blind spot
+
+**Chose:** record `c09e2c6` and `e4c91d2` as **deliberately uncarded work**, and attach them to no
+card. `kanban.ts`'s commit-drift probe flags both as "matches no card Evidence"; both flags are
+correct and neither is repairable by attaching evidence.
+
+- `c09e2c6` ("pave LDB-02, wire the tripwire, close the session") is a **board-write artifact**. It
+  contains the write that produced the current board, so it is timestamped *after* the very
+  `Updated:` values the drift window is anchored to (board written `02:37:23Z`, commit at
+  `05:42:43+03:00`). It also touched `AGENTS.md`, `ROADMAP.md`, two specs and
+  `scripts/check-doc-drift.sh`, so it is not `journal/`-only and misses the bookkeeping exemption.
+  Any commit that lands a board write alongside authority-document edits will flag the same way.
+- `e4c91d2` is a **verbatim derived-port regen** of `scripts/kanban.ts` from workspace `be2de4b`.
+  Tooling sync, never card work.
+
+**Why:** all eight LDB cards read `Evidence: pending` — nothing on this board has started. There is
+no card either commit belongs to, and minting one to absorb them would put fabricated evidence in
+the field the audit rules exist to protect. The honest disposition is a record, not a card.
+
+**Chose:** record, as a known defect in the tooling rather than in this repo, that the commit-drift
+window **anchors to the maximum card `Updated:` timestamp** (`kanban.ts:783-792`). The next board
+write — starting `LDB-02` — moves that anchor to now, and both commits leave the window and stop
+being reported.
+
+**Why:** the drift clears itself whether or not anyone decided anything, and **genuinely** uncarded
+feature work would disappear on exactly the same mechanism. That is this project's own
+absence-as-proof failure class (`AGENTS.md` §Evidence discipline, rule 3) living inside the check
+that is supposed to catch uncarded work. Not repaired here: `scripts/kanban.ts` is a derived port
+and is never patched in this repo. Fix belongs upstream in the workspace desk.
+
+**Chose:** treat the HIGH `stale-pointer` on `journal/memory/_fact.md:7` as a **linter false
+positive** and silence it locally with the linter's own D9 code-span escape (backtick-wrapping the
+`[[their-filename]]` placeholder).
+
+**Why:** `_fact.md` is the memory **template stub**, not a memory fact; its placeholder link is
+designed never to resolve. `check_links()` in `workspace/scripts/wl-lint.sh:78-94` iterates
+`$MEM_DIR/*.md` and skips only `index.md`, so it lints the template every session. The real fix —
+skipping `_*.md` stubs — is a workspace-desk change. `journal/memory/` is gitignored, so the local
+edit is untracked and this entry is its only record.
