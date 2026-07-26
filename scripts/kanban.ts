@@ -3,14 +3,13 @@
 // DERIVED PORT — DO NOT PATCH HERE.
 //
 //   Source:  ~/Desktop/Projects/workspace/scripts/kanban.ts
-//   Commit:  85a4fda536614394a0b458c9f261c20b63dbbfb1
-//   Ported:  2026-07-18 (White Lotus initiation, step 3)
+//   Commit:  be2de4b9a4808ed9957ab3f8ffa352d49e1c4433
+//   Ported:  2026-07-26 (regen — brief items 1-2 + start/review gate fixes)
 //
 // The workspace copy is the master and owns the test suite. Fix bugs THERE,
 // then regenerate this file — never patch it independently, or the four-family
 // topology drifts. Everything below this header is a verbatim copy.
 // ============================================================================
-
 // Agent-kanban arranger — parse, validate, arrange, and select the next action for an
 // `agent-kanban:v1` OR `agent-kanban:v2` marked tasks.md board. Dependency-free: only Node's
 // built-in modules, run as `node scripts/kanban.ts <verb> [board-path] [phase-path]`.
@@ -1121,11 +1120,17 @@ function doAdd(boardPath: string, phasePath: string | undefined, flags: Flags): 
 
 // ---- move: a policy-checked lane move --------------------------------------
 const STARTED_LANES = new Set(['Active', 'Verification', 'Blocked']);
+// The three "way back" edges are deliberate, not conveniences. `Active → Ready` un-starts a
+// mis-started card and releases its WIP slot; `Ready → Blocked` parks a card without spending a trip
+// through the single Active slot; `Blocked → Ready` un-parks it again symmetrically, so "park this
+// for now" never silently means "you must start it to put it back". Without them a card could only
+// move forward, and the `validate` advice to "move a card back to Ready" (below) was unobeyable —
+// the message was right and the table was wrong. Done remains terminal; that is a separate rule.
 const LEGAL_MOVES: Record<string, string[]> = {
-  Ready: ['Active'],
-  Active: ['Verification', 'Blocked'],
+  Ready: ['Active', 'Blocked'],
+  Active: ['Verification', 'Blocked', 'Ready'],
   Verification: ['Done', 'Active', 'Blocked'],
-  Blocked: ['Active', 'Verification'],
+  Blocked: ['Active', 'Verification', 'Ready'],
 };
 
 function doMove(boardPath: string, phasePath: string | undefined, id: string, target: string, flags: Flags): void {
@@ -1145,7 +1150,14 @@ function doMove(boardPath: string, phasePath: string | undefined, id: string, ta
   const override = flagStr(flags, 'override');
 
   // ---- transition preconditions (policy refusals, exit 4) ----
-  if (target === 'Active' && src === 'Ready') {
+  // The start gate keys on the TARGET lane, never the source: entering Active IS starting work,
+  // wherever the card came from. This was `src === 'Ready'` while Blocked was reachable only from
+  // Active/Verification — every Blocked card had therefore already passed the gate, so the scoping
+  // was sound by accident. Adding `Ready → Blocked` destroyed that premise and turned
+  // `Ready → Blocked → Active` into a clean bypass of the dependency, research, and node-scope
+  // walls. Gating on the target closes it, and also turns the node-scope case (a card whose node was
+  // stood down by node-deactivate) from an opaque post-image exit 3 into a named refusal.
+  if (target === 'Active') {
     const doneIds = new Set(pre.cards.filter((c) => c.lane === 'Done').map((c) => c.id));
     for (const dep of splitList(card.depends)) {
       if (dep !== 'none' && !doneIds.has(dep)) {
@@ -1158,7 +1170,11 @@ function doMove(boardPath: string, phasePath: string | undefined, id: string, ta
       refuse(`move: ${id} belongs to node ${card.milestone} which is not [active]`, `${id}/Milestone`);
     }
   }
-  if (target === 'Verification' && src === 'Active') {
+  // Target-keyed, like the `→Done` gate below: entering review requires something to review,
+  // whatever lane the card came from. Source-scoping this to `Active` let `Blocked → Verification`
+  // through with `Evidence: pending`. The legitimate round trip is unaffected — a card that reached
+  // Verification honestly already carries evidence, and parking it does not remove the field.
+  if (target === 'Verification') {
     if (!effectiveEvidence || effectiveEvidence === 'pending') {
       refuse(`move: ${id} has no initial Evidence (still 'pending') — attach it via --evidence or update`, `${id}/Evidence`);
     }
@@ -1275,6 +1291,10 @@ function doNodeAdd(boardPath: string, phasePath: string | undefined, id: string,
   const pre = parseBoard(boardPath, phasePath);
   requireV2(pre, 'node-add');
   if (pre.nodes.some((n) => n.id === id)) refuse(`node-add: node ${id} already exists`, id);
+  // Same never-reuse rule the archive check enforces below, for IDs retired by node-remove.
+  if (nodeIdTombstoned(pre.raw, id)) {
+    refuse(`node-add: node ID was removed and is never reissued: ${id}`, id);
+  }
 
   const roadmapVal = /^step\b/.test(roadmap) ? roadmap : `step ${roadmap}`;
   const block = [`### ${id} — ${title} [shaped]`, `- Roadmap: ${roadmapVal}`, `- Plan: ${plan}`];
@@ -1313,6 +1333,77 @@ function doNodeActivate(boardPath: string, phasePath: string | undefined, id: st
 
   const parsed = writeCandidate(boardPath, phasePath, lines.join('\n'));
   printNext(parsed);
+}
+
+// ---- node-deactivate: flip [active] → [shaped] (the way back off a wrong milestone) -------------
+// A node activated one phase too early used to be permanently [active]: node-close refuses while any
+// of its cards is not Done, and nothing else could stand it down — so it kept handing out the wrong
+// card while every other node stayed unreachable behind the at-most-one-[active] wall.
+//
+// Zero [active] nodes is a legitimate between-milestones pause (ZERO_ACTIVE_NOTE), so deactivating
+// the only active node is allowed. Cards in Ready/Blocked/Verification/Done ride along untouched —
+// a Ready card simply stops being selectable, which is the point. The ONE structural conflict is a
+// card in the Active LANE: validateV2 requires it to belong to an [active] node, so the post-image
+// would be invalid. Refuse that up front and name the card, rather than letting it surface as an
+// opaque post-image failure the operator cannot act on.
+function doNodeDeactivate(boardPath: string, phasePath: string | undefined, id: string): void {
+  const pre = parseBoard(boardPath, phasePath);
+  requireV2(pre, 'node-deactivate');
+  const node = pre.nodes.find((n) => n.id === id);
+  if (!node) refuse(`node-deactivate: no such node: ${id}`, id);
+  if (node.status !== 'active') refuse(`node-deactivate: node ${id} is not [active] (it is [${node.status}])`, id);
+  const started = pre.cards.find((c) => c.milestone === id && c.lane === 'Active');
+  if (started) {
+    refuse(
+      `node-deactivate: ${started.id} is in Active and belongs to ${id} — move it back to Ready (or on to Verification/Blocked) first`,
+      `${started.id}/lane`,
+    );
+  }
+
+  const lines = pre.raw.split('\n');
+  const rn = scanRaw(lines).nodes.find((n) => n.id === id)!;
+  lines[rn.start] = lines[rn.start].replace(/\[active\]/, '[shaped]');
+
+  const parsed = writeCandidate(boardPath, phasePath, lines.join('\n'));
+  printNext(parsed);
+}
+
+// ---- node-remove: delete a node that owns no cards, and reserve its ID ------
+// Mirrors card `remove`: --reason is mandatory and the ID is tombstoned at the foot of the board.
+// The tombstone is load-bearing, not bookkeeping — node IDs are never reused across a desk's history
+// (node-add already refuses an ID found in archive/), so a remove that silently freed its ID would
+// launder it back into play and let a later node collide with archived history.
+function doNodeRemove(boardPath: string, phasePath: string | undefined, id: string, flags: Flags): void {
+  const reason = flagStr(flags, 'reason');
+  if (!reason) refuse('node-remove: --reason <text> required', id);
+  const pre = parseBoard(boardPath, phasePath);
+  requireV2(pre, 'node-remove');
+
+  const node = pre.nodes.find((n) => n.id === id);
+  if (!node) refuse(`node-remove: no such node: ${id}`, id);
+  const owned = pre.cards.filter((c) => c.milestone === id);
+  if (owned.length > 0) {
+    refuse(
+      `node-remove: node ${id} still owns ${owned.length} live card(s), e.g. ${owned[0].id} — remove or re-milestone them first`,
+      owned[0].id,
+    );
+  }
+
+  const lines = pre.raw.split('\n');
+  const rn = scanRaw(lines).nodes.find((n) => n.id === id)!;
+  lines.splice(rn.start, rn.end - rn.start);
+  let text = lines.join('\n');
+  if (!text.endsWith('\n')) text += '\n';
+  text += `<!-- node-removed: ${id} — ${reason} (${today()}) -->\n`;
+
+  const parsed = writeCandidate(boardPath, phasePath, text);
+  printNext(parsed);
+}
+
+// A node ID retired by node-remove, read back off the board's own tombstone line.
+function nodeIdTombstoned(raw: string, id: string): boolean {
+  const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`<!-- node-removed: ${esc}\\s+—`).test(raw);
 }
 
 // ---- node-update: edit a node's Roadmap/Plan pointer -----------------------
@@ -1378,7 +1469,10 @@ function doNodeClose(boardPath: string, phasePath: string | undefined, id: strin
 }
 
 const READ_VERBS = ['board', 'show', 'next', 'validate'];
-const WRITE_VERBS = ['add', 'move', 'update', 'remove', 'node-add', 'node-activate', 'node-update', 'node-close'];
+const WRITE_VERBS = [
+  'add', 'move', 'update', 'remove',
+  'node-add', 'node-activate', 'node-deactivate', 'node-remove', 'node-update', 'node-close',
+];
 
 function main(): void {
   const rawArgv = process.argv.slice(2);
@@ -1510,6 +1604,14 @@ function main(): void {
         case 'node-activate':
           if (!pos[0]) errorExit(1, 'node-activate requires <ID>');
           doNodeActivate(boardPath, phasePath, pos[0]);
+          break;
+        case 'node-deactivate':
+          if (!pos[0]) errorExit(1, 'node-deactivate requires <ID>');
+          doNodeDeactivate(boardPath, phasePath, pos[0]);
+          break;
+        case 'node-remove':
+          if (!pos[0]) errorExit(1, 'node-remove requires <ID>');
+          doNodeRemove(boardPath, phasePath, pos[0], flags);
           break;
         case 'node-update':
           if (!pos[0] || !pos[1] || pos[2] === undefined) errorExit(1, 'node-update requires <ID> <Roadmap|Plan> <value>');
