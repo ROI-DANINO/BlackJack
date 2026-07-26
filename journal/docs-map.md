@@ -48,7 +48,6 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | journal/ops/phase.md | Machine-readable current phase state. |
 | journal/ops/tasks.md | Agent Kanban (`agent-kanban:v2`) for executable current-phase cards, priority, live state, and evidence. Written only via scripts/kanban.ts. |
 | scripts/kanban.ts | The board's only write path plus its read verbs (board/next/validate). Derived port of workspace scripts/kanban.ts — regenerate from that master, never patch here. |
-| ~/Desktop/Projects/workspace/docs/specs/2026-07-16-agent-sdlc-kanban-design.md | The `agent-kanban:v2` board format, card schema, lane/WIP policy, and selector contract. |
 | journal/context/active.md | Resume context for /wl-start. |
 | journal/ops/sessions/ | /wl-end handoff files (history). |
 | journal/context/next.md | Cheap cross-chat bridge (`/wl-next`); consumed + reset by `/wl-end`. |
@@ -67,7 +66,7 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | docs/specs/qa-playtest-process.md | The AI playtest QA process: agent pack, session protocols, scoping rules, run mechanics. |
 | journal/qa/ledger.md | QA coverage state (area × last-passed commit) + findings register. Read before scoping any QA run. |
 | journal/qa/runs/ | Per-run QA reports (one dir per run, one file per agent). |
-| docs/specs/<name>.md | Design specs. |
+| docs/specs/ | Design specs (pre-superpowers flow). |
 | docs/plans/ | Implementation plans for active specs. |
 | docs/superpowers/specs/ | Design specs (active superpowers/White Lotus flow) — where current designs land. |
 | docs/superpowers/plans/ | Implementation plans for active specs (superpowers/White Lotus flow). |
@@ -77,4 +76,14 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | docs/superpowers/specs/2026-07-22-product-design-inputs.md | **The Phase 3 → Phase 4 bridge.** Confirmed learning principles, unresolved product assumptions, mastery/activity-evidence/AI-authority/accessibility constraints, the decisions routed to playtest, and the CFL-007 ruling. Authoritative for *what Phase 4 may assume*; it designs nothing itself. |
 | docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md | **Phase 4 first slice.** The graded-decision activity, its `DecisionAttempt` evidence record, and its confusable-hand practice pool. Authoritative for that one activity only; owns no skill graph, taxonomy, sequence, or mastery threshold. |
 | docs/superpowers/specs/2026-07-12-foundation-and-tracks-design.md | Foundation & Tracks: three tracks + contracts, cloud posture, stack Admission Protocol, protocol system, inbox 1-pager. |
-| ~/.claude/skills/research-plan/SKILL.md | The research-planning skill: role contract, the produce→verify→land→confirm loop, and gate falsifiability rules. Global, not in-repo. |
+| docs/superpowers/research/evidence-index/ | **Navigation index over the research archives** — every finding, requirement, verdict, and unlanded correction, with its archive locus. A pointer layer, never a warrant: its README states the citation rule. Cite findings from here; verify against the archive. |
+| docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md | The chips/XP/rating motivation model as an owner premise, with open questions `E-1`–`E-7` and the constraints that bind them. Not a design and not a research conclusion. |
+| docs/superpowers/plans/2026-07-26-repo-restructure.md | The layers-and-phases restructure: why, the decisions taken, the four stages, and what must not break in the White Lotus machinery. The resume point while it runs. |
+
+Two authoritative surfaces live outside this repository and therefore carry no table row (the
+manifest lint resolves first cells as repo-relative paths):
+
+- `~/Desktop/Projects/workspace/docs/specs/2026-07-16-agent-sdlc-kanban-design.md` — the
+  `agent-kanban:v2` board format, card schema, lane/WIP policy, and selector contract.
+- `~/.claude/skills/research-plan/SKILL.md` — the research-planning skill: role contract, the
+  produce→verify→land→confirm loop, and gate falsifiability rules.
