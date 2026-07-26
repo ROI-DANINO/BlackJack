@@ -1,10 +1,11 @@
 ---
 phase: v2-learning-foundations
-roadmap_step: 2
-sub_phase: graded-decision-practice
-plan: docs/superpowers/plans/2026-07-23-graded-decision-practice.md  # 11 tasks, not started. Audit-phase plans: P2 docs/superpowers/plans/2026-07-20-adaptive-learning-foundation-audit-phase2.md; P1 docs/superpowers/plans/2026-07-17-adaptive-learning-foundation-audit-phase1.md
-spec: docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md  # APPROVED as-is 2026-07-25 (journal/decisions.md). Audit-phase spec: docs/superpowers/specs/2026-07-17-adaptive-learning-foundation-audit-research.md
-step: Shaped the P4 board, then the owner caught that P4 is a design phase and the cards were P5 build work; recorded the chips/XP premise and banked a Fable economy design unadopted.
+roadmap_step: 4
+objective: Design the learning blueprint — what is taught, in what order, through which activities, measured by what evidence — so phase 5 can build a slice that produces real learner data.
+sub_phase: learning-design-blueprint
+plan: docs/superpowers/plans/2026-07-26-repo-restructure.md  # in progress. Phase-5 build plan held ready: docs/superpowers/plans/2026-07-23-graded-decision-practice.md (11 tasks, cards retired 2026-07-26, re-shape with fresh IDs when phase 5 opens)
+spec: docs/superpowers/specs/2026-07-22-product-design-inputs.md  # what phase 4 may assume; its §0 states what may not be leaned on. Approved slice design: docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md
+step: Restructured the repo — banked an evidence index over the three research archives, landed every correction the audits raised and never applied, and rewrote ROADMAP around three layers plus a numbered phase map so the board can tell design from build.
 prior_phase: adaptive-learning-progress-build
 sessions:
   - journal/ops/sessions/the-board-that-shaped-the-wrong-phase-2026-07-25T2129.md
@@ -50,6 +51,6 @@ sessions:
 # survive in journal/decisions.md and in session-file history.
 detour: []
 blocking: ""  # RESOLVED 2026-07-20T2015: the '28 unpushed commits' were phantom stale-ref data. After `git fetch --prune`, main was behind 9 / ahead 0 and fast-forwarded clean. PR #9 merged at 6def4b6. No manual push was ever required.
-next: Work the P4 motivation/economy design with the owner in plain language, starting from the single open question — should running out of chips be a real setback or always a quick top-up — rather than from the banked Fable document.
+next: Shape the phase-4 design board — one card per open blueprint deliverable, each citing its evidence by finding ID — then start with learning outcomes and the skill graph. The economy comes after evidence and mastery rules, not before: its load-bearing question (does a won hand return chips) is an evidence question wearing an economy costume.
 note: journal/ops/sessions/the-board-that-shaped-the-wrong-phase-2026-07-25T2129.md
 ---
