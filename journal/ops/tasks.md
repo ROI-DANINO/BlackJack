@@ -15,7 +15,7 @@
 
 ### LDB — Learning Design Blueprint [active]
 - Roadmap: step 4
-- Plan: docs/superpowers/plans/2026-07-26-repo-restructure.md
+- Plan: ROADMAP.md
 ## Ready
 ### LDB-08 — Assemble the blueprint and choose the phase-5 slice
 - Type: design
@@ -23,12 +23,12 @@
 - Intent: phase 4's gate is the owner approving a blueprint and the slice to build, and one approved slice is not a blueprint.
 - Depends on: LDB-01, LDB-02, LDB-03, LDB-04, LDB-05, LDB-06, LDB-07
 - Source: ROADMAP.md §Phase 4
-- Outcome: One blueprint document assembling the eight decisions, with every claim carrying its evidence label, and a named phase-5 slice. The graded-decision-practice design is the standing candidate and already wires both orphans — the strategy oracle and ProgressStore. Confirm or replace it against the finished blueprint rather than inheriting it.
+- Outcome: One blueprint document assembling the eight decisions, with every claim carrying its evidence label and every assumption entered in the Assumption Register with a named validation method. Names the phase-5 slice AND the subset of P-1 through P-5 that slice must instrument — phase 5 cannot exit without answering them from recorded data. The graded-decision-practice design is the standing candidate and already wires both orphans, the strategy oracle and ProgressStore; it covers P-3 and P-5, hooks P-1, and covers neither P-2 nor P-4. Confirm or replace it against the finished blueprint rather than inheriting it, and if replacing, carry the instrumentation forward deliberately.
 - Next: Assemble once LDB-01 through LDB-07 are approved.
 - Load: ROADMAP.md, docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T01:23:17.421Z
+- Updated: 2026-07-26T02:12:26.631Z
 ### LDB-07 — Design the interaction UX for the activity set
 - Type: design
 - Milestone: LDB
@@ -47,12 +47,12 @@
 - Intent: a session is the unit a learner actually experiences, and its shape decides whether practice is mixed or blocked.
 - Depends on: LDB-03, LDB-04
 - Source: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md
-- Outcome: Session entry, size, stopping, and mix. Practice pools are mixed by default, per the ruling block to introduce, interleave to practise — mixed review is the steady state, not a final stage. A blocked pool is permitted only for first exposure and must be declared as such. Rare-event exposure is engineered rather than awaited. No loss-framed pressure and no penalty for stopping.
+- Outcome: Session entry, size, stopping, and mix. Practice pools are mixed by default, per the ruling block to introduce, interleave to practise — mixed review is the steady state, not a final stage. A blocked pool is permitted only for first exposure and must be declared as such. Rare-event exposure is engineered rather than awaited — note the bridge contradicts itself here, listing this as an open decision in §7 while stating it as a requirement in §4.6; resolve it explicitly rather than inheriting one side. No loss-framed pressure and no penalty for stopping. Provisional on playtest question P-3: the mixed-practice default is a bet on grade-7 maths transferring to adult blackjack, and the bridge says to instrument it.
 - Next: Set the session-size presets as declared product judgements, since no source establishes universal minutes.
 - Load: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T01:23:16.654Z
+- Updated: 2026-07-26T02:12:26.305Z
 ### LDB-05 — Design the motivation and chips economy
 - Type: design
 - Milestone: LDB
@@ -71,12 +71,12 @@
 - Intent: the shipped mastery model is disqualified by the project's own evidence, and everything about progression depends on what replaces it.
 - Depends on: LDB-03
 - Source: docs/superpowers/specs/2026-07-22-product-design-inputs.md §3
-- Outcome: A mastery model that can ingest played-hand evidence, since the ruling is measure play not quiz scores and the shipped model structurally cannot. Confidence is never a mastery signal. Assistance is recorded only when assistance was actually delivered — the shipped code labels a bare retry as instruction when no instruction exists. Every threshold chosen is labelled a product judgement with a named validation method; no constant here is research-calibrated.
+- Outcome: A mastery model that can ingest played-hand evidence, since the ruling is measure play not quiz scores and the shipped model structurally cannot. Confidence is never a mastery signal. Assistance is recorded only when assistance was actually delivered — the shipped code labels a bare retry as instruction when no instruction exists. Every threshold chosen is entered in docs/superpowers/specs/assumption-register.md as a product judgement with a named validation method; no constant here is research-calibrated. Provisional on playtest questions P-1 (can decision/outcome separation be trained at all) and P-5 (does confidence rise faster than skill) — both unanswerable from literature.
 - Next: Decide what replaces multiple-choice as mastery evidence, then write the reducer's inputs.
 - Load: docs/superpowers/research/evidence-index/P1-evidence-catalog.md, web/src/progress/types.ts, web/src/learn/controller.ts
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T01:23:15.807Z
+- Updated: 2026-07-26T02:12:25.975Z
 ### LDB-03 — Define the activity taxonomy and map capabilities to activities
 - Type: design
 - Milestone: LDB
@@ -94,25 +94,25 @@
 - Milestone: LDB
 - Intent: the product's stated intent is Duolingo- and Brilliant-style learning games, and every exercise format this project holds is a dealt hand or a multiple-choice question.
 - Depends on: none
-- Source: docs/imports/v2-research-2026-07-11/research/v2-research-03-course-and-source-audit.md:115
+- Source: docs/imports/v2-research-2026-07-11/research/v2-research-03-course-and-source-audit.md:116
 - Outcome: A catalog of interactive activity patterns that are neither a dealt hand nor a multiple-choice question, each with what it measures well and what it measures poorly. The corpus holds exactly two seeds, both Accepted-but-Deferred and both under-specified — the ruleset-delta comparison view and the live-highlighted chart with fading assistance. This card was named as a recommended research artifact on 2026-07-11 and never produced.
 - Next: Read the two seed passages in v2-research-06-ux-foundations.md, then survey how comparable trainers structure non-quiz practice.
 - Load: docs/imports/v2-research-2026-07-11/research/v2-research-06-ux-foundations.md, docs/imports/v2-research-2026-07-11/course-bundle/how-to-teach.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T01:23:15.104Z
+- Updated: 2026-07-26T02:11:22.994Z
 ### LDB-01 — Decide the learning outcomes and the skill graph
 - Type: design
 - Milestone: LDB
 - Intent: nothing downstream can be scoped until it is decided what capability each unit produces and what must precede what.
 - Depends on: none
 - Source: docs/superpowers/specs/2026-07-22-product-design-inputs.md §9
-- Outcome: A skill graph with prerequisites, and learning outcomes covering rules, hand reading, strategy, probability, EV and variance — each stated as an observable decision behaviour, not a knowledge claim. The accepted Subject A/B/C spine and the 7-stage hierarchy are inputs, not answers: P2 relabelled both to Assumption because no source evaluates a prerequisite ordering for this or any comparable domain.
+- Outcome: A skill graph with prerequisites, and learning outcomes covering rules, hand reading, strategy, probability, EV and variance — each stated as an observable decision behaviour, not a knowledge claim. The 7-stage hierarchy is an Assumption (K-U1-003: no source evaluates a prerequisite ordering for this or any comparable domain), so it needs an Assumption Register entry with a named validation method. Which subjects precede which is a Product judgement (K-U7-008) — free to change, just labelled. Two bridge decisions have no other owner and are settled here: whether the curriculum teaches EV explicitly at all (§7, given §2.2's evidenced absence and §1.8), and whether a deliberately simplified heuristic is adopted as a scaffold.
 - Next: Read P2-verdict-catalog §Bottom line C to see which sequencing beliefs are assumptions, then draft the outcome list against the accepted Subject A/B/C spine.
 - Load: docs/superpowers/research/evidence-index/P2-verdict-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T01:22:28.433Z
+- Updated: 2026-07-26T02:11:22.688Z
 
 
 ## Active

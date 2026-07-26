@@ -34,8 +34,9 @@ counting truth and table/machine variants.
 
 **State: mature and proven.** Rust core with deterministic seeded shoes, traceable card origins,
 verified H17/S17 strategy profiles, and a single JSON command crossing the WASM boundary that the
-CLI and the browser share by construction. ~100 Rust tests, golden fixtures guarding the wire
-contract from the TypeScript side.
+CLI and the browser share by construction. 80 Rust tests (counted 2026-07-26; an inflated count
+was corrected once before, so this one is a count and not a recollection), golden fixtures guarding
+the wire contract from the TypeScript side.
 
 **Known gaps.** The strategy oracle exists and is exhaustively chart-tested but is **not a
 `CoreCommand`** — the browser cannot ask what the correct play is. Surrender is not modelled at
@@ -119,7 +120,7 @@ which activities, measured by what evidence — and approves the slice to build 
 document this project holds is a dealt hand or a multiple-choice question. A sweep of the whole
 corpus for interactive, manipulable, or game-like formats returns essentially nothing. This is not
 a new idea —
-`docs/imports/v2-research-2026-07-11/research/v2-research-03-course-and-source-audit.md:115` names a
+`docs/imports/v2-research-2026-07-11/research/v2-research-03-course-and-source-audit.md:116` names a
 competitor exercise-pattern catalog as a recommended research artifact, and it was never produced.
 The product's stated intent is Duolingo- and Brilliant-style learning games, not only blackjack
 hands, and nothing in the corpus supports that intent today.
@@ -137,8 +138,15 @@ answered before what counts as learning evidence is decided.
 
 ## Phase 5 — Vertical slice and learning proof
 
-**Exit criteria.** Real-player learning-integrity playtests pass. The owner is currently the only
-user and runs them himself.
+**Exit criteria.** Real-player learning-integrity playtests pass, **and a declared subset of
+`P-1`…`P-5` is answered from recorded attempt data** — not from impression. The subset is chosen at
+`LDB-08` when the slice is picked, and whatever slice is built must instrument it. The owner is
+currently the only user and runs the playtests himself.
+
+Without that second clause this phase can exit "passing" without answering the questions it exists
+to answer. The one existing instrumentation design covers `P-3` and `P-5`, hooks `P-1`, and does not
+cover `P-2` or `P-4` — and `LDB-08` is permitted to replace that design, which would silently take
+the instrumentation with it.
 
 **Scope.** Build the L2 foundation the blueprint specifies and wire it into the **existing**
 unstyled web surface. This phase does not build L3. It ends with something a person can sit down
@@ -212,7 +220,7 @@ provider-neutral port, versioned envelope, and contract suite shipped and passed
 
 | Capability | Activation trigger | Guardrail / current status |
 |---|---|---|
-| Local durable progress | The first requirement that completion survive reload. | **Triggered.** `idb` 8.0.3 is admitted conditionally behind the approved pseudonymous local learner key and the `ProgressStore` seam; the cycle-1 foundation shipped and passed feature QA. Two conditions remain: the production bundle-delta measurement the admission was conditional on, and a first product consumer — Phase 5 supplies both. |
+| Local durable progress | The first requirement that completion survive reload. | **Triggered.** `idb` 8.0.3 is admitted conditionally behind the approved pseudonymous local learner key and the `ProgressStore` seam; the cycle-1 foundation shipped and passed feature QA. The bundle-delta condition is **measured and passed** — 1,382 bytes gzipped against a 5 KB alarm, ledger PASS 2026-07-18 — but via a pre-adapter probe, since no real adapter existed to measure. Re-confirm against the real adapter when Phase 5 wires the consumer, which is also the outstanding condition. |
 | Accounts and cross-device sync | Learners need progress on more than one device. | Ordinary training stays client-authoritative; research identity, storage, migration, offline, and conflict semantics before selecting a provider. Backend runtime runs the Admission Protocol. See `journal/decisions.md` 2026-07-16. |
 | Product observability | External beta creates concrete learning or drop-off questions. | Research event purpose, consent/privacy, retention, batching, and offline failure before adding telemetry. |
 | Independently published curriculum | Content must ship without an application release. | Research integrity, schema compatibility, rollback, and provenance before remote payloads or admin tooling. |

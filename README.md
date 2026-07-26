@@ -17,10 +17,14 @@ automatically starts a fresh shoe when needed.
 
 The Learn path now includes nine Blackjack Foundations units driven by the real engine. Basic
 Strategy is engine-owned through verified H17 and S17 profiles, and lessons are rejected when their
-declared profile does not match the active ruleset. The next product step is Graded Decision
-Practice: a free-decision activity graded against the verified Basic Strategy oracle, wired to a
-durable learner record (11-task plan). Strategy Table Fundamentals was approved and then
-intentionally paused pending that work.
+declared profile does not match the active ruleset. Those nine units are treated as a prototype
+placeholder, not a constraint on what comes next.
+
+The current phase is **design, not build**: phase 4 decides the curriculum, skill graph, activity
+taxonomy, evidence and mastery rules, session shape, and motivation economy. Graded Decision
+Practice — a free-decision activity graded against the verified oracle and wired to a durable
+learner record — is the designed candidate for the phase-5 build, pending confirmation against the
+finished blueprint. Strategy Table Fundamentals was approved and then intentionally paused.
 
 ## Quick start
 
@@ -58,7 +62,8 @@ penetration. Basic Strategy recommendations are specific to this ruleset.
 
 ## Project status
 
-V1 Simulation Foundations is complete and QA-passed. V2 Learning Foundations is active: Blackjack
-Foundations and the Strategy Profile Foundation are complete, and Graded Decision Practice is the
-active learning slice (Strategy Table Fundamentals is paused). See the [roadmap](ROADMAP.md) for the
-current scope.
+Delivery phases 1–3 are complete: the simulation foundation, the learning-mechanics prototype
+(Blackjack Foundations plus the verified strategy profiles and the durable-progress port), and the
+research foundation. **Phase 4 — the learning design blueprint — is active, and it builds nothing.**
+Its eight open deliverables are on the board (`journal/ops/tasks.md`, milestone `LDB`). See the
+[roadmap](ROADMAP.md) for layers and phases.

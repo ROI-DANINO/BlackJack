@@ -1,7 +1,12 @@
 # Repo Restructure — layers, evidence citation, and a board that can hold a design phase
 
-> Status: **in progress, started 2026-07-26.** Owner-approved. This plan is the resume point;
-> a fresh session should read it before touching anything.
+> Status: **all four stages complete, 2026-07-26.** Stage 1 `96b0f05` · Stage 2 `6da7e9f` ·
+> Stages 3–4 `4203f88`. Do not re-execute them; the corrections are landed and the board is built.
+>
+> **What this plan still owes** is in `docs/superpowers/audits/2026-07-26-restructure-review.md`,
+> which reviewed these commits against the owner's criterion — can the plan be followed literally
+> without improvising — and returned **not yet**, with F1–F18. Read the review, not this plan, for
+> outstanding work. This plan is now the record of why the restructure happened.
 
 ## Why
 
@@ -51,7 +56,7 @@ through `docs/superpowers/research/evidence-index/`.
 the index is a pointer layer and never a warrant. `docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md`
 captures the motivation model and its seven open questions E-1…E-7.
 
-### Stage 2 — land the corrections that were never applied
+### Stage 2 — land the corrections that were never applied (done, `6da7e9f`)
 
 Mechanical application of already-determined corrections; no new judgement. Delegated in parallel,
 each returning a diff for review before any write.
@@ -73,7 +78,7 @@ each returning a diff for review before any write.
 - **Dead `docs-map.md` rows** — the `~`-prefixed row and the `docs/specs/<name>.md` placeholder.
   Both are permanent false-positive drift warnings that train the reader to ignore `Drift:`.
 
-### Stage 3 — rebuild `ROADMAP.md`
+### Stage 3 — rebuild `ROADMAP.md` (done, `4203f88`)
 
 Two sections that are currently conflated:
 
@@ -88,7 +93,7 @@ and contains no P4, P5 or P6 section, while the charter points back to `ROADMAP.
 milestone node's `Roadmap:` line in the same change, or board validation fails and `/wl-start`
 enters recovery.
 
-### Stage 4 — rebuild the board
+### Stage 4 — rebuild the board (done, `4203f88`)
 
 Remove `GD-01`…`GD-11` with reasons and `node-close GD`. The content is not lost —
 `docs/superpowers/plans/2026-07-23-graded-decision-practice.md` holds all eleven tasks in full and
@@ -99,7 +104,7 @@ Then shape the P4 design node with cards for the phase's real deliverables: the 
 prerequisites, learning outcomes, the activity taxonomy, capability-to-activity mapping,
 per-activity evidence and mastery rules, session composition, interaction UX, the motivation
 economy, and **the activity-pattern catalog** — the non-hand, non-multiple-choice learning-game
-formats. That last one is not an invention: `docs/imports/v2-research-2026-07-11/research/v2-research-03-course-and-source-audit.md:115`
+formats. That last one is not an invention: `docs/imports/v2-research-2026-07-11/research/v2-research-03-course-and-source-audit.md:116`
 names a competitor exercise-pattern catalog as a recommended research artifact, and it was never
 produced. A sweep of the entire corpus for interactive, manipulable, or game-like activity formats
 returns essentially nothing; every exercise in every document is a dealt hand or a multiple-choice

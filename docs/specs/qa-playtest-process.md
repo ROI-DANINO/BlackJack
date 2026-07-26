@@ -30,8 +30,10 @@ Three principles resolve the thoroughness-vs-waste tension:
 
 - **Tier 1 — deterministic scripts (every milestone, gate the phase boundary, ~free, no agents):**
   `cargo test -p blackjack-core` (engine math) + the wasm-freshness guard + `cd web && npm test`
-  (unit) + **`cd web && npm run qa`** (the `web/qa/` suite: `qa:rules` + `qa:flow` + `qa:breakit` +
-  `qa:learn`). Any non-zero exit blocks the boundary.
+  (unit) + **`cd web && npm run qa`** — which runs **every role registered in `web/qa/run-all.ts`**,
+  currently `qa:rules` + `qa:flow` + `qa:breakit` + `qa:learn` + `qa:progress`. The enumeration is
+  stated as "every registered role" deliberately: this list has now fallen behind the runner twice,
+  once per role added. Any non-zero exit blocks the boundary.
 - **Tier 2 — exactly one judgment agent, only when `web/src/app/` changed:** the Player Experience
   agent. It is fed the Tier-1 results so it never re-derives mechanics — it answers only "is this
   clear / does it teach / does it feel like a game."

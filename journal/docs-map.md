@@ -62,7 +62,8 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | docs/specs/product-vision.md | Product north star, product feel, learning philosophy, and what makes the simulator different. |
 | docs/specs/stack-boundaries.md | Tool & Runtime Admission Protocol and the current admitted stack/boundary results. |
 | docs/specs/research-brief.md | Domain research anchors plus cross-cutting just-in-time research triggers and open questions. |
-| docs/specs/learning-mastery-and-scoring.md | Future V2+ learning, mastery, hinting, scoring, and simulated-player design notes. |
+| docs/specs/learning-mastery-and-scoring.md | Relabelled learning, mastery, hinting, scoring, and simulated-player design notes. Its ladders and tiers are product judgements and assumptions phase 4 may adopt as choices — not requirements, not research conclusions. |
+| docs/superpowers/specs/assumption-register.md | **Every falsifiable belief the product runs on that evidence does not back**, each with a named validation method (playtesting · academic research · production telemetry). Authoritative for what is still a bet. A design doc cites a row rather than restating the caveat. |
 | docs/specs/qa-playtest-process.md | The AI playtest QA process: agent pack, session protocols, scoping rules, run mechanics. |
 | journal/qa/ledger.md | QA coverage state (area × last-passed commit) + findings register. Read before scoping any QA run. |
 | journal/qa/runs/ | Per-run QA reports (one dir per run, one file per agent). |

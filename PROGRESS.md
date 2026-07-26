@@ -62,15 +62,34 @@
   two dropped learning-integrity QA gates restored, and a stale worktree pointer fixed.
 
 ## In progress
+
+**Phase 4 — the learning design blueprint — is active, and it builds nothing.** Delivery phases 1–3
+are closed: the simulation foundation, the learning-mechanics prototype, and the research
+foundation. The eight open deliverables are on the board as milestone `LDB`
+(`journal/ops/tasks.md`); `ROADMAP.md` §Phase 4 holds their scope and the order they run in.
+
+The 2026-07-26 restructure landed: an evidence index over the three research archives
+(`docs/superpowers/research/evidence-index/`), every outstanding audit correction applied, ROADMAP
+split into layers and numbered phases, and the board rebuilt. What it still owes is enumerated in
+`docs/superpowers/audits/2026-07-26-restructure-review.md`, which reviewed it and returned
+**not yet**.
+
+Assumptions the product runs on now have a home:
+`docs/superpowers/specs/assumption-register.md`, each with a named validation method. Nothing there
+closes without measurement.
+
+Carried detail, still true:
+
 - **Skill-grained evidence already exists and is misnamed** (verified 2026-07-17):
   `AttemptRecord.outcomeId` is a validated foreign key into `Subject.skills` — `validate.ts:51-55`
   requires every `unit.outcomes` entry to be a known skill id, `:70-75` requires every question
   step's `outcomeId` to be in `unit.outcomes` — over a real 16-skill taxonomy. Mastery has a usable
   key today. The name collides with `engine.outcomes: HandOutcome[]` (win/loss/push) one field away
   in the same record, so the durable projection should rename rather than re-derive.
-- **The first real write/reload consumer moves to the adaptive-mechanics proof**, where the design
-  places persistence integration and where the per-cell strategy-chart grammar gets named.
-- **Boundary hardening — the freshness half is unblocked and should stop waiting.**
+- **The first real write/reload consumer arrives in phase 5**, which wires the L2 foundation into
+  the existing surface. `ProgressStore` has had no product consumer since it shipped; phase 5
+  supplies one, and with it the re-confirmation of the `idb` bundle delta against a real adapter.
+- **Boundary hardening — the freshness half rides phase 5 as a passenger.**
   `web/scripts/check-wasm-fresh.sh:12` watches only `crates/blackjack-core/src` and its `Cargo.toml`,
   so the root `Cargo.lock` and `web/scripts/build-wasm.sh` are invisible to it — a one-line `find`
   fix with zero wire dependency. It has now failed to ride a Core wire slice twice, and nothing on

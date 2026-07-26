@@ -1,8 +1,12 @@
 # Learning, Mastery, and Scoring — Future Design Notes
 
-> Status: active for V2 — cited as binding design authority in `journal/ops/phase.md`
-> (`phase: v2-learning-foundations`) and in `PROGRESS.md`'s open questions. The former "parked for
-> V2+" framing is stale now that the project is in V2; not a V1 implementation requirement.
+> Status: **relabelled design notes** (Phase 2 audit, landed 2026-07-26). Its ladders, hint levels,
+> spacing model, and error-severity tiers are **product judgements and assumptions that phase 4 may
+> adopt as design choices** — not research conclusions and not binding requirements. See the inline
+> markers at `K-U1-003`, `K-U1-004`, `K-U1-014`, `K-U1-016`, `K-U1-017`, and the corresponding rows
+> in `docs/superpowers/specs/assumption-register.md`. The earlier "parked for V2+" framing was stale;
+> "binding design authority" — briefly used here on 2026-07-26 — overshot the audit's ruling and is
+> withdrawn.
 
 ## Main Learning Direction
 The game is a training app with gameplay, not a textbook course.

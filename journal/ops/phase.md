@@ -3,7 +3,7 @@ phase: v2-learning-foundations
 roadmap_step: 4
 objective: Design the learning blueprint — what is taught, in what order, through which activities, measured by what evidence — so phase 5 can build a slice that produces real learner data.
 sub_phase: learning-design-blueprint
-plan: docs/superpowers/plans/2026-07-26-repo-restructure.md  # in progress. Phase-5 build plan held ready: docs/superpowers/plans/2026-07-23-graded-decision-practice.md (11 tasks, cards retired 2026-07-26, re-shape with fresh IDs when phase 5 opens)
+plan: ROADMAP.md  # phase 4 has no separate plan doc; ROADMAP §Phase 4 holds its deliverables, order, and exit criteria, and the LDB board holds its cards. Restructure record: docs/superpowers/plans/2026-07-26-repo-restructure.md (complete) + docs/superpowers/audits/2026-07-26-restructure-review.md (what it still owed). Phase-5 build plan held ready: docs/superpowers/plans/2026-07-23-graded-decision-practice.md (11 tasks, cards retired 2026-07-26, re-shape with fresh IDs when phase 5 opens)
 spec: docs/superpowers/specs/2026-07-22-product-design-inputs.md  # what phase 4 may assume; its §0 states what may not be leaned on. Approved slice design: docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md
 step: Restructured the repo — banked an evidence index over the three research archives, landed every correction the audits raised and never applied, and rewrote ROADMAP around three layers plus a numbered phase map so the board can tell design from build.
 prior_phase: adaptive-learning-progress-build
@@ -51,6 +51,6 @@ sessions:
 # survive in journal/decisions.md and in session-file history.
 detour: []
 blocking: ""  # RESOLVED 2026-07-20T2015: the '28 unpushed commits' were phantom stale-ref data. After `git fetch --prune`, main was behind 9 / ahead 0 and fast-forwarded clean. PR #9 merged at 6def4b6. No manual push was ever required.
-next: Shape the phase-4 design board — one card per open blueprint deliverable, each citing its evidence by finding ID — then start with learning outcomes and the skill graph. The economy comes after evidence and mastery rules, not before: its load-bearing question (does a won hand return chips) is an evidence question wearing an economy costume.
+next: Start LDB-02, the activity-pattern catalog. It runs first by deliberate choice, not by insertion order — it is dependency-free research that feeds the taxonomy at LDB-03, and it addresses the corpus's largest hole: every exercise format this project holds is a dealt hand or a multiple-choice question. LDB-01 (outcomes and skill graph) is equally unblocked and may run in parallel. The economy stays after evidence and mastery rules: its load-bearing question — does a won hand return chips — is an evidence question wearing an economy costume.
 note: journal/ops/sessions/the-board-that-shaped-the-wrong-phase-2026-07-25T2129.md
 ---

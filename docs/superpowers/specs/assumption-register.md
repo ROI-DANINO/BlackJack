@@ -1,0 +1,77 @@
+# Assumption Register
+
+> Status: **live.** Every falsifiable belief this product is built on that is not backed by
+> evidence the project holds. One row per assumption, each with a named validation method.
+>
+> Created 2026-07-26, discharging a mandate open since Phase 1: *"decide on product reasoning,
+> label it **Product judgement** or **Assumption**, and enter it in the Assumption Register with a
+> named Validation Method"* (`docs/superpowers/research/foundation-audit-p1/P1-gate-summary.md:252-253`).
+> The register was specified at
+> `docs/superpowers/specs/2026-07-17-adaptive-learning-foundation-audit-research.md:281-286` and had
+> never been built. `2026-07-22-product-design-inputs.md:8-9` claimed to contain it and did not.
+
+## The rule
+
+**Prose labels return nobody to anything.** "This is a product judgement until calibrated" written
+inside a design document is invisible the moment the document is filed. A row here is a standing
+obligation: when its validation method runs, someone has to come back and settle it.
+
+Three things follow.
+
+1. **Every threshold, interval, count, and duration this product ships gets a row** until it is
+   calibrated on this product's own data. The archive holds no threshold constant, and the
+   activity baseline states outright that optimal intervals *"cannot be copied into product
+   configuration."*
+2. **A validation method must name its mode** — `playtesting`, `academic research`, or
+   `production telemetry`. "We'll see" is not a method.
+3. **A row is closed by evidence, not by time passing.** Closing one means writing what was
+   measured, where, and what it changed. Rows are struck, never deleted.
+
+## Distinction that governs which beliefs land here
+
+The Phase 2 audit separated two things that read identically in a document:
+
+- **Product judgement** — a values or design choice. Free to change; needs a label, not a row here.
+  Example: which subjects precede which (`K-U7-008`).
+- **Assumption** — falsifiable, untested, and would change under contradicting data. **Needs a row.**
+  Example: the 7-stage skill order (`K-U1-003`).
+
+Full split: `docs/superpowers/research/evidence-index/P2-verdict-catalog.md` §Bottom line.
+
+---
+
+## Register
+
+| # | Assumption | Evidence held | Confidence | Validation method |
+|---|---|---|---|---|
+| A-01 | The 7-stage skill order (game literacy → rule literacy → chart literacy → decision recall → procedural transfer → ruleset transfer → automaticity) is the right prerequisite ordering. `K-U1-003` | None. No dossier or baseline source evaluates a prerequisite ordering for blackjack or any comparable situation→action rule domain. Khan's shipped ladder is an existence proof that ladders ship, not that this one is correct. | Low | **playtesting** — instrument learner failure points against the declared order; a stage learners routinely skip or stall on falsifies its position. Decided at `LDB-01`. |
+| A-02 | Accuracy must be stable before speed is trained. `K-U1-004` | **The weakest-evidence claim in the audit.** Its only blackjack-specific support is N=12 with computer-controlled win probability and no split, double, or insurance. Note also a silent loosening: the import said "after **mastery**"; the spec says "after accuracy is stable." | Very low | **playtesting** — compare a timed-earlier arm against a timed-later arm on retained decision accuracy. |
+| A-03 | Immediate correction suits acquisition and delayed review suits transfer. `K-U1-014`, `ALR-005` | Runs against its own cited source: the meta-analysis reports **delayed** feedback as slightly more effective and says *"clarity and consistency … is more essential than the actual timing."* Its own meta-regression found timing did not contribute significantly. Logged as `CFL-004`, open. | Low | **playtesting** — the honest test is consistency versus timing, not immediate versus delayed. |
+| A-04 | The specific rungs of the fading ladder (table open → hidden → hidden at pace) and of the four-level hint ladder are the right ones. `K-U2-006` | The *principle* — fade assistance before counting evidence as independent — is evidence-backed. The specific rungs are not; the baseline calls the existing ladder *"a project design rather than a research-derived sequence."* | Medium on the principle, low on the rungs | **playtesting** — measure whether performance survives each rung removal. |
+| A-05 | A chess-style internal rating can run alongside deterministic mastery gates. `K-U1-016` | Each half has a precedent; **the combination has none.** Hidden dependency: education-Elo needs roughly 100 learners for usable item difficulty, and Chess.com seeds new item difficulty by observing who solves it. A single-learner product has neither. | Low | **production telemetry**, and not before a user base exists. Phase 1 found the requirement shrinks to a single published constant with per-learner online fitting — that is the path to evaluate, not Chess.com's seeding. Tracked as `E-6` in the economy spec. |
+| A-06 | Mastery should decay to `Review due` as retention evidence ages. `K-U3-007` | Spacing transfer to a blackjack-shaped decision rule is a **settled** coverage gap — four independent confirmations that no such study exists. The only product analogue (Khan) has **no time-based decay at all**. | Low | **production telemetry** — longitudinal; needs returning learners over weeks. |
+| A-07 | Every numeric threshold, retention interval, evidence count, spacing schedule, and session duration the product ships. `K-U3-001`, `K-U3-002`, `ALR-027`, `ALR-032` | **The archive holds no threshold constant.** The phrase "research-calibrated" is not available and has been struck from every document that used it. | None — these are invented until measured | **production telemetry** — every constant is provisional on this product's own attempt data. Each specific constant chosen at `LDB-04`/`LDB-06` inherits this row; add a sub-row when a number is actually written. |
+| A-08 | "Short learning loops, like Duolingo" describes a workable session length. `K-U2-002` | A live conflict: Duolingo says a few minutes, Brilliant recommends fifteen with a two-minute option. The baseline grades the topic *"Medium-low; durations are product recommendations, not comparative causal thresholds."* | Low | **playtesting** — learner-selected duration with completion and return rates recorded. |
+| A-09 | A read-only skill decays if its first application is several lessons away. `K-U7-006` | The configuration is a coverage gap; no source measures a taught procedural skill decaying from delayed first application. | Low | **playtesting** — vary the gap between teaching and first application. |
+| A-10 | Multiple choice is a valid format for mastery evidence. `K-U4-003` | **None of the three sources cited for it addresses format validity.** This assumption currently governs 100% of shipped mastery evidence, and the bridge separately rules that a mastery model which cannot ingest played-hand evidence is disqualified. | Very low — likely to be retired rather than validated | **playtesting**, but the live plan is replacement: `LDB-04` decides what replaces multiple choice. |
+| A-11 | Two-to-four-minute units are the right size. `K-U7-001` | No citation. `ALR-027`: *"the research does not establish universal minutes."* | Low | **playtesting** — see A-08; same instrument. |
+| A-12 | The checkpoint-hybrid generation boundary limits token cost and latency. `K-U5-008` | The mechanism exists; **no measurement backs the claim.** The same design files token, latency, and cost as work still to be done. | Unknown | **production telemetry** — measure it or drop the claim. |
+| A-13 | Learners can be trained to evaluate a decision independently of the hand result. | **Load-bearing and open.** The product is committed to it and it is implemented. Outcome bias is well demonstrated — pre-registered, N=692, reproduced at a larger effect, and present even among people who had said outcomes should not count. **Correcting** it is not demonstrated. The one dedicated intervention is abstract-only. | Unknown, and the product depends on it | **playtesting — `P-1`.** Behavioural, not attitudinal: agreeing with the principle is worthless as a measure. |
+| A-14 | Teaching expected value changes how a learner plays. | **Evidenced absence.** Two independent agents, multiple routes, found no study measuring whether EV instruction improves in-game decisions. The nearest handbook review predicts Bayes-like rules to be poor training candidates. Further collection is **not authorised**. | Unknown | **playtesting — `P-2`.** Play-decision accuracy across an EV-instructed and a non-EV arm, measured on hands played, not quiz items. |
+| A-15 | Mixed practice helps this audience rather than overwhelming beginners. | The interleaving result is strong (72% vs 38%, d=1.05, discrimination errors 46% → 10%) but is grade-7 mathematics, n=140. Adult blackjack transfer is untested. The `CFL-007` ruling — block to introduce, interleave to practise — is explicitly labelled a bet. | Medium on mechanism, unknown on transfer | **playtesting — `P-3`.** Classification accuracy plus beginner drop-off, with a retention arm: blocked practice typically wins in-session and loses on delay. |
+| A-16 | A deliberately simplified false heuristic ("assume the next card is a ten") would not serve novices better than correct strategy. | The evidence points the other way: casino players use exactly that heuristic, it is easier to learn than optimal strategy, and it is associated with better expected returns than unaided play. The bridge calls adopting it *"a genuine design option, not a concession."* | Unknown | **playtesting — `P-4`.** Realised expected value of actual play at matched training time, plus time-to-competence. |
+| A-17 | Confidence and skill rise together, so a confident learner is a competent one. | The evidence says they will not: brief practice significantly raised confidence on an outcome the participant could not influence. | Low — expect divergence | **playtesting — `P-5`.** Paired longitudinal series of self-rated confidence and measured decision accuracy on the same sessions; the measurement is the divergence. |
+| A-18 | An interactive learning game teaches these concepts better than passive presentation. | Encouraging on format, weak on content: a single ~60-minute debiasing game produced persistent effects, but it had **no untrained control arm**, the **video beat the game on bias knowledge**, and **none of its six trained biases** is outcome bias or EV reasoning. | Medium on format, none on content | **playtesting** — this is the premise behind the whole activity-pattern catalog (`LDB-02`); instrument the first non-quiz activity against a quiz baseline. |
+| A-19 | Instruction can correct gambler's fallacy, hot-hand belief, and illusion of control. | Prevalence is strongly established, including in the field with real casino patrons betting their own money. Correction is thinly evidenced: one clinical treatment *package* that cannot isolate the randomness-correction component, and one lab study on imaginary money bundling teaching with in-play cueing. | Low | **academic research** — one bounded gap remains (`G5`: Steenbergh et al. 2004, never opened) — then **playtesting**. |
+| A-20 | The chips economy's cosmetic reward for winning does not teach outcome bias. | None. The mitigation is structural — chips buy nothing and unlock nothing once Free Play is open, so a win advances the learner on no axis — but whether a cosmetic reward still trains the bias is untested. | Unknown | **playtesting — shares the `P-1` instrument.** Tracked as `E-1` in `2026-07-26-chips-xp-and-progression-economy.md`. |
+
+## How to use this
+
+- **Writing a design document:** if a claim would change under contradicting data, it belongs here.
+  Cite the row (`A-07`) instead of restating the caveat in prose.
+- **Shaping a card:** a card whose outcome rests on a row states which one, so the decision is
+  visibly provisional.
+- **Choosing the phase-5 slice** (`LDB-08`): the declared subset of `P-1`…`P-5` the slice must
+  instrument determines which of `A-13` through `A-17` and `A-20` can close.
+- **Closing a row:** strike it, record what was measured and where, and note what it changed. If
+  nothing changed, say so — a validated assumption is a finding.
