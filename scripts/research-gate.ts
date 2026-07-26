@@ -48,7 +48,13 @@ import { dirname, resolve, sep } from "node:path";
 type Manifest = { runDir: string; units: string[] };
 
 // Closed sets. A gate that accepts any non-empty token cannot fail on a typo.
-const VERDICTS = ["Preserve", "Relabel", "Revise", "Replace", "Remove"];
+// The first five are the claim-audit dispositions this gate was written for (P2 shape): a unit
+// re-reads an existing claim and rules on it. `Collected` is the collection-pass disposition
+// (P1/LDB-02 shape): a unit searched a bounded gap and recorded what it found, so there is no
+// prior claim to preserve or remove. Added deliberately 2026-07-26 rather than having a
+// collection unit emit a claim-audit token it does not mean; the full fixture suite was re-run
+// to prove the addition changes no existing verdict.
+const VERDICTS = ["Preserve", "Relabel", "Revise", "Replace", "Remove", "Collected"];
 const SUFFICIENCIES = ["SUFFICIENT", "INSUFFICIENT"];
 
 const CORRECTION_HEADER = /^\|\s*ID\s*\|\s*Correction\s*\|\s*State\s*\|\s*$/;
