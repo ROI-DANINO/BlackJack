@@ -30,8 +30,8 @@ Three principles resolve the thoroughness-vs-waste tension:
 
 - **Tier 1 — deterministic scripts (every milestone, gate the phase boundary, ~free, no agents):**
   `cargo test -p blackjack-core` (engine math) + the wasm-freshness guard + `cd web && npm test`
-  (unit) + **`cd web && npm run qa`** (the `web/qa/` suite: `qa:rules` + `qa:flow` + `qa:breakit`).
-  Any non-zero exit blocks the boundary.
+  (unit) + **`cd web && npm run qa`** (the `web/qa/` suite: `qa:rules` + `qa:flow` + `qa:breakit` +
+  `qa:learn`). Any non-zero exit blocks the boundary.
 - **Tier 2 — exactly one judgment agent, only when `web/src/app/` changed:** the Player Experience
   agent. It is fed the Tier-1 results so it never re-derives mechanics — it answers only "is this
   clear / does it teach / does it feel like a game."
@@ -119,7 +119,7 @@ mechanics), then:
 | Agent | Activate when |
 |-------|---------------|
 | Strategy Advisor QA | V2 ships strategy hints/feedback — checks the *advice is correct* (likely a new `qa:strategy` script) |
-| Learning / Tutorial QA | any learning, drill, or explanation layer exists (V2) |
+| Learning / Tutorial QA | any learning, drill, or explanation layer exists (V2) — **trigger fired 2026-07-11** when the nine Blackjack Foundations learning units shipped; not yet activated |
 | UI Consistency QA (standalone) | V3 polish phase; until then folded into Player Experience |
 | Accessibility QA | approaching real external playtests (V3) |
 | Mobile / Responsive QA | mobile layout work becomes active (V3) |

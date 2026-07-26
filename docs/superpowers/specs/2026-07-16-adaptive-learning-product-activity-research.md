@@ -118,7 +118,7 @@ Existing project directions cross-check:
 
 - **ALR-001 — Use multiple choice for bounded recognition or classification evidence, not for procedural transfer by itself.**
   - Applies to: multiple-choice activity.
-  - Evidence: **PUBLISHED/INFERENCE:** `DUO-001`, `BRI-001`, `SCI-001`; current `QuestionStep` and outcome-ID project contracts.
+  - Evidence: **PUBLISHED/INFERENCE:** `DUO-001`, `BRI-001`, `SCI-001`; current `QuestionStep` and outcome-ID project contracts. *(Product judgement — none of the three sources speaks to format validity; the `PUBLISHED` tag is unearned, and this requirement governs 100% of shipped mastery evidence; audited 2026-07-26, K-U4-003.)*
   - Verification: every activity declares one or more skill/evidence goals, and a review can explain why selecting among choices measures them.
   - Limitation: recognition can overestimate recall or table execution, so later independent evidence must use a different or less-supported mode.
 
@@ -136,13 +136,13 @@ Existing project directions cross-check:
 
 - **ALR-004 — Preserve the first response and record each retry and hint level as assistance rather than replacing the original attempt.**
   - Applies to: multiple-choice hints, retry, and evidence emission.
-  - Evidence: **INFERENCE:** `SCI-001`, `SCI-004`, `SCI-009`; existing assistance and attempt-record project contracts.
+  - Evidence: **INFERENCE:** `SCI-001`, `SCI-004`, `SCI-009`. *(Revise applied 2026-07-26, K-U4-004 — "existing assistance and attempt-record project contracts" dropped from the evidence basis: `AttemptRecord` has one `response` field and a scalar `assistance`; the existing contract is the gap this requirement addresses, not evidence for it.)*
   - Verification: an automated contract test shows first response, retries, hint/direct-answer use, final response, and correctness remain separately observable.
   - Limitation: assisted success can support learning but cannot satisfy an unassisted mastery or skip-test requirement.
 
 - **ALR-005 — Configure feedback timing by evidence mode and keep the verdict specific to the submitted decision.**
   - Applies to: multiple-choice feedback.
-  - Evidence: **PUBLISHED/INFERENCE:** `SCI-005`; **PROJECT CONSTRAINT:** decision/outcome separation and current canonical feedback contracts.
+  - Evidence: **PUBLISHED/INFERENCE:** `SCI-005`; **PROJECT CONSTRAINT:** decision/outcome separation and current canonical feedback contracts. *(Assumption — `SCI-005` reports delayed feedback as slightly more effective; the configure-by-mode half survives as inference, but the immediate-by-default half is not derived from it; audited 2026-07-26, K-U4-005.)*
   - Verification: acquisition mode provides immediate canonical correction, while assessment mode can defer explanation without losing the evaluated prompt/response state.
   - Limitation: no cited evidence supports one timing policy for every learner, skill, or activity.
 
@@ -250,7 +250,7 @@ Existing project directions cross-check:
 
 - **ALR-022 — Record the first response, final response, correctness or ungraded status, assistance level, timing, and error classification without equating speed with ability.**
   - Applies to: shared activity evidence.
-  - Evidence: **INFERENCE:** retrieval evidence `SCI-001`; **PROJECT CONSTRAINT:** approved attempt envelope and current `AttemptRecord` seam.
+  - Evidence: **INFERENCE:** retrieval evidence `SCI-001`; **PROJECT CONSTRAINT:** approved attempt envelope. *(Revise applied 2026-07-26, K-U4-013 — "and current `AttemptRecord` seam" struck: four of the six items this requirement names are absent from the seam it cited.)*
   - Verification: contract fixtures cover correct, incorrect, retried, hinted, abandoned, and ungraded attempts with no loss of first-response data.
   - Limitation: stable misconception labels require repeated evidence or explicit reasoning, not one classified error.
 
@@ -364,7 +364,7 @@ Existing project directions cross-check:
   - Applies to: visual, motion, and timing accessibility.
   - Evidence: **PUBLISHED/INFERENCE:** `STD-001`; **PROJECT CONSTRAINT:** accuracy before timed automaticity.
   - Verification: tests complete activities at supported zoom/reflow and reduced motion; timing can be paused/extended or is nonessential; no animation alone conveys grading state.
-  - Limitation: later realistic-pace training is a separate evidence mode introduced only after untimed accuracy is stable.
+  - Limitation: later realistic-pace training is a separate evidence mode introduced only after untimed accuracy is stable. *(Revise applied 2026-07-26, K-U4-016 — conformance level marked: this requirement bundles WCAG 2.2 criteria of different levels. Timing Adjustable (SC 2.2.1) is Level A; Reflow (SC 1.4.10) and Text Spacing (SC 1.4.12) are Level AA; the reduced-motion criterion (SC 2.3.3) is Level AAA and is not silently promoted to a baseline requirement.)*
 
 - **ALR-041 — Include scoped accessibility checks and learning-integrity playtests in each activity feature QA.**
   - Applies to: verification and release gating.

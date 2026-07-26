@@ -17,8 +17,10 @@ automatically starts a fresh shoe when needed.
 
 The Learn path now includes nine Blackjack Foundations units driven by the real engine. Basic
 Strategy is engine-owned through verified H17 and S17 profiles, and lessons are rejected when their
-declared profile does not match the active ruleset. The next product step is the first learner-
-visible Strategy Table Fundamentals lesson and the smallest grading API it needs.
+declared profile does not match the active ruleset. The next product step is Graded Decision
+Practice: a free-decision activity graded against the verified Basic Strategy oracle, wired to a
+durable learner record (11-task plan). Strategy Table Fundamentals was approved and then
+intentionally paused pending that work.
 
 ## Quick start
 
@@ -57,5 +59,6 @@ penetration. Basic Strategy recommendations are specific to this ruleset.
 ## Project status
 
 V1 Simulation Foundations is complete and QA-passed. V2 Learning Foundations is active: Blackjack
-Foundations and the Strategy Profile Foundation are complete, and Strategy Table Fundamentals is the
-next learning slice. See the [roadmap](ROADMAP.md) for the current scope.
+Foundations and the Strategy Profile Foundation are complete, and Graded Decision Practice is the
+active learning slice (Strategy Table Fundamentals is paused). See the [roadmap](ROADMAP.md) for the
+current scope.

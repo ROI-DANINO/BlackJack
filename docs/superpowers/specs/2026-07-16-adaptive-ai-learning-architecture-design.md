@@ -282,7 +282,9 @@ optional coaching intentions.
 
 The learner chooses a session-size preset. Each preset resolves to a target duration and maximum
 activity count. The deterministic controller also owns model-call and token/output bounds. Exact
-values are research-calibrated configuration rather than fixed architectural assumptions.
+values are configuration to be calibrated, not fixed architectural assumptions and not already
+calibrated. *(Revise applied 2026-07-26, K-U3-001 — the prior wording's present-tense participle
+overstated a calibration that has not happened.)*
 
 A session ends when:
 
@@ -409,7 +411,12 @@ review, mastery check, or skip test.
 One mistake cannot establish a stable weakness. Mastery requires repeated independent evidence
 across the evidence types declared by the skill policy. A mastered skill becomes `Review due`
 rather than losing its historical mastery when retention evidence ages or later mistakes accumulate.
-Thresholds and retention intervals are versioned, research-calibrated curriculum/reducer policy.
+*(Assumption — spacing transfer to a blackjack-shaped decision rule is a settled coverage gap; the
+only product analogue, Khan, has no time-based decay at all; audited 2026-07-26, K-U3-007.)*
+Thresholds and retention intervals are versioned policy whose values are assumptions pending
+calibration. *(Revise applied 2026-07-26, K-U3-002 — the prior present-tense-calibrated wording is
+replaced; this is the more consequential of the two overstatements this pattern produced, since it
+governs the reducer.)*
 
 ### Session and unit grading
 

@@ -16,6 +16,10 @@ against `crates/blackjack-core/src/strategy.rs` and the prior-subject wording ag
 document incorporates the review's one blocker (adaptive checkpoint grading) and its cheap,
 high-value refinements.
 
+*(Product judgement — an agent/persona review is at best an internal design-iteration record, not
+evidentiary warrant; the design choices stand on the independent statistical argument in "Why
+Adaptive Checkpoint Grading" below, not on this endorsement; audited 2026-07-26, K-U7-004.)*
+
 ## Product Outcome
 
 A learner who has finished Blackjack Foundations (they can read a hand, use an Ace as 1 or 11,
@@ -152,7 +156,8 @@ card), not by STF-04 itself.
 - **Live decision-quality grading** — being graded on *obeying* the table in a live hand, and
   obeying it under emotional pressure, is the adjacent application lesson. STF-05 must sequence that
   lesson **adjacent and unskippable**: a read-only skill decays if the chance to apply it is several
-  lessons away, which would turn a sound deferral into a mistake.
+  lessons away, which would turn a sound deferral into a mistake. *(Assumption — no source measures
+  this configuration; it is a COVERAGE GAP; audited 2026-07-26, K-U7-006.)*
 - **H17-vs-S17 profile differences** — the lesson uses the active ruleset's table silently; profile
   nuance is advanced content.
 - **No-table recall and timed / realistic pace** — later mastery work.

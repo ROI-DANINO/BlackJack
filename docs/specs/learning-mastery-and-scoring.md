@@ -1,6 +1,8 @@
 # Learning, Mastery, and Scoring — Future Design Notes
 
-> Status: parked for V2+. Not a V1 implementation requirement unless the active milestone says so.
+> Status: active for V2 — cited as binding design authority in `journal/ops/phase.md`
+> (`phase: v2-learning-foundations`) and in `PROGRESS.md`'s open questions. The former "parked for
+> V2+" framing is stale now that the project is in V2; not a V1 implementation requirement.
 
 ## Main Learning Direction
 The game is a training app with gameplay, not a textbook course.
@@ -35,7 +37,14 @@ Build skills in this order:
 4. Decision recall: choose the recommendation with progressively less support.
 5. Procedural transfer: apply decisions through full evolving hands.
 6. Ruleset transfer: notice when a changed rule changes the answer.
-7. Automaticity: answer accurately at realistic pace only after accuracy is stable.
+7. Automaticity: answer accurately at realistic pace only after accuracy is stable. *(Assumption —
+   the only blackjack-specific support is N=12, computer-controlled, rigged win probability, with no
+   split/double/insurance; also loosens the source import's "after mastery" to "after accuracy is
+   stable"; audited 2026-07-26, K-U1-004.)*
+
+*(Assumption — no dossier or baseline source evaluates a prerequisite ordering for blackjack, or any
+comparable situation-to-action rule domain; Khan's ladder is an existence proof that ladders ship,
+not that this ordering is correct; audited 2026-07-26, K-U1-003.)*
 
 V2 concentrates on the first four stages and table-open transfer. Ruleset transfer, no-table
 assessment, and timed automaticity remain later work.
@@ -92,7 +101,9 @@ Reuse concepts across progressively harder formats:
 4. table-hidden decision;
 5. full evolving hand;
 6. interleaved review;
-7. timed practice after accuracy is stable.
+7. timed practice after accuracy is stable. *(Assumption — same weak-evidence claim as Learning
+   Target Progression above: N=12, computer-controlled win probability, no split/double/insurance;
+   audited 2026-07-26, K-U1-004.)*
 
 Do not duplicate the same lesson as several prose variants. The exercise format changes while the
 ruleset-matched strategy truth remains shared.
@@ -131,7 +142,9 @@ observed practice data supports them.
 - Session report after play.
 
 Immediate and delayed feedback are training configurations, not one global product mode. Use
-immediate correction for new concepts and delayed review for transfer or assessment. Both modes
+immediate correction for new concepts and delayed review for transfer or assessment. *(Assumption —
+SCI-005 runs against the immediate half: delayed feedback was slightly more effective, and
+clarity/consistency mattered more than exact timing; audited 2026-07-26, K-U1-014.)* Both modes
 must preserve the decision state being evaluated and keep the decision verdict separate from the
 resolved hand outcome.
 
@@ -165,6 +178,10 @@ Progress identity = rank + rating
 Diagnosis = skill breakdown
 ```
 
+*(Assumption — each half has a precedent but the combination has none; education-Elo needs roughly
+100 learners for usable item difficulty, and Chess.com's item ratings are crowd-calibrated; audited
+2026-07-26, K-U1-016.)*
+
 ## Error Severity
 Do not score all mistakes equally.
 
@@ -174,6 +191,9 @@ Examples:
 - Medium error.
 - Major error.
 - Critical error.
+
+*(Product judgement + COVERAGE GAP — nothing grades blackjack error severity by these tiers;
+audited 2026-07-26, K-U1-017.)*
 
 Factors later:
 
@@ -186,6 +206,9 @@ Factors later:
 - shoe/table difficulty;
 - count accuracy;
 - true count accuracy.
+
+*(Product judgement + COVERAGE GAP — response time and table pace as scoring factors run against
+ALR-022's "without equating speed with ability"; audited 2026-07-26, K-U1-017.)*
 
 ## Simulated Players Later
 Not V1 active implementation.

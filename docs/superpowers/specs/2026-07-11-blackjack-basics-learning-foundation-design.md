@@ -16,7 +16,8 @@ feature QA.
 A complete beginner can finish Blackjack Basics and then play a full Free Play hand without
 instructional help. They understand the goal, cards, totals, table information, round flow,
 actions, wagers, and results. They do not yet know which legal action is strategically correct;
-that begins with Strategy Table Fundamentals.
+that begins with Strategy Table Fundamentals. *(Product judgement — ALR-033 hands this class of
+prerequisite decision to curriculum design; audited 2026-07-26, K-U7-002.)*
 
 The product remains a training game rather than a gambling product. It teaches execution through
 short interactions and real blackjack mechanics, and it does not celebrate money won or imply that
@@ -64,6 +65,8 @@ without assistance at speed, or demonstrate long-term mastery.
 
 Blackjack Basics contains nine short units. Each should take roughly two to four minutes, focus on
 one small skill, and declare explicit prerequisites, learning outcomes, and completion evidence.
+*(Assumption — no source establishes universal per-unit minutes; ALR-027 makes the same point one
+level up, at the numeric-value scale; audited 2026-07-26, K-U7-001.)*
 
 ### 1. Meet Blackjack
 
@@ -109,6 +112,9 @@ settled hands with separate wagers.
 Use real engine hands with minimal assistance. Check that the learner can read the table, use the
 available actions, and understand the result. Do not grade the chosen action against Basic
 Strategy.
+
+*(Assumption — no citation supports this specific nine-unit teaching order; the ITS literature is
+consistent with it but does not establish it; audited 2026-07-26, K-U7-003.)*
 
 ## Lesson Rhythm
 

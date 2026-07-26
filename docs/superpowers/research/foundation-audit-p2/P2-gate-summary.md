@@ -48,6 +48,12 @@ was a **labelling, precision, or coverage** defect.
      records; all reproduced exactly. Given that I reported a wrong headline total six times
      (OE-011), that independent recount is the only reason these numbers should be believed. -->
 
+> **Disclosure added 2026-07-26, by a later review — not part of the original Phase 2 run.** This
+> Headline reports correction and claim counts but no per-unit sufficiency status — four of the
+> eight units were ruled `INSUFFICIENT` by their own verifiers, and no owner-facing document says
+> so. Separately, the mechanical gate check that certifies "26 material corrections" above has never
+> actually seen the 26th one. Full detail in "Disclosures added by later review (2026-07-26)" at the
+> end of this document.
 
 ---
 
@@ -273,6 +279,13 @@ case this plan was written to close — not "no failure token found" but "no row
 completeness check does not exist and is a Phase 3 gate-hardening item, alongside `1e`'s unenforced
 cell-2 vocabulary and `1b`'s never-observed failure.
 
+> **Disclosure added 2026-07-26, by a later review — not part of the original Phase 2 run.**
+> `OE-011`'s "No audit artifact is affected" is true of the audit records — but the register in which
+> the wrong 104/`Revise 9` figure originated, `registers/dispatch-ledger.md`, was never itself
+> corrected and still carries it, and a stale landing fraction, in the promoted archive. See
+> "Disclosures added by later review (2026-07-26)" §4 at the end of this document. The register is a
+> process record and is not edited here.
+
 ---
 
 ## Gate status — two criteria not clean
@@ -317,6 +330,15 @@ that had dropped the first.
 - **`1b` has never been observed to FAIL on any fixture** — unproven by the D7 standard the plan sets
   for itself.
 
+> **Disclosure added 2026-07-26, by a later review — not part of the original Phase 2 run.** A
+> **third** defect in this same family was found in the gate script itself, undetected by everything
+> above: check `1a`'s file globs cannot see two of this run's verification records, which makes
+> `C-U5-003` — the 26th correction — invisible on both the raised and landed sides. Criterion 1's
+> "PASS — 26/26 landed and confirmed" above was never actually checked past 25. Separately, criterion
+> 11's `PROGRAM-INTEGRITY.md` pass is now stale by roughly a third of the run and was never re-run
+> against what came after it. Full detail in "Disclosures added by later review (2026-07-26)" §2 and
+> §3 at the end of this document.
+
 ---
 
 ## Phase 3 boundary
@@ -325,3 +347,127 @@ This summary produces **none** of the Phase 3 deliverables. It does not integrat
 state what the project should do, translate anything into design inputs, use the Phase 3 decision
 vocabulary, or author replacement content for anything. Cross-unit tensions appear only as conflict-register
 pointers. **Phase 2 stops here.**
+
+---
+
+## Disclosures added by later review (2026-07-26)
+
+> **Everything in this section was added 2026-07-26 by a later review, after Phase 2's 2026-07-22
+> approval and after this document's own two boundary-review rounds. None of it was written by the
+> orchestrator that ran Phase 2, and none of it is Phase 2's own self-disclosure — it is status this
+> archive's own process records already established, that never reached this summary or `README.md`.
+> Nothing above this section has been altered, softened, or removed; where a disclosure below
+> contradicts a claim above, both stand, side by side, and the claim above is quoted rather than
+> rewritten.**
+
+### 1. Four of eight units were ruled `INSUFFICIENT` by their own verifiers
+
+Every `verification/V-U<n>.md` record opens with a `SUFFICIENCY` verdict — an axis independent of the
+per-claim `Preserve`/`Relabel`/`Revise` verdicts this summary reports. Confirmed by opening each
+record:
+
+| Unit | Sufficiency verdict | Locus |
+|---|---|---|
+| U1 | **INSUFFICIENT** | `verification/V-U1.md:11` |
+| U3 | **INSUFFICIENT** | `verification/V-U3.md:9` |
+| U4 | **INSUFFICIENT** | `verification/V-U4.md:9` |
+| U8 | **INSUFFICIENT** | `verification/V-U8.md:3` |
+| U2 | SUFFICIENT | `verification/V-U2.md:8` |
+| U5 | SUFFICIENT | `verification/V-U5.md:7` |
+| U6 | SUFFICIENT | `verification/V-U6.md:3` |
+| U7 | SUFFICIENT | `verification/V-U7.md:14` |
+
+None of this appears above. The word "sufficiency" occurs exactly once in this document — in the
+2026-07-22 revision comment under Headline, about the deleted Phase-3-boundary sentence, which is a
+different matter — and zero times in `PROCESS-AUDIT.md`, `README.md`, or
+`integrity/PROGRAM-INTEGRITY.md` (confirmed by search). The Gate status table above lists eleven
+criteria; none of them is sufficiency. Phase 2's gate checks whether corrections landed, never
+whether a unit's evidence was enough to trust its verdicts on in the first place. Half the phase was
+ruled insufficiently evidenced by its own adversarial verifier, and the finding reached no document
+the owner reads.
+
+### 2. The mechanical gate has certified 25 corrections, not 26
+
+Check `1a` in `scripts/fixtures/research-gate-p2/run-p2-gate-checks.sh:69-71` scopes its raised-set
+and landed-set greps to files matching `--include='V-U[1-8].md'` and `--include='LV-U[1-8].md'`
+respectively — one digit, no suffix. Four files in `verification/` do not match either pattern:
+`V-U5-citation-ruling.md` and `LV-U5-003.md` (which raise and confirm `C-U5-003`, the correction that
+brought the phase total from 25 to 26 — see the revision comment under Headline above), and
+`V-U7-adjudication.md` and `LV-U7-adjudication.md` (which carry `C-U7-001-adj`, the U7 adjudication's
+landing confirmation; `C-U7-001` itself remains visible through `V-U7.md`/`LV-U7.md`, so this second
+pair does not independently move the certified count).
+
+Run against the promoted archive, from the repo root:
+
+```
+$ bash scripts/fixtures/research-gate-p2/run-p2-gate-checks.sh \
+      docs/superpowers/research/foundation-audit-p2 "1 2 3 4 5 6 7 8"
+1-pre: pass · 1-pre-b: pass · 1a: pass · 1b: pass · 1d: pass · 1e: pass
+GATE: PASS
+```
+
+Extracting `1a`'s own two sets independently reproduces the mechanism: the "raised" set (from
+`V-U[1-8].md`) contains exactly 25 IDs; the "landed" set (from `LV-U[1-8].md`) contains the same 25
+IDs. `C-U5-003` is absent from both, so the diff is empty and `1a` passes — not because the 26th
+correction was checked and found sound, but because it was never in view on either side. **The
+mechanical gate has never certified 26 corrections. It certified 25 and could not have failed on the
+26th no matter what that correction's records said.**
+
+This document already names three instances of the absence-as-proof family: `1e` cannot fail on a
+citation row that does not exist (`OE-014`, in "Orchestrator errors" above); `1e`'s cell 2 has no
+enforced vocabulary, so free prose there silently disarms it (Gate status, above); and `1b` has never
+been observed to FAIL on any fixture (Gate status, above). This file-glob blind spot is a **fourth**,
+and it is recorded nowhere in the archive until this note.
+
+### 3. `integrity/PROGRAM-INTEGRITY.md` — the record `README.md` says wins any disagreement — is stale by roughly a third of the run
+
+`README.md:16` states: "Where it disagrees with `PROCESS-AUDIT.md`, this record wins."
+`integrity/PROGRAM-INTEGRITY.md:330` names its own evidentiary base: "**Locus:
+`registers/orchestrator-errors.md` (10 `OE-` entries, 4 `AD-` entries).**" Its Area 1 finding is built
+on "all **25**" corrections (`integrity/PROGRAM-INTEGRITY.md:17`, `:35`).
+
+`registers/orchestrator-errors.md` now holds **sixteen** `OE-` entries (`OE-001`–`OE-016`) and four
+`AD-` entries (unchanged). This document's own Headline states **26** corrections. The dispatch
+ledger records the program-integrity pass as dispatch **#41** (`registers/dispatch-ledger.md:64`);
+dispatch **#42** (the `CIT-U5-B` citation ruling, dispatched *because* the program-integrity pass
+judged the orchestrator's own register edit "EVADED"), **#43** (landing `C-U5-003`), **#44** (the
+round-1 boundary review of this summary), and **#45** (confirming `C-U5-003` LANDED) all follow it.
+The round-2 boundary review (`verification/V-gate-summary-review-r2.md`) reads
+`integrity/PROGRAM-INTEGRITY.md` as one of its own inputs, so it too postdates dispatch #41.
+
+In other words: `OE-011` through `OE-016`, the citation ruling and its landing, and both rounds of
+boundary review of this summary — everything from dispatch #42 onward — were produced after the one
+process audit `README.md` names as authoritative, and no later pass re-ran it. Its `SOUND` finding on
+Area 4 (shared state) rested on ID density and ownership, not completeness, which is exactly why it
+did not anticipate `OE-014`'s sixteen missing citation rows or `OE-016`'s undisclosed U8 provenance,
+both found afterward by other roles. This does not make `integrity/PROGRAM-INTEGRITY.md` wrong about
+what it examined; it means the authority `README.md` assigns it now covers roughly two-thirds of the
+run, not all of it, and nothing in the promoted archive said so until this note.
+
+### 4. `registers/dispatch-ledger.md` carries wrong headline figures in the promoted archive
+
+This note is written here, not in the register, because `registers/dispatch-ledger.md` is a process
+record outside this disclosure pass's edit scope. The register itself has not been touched.
+
+`OE-011` above (`registers/orchestrator-errors.md`) discloses that the orchestrator "reported a
+headline total [it] never computed, and repeated it at least six times" and states "**No audit
+artifact is affected.**" That is true of the eight audit records — but the register in which the
+wrong figure originated was never itself corrected. `registers/dispatch-ledger.md:157-158` still
+reads, verbatim, in the promoted archive:
+
+> AUDIT TOTALS (mechanically tallied by the orchestrator from the records, not from agent
+> summaries): U1 18 · U2 11 · U3 13 · U4 18 · U5 17 · U6 9 · U7 9 · U8 7 = **104** claims assessed.
+> Verdicts: Preserve 71 · Relabel 24 · **Revise 9** · Replace 0 · Remove 0.
+
+The true figures — this document's own Headline, above — are **102** claims, `Revise` **7**.
+`registers/dispatch-ledger.md:114` also still reads, verbatim:
+
+> **16 of 25 corrections landed.**
+
+That line was an accurate progress note when written — 16 of 25 corrections *had* landed at that
+point in the run. It was never updated after the remaining landings completed and `C-U5-003` raised
+the total to 26. Read today, in the promoted archive, it states a fraction that no longer describes
+anything: the Gate status table above records all 26 corrections landed and confirmed. A reader who
+opens the register directly, rather than this summary, carries away the wrong claim total, the wrong
+`Revise` count, and a landing fraction three claims and one correction short of the true count, with
+nothing in that file to warn them.

@@ -19,6 +19,13 @@
 > applied. Editorial pass **C4-ED (2026-07-20)** ran with append-only lifted and discharged that debt
 > in place. Superseded text is struck through and dated rather than deleted. Findings carrying
 > in-place corrections: F10 (supporting location), F11, F12, F13. No source was added.
+>
+> **CORRECTIONS-LANDING PASS (C4-ED3, 2026-07-26).** Five further Phase-1 corrections, raised by V4 on
+> 2026-07-19 against F1–F9 and never written into this dossier, are now landed in place: F1's
+> paraphrase presented under "exact quotes," F5's wrong supporting location, F9's wrong author list,
+> and two substantive downgrades — F6's false "the one mechanism" uniqueness claim and F7's
+> effect-size splice/mislabeled treatment (plus F7's placeholder title). Each correction is labelled
+> at its site with this pass's tag. No source was added or removed; no finding ID changed.
 
 ## Scope & questions this card must answer
 - Q1. Chess.com's rating and progress systems — how the *regular game* rating works vs the *puzzle*
@@ -87,7 +94,7 @@ Vidergor & Ben-Amram 2020).
 - Proposed evidence-quality tier: Q5 (official product documentation)
 - Source(s): (a) Chess.com Help Center, "How do Puzzle ratings work?" — https://support.chess.com/en/articles/8602396-how-do-puzzle-ratings-work ; (b) Chess.com News, "New Puzzles Ratings, Difficulty Settings, And More Consistent Experience" — https://www.chess.com/news/view/announcing-new-puzzles-rating-system
 - Proposed supporting location: (a) body text on rating-change mechanics; (b) body text on algorithm description
-- Claimed strength (exact quotes): "Just like in chess, your Puzzle rating adjusts based on the difficulty of each puzzle compared to your current Puzzle rating." / "The new Puzzle ratings use the same Glicko-style rating logic as your chess games (blitz, rapid, etc.)."
+- Claimed strength (exact quotes): "Just like in chess, your Puzzle rating adjusts based on the difficulty of each puzzle compared to your current Puzzle rating." / ~~"The new Puzzle ratings use the same Glicko-style rating logic as your chess games (blitz, rapid, etc.)."~~ **[C4-ED3, 2026-07-26 — QUOTE-ACCURACY CORRECTION, per V4: this was a paraphrase presented under "exact quotes."]** "The new Puzzles rating system uses the same Glicko-style rating logic that we use for your regular chess games." The parenthetical "(blitz, rapid, etc.)" does not appear in the page's sentence. Substance is unaffected.
 - Caveats: Neither page names Glicko-2 specifically for puzzles (the regular-game rating page, F3, does reference Glicko/rating-deviation concepts more explicitly); "Glicko-style" is the exact phrase used, not a precise algorithm spec.
 
 ### F2: A new Chess.com puzzle's initial difficulty rating is set by observing which of its early solvers can solve it, then the rating is locked after a set period
@@ -125,12 +132,13 @@ Vidergor & Ben-Amram 2020).
 - Access: Two Khan Academy Help Center pages, fetched via text-extraction proxy after direct 403s.
 - Proposed status bucket: Evidence-backed
 - Proposed evidence-quality tier: Q5 (official product documentation)
-- Source(s): (a) Khan Academy Help Center, "What are Course and Unit Mastery?" — https://support.khanacademy.org/hc/en-us/articles/115002552631-What-are-Course-and-Unit-Mastery ; (b) same source as F4
+- Source(s): (a) Khan Academy Help Center, "What are Course and Unit Mastery?" — https://support.khanacademy.org/hc/en-us/articles/115002552631-What-are-Course-and-Unit-Mastery ; (b) ~~same source as F4~~ **[C4-ED3, 2026-07-26 — SUPPORTING-LOCATION CORRECTION, per V4.]** the F4 mastery-levels page contains **no mention of mastery points at all** — the entire points claim rests on source (a) alone.
 - Proposed supporting location: Body text on point allocation and on Course/Unit percentage rollups
 - Claimed strength (exact quote): "Moving to Familiar will earn you 50 of the 100 points. Leveling up to Proficient will get you to 80 points. Become Mastered in a skill to collect the total 100 available Mastery Points." Course Mastery is described as "The percentage of the course that you have mastered" / "The overall fraction of mastery points for that course that you have achieved."
-- Caveats: This is a linear points ledger, not a weighted or difficulty-adjusted score — the documentation gives no indication that harder skills carry more points than easier ones.
+- Caveats: This is a linear points ledger, not a weighted or difficulty-adjusted score — the documentation gives no indication that harder skills carry more points than easier ones. **[C4-ED3, 2026-07-26, per V4.]** This is *directly confirmed* by text the collector did not quote — the Unit Mastery section reads "for example, 1900 points on this unit— 100 for each skill in the unit," which is explicit uniform weighting rather than the absence-of-evidence inference above.
 
-### F6: Khan Academy's Mastery Challenges are the one documented mechanism by which mastery can be lost, not just gained — a paired-question check that can move a skill's level up, down, or leave it unchanged
+### F6: ~~Khan Academy's Mastery Challenges are the one documented mechanism by which mastery can be lost, not just gained — a paired-question check that can move a skill's level up, down, or leave it unchanged~~
+**[C4-ED3, 2026-07-26 — STRENGTH DOWNGRADE, per V4: the uniqueness claim is contradicted by the collector's own sources.]** Khan Academy's Mastery Challenges are **one** documented mechanism by which mastery can be lost, not just gained — a paired-question check that can move a skill's level up, down, or leave it unchanged; **quizzes, unit tests and course challenges can also lower a level.**
 - Provenance: OBSERVED
 - Access: Khan Academy Help Center page, fetched via text-extraction proxy after direct 403.
 - Proposed status bucket: Evidence-backed
@@ -140,12 +148,13 @@ Vidergor & Ben-Amram 2020).
 - Claimed strength (exact quote): "Mastery Challenges always consist of 6 questions that review 3 skills" with "2 questions to each skill." "If you answer both questions correctly, you'll level up in that skill." / "If you answer both questions incorrectly, you'll level down in that skill." / "If you answer 1 question correctly and 1 question incorrectly, your level in that skill remains the same."
 - Caveats: This is a bidirectional but coarse (3-outcome) update rule keyed on exactly 2 questions per skill per challenge — nothing resembling a continuous rating update or a per-item information weighting (as Elo/IRT would apply) is described. No time-based decay (mastery does not passively fade merely by the passage of time in this documentation) — loss is tied only to answering challenge questions incorrectly.
 
-### F7: An RCT run by a University of Toronto economist in partnership with Khan Academy (n=10,979 students, 224 teachers) found math-score gains of 0.12–0.22 SD among elementary classrooms using Khan Academy at high intensity (~35 min/week), but no significant gain for middle-school classrooms at low intensity (~10 min/week)
+### F7: ~~An RCT run by a University of Toronto economist in partnership with Khan Academy (n=10,979 students, 224 teachers) found math-score gains of 0.12–0.22 SD among elementary classrooms using Khan Academy at high intensity (~35 min/week), but no significant gain for middle-school classrooms at low intensity (~10 min/week)~~
+**[C4-ED3, 2026-07-26 — STRENGTH DOWNGRADE, per V4: effect range misattributed across two experiments, and the wrong intervention named.]** A teacher-coaching intervention built on Khan Academy (the **KWiK — "Khoaching with Khan Academy" — teacher-coaching program**, not Khan Academy usage itself, was the randomized treatment) produced ITT gains of 0.12–0.22 SD across two field experiments (n=10,979 students, 224 teachers); in the Arlington experiment elementary classrooms gained **0.12–0.17 SD** at ~34.7 min/wk practice while grades 7–8 showed no significant effect at ~7.8 min/wk. The 0.22 upper bound is a **middle-school** result from the separate Nashville weekly-review experiment, not an elementary result. The dosage threshold is a non-randomized further analysis.
 - Provenance: PUBLISHED
 - Access: NBER working-paper landing page (abstract) fetched and read directly; Khan Academy's own blog post about the same study also read (not treated as the primary source — recorded as first-party framing, distinct from the NBER abstract).
 - Proposed status bucket: Evidence-backed
 - Proposed evidence-quality tier: Q2 (genuine field RCT with randomized treatment/control teacher assignment), with an explicit non-independence caveat below
-- Source(s): Oreopoulos, P., Gibbs, C., Jensen, M., & Price, J. (2024/2025). "[Title on effects of Khan Academy usage on math performance]." NBER Working Paper No. 32388. https://www.nber.org/papers/w32388
+- Source(s): Oreopoulos, P., Gibbs, C., Jensen, M., & Price, J. (2024/2025). ~~"[Title on effects of Khan Academy usage on math performance]."~~ **[C4-ED3, 2026-07-26 — PLACEHOLDER TITLE FILLED, per V4.]** "Teaching Teachers To Use Computer Assisted Learning Effectively: Experimental and Quasi-Experimental Evidence." NBER Working Paper No. 32388, April 2024. https://www.nber.org/papers/w32388
 - Proposed supporting location: Abstract
 - Claimed strength (exact quote): "Results from two field experiments indicate significant Intent To Treat effects on math performance of 0.12 - 0.22 standard deviations," with the abstract further noting substantial gains occurred "from students in classrooms with at least an average of 35 minutes of practice per week."
 - Caveats: **Not fully independent** — this RCT was run "in partnership with" Khan Academy (per Khan Academy's own announcement of the same study), not by outside researchers with no platform relationship. The abstract itself does not break out the elementary-vs-middle-school split or state the null middle-school result in those words; that split is drawn from Khan Academy's own blog summary of the same paper and is recorded here as a first-party gloss on a partly-independent study, not as an independently verified sub-finding. Effect size is Intent-to-Treat (average across compliers and non-compliers), not the effect of actual full-dose usage alone.
@@ -165,7 +174,7 @@ Vidergor & Ben-Amram 2020).
 - Access: PMC full-text page fetched and read directly.
 - Proposed status bucket: Evidence-backed, but explicitly out of this card's product scope — included only to document the coverage gap (see below)
 - Proposed evidence-quality tier: Q2 (randomized controlled experiments with active and passive control groups)
-- Source(s): Sala, G., Foley, J.P., & Gobet, F. (2017). "Does chess instruction improve mathematical problem-solving ability? Two experimental studies with an active control group." *Learning & Behavior*. https://pmc.ncbi.nlm.nih.gov/articles/PMC5709436/
+- Source(s): ~~Sala, G., Foley, J.P., & Gobet, F. (2017).~~ **[C4-ED3, 2026-07-26 — AUTHORSHIP ERROR CORRECTED, per V4: the paper has two authors; "Sala, Foley, & Gobet (2017)" is a different paper — "The effect of chess instruction on pupils' cognitive and academic skills," Frontiers in Psychology 8(238) — conflated with this one.]** Sala, G. & Gobet, F. (2017). "Does chess instruction improve mathematical problem-solving ability? Two experimental studies with an active control group." *Learning & Behavior*. https://pmc.ncbi.nlm.nih.gov/articles/PMC5709436/
 - Proposed supporting location: Abstract and Results sections for both experiments
 - Claimed strength (exact quotes): "The three groups showed no statistically significant difference in mathematical problem-solving or metacognitive abilities in the posttest" (Experiment 1, n=233); "The effects of chess instruction on mathematical problem-solving ability were minimal" (Experiment 2, n=52); overall, "The results...do not support the hypothesis according to which chess instruction benefits pupils' mathematical ability."
 - Caveats: **Out of strict scope** — this study evaluates chess instruction generally (lessons, not an online platform), not Chess.com's rating/puzzle system, and measures transfer to math ability, not tactical-skill improvement itself. Included because no study evaluating Chess.com's own puzzle-training mechanism was located (see Coverage gaps) — this is the closest controlled-experiment analogue found, and it is a null result for the *transfer* question, which is a different question from "does the rating/puzzle system itself track tactical skill."

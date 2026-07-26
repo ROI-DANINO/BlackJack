@@ -62,13 +62,6 @@
   two dropped learning-integrity QA gates restored, and a stale worktree pointer fixed.
 
 ## In progress
-- **AL-B1 — build the cycle-1 foundation.** 11 tasks, TDD, no visible product change by design.
-  Two traps are already defused in the plan: the bundle probe runs *before* the adapter (nothing
-  imports `idb` in cycle 1, so a naive diff would tree-shake to zero and make the conditional
-  admission decorative), and the 14 gates are host-neutral **data** rather than `it()` blocks,
-  because neither Vitest environment has IndexedDB and `fake-indexeddb` was rejected — it would
-  prove the multi-tab gate against a simulation, and that gate is the entire evidence for the
-  approved `appendAttempt` deviation.
 - **Skill-grained evidence already exists and is misnamed** (verified 2026-07-17):
   `AttemptRecord.outcomeId` is a validated foreign key into `Subject.skills` — `validate.ts:51-55`
   requires every `unit.outcomes` entry to be a known skill id, `:70-75` requires every question

@@ -11,9 +11,9 @@
 
 | File | What it is |
 |---|---|
-| **`P2-gate-summary.md`** | **Read this first.** Per-unit results, the 26 corrections, conflicts logged, gate status, and the orchestrator's disclosed errors. |
+| **`P2-gate-summary.md`** | **Read this first.** Per-unit results, the 26 corrections, conflicts logged, gate status, and the orchestrator's disclosed errors. Also carries a "Disclosures added by later review (2026-07-26)" section — see below. |
 | `PROCESS-AUDIT.md` | How the run was executed — what the process caught, what it missed, and the lessons Phase 3 inherits. |
-| `integrity/PROGRAM-INTEGRITY.md` | Independent process audit by an agent with no shell and no web access. **Where it disagrees with `PROCESS-AUDIT.md`, this record wins.** |
+| `integrity/PROGRAM-INTEGRITY.md` | Independent process audit by an agent with no shell and no web access. **Where it disagrees with `PROCESS-AUDIT.md`, this record wins.** *(A later review found this record itself is now stale by roughly a third of the run — see "What a later review found still uncounted" below, item 3.)* |
 | `INTEGRITY-MANIFEST-*.md` | Tamper-evidence: digests at scaffold, pre-landing, and post-landing. |
 
 ## The result in one line
@@ -87,6 +87,39 @@ Three gate-design defects remain open for Phase 3 hardening, all of the **absenc
 `1e` cannot fail on a row that does not exist (`OE-014` — it passed while 16 of U5's 17 citation rows
 were missing); `1e`'s second cell has no enforced vocabulary, so free prose silently disarms it; and
 `1b` has never been observed to FAIL on any fixture.
+
+## What a later review found still uncounted (added 2026-07-26)
+
+**Added 2026-07-26, by a later review — not part of the original Phase 2 run or its 2026-07-22
+approval.** Four findings were established inside this archive's own process records but never
+reached this file or the reader-facing sections of `P2-gate-summary.md`. Full detail, with quotes and
+line citations, is in `P2-gate-summary.md`'s own "Disclosures added by later review (2026-07-26)"
+section, at the end of that file. Nothing above this section has been altered — this is new
+disclosure, not a correction of what is written above.
+
+1. **Four of eight units — U1, U3, U4, U8 — were ruled `INSUFFICIENT` by their own verifiers**
+   (`verification/V-U1.md:11`, `verification/V-U3.md:9`, `verification/V-U4.md:9`,
+   `verification/V-U8.md:3`). Sufficiency is a separate axis from the correction verdicts reported
+   above, and there is no gate criterion for it anywhere in this archive — the finding never
+   propagated to any document the owner reads.
+2. **The mechanical gate has certified 25 corrections, not 26.** Two verification records —
+   `verification/V-U5-citation-ruling.md` and `verification/LV-U5-003.md`, which raise and confirm
+   `C-U5-003` — fall outside the file-name patterns check `1a` of
+   `scripts/fixtures/research-gate-p2/run-p2-gate-checks.sh` matches. `C-U5-003` is invisible to that
+   check on both the raised and landed sides; running the gate against this archive confirms it
+   passes without ever seeing that correction.
+3. **`integrity/PROGRAM-INTEGRITY.md` — named above as the record that "wins" any disagreement with
+   `PROCESS-AUDIT.md` — is stale by roughly a third of the run.** It audited 10 orchestrator errors
+   and 25 corrections (`integrity/PROGRAM-INTEGRITY.md:330`, `:17`); the run finished with 16 and 26.
+   Everything from dispatch #42 onward — the citation ruling, both boundary reviews of the gate
+   summary, and six more orchestrator-error entries (`OE-011`–`OE-016`) — postdates it and was never
+   independently process-audited.
+4. **`registers/dispatch-ledger.md` still carries the wrong headline total (104, not 102), the wrong
+   `Revise` count (9, not 7), and a stale corrections-landed fraction ("16 of 25", when all 26 are
+   now landed and confirmed).** These were corrected in `P2-gate-summary.md`'s own Headline but never
+   in the register itself — which this archive elsewhere calls the mechanically-tallied source of
+   record. The register is a process record and was not edited by this disclosure pass; a reader who
+   opens it directly should treat those three figures as superseded by `P2-gate-summary.md`.
 
 ## Where the arc goes next
 

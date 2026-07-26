@@ -1,6 +1,8 @@
 # V1 Simulation Foundations — Design Spec
 
-> Status: design. Scope: the first technical foundation for Free Play.
+> Status: shipped and QA-passed — V1 is complete (see `PROGRESS.md`, `journal/qa/ledger.md`).
+> Scope: the first technical foundation for Free Play. Retained as the historical design record;
+> resolved items below are marked rather than removed.
 
 ## Problem
 Build an initial Free Play experience where one player can play complete blackjack rounds against a dealer using a real shoe, not random card generation.
@@ -173,9 +175,10 @@ V1 minimum:
 
 V1 likely required soon:
 
-- double;
-- split;
-- surrender if selected ruleset includes it.
+- double; **shipped.**
+- split; **shipped.**
+- surrender if selected ruleset includes it. **Resolved: the locked V1 ruleset above sets
+  `surrender: false`, so surrender was not built.**
 
 The ruleset determines which actions are legal at any given moment.
 
@@ -221,3 +224,5 @@ removed_until_reshuffle
 ## Open Questions
 - What exact card lifecycle model best leaves room for future CSM/ASM variants?
 - How should the BlackjackInfo chart be encoded into the first machine-readable Basic Strategy table?
+  **Resolved:** encoded as per-ruleset chart tables in `crates/blackjack-core/src/strategy.rs`
+  (`basic_strategy_action`), later extended to cover both the H17 and S17 profiles.

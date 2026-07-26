@@ -15,7 +15,8 @@ platform.
 ## V2 Subjects
 
 1. **Blackjack Foundations**
-   - Teach hit and stand first, then double and split.
+   - Teach hit and stand first, then double and split. *(Assumption — no source evidences this
+     ordering; audited 2026-07-26, K-U7-007.)*
    - Use short guided simulations with concise explanations and immediate feedback by default.
    - In immediate mode, an action is selected and checked before it commits to the hand, so the
      learner can change it. A delayed-feedback mode remains available for later assessment.
@@ -31,6 +32,9 @@ platform.
 Subjects unlock in a fixed recommended order. Completed units remain replayable. Passing a
 checkpoint unlocks the next unit automatically; a checkpoint can use a real Free Play session
 to let an experienced player advance.
+
+*(Product judgement — ALR-033 places this class of decision under curriculum design's authority;
+Khan is a comparable shipped alternative, not proof; audited 2026-07-26, K-U7-008.)*
 
 ## Engineering Boundaries
 
@@ -53,8 +57,12 @@ to let an experienced player advance.
 3. Ship one excellent guided drill loop.
 4. Add concise feedback and targeted repetition.
 5. Add persisted diagnosis and checkpoints when the loop needs progression.
-6. After V2, expand Basic Strategy mastery gradually: hard totals, hard doubles, soft totals,
-   pairs/splits, then mixed review.
+6. After V2, expand Basic Strategy mastery across hard totals, hard doubles, soft totals, and
+   pairs/splits. Category-blocked-then-mixed is one candidate order, not a settled one: the closest
+   analogous evidence found (interleaved practice beating blocked practice on a directly comparable
+   classification task, 72% vs. 38% correct, d=1.05) favors introducing mixed-category practice
+   earlier rather than only at the end. This is an open design question pending blackjack-specific
+   playtest data, not settled sequencing. *(Revise applied 2026-07-26, K-U7-009 / CFL-007.)*
 7. After V2, add no-table and paced practice.
 8. Add active Free Play coaching and deeper session review only after the teaching loop proves
    useful.

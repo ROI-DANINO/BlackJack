@@ -9,6 +9,14 @@
 > reopened under **program amendment 5** (sufficiency top-ups are exempt from the initial 15-source
 > cap), and a bounded 4-citation sufficiency top-up added **F16–F19**. Counts are kept **separable**:
 > initial collection **15** (F1–F15) · sufficiency top-up **4** (F16–F19) · **card total 19**.
+>
+> **CORRECTIONS-LANDING PASS (C5-EC, 2026-07-26).** V5's and V5b's corrections to F1–F15 — raised
+> 2026-07-19 and never written into this dossier — are now landed in place: **F4 is reframed from
+> spacing evidence to interleaving evidence** (the paper held spacing fixed by design; per V5), F3's
+> directional overstatement about task complexity (per V5), F13's personalisation/temporal-distribution
+> confound (per V5b), and F14/F15's tier-label-in-bucket-field taxonomy defect (per V5b). Each
+> correction is labelled at its site with this pass's tag. No source was added or removed; no finding
+> ID changed.
 
 ## Scope & questions this card must answer
 - Q1. The spacing effect itself: what is the meta-analytic evidence that distributed practice
@@ -81,9 +89,21 @@ declarative trivia-fact material at very large scale
   phenomenon), but it was not run on any skill or rule-application task, so it bears on scheduling
   theory, not on whether scheduling applies to blackjack-strategy decisions specifically.
 
-### F3: Distributed-practice benefit shrinks sharply, and becomes weak-to-negligible, as task
-complexity rises from simple motor tasks toward complex cognitive tasks — this is the single most
+### F3: ~~Distributed-practice benefit shrinks sharply, and becomes weak-to-negligible, as task
+complexity rises from simple motor tasks toward complex cognitive tasks~~ — this is the single most
 load-bearing finding for sub-Q4
+**[C5-EC, 2026-07-26 — STRENGTH DOWNGRADE, per V5: numbers exact, direction overstated.]** Donovan &
+Radosevich's clusters are **not** a complexity ladder from motor to cognitive: TC1 (d=0.97) =
+high-physical/low-mental/low complexity; TC2 (d=0.42) = high-mental/low-physical/average complexity;
+TC3 (d=0.11) = low-mental/high-physical/high complexity; TC4 (d=0.07) = high-mental/high-physical/high
+complexity. **Both near-zero clusters are high-physical**, and the paper reports "Mental and physical
+requirements of the task were not significantly correlated with the effect sizes (p > .35)" — only
+*overall complexity* was. The paper's own worked example places "learning of factual knowledge via a
+lecture" and "distance learning accomplished via the Internet" in **TC2, d = 0.42** — the closest
+cluster to a screen-based cognitive trainer retains a solid medium effect. Downgraded claim,
+re-verified: *task complexity is a statistically significant negative moderator of the
+distributed-practice effect (r = −.25, p < .05), with the effect collapsing to near zero in the two
+high-physical-requirement clusters; the purely cognitive, low-physical cluster retains d = 0.42.*
 - Provenance: PUBLISHED
 - Access: Full text extracted and read (via text-proxy fetch after a direct binary-fetch failure).
 - Proposed status bucket: Evidence-backed
@@ -105,7 +125,9 @@ load-bearing finding for sub-Q4
   a real, statistically significant moderator that *shrinks* the effect — is exactly the caution the
   scope's sub-Q4 asks for, and it comes from the meta-analytic tier, not a single study.
 
-### F4: Interleaved/spaced practice on a rule-application task (choosing the correct math procedure
+### F4: ~~Interleaved/spaced practice~~ **[C5-EC, 2026-07-26 — STRENGTH DOWNGRADE, per V5: this is
+interleaving evidence, not spacing evidence.]** **Interleaved practice, with the degree of spacing
+held fixed by design,** on a rule-application task (choosing the correct math procedure
 for a given problem type) roughly doubled test accuracy, and the entire benefit was concentrated in
 fewer *discrimination* errors — i.e., in better matching of situation to correct action, not in fewer
 calculation errors
@@ -124,10 +146,19 @@ calculation errors
   discrimination errors (46% vs. 10%)." / mechanism: "because interleaving requires participants to
   repeatedly switch between different kinds of tasks, they must learn how to pair each kind of task
   with its appropriate procedure."
-- Caveats / population / domain limits: **This is interleaving, not spacing in isolation** — the
+- Caveats / population / domain limits: ~~**This is interleaving, not spacing in isolation** — the
   paper's own framing is "interleaving ... ensures that practice of any particular skill is
   distributed, or spaced," i.e., it treats interleaving as a vehicle for spacing rather than isolating
-  spacing as a pure variable. Domain is a school geometry procedure (which formula to apply to which
+  spacing as a pure variable.~~ **[C5-EC, 2026-07-26 — SUPERSEDED, per V5: the paper's actual design is
+  the opposite of the claim struck above.]** The paper's abstract states "children practiced four
+  kinds of mathematics problems in an order that was interleaved or blocked, and **the degree of
+  spacing was fixed**"; its introduction states "The present study assessed the effects of
+  interleaving **while equating the degree of spacing**"; its discussion states "**this is the first
+  study to assess the benefit of interleaving while controlling for the benefit of spacing** … the
+  present data demonstrate that interleaving per se can improve test scores by a large margin."
+  **Spacing was deliberately removed as a variable.** Downgraded claim, re-verified: *interleaving —
+  not spacing — roughly doubled accuracy on a rule-application task, with the benefit concentrated in
+  discrimination errors.* Domain is a school geometry procedure (which formula to apply to which
   prism feature), not a real-time decision under hidden information/uncertainty like a blackjack
   hand. It is nonetheless the closest source found in this collection to "spacing a decision-rule
   skill" — the task structure (situation → select correct action from a small fixed set) is
@@ -479,6 +510,18 @@ over a one-size-fits-all spaced schedule — peer-reviewed, independent of any f
   "'massed' review is spaced by usual laboratory standards, being spread out over at least seven
   days" — the authors' own qualification on why the generic-vs-massed gap is smaller than the
   personalized-vs-massed gap, not a criticism of the personalized condition's result.
+  **[C5-EC, 2026-07-26 — STRENGTH DOWNGRADE, per V5b: an author-acknowledged confound is missing.]** In
+  the Discussion's "Personalization" subsection the authors write: **"We acknowledge that our design
+  confounds personalization and the coarse temporal distribution of review (Figure 1, Table 1)."** The
+  **massed** comparison (16.5%, d=1.42) is unaffected, but the **personalised-vs-generic-spaced**
+  comparison (10.0%, d=0.88) cannot cleanly isolate *personalisation* as the active ingredient, because
+  the two schedules also differed in temporal distribution. Downgraded claim, re-verified: *a
+  personalised model-based scheduler outperformed both massed and generic-spaced review on a
+  28-day-delayed cumulative exam; the margin over generic spacing is not cleanly attributable to
+  personalisation per se, as the authors acknowledge their design confounds personalisation with
+  temporal distribution.* The corrected coverage-gap sentence this finding grounds ("model-based
+  scheduling beats naive/massed review") survives the downgrade intact — it rests on the massed
+  comparison.
 
 ### F14: A 2026 systematic review of 11 studies found Anki use associated with higher USMLE Step 1
 and CBSE scores, but the review's own limitations section states plainly that its evidence base is
@@ -488,7 +531,9 @@ Wozniak's own essays (F9, F11)
 - Provenance: PUBLISHED
 - Access: Full text extracted and read (open-access CC-BY PDF via publisher; `pdftotext -layout`
   locally; 19pp)
-- Proposed status bucket: Q3 observational — explicitly NOT Evidence-backed as a causal claim (the
+- Proposed status bucket: ~~Q3 observational~~ **[C5-EC, 2026-07-26 — TAXONOMY CORRECTION, per V5b: a
+  tier label was carried in the status-bucket field instead of one of the four buckets.]**
+  Evidence-backed — explicitly not to be read as a causal claim (the
   source itself states this; see quotes below)
 - Proposed evidence-quality tier: Q3 (systematic review of observational/quasi-experimental primary
   studies; the synthesis method is systematic, but every included primary study is non-randomized, so
@@ -526,7 +571,9 @@ control for it
 - Provenance: PUBLISHED
 - Access: Full text extracted and read (open-access CC-BY PDF via publisher; `pdftotext -layout`
   locally; 15pp)
-- Proposed status bucket: Q3 observational — explicitly not causal, matching the review's (F14) own
+- Proposed status bucket: ~~Q3 observational~~ **[C5-EC, 2026-07-26 — TAXONOMY CORRECTION, per V5b: a
+  tier label was carried in the status-bucket field instead of one of the four buckets.]**
+  Evidence-backed — explicitly not causal, matching the review's (F14) own
   caveat about this same underlying evidence base
 - Proposed evidence-quality tier: Q3 (self-selected, non-randomized cohort-control design; not Q1/Q2)
 - Source(s): Gilbert, M.M., Frommeyer, T.C., Brittain, G.V., Stewart, N.A., Turner, T.M., Stolfi, A.,

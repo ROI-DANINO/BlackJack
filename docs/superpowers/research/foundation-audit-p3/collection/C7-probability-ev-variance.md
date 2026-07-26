@@ -992,7 +992,7 @@ Per the brief's Rule 4, these are wanted outcomes, stated plainly rather than fi
 | **G2** | F3, F4 | **SUFFICIENT** | The strongest-covered question in the dossier. A landmark experiment read in full and a meta-analysis of >70,000 choices read in substantial part, with rare-event behaviour, sample-size mechanism, recency, and a large problem-structure moderator all quantified from primary text. |
 | **G3** | F5, F6 (+F4's maximization rates), **F15, F16, F20** | **PARTIAL — and the partial answer is negative** | There is no positive transfer result here. The nearest study is a knowledge-gain-with-behaviour-null; the supporting review is secondary and about different rules. This is enough to say *EV instruction cannot be assumed to transfer*; it is **not** enough to say what instructional form would. **Top-up: F15/F16 supply a positive, durable, game-delivered transfer result — but for confirmation bias, not EV; F20 argues from inside blackjack that EV inference may not be what players use. Still PARTIAL; see "Sufficiency after the top-up".** |
 | **G4** | F7, F8, F14 | **PARTIAL — demonstration yes, correction thin** | Outcome bias is superbly demonstrated — though ~~in a near-transfer card-and-money task~~ **F7's card task is a hypothetical vignette, re-rated D2, not near-transfer** — and its resistance to mere awareness is triply attested. On whether it can be *trained away* — the actual question the brief asks — the answer I can support is ~~**no evidence retrieved, and the one dedicated paper unreachable**~~ **that one dedicated intervention paper was retrieved at abstract level only (F14); it reports a manipulation that reduced outcome bias (raising intention salience before outcome disclosure) and, counter to its own prediction, that joint evaluation increased outcome weighting. Full text was not obtained.** This remains the dossier's biggest hole and it sits under the project's most-committed position. **Top-up: NOT closed and NOT improved. F15's six trained biases do not include outcome bias; see "Sufficiency after the top-up".** |
-| **G5** | F9, F10 (+F5), **F18** | **PARTIAL** | Prevalence: sufficient, with two near-transfer sources (real casino, real card game). Correction by instruction: essentially unevidenced, with one knowledge-level positive attached to a behavioural null. **Top-up: F18 makes the correction half non-empty — one clinical randomised trial, abstract-level, treatment package. Still PARTIAL; see "Sufficiency after the top-up".** |
+| **G5** | F9, F10 (+F5), **F18** | **PARTIAL** | Prevalence: sufficient, with two near-transfer sources (real casino, real card game). Correction by instruction: essentially unevidenced, with one knowledge-level positive attached to a behavioural null. **Top-up: F18 makes the correction half non-empty — one clinical randomised trial, abstract-level, treatment package. ~~Still PARTIAL; see "Sufficiency after the top-up".~~ A second, non-clinical source (Floyd, Whelan & Meyers 2006, abstract-level, bundled lab study on imaginary-stakes play) was later retrieved but does not overturn §1.7 either [LANDED C-C7T-009, 2026-07-26]. Still PARTIAL; see "Sufficiency after the top-up".** |
 | **G6** | F11, F12, F13, **F19 (+F15)** | **PARTIAL** | The "what is merely popular" half is answered well and unusually crisply by F11's own conclusion. The "what works" half rests on one abstract-level source (F12) with a load-bearing kind/wicked qualifier and one far-domain randomised experiment (F13) that is this dossier's lowest-confidence citation and produced a two-sided result. **Top-up: F19 reports the reviewed simulation literature contains no controlled experiments; F15 adds an interactive-vs-passive contrast. See "Sufficiency after the top-up".** |
 
 [LANDED C-C7-005 and C-C7-010 (V-C7, editorial): the G4 row above was re-worded in place. Markers are
@@ -1108,9 +1108,16 @@ Per-correction detail, including which sources the editor personally re-opened, 
 #### F15: Two longitudinal experiments found that a **single** ~60-minute session of an interactive computer game reduced six cognitive biases by medium-to-large amounts that persisted 8–12 weeks, and outperformed a passive instructional video on overall bias — but the design has **no untrained control condition**, the biases trained include none of this project's target concepts, and on *bias knowledge* the video beat the game.
 - Provenance: PUBLISHED (accepted version of the article of record)
 - Proposed status bucket: **Evidence-backed**
-- Proposed evidence-quality tier: **Q2** — two pre-registered-to-sponsor longitudinal experiments,
+- Proposed evidence-quality tier: **Q2** — ~~two pre-registered-to-sponsor longitudinal experiments~~
+  **two longitudinal experiments whose sample sizes were declared in advance to the government sponsor
+  — a sample-size declaration, not a preregistration of hypotheses or analysis plan**,
   random assignment to training condition, pre/post/follow-up repeated measures, reliability-tested
   scales, independent third-party re-analysis. **Not Q1**: no untrained control arm (see caveats).
+  [LANDED C-C7T-001 (V-C7-topup, editorial), 2026-07-26: "pre-registered-to-sponsor" overstates the
+  paper. MS p. 14, verbatim: "Sample sizes were declared in advance to our government sponsor, and
+  independent third-party analyses of the data were performed that confirmed the accuracy of our
+  results (Kopecky, McKneely, & Bos, 2015)." No hypotheses or analysis plan were registered. Superseded
+  wording left visible above.]
 - Transfer distance: **D3 (far) on content, and the dossier's closest match on *format*.** The
   participants are adults; the material is cognitive-bias scales built around intelligence-analysis
   and everyday-judgment scenarios, not a game of chance and not a probabilistic decision rule in a
@@ -1247,7 +1254,16 @@ Per-correction detail, including which sources the editor personally re-opened, 
   - Convenience samples in one US city; mostly college-educated (80.2% and 94.1% "had some college
     education"); paid $60 in total, which is a substantial incentive.
 
-#### F16: A field study of the **same game** found its debiasing transferred to a real, unannounced graded business decision weeks later — trained students were 29% less likely to choose the inferior hypothesis-confirming solution — but assignment was **not randomised**, the study was **not preregistered**, and the bias transferred was confirmation bias, not EV or outcome bias.
+#### F16: A field study of the **same game** found its debiasing transferred to a real, unannounced ~~graded~~ business decision **solved in a regularly scheduled class** weeks later — trained students were 29% less likely to choose the inferior hypothesis-confirming solution — but assignment was **not randomised**, the study was **not preregistered**, and the bias transferred was confirmation bias, not EV or outcome bias.
+- [LANDED C-C7T-002 (V-C7-topup, editorial), 2026-07-26: "graded" is not supported by the paper — the
+  word does not appear in Method, Procedure, Results or Discussion, and the only grading in the paper is
+  students' pre-existing GPA, collected as a covariate (p. 1374). Verbatim (p. 1373): "Between 6 and 49
+  days after the start of the gaming sessions, participants individually solved a modified version of the
+  'Carter Racing' business case in one of their regularly scheduled classes." and "The case was not
+  announced on the syllabi of the courses in which it was administered, the faculty administering the
+  training and case were different, and no other connection was made between the case and the
+  intervention." *Real* and *unannounced* both stand and are independently confirmed. Superseded wording
+  left visible above.]
 - Provenance: PUBLISHED
 - Proposed status bucket: **Evidence-backed**
 - Proposed evidence-quality tier: **Q3** — field quasi-experiment with a surreptitious behavioural
@@ -1283,8 +1299,12 @@ Per-correction detail, including which sources the editor personally re-opened, 
     and private life."
   - **Main result, verbatim (p. 1374):** "Logistic regression revealed that trained participants were
     significantly less likely to choose the hypothesis-confirming decision to race (58.8%) than were
-    untrained controls (72.2%), β = −0.60, Wald χ²(1) = 5.23, *p* = .022, exp(β) = 0.549, 95% CI [0.33,
+    untrained controls (72.2%), β = −0.60, Wald χ²(1) = 5.23, *p* = .022, exp(β) = 0.549, ~~95% CI
+    [0.33,~~ **95% CI = [0.33,**
     0.92]."
+    [LANDED C-C7T-003a (V-C7-topup, editorial), 2026-07-26: silent typographic alteration inside a
+    passage presented as verbatim — the paper prints "95% CI = [0.33, 0.92]", not "95% CI [0.33,
+    0.92]". Meaning unchanged; verbatim contract restored. Superseded wording left visible above.]
   - **Population, verbatim (p. 1372):** "Three hundred eighteen graduate business students at HEC Paris
     were enrolled in a course in which we administered a modified version of the 'Carter Racing' case".
     And: "Participants were students enrolled in three different graduate programs: those completing a
@@ -1313,7 +1333,14 @@ Per-correction detail, including which sources the editor personally re-opened, 
     preregistered." The authors do run selection tests (CRT, GPA, GMAT covariates; 2/4/6-day windows) and
     report the effect survives them, and they report a real imbalance — verbatim (p. 1375): "It is
     interesting to note that CRT scores were significantly higher for trained participants (*M* = 2.44,
-    95% CI = [2.31, 2.57]) than untrained participants (*M* = 2.18, 95% CI = [2.00, 2.36])".
+    95% CI = [2.31, 2.57]) than untrained participants (*M* = 2.18, ~~95% CI = [2.00, 2.36])".~~
+    **95% CI = [2.00, 2.36]…"** [truncated — the paper continues "; mean difference = 0.26, …" before
+    the parenthesis closes].
+    [LANDED C-C7T-003b (V-C7-topup, editorial), 2026-07-26: the dossier's closing parenthesis after
+    "2.36]" was its own insertion, not the paper's; the printed sentence continues "…untrained
+    participants (*M* = 2.18, 95% CI = [2.00, 2.36]; mean difference = 0.26, …" before the parenthetical
+    closes. Same class as landed C-C7-002 and C-C7-004. Marked as a truncation rather than silently
+    closed. Superseded wording left visible above.]
   - **Twenty-two untrained "controls" were no-shows**, verbatim (p. 1374): "Twenty-two participants in the
     untrained control condition (20.4%) solved the case but did not complete a gaming session; they signed
     up for a session but did not show up for that session."
@@ -1324,7 +1351,15 @@ Per-correction detail, including which sources the editor personally re-opened, 
     authorship or the publication of this article." Note that the game is proprietary — verbatim
     (p. 1372): "We do not provide the proprietary intervention, but a general summary is publicly
     available (Symborski et al., 2017)" — which limits independent replication, and that the third
-    author is an author of F15.
+    author is an author of F15. **Not independent corroboration of F15.** Two of F16's three authors
+    (Morewedge, Scopelliti) are authors of F15, and the evaluated game is the one F15 credits to an
+    author group including Morewedge. F16 declares no conflicts of interest notwithstanding. F16
+    extends F15's own programme to the field; it does not replicate it from outside.
+    [LANDED C-C7T-004 (V-C7-topup, editorial), 2026-07-26: the independence conclusion had been left for
+    the reader to draw despite all the ingredients being cited. F15 MS p. 15, verbatim: "(produced by
+    Symborski, Barton, Quinn, Morewedge, Kassam, & Korris, 2014)"; F16 p. 1378, verbatim: "The author(s)
+    declared that there were no conflicts of interest with respect to the authorship or the publication
+    of this article." Addition only; no wording struck.]
 
 ## G1 — the ceiling on the natural-frequency advantage
 
@@ -1360,27 +1395,47 @@ Per-correction detail, including which sources the editor personally re-opened, 
     *presentation format* to a less intuitive *calculation format* will be discussed within the framework
     of psychological theories (e.g., the Einstellung effect)."
   - **Sample, verbatim:** "We recruited *N* = 114 students from the University of Regensburg (Bavaria) in
-    summer 2016, and *N* = 69 in winter 2017/2018". And: "Since each participant worked on two tasks, we
-    obtained a total of 360 Bayesian inferences including participants' detailed solution algorithms."
-    **I do not state a combined participant total: the paper, in what I read, does not print one, and
-    the arithmetic would be mine.** This is the same defect class as C-C7-006 and I decline to repeat it.
+    summer 2016, and *N* = 69 in winter 2017/2018~~"~~ **(three of which were excluded from the analysis
+    since they had already participated in the study in 2016)".** And: "Since each participant worked on
+    two tasks, we obtained a total of 360 Bayesian inferences including participants' detailed solution
+    algorithms." ~~**I do not state a combined participant total: the paper, in what I read, does not
+    print one, and the arithmetic would be mine.**~~ **Combined N = 180**, the paper's own printed figure
+    (Discussion, verbatim: "In an empirical study with *N* = 180 students from the University of
+    Regensburg…"); 114 + 69 − 3 excluded repeat participants. No arithmetic of mine is involved. This is
+    the same defect class as C-C7-006 and I decline to repeat it.
+    [LANDED C-C7T-005 (V-C7-topup, editorial), 2026-07-26: the finding wrongly claimed the paper prints
+    no combined participant total, and truncated the sample quote at exactly the point that removes the
+    excluded-repeat-participants clause. Discussion, verbatim: "In an empirical study with *N* = 180
+    students from the University of Regensburg, we found that the majority of participants do not
+    actively use natural frequencies in Bayesian reasoning tasks." 114 + 69 − 3 = 180. **Direction: this
+    correction is an upgrade — the dossier under-claimed.** Superseded wording left visible above.]
   - **This study's own performance rates, verbatim:** "While 20% of the Bayesian tasks in probability
     format were solved correctly across both contexts, the performance rate for the tasks presented in
     frequency format was 36%".
   - **The mechanism, verbatim:** "when presented with a task in natural frequency format (second and
     fourth bars of Figure 2), almost half of participants (49%) nevertheless chose to apply
-    probabilities"; "only 18% across both contexts chose to translate the problem into natural
-    frequencies"; "natural frequencies represented the preferred calculation format in only about one
+    probabilities"; ~~"only 18% across both contexts chose to translate the problem into natural
+    frequencies"~~ **"On the other hand, when they faced a probability version of a task (first and
+    third bars of Figure 2), only 18% across both contexts chose to translate the problem into natural
+    frequencies"**; "natural frequencies represented the preferred calculation format in only about one
     third (34%) of all 360 Bayesian tasks".
+    [LANDED C-C7T-007a (V-C7-topup, editorial), 2026-07-26: the 18% fragment was verbatim but stripped of
+    its conditioning clause and sat adjacent to the 49% frequency-condition quote, reading as though it
+    concerned the same condition. It concerns the *probability* condition. Leading clause restored.
+    Superseded wording left visible above.]
   - **The best cell, verbatim:** "the highest performance was detected when both variables *presentation
     format* and *calculation format* were natural frequencies (61% correct responses)".
-  - **Discussion, verbatim:** "We found that the majority of participants do not actively use natural
+  - **Discussion, verbatim:** ~~"We~~ **"In an empirical study with *N* = 180 students from the
+    University of Regensburg, we** found that the majority of participants do not actively use natural
     frequencies in Bayesian reasoning tasks. Even if the task is presented in the intuitive natural
     frequency format (with a neutral question asking for proportions), about half of the participants
     still prefer calculating with probabilities instead. Therefore, and since the 'standardized'
     probability format is the 'sine qua non' in probability theory, the results of our study reveal the
     Einstellung effect in Bayesian reasoning situations (Luchins, 1942; Luchins and Luchins, 1959; McCloy
     et al., 2007)."
+    [LANDED C-C7T-006 (V-C7-topup, editorial), 2026-07-26: the quotation began mid-sentence with no
+    ellipsis, eliding exactly the printed N=180 that C-C7T-005 restores elsewhere in this finding.
+    Sentence restored from its start, as printed. Superseded wording left visible above.]
 - **Explicit non-claim, and it matters — this is what F2 refused and this finding does *not* undo.** The
   "24% vs 4%" figures in the sentence above are **Weber, Binder & Krauss reporting what McDowell & Jacobs
   (2017) found.** That is a **secondary attribution**. F2's refusal to cite those figures as read from
@@ -1396,8 +1451,18 @@ Per-correction detail, including which sources the editor personally re-opened, 
 - Caveats / population / domain limits: students at a single German university, most of them enrolled in
   a mathematics-teaching programme and therefore **unusually schooled in probability notation** — which
   is plausibly the source of the Einstellung effect the authors report, and makes this population
-  arguably *less* representative of a lay adult learner than the paper's framing implies. That is my
-  inference and is labelled as such. No control condition; no training; no retention measure.
+  arguably *less* representative of a lay adult learner ~~than the paper's framing implies~~ **— the paper
+  states this itself, verbatim: "Most of these students were enrolled in a teaching math program
+  (*N* = 147), while some of them studied economic information technology, so a certain level of
+  mathematics competency among the participants can be assumed."; and because the sample is *more*
+  mathematically schooled than a lay adult, a 36% frequency-format success rate is a conservative
+  ceiling for a lay learner, not an inflated one.** That is my inference and is labelled as such. No
+  control condition; no training; no retention measure.
+  [LANDED C-C7T-007b (V-C7-topup, editorial), 2026-07-26: "than the paper's framing implies" was not
+  supported — the paper states the competency assumption openly, and further reports, verbatim: "The
+  *N* = 42 mathematics education students aspiring to teach at the academic school track of the German
+  school system (Gymnasial students) outperformed the other *N* = 138 participants significantly." The
+  direction the dossier omitted has been added. Superseded wording left visible above.]
 
 ## G5 — whether instruction corrects the misconceptions
 
@@ -1446,14 +1511,26 @@ Per-correction detail, including which sources the editor personally re-opened, 
   adult randomised trial whose named first ingredient is correcting beliefs about randomness does exist,
   and here it is. **It is not, however, evidence that a training game teaches a non-clinical adult to
   stop committing the gambler's fallacy.** The honest statement is that the correction half of G5 is no
-  longer empty, and is now thin, clinical, and abstract-level.
+  longer empty. ~~and is now thin, clinical, and abstract-level.~~ **F18 remains clinical and
+  abstract-level. A second, non-clinical source has since been retrieved — Floyd, Whelan & Meyers
+  (2006), abstract-level, a bundled lab study of warning messages during simulated roulette played for
+  imaginary money (see "Searched and came up empty in this top-up pass", and C-C7T-009 below) — but it
+  does not overturn §1.7 of the bridge spec either, and G5 remains OPEN.**
+  [LANDED C-C7T-009 (V-C7-topup, editorial), 2026-07-26: "thin, clinical, and abstract-level" was no
+  longer an accurate description of the correction half of G5 once Floyd et al. (2006) was retrieved.
+  Superseded wording left visible above.]
 - Caveats / population / domain limits: 2001; N = 66 total across both arms, so cell sizes are small;
   treatment-seeking clinical sample recruited in Quebec; the comparator is a wait-list, which controls
   for time but not for therapist attention or expectancy.
 
 ## G6 — what the simulation literature actually supports
 
-#### F19: A 2024 integrative review of computer simulations for teaching statistical sampling finds the benefits **tentative and confined to general "habits of mind"**, documents persistent failure on the specific concepts a variance trainer would need — including the law of large numbers and the absolute-vs-proportional sample-size misconception — and reports that **not one** of the studies it reviewed was a controlled experiment.
+#### F19: A 2024 integrative review of computer simulations for teaching statistical sampling finds the benefits **tentative and confined to general "habits of mind"**, documents persistent failure on the specific concepts a variance trainer would need — including the law of large numbers and the absolute-vs-proportional sample-size misconception — and reports that ~~**not one**~~ **none of the studies in its own inclusion corpus** was a controlled experiment — though 4 of those studies had a no-simulation comparison group and 1 used a quasi-experimental design — while the review separately cites **two controlled experiments outside that corpus** (Gok et al., 2024; Zhang et al., 2022) that this dossier has not read.
+- [LANDED C-C7T-008 (V-C7-topup, editorial for wording; collection for Gok et al. 2024 and Zhang et al.
+  2022, not attempted — see caveats), 2026-07-26: the headline's "not one of the studies it reviewed"
+  overstated the review's own scope claim, which is bounded to its inclusion corpus and is itself
+  qualified by 4 comparison-group studies and 1 quasi-experiment, and the review cites two controlled
+  experiments outside that corpus. Superseded wording left visible above.]
 - Provenance: PUBLISHED (open access)
 - Proposed status bucket: **Evidence-backed**
 - Proposed evidence-quality tier: **Q3** — an integrative/narrative review with a declared theoretical
@@ -1492,7 +1569,21 @@ Per-correction detail, including which sources the editor personally re-opened, 
     from simulations. Finally, we propose testable instructional strategies for using simulations in
     statistics education."
   - **The methodological ceiling on the whole reviewed literature, verbatim:** "Notably, none of the
-    studies included controlled experiments."
+    studies included controlled experiments." **This claim is scoped to the review's own inclusion
+    corpus, verbatim, immediately following:** "We did not impose any constraints on the inclusion
+    criteria based on the empirical methods the studies used (see Table 1). As a result, 28 studies were
+    either pre-post-test comparisons within a single group or observational qualitative studies that
+    probed students' understanding 4 other studies included an additional no-simulation comparison
+    group. A single study used a quasi-experimental design to compare two simulation activities."
+    **The same review separately cites two controlled experiments outside that corpus, verbatim:** "In a
+    recent controlled experiment, we tested the promises of this grounded approach for the design of
+    sampling simulations (Gok et al., 2024)." and "Zhang et al.'s (2022) controlled experiment yielded
+    similar results. Students who watched a hands-on video before using R simulations demonstrated
+    better understanding than those who used R simulations alone." Neither Gok et al. (2024) nor Zhang
+    et al. (2022) has been read by this dossier.
+    [LANDED C-C7T-008 (V-C7-topup, editorial), 2026-07-26: the load-bearing quote is verbatim and real,
+    but the dossier omitted the bounding sentences that immediately follow it and the review's own two
+    citations of controlled experiments elsewhere in its text. Addition only; no wording struck.]
   - **What "habits of mind" means here, verbatim:** "An important learning objective in basic statistical
     education is developing habits of mind, defined as the ability to spontaneously bring statistical
     knowledge to bear when one encounters critical claims about data (Ridgway, 2022)."
@@ -1501,11 +1592,19 @@ Per-correction detail, including which sources the editor personally re-opened, 
     is a crucial step for statistical inference (Eliason & Jones, 2020)."
 - **Why this is the most useful G6 item in the dossier despite being only Q3.** The brief asks G6 to
   separate "what works" from "what is merely popular". F11 (delMas et al., 1999) answered that from a
-  single classroom programme a quarter-century ago. F19 reports that the field's *whole* reviewed evidence
-  base still contains no controlled experiment, and that the specific concept nearest this product's need
+  single classroom programme a quarter-century ago. F19 reports that ~~the field's *whole* reviewed
+  evidence base still contains no controlled experiment~~ **the review's own inclusion corpus contains no
+  controlled experiment (though 4 corpus studies had a no-simulation comparison group and 1 used a
+  quasi-experimental design), and the review separately cites two controlled experiments outside that
+  corpus (Gok et al., 2024 — by this review's own first author; Zhang et al., 2022) that this dossier has
+  not read**, and that the specific concept nearest this product's need
   — a process-based understanding of the law of large numbers — is among the things students still fail
   "with and without simulations". **The dossier's existing G6 gap statement ("no meta-analysis on the
   target question") is confirmed rather than overturned, and now has a stated reason.**
+  [LANDED C-C7T-008 (V-C7-topup, editorial), 2026-07-26: "the field's whole reviewed evidence base"
+  overstated the review's scope to the entire field rather than its own inclusion corpus, and omitted
+  the two controlled experiments the review itself cites outside that corpus. Superseded wording left
+  visible above.]
 - Caveats / population / domain limits: an integrative review, not systematic; the authors advance a
   theoretical position (grounded cognition) and the review is organised to support it, so selection of
   cited work is not protocol-driven; the review's forward-looking instructional proposals are explicitly
@@ -1529,7 +1628,11 @@ Per-correction detail, including which sources the editor personally re-opened, 
   transfer buys relevance, not strength. **This is a D1 source at a low quality tier**, the inverse of
   most of this dossier, and the two properties must be cited together.
 - Source: Bennis, W.M. (2025). "A heuristic based on transparently false likelihoods improves gamblers'
-  expected value in the wild." *Mind & Society*. DOI 10.1007/s11299-025-00346-9.
+  expected value in the wild." *Mind & Society*~~.~~**, 24(2), 275–301.** DOI 10.1007/s11299-025-00346-9.
+  **Author affiliation: Faculty of Business Administration, Prague University of Economics and
+  Business.**
+  [LANDED C-C7T-010 (V-C7-topup, editorial), 2026-07-26: volume/pages and author affiliation added.
+  Superseded wording left visible above.]
 - Access: **ABSTRACT-LEVEL ONLY — full text NOT obtained.** `link.springer.com` returned a **303 redirect
   to `idp.springer.com`** (the same barrier already recorded at failed-retrieval row 7 for a different
   Springer item); following the chain landed on a `?error=cookies_not_supported` page which serves the
@@ -1571,7 +1674,14 @@ Per-correction detail, including which sources the editor personally re-opened, 
 - Caveats / population / domain limits: casino patrons observed and interviewed by a participant-observer
   who was also a dealer; no sampling frame; the "better expected returns" association is uncontrolled for
   player skill, table rules, or self-selection; 2025 publication with, as far as I can tell, no
-  replication.
+  replication. **Independence checked:** funding, verbatim: "The research was supported by a
+  Fulbright-Hays Doctoral Dissertation Research Abroad Fellowship and a Social Science Research Council
+  International Dissertation Field Research Fellowship." Competing interests, verbatim: "The author
+  declares no conflict of interest." No gambling-industry, casino or vendor funding. Data availability is
+  limited, verbatim: "Field observation and interview data are unavailable to protect participant
+  anonymity. Survey data is available upon reasonable request from the author."
+  [LANDED C-C7T-010 (V-C7-topup, editorial), 2026-07-26: independence check added — completeness only,
+  running in the source's favour. Addition only; no wording struck.]
 
 ## Failed retrievals in this top-up pass (prose, so the table above keeps its 12 rows)
 
@@ -1618,14 +1728,40 @@ least two ways **and** checked against at least two hosts before being written d
   hole — can *outcome* bias be trained away — is not filled by the debiasing-training literature this
   pass retrieved**, and it would be an error to let F15's presence in the dossier imply otherwise.
 - **A randomised trial of *instruction in randomness* aimed at gambler's fallacy or illusion of control in
-  a non-clinical adult population.** Searched via general web search and again restricted to
+  a non-clinical adult population.** ~~Searched via general web search and again restricted to
   `pubmed.ncbi.nlm.nih.gov`. What returns is a clinical treatment literature: F18, plus personalized-
   feedback and warning-message trials in problem gamblers, plus a 2025 RCT of computerised cognitive
   training (Luquiens et al., *J Behav Addict*, PMID 39819891) whose active ingredient is **inhibition
   training, not instruction in randomness**, and which reports a **null** — I opened its PubMed record and
   read the abstract, and I am **not** carrying it as a finding because its mechanism is not the one G5
   asks about. It is logged as a lead below. **The non-clinical adult instruction trial G5 actually wants
-  was not found.**
+  was not found.**~~
+
+  **This absence claim does not survive.** Floyd, K., Whelan, J.P. & Meyers, A.W. (2006), "Use of warning
+  messages to modify gambling beliefs and behavior in a laboratory investigation," *Psychology of
+  Addictive Behaviors* 20(1), 69–74, PMID 16536667, sits one PMID after F5 (PMID 16536666) — same journal,
+  volume and issue, immediately following pages. It is a lab study of **warning messages during simulated
+  roulette played for imaginary money**: N=120 undergraduates, randomised against an *active* control that
+  received a history-of-roulette lesson (no untrained arm). The treatment **bundles** pre-play education
+  with in-play warning messages, so it cannot separate teaching from cueing-at-the-moment-of-decision; the
+  behavioural outcome ("less risky gambling behavior") is in-session, imaginary-stakes, single-occasion,
+  with no follow-up, and is never operationally defined in the abstract. Full text is closed-access; nine
+  retrieval routes failed, so the record is **abstract-only**. **Consequence: it does not overturn §1.7 of
+  the bridge spec** — a one-session lab endpoint on play money does not refute a six-month real-behaviour
+  null — and **G5 remains OPEN.** (Full record: `journal/raw/_inbox/foundation-audit-p3/C8-floyd-2006.md`;
+  corrected characterisation at `README.md:50-66`.) The 2025 RCT of computerised cognitive training
+  (Luquiens et al., *J Behav Addict*, PMID 39819891), whose active ingredient is inhibition training
+  rather than instruction in randomness and which reports a null, remains not carried as a finding and is
+  still a logged lead below. **Steenbergh, Whelan, Meyers, May & Floyd (2004), *International Gambling
+  Studies* 4(1), 3–16, N=101, remains un-retrieved** — reached at search level only, never opened.
+  [LANDED C-C7T-009 (V-C7-topup, editorial retraction landed; collection half partly discharged — Floyd
+  retrieved abstract-only, Steenbergh still open), 2026-07-26: the absence claim did not survive
+  independent re-search — PMID 16536667 exists and was opened by the verifier. **Caution for any future
+  reader: the verification record's own first characterisation of this paper — "a randomised controlled
+  trial of instruction on irrational gambling beliefs, positive on beliefs and play" — was itself wrong
+  and was corrected 2026-07-23 (`README.md:50-66`, record `C8-floyd-2006.md`).** This landing uses the
+  corrected characterisation, not the verifier's original description, to avoid inheriting a second error
+  on the same citation. Superseded wording left visible above.]
 
 ## Leads found in this pass (record, do not chase)
 
@@ -1664,10 +1800,16 @@ carry only a pointer to this section. V-C7's Axis-2 verdict was INSUFFICIENT on 
   `product-vision.md:74-75`.
 - **G5 — improved, still PARTIAL.** F18 makes the correction half non-empty. It is one trial, clinical,
   abstract-level, and a treatment package that cannot isolate the randomness-correction component.
-- **G6 — improved, arguably SUFFICIENT for the "what is merely popular" half; PARTIAL overall.** F19
-  confirms the field has no controlled experiments and that the target concept resists simulation, and
-  F15 adds a genuine interactive-vs-passive contrast — with the honest wrinkle that the interactive
-  format won on behaviour and lost on knowledge.
+- **G6 — improved, arguably SUFFICIENT for the "what is merely popular" half; PARTIAL overall.** ~~F19
+  confirms the field has no controlled experiments~~ **F19's own inclusion corpus contains no controlled
+  experiment, though the review separately cites two controlled experiments (Gok et al., 2024; Zhang et
+  al., 2022) outside that corpus that this dossier has not read** and that the target concept resists
+  simulation, and F15 adds a genuine interactive-vs-passive contrast — with the honest wrinkle that the
+  interactive format won on behaviour and lost on knowledge.
+  [LANDED C-C7T-008 (V-C7-topup, editorial), 2026-07-26: same bounding correction as the headline and
+  "Claimed strength" loci above. The two named controlled experiments remain unretrieved — the
+  `collection` half of this correction (Gok et al. 2024, Zhang et al. 2022) was not attempted; G6
+  remains OPEN. Superseded wording left visible above.]
 
 **This is a collector's self-assessment and is untrusted until a verifier re-checks it.** F15's
 no-control-arm observation and F17's Einstellung-population inference are the two judgements in this pass

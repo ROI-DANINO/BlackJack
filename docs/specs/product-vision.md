@@ -3,7 +3,8 @@
 > Status: directional. This is the durable product north star, not an implementation task list.
 
 ## Core Idea
-Build a Duolingo-like training game for learning blackjack and card counting.
+Build a Duolingo-like training game for learning blackjack and card counting. *(Product judgement
+— a positioning/genre commitment, not an empirical claim; audited 2026-07-26, K-U2-001.)*
 
 This is not a gambling app and not a casual blackjack toy. The long-term goal is to train
 a player to think and act like a realistic casino blackjack player:
@@ -16,11 +17,15 @@ a player to think and act like a realistic casino blackjack player:
 6. Handle multiple seats, faster pace, and real casino-like cognitive load.
 7. Later: bet sizing, table selection, advanced count systems, casino rule variations, and CSM/ASM table variants.
 
+*(Product judgement + COVERAGE GAP — no evidence held bears on this ladder's ordering or rungs;
+audited 2026-07-26, K-U2-003.)*
+
 ## Product Feel
 The product should eventually feel like:
 
 - a fun, light, approachable training game;
-- short learning loops, like Duolingo;
+- short learning loops, like Duolingo; *(Assumption — sets session length; an open conflict against
+  Brilliant's longer sessions; audited 2026-07-26, K-U2-002.)*
 - precise and serious under the hood;
 - realistic enough that the user feels like they are training for a real table;
 - not an academic simulator with boring UI;
@@ -71,9 +76,14 @@ The game teaches execution first.
 The goal is not to make the player a blackjack theorist. Explanations should be short and
 useful, serving correct play and long-term mastery.
 
+*(Product judgement — held evidence runs mildly against this flat framing; worked examples reduce
+novice load, a nuance it drops; audited 2026-07-26, K-U2-010.)*
+
 Feedback judges the quality of a decision against the active ruleset-matched strategy, never the
-hand result. A correct decision can lose and a poor decision can win; the product must show those
-as separate facts so it teaches skill rather than superstition.
+hand result. *(Product judgement, Layer 1: COVERAGE GAP — no reviewed source tests gambling outcome
+bias; correct by game mathematics and product integrity, not a learning-science finding; audited
+2026-07-26, K-U2-007.)* A correct decision can lose and a poor decision can win; the product must
+show those as separate facts so it teaches skill rather than superstition.
 
 Motivation should reward practice, comprehension, and improving decision quality. It must not
 celebrate money won, encourage loss chasing, imply guaranteed profit, or punish a learner for
@@ -85,6 +95,9 @@ should gradually move from:
 1. playing with the table open;
 2. playing without the table but without time pressure;
 3. playing without the table at realistic table pace.
+
+*(Assumption — the principle of fading assistance is evidence-backed; these specific three rungs
+are not; audited 2026-07-26, K-U2-006.)*
 
 ## What Makes This Different
 The simulation must respect the logic of real blackjack:

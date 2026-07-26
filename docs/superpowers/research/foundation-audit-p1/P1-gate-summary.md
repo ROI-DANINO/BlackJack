@@ -127,8 +127,34 @@ Established three independent ways:
 | C5 | **NOT APPLIED** — its two markers answer a *sufficiency* item, not V5's corrections |
 | C6 | **NOT APPLIED** |
 
-**All are now landed**, marked with dated pass attributions, superseded text struck rather than
-deleted, so the same test remains available to the next reader.
+~~**All are now landed**, marked with dated pass attributions, superseded text struck rather than
+deleted, so the same test remains available to the next reader.~~
+
+> **Status correction (2026-07-26).** The line above was false. The remediation described in this
+> section landed the *second* generation of corrections (V1d, V2b/V2c, V3b/V3c, V4b/V4c, V6/V6b) and
+> left the *first* generation (V1, V1c, V4, V5) exactly where it found them: **fourteen Phase-1
+> verifier corrections across C1 (five, from V1/V1c), C4 (five, from V4), and C5 (four, from V5/V5b)
+> were never applied to the dossiers.** This was caught by
+> `docs/superpowers/research/evidence-index/P1-unlanded-and-lost.md` and landed on **2026-07-26** by
+> corrections-landing passes C1-EC2, C4-ED3, and C5-EC, each labelled at its site in the dossiers with
+> that tag and date. See §4a below.
+
+### 4a. First-generation corrections — landed 2026-07-26
+
+The fourteen corrections below were raised by the original verification passes (V1/V1c for C1, V4 for
+C4, V5/V5b for C5) and were never written into the dossiers by any pass prior to 2026-07-26, despite
+this section's earlier claim that they were. They are now landed and marked in place.
+
+- **C1 (five, per V1/V1c):** the F9/F12 Knewton vendor non-disclosure; Pelánek §3.1's "10 answers per
+  student" datum, missing from F8; F16's headline overstatement (covariate list + "both simulation and
+  real-data"); F21a's tier Q2→Q4; F21b's edition misattribution (not a 1994 source).
+- **C4 (five, per V4):** F1's paraphrase presented under "exact quotes"; F5's wrong supporting
+  location; F7's placeholder title; F9's wrong author list; F6's false "the one mechanism" uniqueness
+  claim; F7's effect-size splice and mislabelled treatment (KWiK teacher coaching, not Khan Academy
+  usage).
+- **C5 (four, per V5/V5b):** F4 reframed from spacing evidence to interleaving evidence (the paper held
+  spacing fixed by design); F3's directional overstatement about task complexity; F13's
+  personalisation/temporal-distribution confound; F14/F15's tier-label-in-bucket-field taxonomy defect.
 
 ### What was still wrong, and is now fixed
 
@@ -408,7 +434,9 @@ every subtotal matching — confirming the specific failure mode it was warned a
   question was searched deeply enough, the uncertainty is precisely characterised, and it must not
   trigger further collection.
 - **0 fabricated sources** across the program; two tooling fabrications caught and rejected in flight.
-- **Every Phase 1 correction landed and marked**, on all six cards.
+- ~~**Every Phase 1 correction landed and marked**, on all six cards.~~ **Status correction
+  (2026-07-26): that was false — fourteen first-generation Phase 1 corrections across C1, C4 and C5
+  had not landed. They are landed and marked as of 2026-07-26; see §4a.**
 - **Both charter factual errors corrected**, and the Elo/IRT framing narrowed after a claimed
   falsification was tested and **rejected**.
 - **Registers reconciled** — 25 conflict rows, 47 source-lead rows, **no duplicate IDs**.

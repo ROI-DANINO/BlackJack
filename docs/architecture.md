@@ -13,7 +13,10 @@ React UI → TypeScript game/controller layer → WASM JSON bridge → Rust blac
 
 `blackjack-core` is the source of truth for blackjack behavior. Rust owns cards, deck identity,
 seeded ordered shoes, shuffle and penetration, rulesets, legal actions, round flow, settlement,
-round logs, and the ruleset-matched Basic Strategy oracle.
+round logs, and the ruleset-matched Basic Strategy oracle. Ownership is not the same as
+availability: the oracle (`basic_strategy_action` in `crates/blackjack-core/src/strategy.rs`) is
+implemented and tested in Rust but is not yet a `CoreCommand` variant in `boundary.rs`, so nothing
+in the browser can ask for a strategy recommendation today — its only callers are Rust tests.
 
 The TypeScript/React application owns rendering, user interaction, and lightweight application
 state. It receives serializable engine state, renders it, and submits commands. It must not infer
@@ -74,9 +77,12 @@ versioned `LearnerEnvelope`/`ProgressAttempt` schema, a provider-neutral `Progre
 port, an in-memory fake and a browser-proven `idb` 8.0.3 adapter, and the opaque pseudonymous local
 learner key minted on the first durable write. It is proven headless — a 14-gate contract suite runs
 against both subjects, in real Chromium and Firefox for the adapter — not yet wired to a real
-producer: the `LessonController.AttemptRecord → ProgressAttempt` mapper and its UI consumer are the
-missing piece (open prerequisite; design in `docs/superpowers/specs/`), so no learner data is written
-by the running app yet.
+producer: the approved Graded Decision Practice design
+(`docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md`) treats the shipped
+`LessonController` as a prototype placeholder that will not be extended and defines its own shapes,
+so the first `ProgressAttempt` producer is a new practice controller, not a
+`LessonController.AttemptRecord → ProgressAttempt` mapper (open prerequisite), and no learner data is
+written by the running app yet.
 
 ## Hosted product posture
 
