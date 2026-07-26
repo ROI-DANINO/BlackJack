@@ -48,6 +48,7 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | journal/ops/phase.md | Machine-readable current phase state. |
 | journal/ops/tasks.md | Agent Kanban (`agent-kanban:v2`) for executable current-phase cards, priority, live state, and evidence. Written only via scripts/kanban.ts. |
 | scripts/kanban.ts | The board's only write path plus its read verbs (board/next/validate). Derived port of workspace scripts/kanban.ts — regenerate from that master, never patch here. |
+| scripts/check-doc-drift.sh | Read-only tripwires for documents disagreeing about state. Five checks, one per pair that has already drifted silently. Run before republishing an authority doc and at every `/wl-end`. Exits non-zero on drift; fix the document, not the check. |
 | journal/context/active.md | Resume context for /wl-start. |
 | journal/ops/sessions/ | /wl-end handoff files (history). |
 | journal/context/next.md | Cheap cross-chat bridge (`/wl-next`); consumed + reset by `/wl-end`. |

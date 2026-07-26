@@ -485,7 +485,7 @@ Every requirement cites evidence or is labeled a project constraint from the app
 
 Cover session entry, learner-selected bounds, evidence-target completion, checkpoint grouping,
 non-punitive stopping, in-progress continuation, review mixing, mastery checks, skip tests, and
-mostly on-demand coaching. Mark numeric thresholds as research-calibrated configuration unless the
+mostly on-demand coaching. Mark numeric thresholds as configuration to be calibrated unless the
 evidence directly supports a bounded value for this exact context.
 
 - [ ] **Step 4: Populate the disposition table**

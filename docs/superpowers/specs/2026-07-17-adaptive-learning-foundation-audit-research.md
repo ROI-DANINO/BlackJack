@@ -309,9 +309,17 @@ P4–P6 are the *product* phases that consume that foundation; their detailed sc
 exit criteria live in `ROADMAP.md` — this table is a **forward map, not their authority**. The bridge
 between the two is deliverable 7, **Product Design Inputs**, produced at the end of P3.
 
-**Relation to the V-milestones.** The P-phases are the execution arc *inside* `ROADMAP.md`'s delivery
+**Relation to the V-milestones.** ~~The P-phases are the execution arc *inside* `ROADMAP.md`'s delivery
 steps, not a rival numbering: **P1–P5 advance V2 — Learning Foundations**, and **P6 is the V3 — UX and
-Game Experience** milestone. `phase.md`'s `roadmap_step: 2` (V2) is correct through P5.
+Game Experience** milestone. `phase.md`'s `roadmap_step: 2` (V2) is correct through P5.~~
+
+> **SUPERSEDED 2026-07-26.** `ROADMAP.md` was rebuilt around three layers (L1 engines, L2 learning
+> material, L3 visual system) and a numbered phase map, and it is now the authority for the phase
+> map, deliverables, and gates that this passage previously claimed. The mapping: this charter's
+> **P1–P3 all fold into delivery phase 3** (research foundation); **P4 ≙ phase 4**; **P5 ≙ phase 5**;
+> and this charter's **P6 splits into phases 6 and 7**. `phase.md` now reads `roadmap_step: 4`.
+> The rest of this document — the role contract, the evidence rules, the deliverable definitions,
+> and the Assumption Register specification — stands unchanged and is still binding.
 
 | Phase | Workflow / object | Mode | Builds product? | Gate |
 |---|---|---|---|---|

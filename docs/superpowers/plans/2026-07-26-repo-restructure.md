@@ -45,8 +45,10 @@ which pure infrastructure cannot satisfy. See `docs/superpowers/research/evidenc
 § playtest questions P-1…P-5, and the bridge's ruling that every numeric threshold is a product
 judgement until calibrated on this product's own data.
 
-**Every card, phase, and roadmap entry cites its evidence** by finding ID and archive locus,
-through `docs/superpowers/research/evidence-index/`.
+**Every card, phase, and roadmap entry cites its evidence by locus**, through
+`docs/superpowers/research/evidence-index/`. A finding ID is carried wherever a specific Phase 2 or
+Phase 3 verdict governs the claim — not universally; the stronger form was written here first and
+was never true of the board.
 
 ## Stages
 

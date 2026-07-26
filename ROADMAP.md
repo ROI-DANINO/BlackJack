@@ -91,7 +91,7 @@ node's `Roadmap:` must equal the active number.
 
 1. [x] **Simulation foundations** — the L1 engine, Free Play, and an honest ordered shoe.
 2. [x] **Learning mechanics prototype** — nine Blackjack Foundations units, verified strategy profiles, and the durable-progress port. Built before it was designed; treated as a prototype, not a constraint.
-3. [x] **Research foundation** — evidence collection, a per-claim audit of the project's own learning claims, and the subject-matter top-up. Made the foundation trustworthy enough to design from; built no product.
+3. [x] **Research foundation** — evidence collection, a per-claim audit of the project's own learning claims, and the subject-matter top-up. Made the foundation trustworthy enough to design from; built no product. *(This is where the audit program's `P1`, `P2` and `P3` live. Those P-numbers are the research phases and are not delivery phases: `P4` ≙ phase 4, `P5` ≙ phase 5, and the charter's `P6` splits into phases 6 and 7. Directory names like `foundation-audit-p1/` use the audit numbering.)*
 4. [ ] **Learning design blueprint** (current) — the curriculum, skill graph, activity taxonomy, evidence and mastery rules, session shape, motivation economy, and interaction UX. Designs L2; builds nothing.
 5. [ ] **Vertical slice and learning proof** — build the L2 foundation and wire it into the surface that already exists, so real attempts produce real data and the playtest questions can be answered.
 6. [ ] **Visual system and first playable** — build L3 on a learning design that has been tested on a human; a coherent shell containing a first playable game with beginner learning material.
@@ -130,11 +130,20 @@ assume. Its §0 states what may not be leaned on. Every numeric threshold, inter
 this phase picks is a product judgement until calibrated on this product's own data — the phrase
 "research-calibrated" is not available.
 
-**Order.** Outcomes and skill graph, then the activity taxonomy including the pattern catalog, then
-evidence and mastery rules, then the economy, then session composition and interaction UX. The
-economy sits after evidence deliberately: its load-bearing open question — whether a won hand
-returns chips — is an evidence-and-mastery question wearing an economy costume, and cannot be
-answered before what counts as learning evidence is decided.
+**Order — intent; the board is the running order.** Broadly: outcomes and skill graph, the activity
+taxonomy, evidence and mastery rules, the economy, then session composition and interaction UX.
+
+The board (`journal/ops/tasks.md`) is what actually sequences the work — its dependency graph and
+lane order, which `journal/docs-map.md` assigns priority to. Two deliberate departures from the
+prose above: **`LDB-02`, the pattern catalog, runs first or in parallel** — it is dependency-free
+research feeding the taxonomy, and it addresses the corpus's largest hole; and session composition
+may become selectable before the economy, which is acceptable. Priority is never encoded as a
+dependency.
+
+The one ordering that is not negotiable: **the economy comes after evidence and mastery rules.** Its
+load-bearing open question — whether a won hand returns chips — is an evidence-and-mastery question
+wearing an economy costume, and cannot be answered before what counts as learning evidence is
+decided.
 
 ## Phase 5 — Vertical slice and learning proof
 

@@ -270,7 +270,7 @@ Existing project directions cross-check:
   - Applies to: all activities and session budgets.
   - Evidence: **PUBLISHED/INFERENCE:** differing product duration patterns in `DUO-001`, `BRI-002`; **PROJECT CONSTRAINT:** learner-selected bounded sessions.
   - Verification: every factory supplies an estimate or bounded range and the planner records the estimate used when accepting an activity into a session.
-  - Limitation: estimates remain research-calibrated configuration and must never become a correctness, mastery, or accessibility penalty.
+  - Limitation: estimates remain configuration to be calibrated on this product's own data (see `docs/superpowers/specs/assumption-register.md` A-07; no calibration exists yet) and must never become a correctness, mastery, or accessibility penalty.
 
 ### Session, Hint, Review, and Skip-Test Requirements
 
@@ -415,7 +415,7 @@ Existing project directions cross-check:
   `BRI-004`. Why insufficient: Brilliant names experiments in review timing, composition,
   interleaving, automaticity, and set length but publishes no protocols or outcome estimates.
   Affects: `ALR-025`, `ALR-027`, `ALR-031`, and `ALR-032`. Blocks mechanics proof: **No** — these
-  values remain research-calibrated configuration rather than adopted competitor thresholds.
+  values remain configuration to be calibrated rather than adopted competitor thresholds — no calibration exists yet (register A-07).
 - **COVERAGE GAP — Blackjack transfer and numeric calibration.** Sources searched: `SCI-001`–
   `SCI-009` plus `DUO-006`. Why insufficient: the studies cover language, mathematics, general
   digital learning, classrooms, or psychometric simulation rather than blackjack activity and

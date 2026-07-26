@@ -207,3 +207,21 @@ reciprocity is designed for rather than assumed.
 **Why:** the premise is the owner's to set and is now set. What is not settled is the system that
 implements it without violating the four motivation prohibitions, and naming these as open keeps a
 later session from mistaking the premise for a finished design.
+
+## 2026-07-26 — Two rulings rescued from the ROADMAP rewrite
+
+**Chose:** carry forward two design rulings that the layers-and-phases rewrite dropped without
+replacement, so phase 4 inherits them as recorded decisions rather than folklore.
+
+1. **Free Play's table may appear early, but active coaching and session reviews come after the
+   teaching loop is proven.** Free Play stays an honest ordered shoe throughout. Binds `LDB-06`
+   (session composition) and `LDB-03` (activity taxonomy).
+2. **The strategy table stays user-toggleable.** No-table testing and realistic pace are later
+   mastery work, not phase-4 or phase-5 scope. Binds `LDB-04` (evidence and mastery rules), whose
+   mastery axis is table-open versus table-closed.
+
+**Why:** both were in the previous `ROADMAP.md`'s V2 sequencing paragraph, which the rewrite
+superseded in spirit and deleted in fact. An independent review caught the loss. Neither ruling
+survives anywhere else, and a session-composition design that reinvents early coaching would have
+nothing to stop it. Recorded here rather than re-inserted into ROADMAP because they are decisions,
+not scope, and `journal/decisions.md` is the ADR sink.

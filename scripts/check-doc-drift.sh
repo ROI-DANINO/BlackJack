@@ -26,6 +26,12 @@ PHASE=journal/ops/phase.md
 #     discarded when they disagree. It disagreed on 2026-07-26 and nothing said so.
 printf '1. phase.md next: vs board NEXT\n'
 if [ -f "$BOARD" ] && [ -f "$PHASE" ]; then
+  # A broken board must alarm, not skip. Without this, a parse failure or a missing runtime
+  # yields an empty selection and the check reports "nothing to compare" — absence as proof.
+  if ! node scripts/kanban.ts validate "$BOARD" "$PHASE" >/dev/null 2>&1; then
+    fail "the board does not validate; every board-dependent check below is unreliable."
+    note "run: node scripts/kanban.ts validate $BOARD $PHASE"
+  fi
   BOARD_NEXT=$(node scripts/kanban.ts next "$BOARD" "$PHASE" 2>/dev/null | sed -n 's/^NEXT: //p')
   PHASE_NEXT=$(sed -n 's/^next: //p' "$PHASE")
   if [ -z "$BOARD_NEXT" ]; then
@@ -52,8 +58,14 @@ printf '2. QA Tier-1 enumeration vs web/qa/run-all.ts\n'
 QADOC=docs/specs/qa-playtest-process.md
 RUNNER=web/qa/run-all.ts
 if [ -f "$QADOC" ] && [ -f "$RUNNER" ]; then
+  ROLES=$(sed -n "s/.*name: '\([a-z]*\)'.*/\1/p" "$RUNNER")
   MISSING=""
-  for role in $(sed -n "s/.*name: '\([a-z]*\)'.*/\1/p" "$RUNNER"); do
+  if [ -z "$ROLES" ]; then
+    # Zero roles extracted means the parse broke, not that the runner runs nothing.
+    # Without this guard the loop body never runs and the check prints a pass it never earned.
+    fail "extracted zero roles from $RUNNER — the parser is stale, so this check proved nothing."
+  fi
+  for role in $ROLES; do
     grep -q "qa:$role" "$QADOC" || MISSING="$MISSING qa:$role"
   done
   if [ -n "$MISSING" ]; then
@@ -68,22 +80,31 @@ fi
 # 3 — no retired milestone may still be called "active" in an authority document.
 #     README and architecture.md both called a retired build slice active on the day it was
 #     retired, which is the design-vs-build confusion the restructure exists to prevent.
-printf '3. retired milestones described as active\n'
-if [ -f "$BOARD" ]; then
-  RETIRED=$(sed -n 's/.*<!-- removed: \([A-Z][A-Z0-9]*\)-.*/\1/p' "$BOARD" | sort -u)
-  if [ -z "$RETIRED" ]; then
-    note "no retired cards recorded on this board"
-  else
-    for node in $RETIRED; do
-      for doc in README.md PROGRESS.md docs/architecture.md ROADMAP.md; do
-        [ -f "$doc" ] || continue
-        HIT=$(grep -n "$node" "$doc" 2>/dev/null | grep -i "active" || true)
-        [ -n "$HIT" ] && fail "$doc calls retired milestone $node active: $HIT"
-      done
-    done
-    note "checked retired: $(printf '%s ' $RETIRED)"
-  fi
-fi
+printf '3. closed milestones described as active\n'
+# Match on the milestone's PROSE NAME, not its ID. The drift this check exists for read
+# "Graded Decision Practice is the active learning slice" — the ID "GD" appears nowhere in it,
+# so an ID-based grep passes on the exact text that motivated the check. Closed-node archive
+# fragments carry the prose name in their heading, which is where it comes from.
+CLOSED=0
+for frag in journal/ops/archive/*.md; do
+  [ -f "$frag" ] || continue
+  case "$(basename "$frag")" in tasks-*|docs-map-*|phase-*) continue ;; esac
+  TITLE=$(sed -n '1s/^### [A-Z0-9-]* — \(.*\) \[.*/\1/p' "$frag")
+  [ -z "$TITLE" ] && continue
+  CLOSED=$((CLOSED + 1))
+  for doc in README.md PROGRESS.md docs/architecture.md ROADMAP.md; do
+    [ -f "$doc" ] || continue
+    # Paragraph resolution, not line resolution. These documents are hard-wrapped, and the
+    # drift this check exists for split "Graded Decision Practice is the" / "active learning
+    # slice" across two lines — invisible to any line-based grep.
+    HIT=$(awk 'BEGIN{RS=""} {gsub(/\n/," "); print}' "$doc" 2>/dev/null \
+          | grep -i "$TITLE" \
+          | grep -oiE ".{0,40}(is the active|active (learning )?slice|next product step|currently building).{0,40}" \
+          | head -1 || true)
+    [ -n "$HIT" ] && fail "$doc presents closed milestone \"$TITLE\" as current: …$HIT…"
+  done
+done
+[ "$CLOSED" -eq 0 ] && note "no closed milestone fragments found" || note "checked $CLOSED closed milestone(s) by prose name"
 
 # 4 — a test count asserted in ROADMAP must match the tree.
 #     An inflated count was corrected once in the QA ledger and then reappeared in ROADMAP,

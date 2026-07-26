@@ -33,6 +33,11 @@ into any document here, by anyone.
   `docs/superpowers/specs/assumption-register.md` with a named validation method**, because a
   caveat written in prose returns nobody to anything.
 
+Run `scripts/check-doc-drift.sh` before republishing any authority document and at every `/wl-end`.
+It checks five pairs of documents that have each already drifted apart once in silence. It is a
+check, not a rule: the four rules above were all written down before the drift they forbid, and
+were written down again by the same session that created it.
+
 ## QA
 - Every new feature closes with its own scoped **feature QA** playtest before it is called done;
   every milestone closes with a **milestone QA** pack run whose product verdict gates the phase
