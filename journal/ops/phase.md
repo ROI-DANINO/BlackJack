@@ -8,6 +8,7 @@ spec: docs/superpowers/specs/2026-07-22-product-design-inputs.md  # what phase 4
 step: LDB-02 closed 2026-07-27 — the activity-pattern catalog is banked and approved. 32 patterns from 24 products that are neither a dealt hand nor a multiple-choice question, 50 sources, 82 corrections landed and each independently confirmed, research-gate PASS. Its main output is a decision rule rather than a list: changing the input widget buys little, changing what is asked buys a lot — so the catalog separates cosmetic from substantive format change, and six rows are simultaneously independent, evidence-backed and substantive, and a reader treating all 32 as equally supported would be wrong about the rest. Three constraints bind downstream design: learner self-rating is never a mastery signal, 'no jeopardy' is narrower than the source literature claims, and format change alone is not evidence of measurement change.
 prior_phase: adaptive-learning-progress-build
 sessions:
+  - journal/ops/sessions/the-assumption-nobody-opened-2026-07-27T0230.md
   - journal/ops/sessions/the-rules-that-didnt-fire-2026-07-26T0255.md
   - journal/ops/sessions/the-board-that-shaped-the-wrong-phase-2026-07-25T2129.md
   - journal/ops/sessions/initial-notes-indexed-20260707-034707.md
@@ -53,5 +54,5 @@ sessions:
 detour: []
 blocking: ""  # RESOLVED 2026-07-20T2015: the '28 unpushed commits' were phantom stale-ref data. After `git fetch --prune`, main was behind 9 / ahead 0 and fast-forwarded clean. PR #9 merged at 6def4b6. No manual push was ever required.
 next: Start LDB-01, the learning outcomes and skill graph — it has no dependencies and everything downstream needs it scoped. Read P2-verdict-catalog §Bottom line C for which sequencing beliefs are assumptions, then draft the outcome list against the accepted Subject A/B/C spine. Every outcome must be an observable decision behaviour, every edge carries an evidence label, and every assumption earns a register row. LDB-03 is now substantially cheaper than its card assumes: LDB-02 already maps all 32 patterns to a candidate capability and classifies each substantive or cosmetic with a reason.
-note: journal/ops/sessions/the-rules-that-didnt-fire-2026-07-26T0255.md
+note: journal/ops/sessions/the-assumption-nobody-opened-2026-07-27T0230.md
 ---
