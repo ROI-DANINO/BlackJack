@@ -24,11 +24,11 @@
 - Depends on: LDB-01, LDB-02, LDB-03, LDB-04, LDB-05, LDB-06, LDB-07
 - Source: ROADMAP.md §Phase 4
 - Outcome: One blueprint document assembling the eight decisions, with every claim carrying its evidence label and every assumption entered in the Assumption Register with a named validation method. Names the phase-5 slice AND the subset of P-1 through P-5 that slice must instrument — phase 5 cannot exit without answering them from recorded data. The graded-decision-practice design is the standing candidate and already wires both orphans, the strategy oracle and ProgressStore; it covers P-3 and P-5, hooks P-1, and covers neither P-2 nor P-4. Confirm or replace it against the finished blueprint rather than inheriting it, and if replacing, carry the instrumentation forward deliberately. Approvable when: every LDB-01 through LDB-07 decision appears with its label, the register has no unowned row, and the named slice's instrumentation covers the declared P-subset.
-- Next: Assemble once LDB-01 through LDB-07 are approved.
+- Next: Assemble once LDB-01 through LDB-07 are approved. FROM LDB-02: do not count docs/superpowers/research/activity-pattern-catalog/buildability.md's build recommendation as independent confirmation of the standing graded-decision-practice candidate — it is the same author's unreviewed judgement converging on the pre-existing plan, and that file now says so. The binary slice, U1-5 plus the existing reveal, is genuinely no-engine-change and wires both orphans. The EV-graded upgrade is not: no EV machinery exists in blackjack-core and the oracle returns an action, not a number. If the blueprint adopts EV grading, cost it as Medium to Large and register the EV-table provenance assumption. journal/ops/tasks.md
 - Load: ROADMAP.md, docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T02:37:23.139Z
+- Updated: 2026-07-27T03:22:25.200Z
 ### LDB-07 — Design the interaction UX for the activity set
 - Type: design
 - Milestone: LDB
@@ -36,11 +36,11 @@
 - Depends on: LDB-03, LDB-06
 - Source: docs/superpowers/specs/2026-07-22-product-design-inputs.md §8
 - Outcome: How each activity is operated, and a stated target WCAG conformance level. The requirement set is a coherent Level AA baseline except for reduced motion, which rests on SC 2.3.3 at Level AAA, and concise language, which has no normative anchor at any level. WARNING: the AA-plus-two-commitments framing is index-original analysis — it exists in the evidence index and in no archive record, so reopen the WCAG criteria first-hand before adopting it, exactly as the K-U4-016 editor did for ALR-040. This is interaction design only; the visual system is phase 6. Approvable when: a target conformance level is stated, every requirement is mapped to a criterion whose level was read first-hand, and above-baseline commitments are labelled voluntary.
-- Next: State the target conformance level, then split ALR-040 so the AAA element is labelled a voluntary enhancement.
+- Next: State the target conformance level, then split ALR-040 so the AAA element is labelled voluntary. FROM LDB-02: the What-the-learner-does column across docs/superpowers/research/activity-pattern-catalog/run/U1, U2 and U3 audit.md is a ready operation inventory for all 32 patterns — exactly this card's how-each-activity-is-operated. Caution: for U2-3, U2-11 and U2-13 the blackjack analogue differs materially from the sourced interaction, so spec the analogue's operation and label it Product judgement. The catalog contributes nothing on WCAG; that half is untouched. journal/ops/tasks.md
 - Load: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T02:36:57.069Z
+- Updated: 2026-07-27T03:22:24.891Z
 ### LDB-06 — Decide session composition
 - Type: design
 - Milestone: LDB
@@ -48,11 +48,11 @@
 - Depends on: LDB-03, LDB-04
 - Source: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md
 - Outcome: Session entry, size, stopping, and mix. Practice pools are mixed by default, per the ruling block to introduce, interleave to practise — mixed review is the steady state, not a final stage. A blocked pool is permitted only for first exposure and must be declared as such. Rare-event exposure is engineered rather than awaited — note the bridge contradicts itself here, listing this as an open decision in section 7 while stating it as a requirement in section 4.6; resolve it explicitly rather than inheriting one side. No loss-framed pressure and no penalty for stopping. Provisional on playtest question P-3. Approvable when: the session-size numbers carry register rows, the blocked-versus-mixed rule is stated per activity, and the bridge contradiction is resolved in writing.
-- Next: Set the session-size presets as declared product judgements, since no source establishes universal minutes.
+- Next: FROM LDB-02: U3's spacing evidence is now first-hand in the archive — spaced M=.61 versus massed M=.35, d=0.99, in docs/superpowers/research/activity-pattern-catalog/run/U3/audit.md — supporting a mixed-by-default session. The 78-78 result additionally warns against letting learner preference choose blocked versus mixed. Catalogued session-shape options: U1-5 treats a whole shoe as the session unit with a deferred debrief; U2-11 and U2-12 are external pacing, substantive only if the stream advances independently of the response. journal/ops/tasks.md
 - Load: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T02:37:22.823Z
+- Updated: 2026-07-27T03:22:24.586Z
 ### LDB-05 — Design the motivation and chips economy
 - Type: design
 - Milestone: LDB
@@ -60,11 +60,11 @@
 - Depends on: LDB-04
 - Source: docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md
 - Outcome: Answers to E-1 through E-7. E-1 decides whether a won hand returns chips — rewarding outcome is the one thing the learning design decouples, and the saving grace is that chips buy nothing. E-5 resolves that XP accumulates while a rating rises and falls, so they cannot be linked directly without choosing which property to drop. E-6 sets the below-25-user rating fallback. E-7 records that a real leaderboard implies server authority. Approvable when: all seven questions have written answers, E-1's answer names how it will be tested (register row A-20), and no mechanic rewards money won.
-- Next: Answer E-1 first; the rest follow from it.
+- Next: Wait on LDB-04 — the economy comes after evidence and mastery rules per ROADMAP, and the chips-return question is an evidence question in an economy costume. FROM LDB-02: U1-6's analogue states the E-1-adjacent mechanism directly, a per-session decision rating displayed separately from chips won. And U1-5's corrected reading bounds the framing: the licence is no pass-or-fail verdict in the debrief, not grade nothing. A score may exist without being surfaced as jeopardy. journal/ops/tasks.md
 - Load: docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md, docs/superpowers/research/evidence-index/P1-evidence-catalog.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T02:37:22.511Z
+- Updated: 2026-07-27T03:22:24.271Z
 ### LDB-04 — Decide the per-activity evidence and mastery rules
 - Type: design
 - Milestone: LDB
@@ -72,11 +72,11 @@
 - Depends on: LDB-03
 - Source: docs/superpowers/specs/2026-07-22-product-design-inputs.md §3
 - Outcome: A mastery model that can ingest played-hand evidence, since the ruling is measure play not quiz scores and the shipped model structurally cannot. Confidence is never a mastery signal. Assistance is recorded only when assistance was actually delivered — the shipped code labels a bare retry as instruction when no instruction exists. Every threshold chosen is entered in docs/superpowers/specs/assumption-register.md as a product judgement with a named validation method; no constant here is research-calibrated. Provisional on playtest questions P-1 (can decision/outcome separation be trained at all) and P-5 (does confidence rise faster than skill). Approvable when: a played hand can satisfy mastery, no threshold is stated without a register row, and confidence appears in no mastery calculation.
-- Next: Decide what replaces multiple-choice as mastery evidence, then write the reducer's inputs.
+- Next: FROM LDB-02, this card's confidence-is-never-a-mastery-signal ruling now has independent evidence: Kornell and Bjork, 78 percent performed better spaced while 78 percent rated massed as good or better (docs/superpowers/research/activity-pattern-catalog/classification.md item 3). U2-9 is the catalogued anti-pattern proposing exactly that widget — cite both in the decision. Also relevant: U1-6's rating-dependent grading breaks cross-learner comparability, a trap for any mastery constant; and U1-4 models assistance as a recorded input rather than a flag. journal/ops/tasks.md
 - Load: docs/superpowers/research/evidence-index/P1-evidence-catalog.md, web/src/progress/types.ts, web/src/learn/controller.ts
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T02:37:22.141Z
+- Updated: 2026-07-27T03:22:23.859Z
 ### LDB-03 — Define the activity taxonomy and map capabilities to activities
 - Type: design
 - Milestone: LDB
@@ -84,11 +84,11 @@
 - Depends on: LDB-01, LDB-02
 - Source: docs/superpowers/specs/2026-07-22-product-design-inputs.md §4
 - Outcome: Every activity type declares the capability it measures, and the measurement is of decision behaviour wherever the capability is a decision. Classification is a required step wherever the real task requires it — an activity that tells the learner this is a soft total is not measuring the skill. Distributional concepts use predict-then-reveal; a simulation that does not first capture a prediction is decoration. Approvable when: every activity maps to at least one capability, no capability that is a decision is measured only by recognition, and every pattern from LDB-02 is either adopted with a reason or rejected with one.
-- Next: Cross the catalog from LDB-02 against the 41 ALR requirements and mark which requirement each pattern satisfies.
+- Next: Read docs/superpowers/research/activity-pattern-catalog/FOR-LDB-03.md first. FROM LDB-02: classification.md already supplies a candidate adopt-or-reject reason for all 32 patterns, which is most of this card's last approvable-when clause. Rule the word-bank versus Parsons boundary once, in writing — the two units drew it differently on the same interaction. Do not inherit two known defects: U1-5, U1-8 and U1-9 are Evidence-backed and independent on a single compilation, not vendor self-description; and classify from the sourced pattern, never the candidate-capability column, where three rows over-rate. journal/ops/tasks.md
 - Load: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T02:37:21.745Z
+- Updated: 2026-07-27T03:22:23.520Z
 ### LDB-01 — Decide the learning outcomes and the skill graph
 - Type: design
 - Milestone: LDB
@@ -96,11 +96,11 @@
 - Depends on: none
 - Source: docs/superpowers/specs/2026-07-22-product-design-inputs.md §9
 - Outcome: A skill graph with prerequisites, and learning outcomes covering rules, hand reading, strategy, probability, EV and variance — each stated as an observable decision behaviour, not a knowledge claim. The 7-stage hierarchy is an Assumption (K-U1-003) and needs an Assumption Register entry with a named validation method. Which subjects precede which is a Product judgement (K-U7-008) — free to change, just labelled. Two bridge decisions have no other owner and are settled here: whether the curriculum teaches EV explicitly at all (provisional on playtest question P-2, register row A-14 — evidenced absence, no further collection authorised), and whether a deliberately simplified heuristic is adopted as a scaffold (provisional on P-4, register row A-16 — the evidence points toward the heuristic). Approvable when: every outcome is an observable decision behaviour, every edge carries an evidence label, and every assumption has a register row.
-- Next: Read P2-verdict-catalog §Bottom line C to see which sequencing beliefs are assumptions, then draft the outcome list against the accepted Subject A/B/C spine.
+- Next: Read P2-verdict-catalog §Bottom line C for which sequencing beliefs are assumptions, then draft the outcome list against the accepted Subject A/B/C spine. FROM LDB-02: docs/superpowers/research/activity-pattern-catalog/classification.md §Strongest substantive cases supplies catalogued measurable forms for stating probability, EV and variance outcomes as observable decision behaviours — calibrated interval estimates and whole-policy production. Caution, constraint 3 of docs/superpowers/research/activity-pattern-catalog/FOR-LDB-03.md: do not write an outcome that presumes a format measures it; that rationale needs its own support. journal/ops/tasks.md
 - Load: docs/superpowers/research/evidence-index/P2-verdict-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-07-26T02:36:56.714Z
+- Updated: 2026-07-27T03:22:23.213Z
 
 
 ## Active
