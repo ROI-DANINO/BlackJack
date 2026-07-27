@@ -75,11 +75,11 @@ rather than grepping for a missing token.
 - **Role separation.** `research-gate.ts` contains no separation check of any kind. The plan said
   this boundary would be "checked at the gate"; it is checked nowhere. The evidence that it held is
   three headers the orchestrator wrote into files the orchestrator assembled.
-- **That landing confirmations are evidenced.** `landing-evidence.md` — specified in the plan to
-  carry the confirmers' quotes — **was never created for any unit**. 82 confirmations rest on three
-  one-word `CONFIRMED` files. The gate deliberately does not read `landing-evidence.md`, so **no
-  check can see its absence.** The confirmers' quoted evidence exists only in session transcripts,
-  which are not part of this archive.
+- **That landing confirmations are evidenced.** The gate reads only the one-word
+  `landing-confirmation.md`. It deliberately does not read `landing-evidence.md`, so **no check can
+  see whether that file exists at all** — and during the pass, it did not. Recovered 2026-07-27 from
+  session transcripts and now filed at `run/U*/landing-evidence.md` (165 KB, eight passes). The gate
+  still cannot see it; that blind spot is unchanged and is the finding, not the file.
 - **Anything about the content of any source.** This gate is structural.
 
 ## Process audit

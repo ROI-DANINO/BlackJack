@@ -24,7 +24,7 @@ Not 32 rows. The archive splits three ways:
 | | Count | What it means for you |
 |---|---|---|
 | **Independent + Evidence-backed + substantive** | **6** | `U3-1`, `U3-3`, `U3-4`, `U3-5`, `U3-6`, `U3-8`. Lean on these without re-deriving them. |
-| Substantive, weaker standing | 15 | Real format changes, but the support is product judgement or vendor self-description. Usable; label them honestly downstream. |
+| Substantive, weaker standing | 15 | Real format changes with support weaker than the six above. **Read the row's own label — do not assume vendor self-description:** `U1-5`, `U1-8` and `U1-9` are `Evidence-backed` and `independent`, discounted only because all three rest on one compilation. Citing "vendor self-description" as their adopt/reject reason would be a false reason. |
 | Cosmetic | 9 | Widget changes over an unchanged question. Cheap to build, and the research says they buy little. |
 | Conditional | 2 | `U1-7`, `U1-9` — each resolves by a design decision, not by more research. Determinants are in `classification.md`. |
 
@@ -65,8 +65,11 @@ a downstream document with the boundary drawn differently on each page.
 `buildability.md` tiers every substantive pattern against what this codebase already has. Its
 recommendation, and mine:
 
-**`U1-5` + `U1-6` together.** Suppress per-hand verdicts across a whole shoe, then return a graded
-decision-quality review at the end. Both need no engine change, they compose into one mode, and
+**`U1-5` + `U1-6` in its binary form.** Suppress per-hand verdicts across a whole shoe, then return
+a correct/not-correct review at the end. **⚠ Corrected 2026-07-27:** the *EV-graded* version of
+`U1-6` is **not** a no-engine-change build — there is no EV machinery anywhere in `blackjack-core`
+and the oracle returns an action, not a number. The binary version needs no engine change; they
+compose into one mode, and
 between them they exercise the product's stated differentiator — grade the decision, never the
 outcome — more directly than anything else in the catalog. They also wire both known orphans: the
 review needs the **strategy oracle** (built), the session record needs **`ProgressStore`** (built,
@@ -91,8 +94,9 @@ Listed in full in `classification.md`. The two that would bite hardest:
   throughout, correctly.
 - **`U1`'s entire independent base is one document**, itself a compilation whose primaries this
   archive does not hold. Three of its nine patterns rest on it.
-- **The confirmers' quoted evidence is not here.** 82 corrections were independently confirmed;
-  `landing-evidence.md` was never created. See `GATE.md`.
+- **The confirmers' quoted evidence is filed at `run/U*/landing-evidence.md`** — 165 KB across eight
+  passes, **recovered from session transcripts on 2026-07-27** after a process audit found the files
+  had never been written during the pass. The words are the confirmers' own; the filing is post-hoc.
 - **Provenance tokens are not comparable across units.** `independent` in U1 and U3 was never
   checked for compensation.
 

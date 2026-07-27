@@ -13,11 +13,15 @@
 
 - A **Rust simulator core** with a WASM boundary: shoes, ordered dealing, rulesets, bankroll as
   first-class integer minor units, split/double legality gated on funds.
-- A **ruleset-keyed strategy oracle** in Rust — one verified answer key for any dealt state. This is
-  the single most leverage-bearing asset for this catalog.
+- A **ruleset-keyed strategy oracle** in Rust — one verified answer key per dealt state, **for the
+  two V1 rulesets only**. `resolve_profile` returns `None` for anything else and the caller errors
+  "basic strategy unavailable". It is a lookup over hard-coded letter charts (`const H17_HARD: [&str; 14]`
+  and siblings) returning an action — **not a number**.
 - A **`ProgressStore`** — built, and currently unwired.
 - An **unstyled but functional web app**, with per-hand notes and JSONL history export.
-- Rulesets are already parameterised, so a second table is configuration rather than code.
+- Rulesets are already parameterised **in the engine**, so a second table is configuration there —
+  but **not in the oracle**: a new ruleset needs new hard-coded chart constants and a new profile
+  variant. Any analogue needing oracle answers under a non-V1 ruleset inherits that gap.
 
 ## The tiers
 
@@ -34,7 +38,7 @@
 |---|---|---|---|
 | U1-5 | Uninterrupted run, judgement deferred to debrief | **Now** | Suppress per-hand verdicts, buffer them, release at shoe end. Pure feedback-timing. The engine already plays an ordered shoe. |
 | U2-13 | Configurable variance sandbox | **Now** | UI over capability that exists — shoe, ruleset and bet ramp are already parameters. See `A-22`: the mechanic is free, the *teaching* claim is unevidenced. |
-| U1-6 | Post-hoc graded decision-quality review | **Now / Small** | Oracle gives the correct play per state. Needs an EV-delta per decision to grade *how* wrong, not just whether. If EV-loss is not already computable, this is Small. |
+| U1-6 | Post-hoc graded decision-quality review | **Split — see below** | ⚠ **Corrected 2026-07-27 by independent review, against the author.** The binary form (correct / not correct, deferred to a debrief) is **Now**. The *catalogued* form — graded EV-loss classes — is **Medium–Large**. See the correction note under the table. |
 | U3-9 | Convergent-cue generation ("these five take the same action") | **Small** | Group states by oracle answer, present the group, ask for the one action. Entirely derivable from the oracle. |
 | U3-1 | Unaided free recall over a region | **Small** | "Name every hand you would double." Set comparison against the oracle's answer set. Needs set-diff scoring, not new engine. |
 | U1-3 | Two-bound interval elicitation, hit-rate scored | **Small** | Needs true probabilities (dealer bust rate by upcard). Computable from the engine. Scoring is hit-rate over a session. |
@@ -58,10 +62,31 @@
 
 ## What I would actually build first, and why
 
+> ### ⚠ Correction, 2026-07-27 — the assumption this file flagged as its weakest link failed
+>
+> This file closed by naming `U1-6` as the one claim most worth a spike: *"the whole tiering assumes
+> an EV-delta per decision is derivable from the oracle."* **It is not.** An independent review
+> checked the crate: `strategy.rs` is a lookup over hard-coded letter charts returning an action, and
+> a crate-wide search for `expected_value|expectimax|monte-carlo` returns **zero matches**. There is
+> no EV anywhere in `blackjack-core` to take a delta of.
+>
+> **What this changes:** the binary version — suppress per-hand verdicts, return correct/not-correct
+> at the end — is genuinely **Now**, and is what the already-approved graded-decision-practice design
+> specifies. The **catalogued** `U1-6`, defined by graded EV-loss classes, needs either a generated EV
+> table (a generated artifact — triggers the Tool & Runtime Admission Protocol in
+> `docs/specs/stack-boundaries.md`) or a new expectimax computation with splits. By this file's own
+> tier definitions that is **Medium–Large**, not Now.
+>
+> **Disclosure the author owes:** the recommendation below converges on the **standing phase-5
+> candidate** — the graded-decision-practice design approved 2026-07-25, authored by the same party.
+> `LDB-08` is instructed to *confirm or replace* that candidate. **This file is not independent
+> confirmation of it** and must not be counted as such.
+
 **The cheap slice that tests the most:** `U1-5` + `U1-6` together.
 
-Suppress per-hand verdicts across a whole shoe, then hand back a graded decision-quality review at
-the end. Both are Now-tier, they compose into one coherent mode, and between them they exercise the
+Suppress per-hand verdicts across a whole shoe, then hand back a decision-quality review at the end.
+**In its binary form both halves are Now-tier** — the EV-graded upgrade is not, see the correction
+above. They compose into one coherent mode, and between them they exercise the
 product's stated differentiator — grade the decision, never the outcome — more directly than
 anything else here. `U1-5` is the deferral; `U1-6` is the grading granularity.
 
