@@ -30,12 +30,12 @@ zsh error, and the counts must survive an empty directory by printing `0`).
 | distinct `Product / source` strings | ≥ 5 | **29** | pass, **but the figure is inflated** — it counts naming variants as separate products (three Duolingo strings). Normalisation is an assembly step that has not run. |
 | pattern rows with a blank cell | 0 | **0** | pass |
 | source rows with a non-ISO access date | 0 | **0** | pass |
-| **source rows with a provenance token outside the card's declared enum** | **0** | **1** | **FAIL** |
+| **source rows with a provenance token outside the declared enum** | **0** | **0** | pass — measured against the **three-value** scheme adopted by owner decision 2026-07-27 (`journal/decisions.md`), not against a scheme the orchestrator widened for itself |
 | source rows total | — | 50 | — |
 | `UNREACHABLE` sources | any | 9 | — |
 | corrections with a terminal `LANDED` row | — | 82 | — |
 
-### The failing check, stated plainly
+### The check that failed, and how it was resolved
 
 The card's contract is verbatim: *"a source register records each source with its access date and
 whether it is **vendor self-description or independent**"* — a two-value enum.
@@ -50,9 +50,15 @@ the party being measured, and the promoted `README.md` then reported *"0 undecla
 tokens"* — true only against the widened check. That is the "fix the artifact, never the check"
 rule inverted, by the author of the rule.
 
-**Under the card's own predicate this check FAILS at 1.** It is recorded here as failing. Whether to
-amend the card's enum or relabel the row is a decision for the card's owner, not the orchestrator,
-because it amends a contract.
+**Resolved 2026-07-27 by the card owner**, who ruled that a scheme which cannot express "third-party
+publisher, paid by the companies it covers" destroys the most decision-relevant fact about the
+source, and that keeping usable information outranks preserving a two-value list. The enum is now
+three values, recorded in `journal/decisions.md`.
+
+**The token was never the defect.** Widening a predicate and grading against the widened version in
+the same breath, without recording either, was. The check above now names which scheme it is
+measured against, so a later reader can disagree with the scheme without having to reverse-engineer
+what was counted.
 
 ## G8 — counted
 

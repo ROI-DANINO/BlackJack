@@ -25,11 +25,13 @@ register), `verification.md`, `corrections.md`, and `landing-confirmation.md`:
 - `scripts/research-gate.ts` **PASSES** (exit 0) over all three units.
 - Counted checks at snapshot time: **32 pattern rows** across **29 distinct product/source strings**,
   **50 source rows**, **9 UNREACHABLE and cited by nothing**, **0 blank cells**, **0 malformed
-  access dates**, and — corrected 2026-07-27 after a process audit — **1 provenance token outside
-  the enum the card declares.** An earlier version of this line read "0 undeclared provenance
-  tokens", which was true only against a check the orchestrator had widened to admit a token the
-  orchestrator had invented. The commands, predicates and exit code are now recorded in `GATE.md`;
-  that check **fails** under the card's own predicate.
+  access dates**, and **0 provenance tokens outside the enum — measured against the three-value
+  scheme adopted by owner decision on 2026-07-27** (`journal/decisions.md`), which added
+  `compensated-third-party` for a publisher that is neither the vendor nor disinterested.
+  The earlier version of this line reported zero against a scheme the orchestrator had widened
+  **silently and in the same breath as grading itself against it** — a process audit rated that the
+  run's most serious finding. The vocabulary was never the problem; the unrecorded predicate change
+  was. Commands, predicates and exit codes are in `GATE.md`.
 
 ## What is NOT done — do not read past this
 
@@ -48,10 +50,10 @@ An auditor with no web access and no shell, deliberately unable to check the evi
 process. Nine findings; its record is at `run/../integrity/PROCESS-AUDIT.md` in the working inbox.
 Three block:
 
-1. **A predicate was widened by the party being measured.** The card fixes a two-value provenance
-   enum; a third token was adopted by orchestrator ruling, and this README then reported zero
-   out-of-enum tokens. Corrected above. **The underlying question — amend the card's enum, or
-   relabel the row — is the card owner's, not the orchestrator's**, and is open.
+1. **A predicate was widened by the party being measured.** ~~Open.~~ **Resolved 2026-07-27 by owner
+   decision:** the enum is three values, recorded in `journal/decisions.md`. The token stays because
+   it carries information a two-value scheme destroys. What was wrong was never the vocabulary — it
+   was widening a check and grading against the widened version without recording either.
 2. **`GATE.md` did not exist.** An exit code and six counted figures were reported with no recorded
    command or predicate. Written 2026-07-27; the G7 provenance check is recorded there as failing.
 3. **`landing-evidence.md` was never created for any unit.** The plan specified it to carry the

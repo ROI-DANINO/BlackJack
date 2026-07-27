@@ -265,3 +265,32 @@ designed never to resolve. `check_links()` in `workspace/scripts/wl-lint.sh:78-9
 `$MEM_DIR/*.md` and skips only `index.md`, so it lints the template every session. The real fix —
 skipping `_*.md` stubs — is a workspace-desk change. `journal/memory/` is gitignored, so the local
 edit is untracked and this entry is its only record.
+
+## 2026-07-27 — The provenance enum takes a third value, by owner decision
+
+**Chose:** the source-provenance vocabulary is **three** values, not two: `vendor-self-description`,
+`independent`, and **`compensated-third-party`** — a publisher that is not the vendor, but discloses
+payment from the companies it covers.
+
+**Why:** the two-value enum in LDB-02's card was written before anyone knew the third case existed.
+Then it did: a review site covering Yousician, which is not Yousician and is not disinterested
+either. `independent` overstates it and `vendor-self-description` is simply false. Forcing the row
+into either one destroys the single most decision-relevant fact about it, and a reader scanning the
+provenance column would see a word that misdescribes the source.
+
+**The owner's reasoning, and it governs:** keep information that helps the product; do not preserve
+a two-value scheme just because a document said two. The enum existed to tell a reader how far to
+trust a source. A third value serves that purpose better than a footnote does.
+
+**What was actually wrong, and it was not the token.** The orchestrator adopted the third value
+mid-pass **and simultaneously widened its own counted check to admit it**, then reported "0
+undeclared provenance tokens" — a pass that existed only because the party being measured had moved
+the threshold. A process audit caught it and rated it the run's most serious finding. The defect was
+never the vocabulary; it was changing a predicate and grading against the changed version in the
+same breath. This entry is the fix: the change is now a recorded decision rather than a silent one,
+and `GATE.md` states which predicate it is measured against.
+
+**Scope:** `compensated-third-party` is in use on one row (`U2-S13`). `independent` in units U1 and
+U3 was assigned under the earlier two-value scheme and was **never checked for compensation** — so
+the tokens are not comparable across units, and that limit is recorded in the archive rather than
+quietly harmonised away.
