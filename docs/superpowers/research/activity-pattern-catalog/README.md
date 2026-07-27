@@ -23,7 +23,7 @@ register), `verification.md`, `corrections.md`, and `landing-confirmation.md`:
 - **82 corrections landed, every one independently confirmed** by an agent that neither raised nor
   applied it — but see the limit below: **the confirmers' quoted evidence is not in this archive.**
 - `scripts/research-gate.ts` **PASSES** (exit 0) over all three units.
-- Counted checks at snapshot time: **32 pattern rows** across **29 distinct product/source strings**,
+- Counted checks at snapshot time: **32 pattern rows** across **24 distinct products/sources** (29 raw strings before normalising naming variants — three Duolingo apps, one product),
   **50 source rows**, **9 UNREACHABLE and cited by nothing**, **0 blank cells**, **0 malformed
   access dates**, and **0 provenance tokens outside the enum — measured against the three-value
   scheme adopted by owner decision on 2026-07-27** (`journal/decisions.md`), which added
@@ -41,8 +41,8 @@ register), `verification.md`, `corrections.md`, and `landing-confirmation.md`:
 - **No ranking.** The four intended axes — evidence standing, provenance, substantive-vs-cosmetic,
   buildability — are not applied.
 - **Not approved.** The card's gate is user approval and it has not been given.
-- **The distinct-product count above is inflated.** It counts naming variants as separate products
-  (e.g. three Duolingo app strings). Normalisation is an assembly step that has not run.
+- ~~The distinct-product count above is inflated.~~ **Normalised 2026-07-27**: 29 raw strings
+  collapse to the figure above. Well clear of the card's ≥5 either way.
 
 ## What a process audit found — three blockers, all in the orchestrator's hands
 
