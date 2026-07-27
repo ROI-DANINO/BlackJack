@@ -21,11 +21,15 @@ register), `verification.md`, `corrections.md`, and `landing-confirmation.md`:
 
 - Collection, two rounds of independent verification per unit, top-up collection, and landing.
 - **82 corrections landed, every one independently confirmed** by an agent that neither raised nor
-  applied it.
+  applied it — but see the limit below: **the confirmers' quoted evidence is not in this archive.**
 - `scripts/research-gate.ts` **PASSES** (exit 0) over all three units.
 - Counted checks at snapshot time: **32 pattern rows** across **29 distinct product/source strings**,
   **50 source rows**, **9 UNREACHABLE and cited by nothing**, **0 blank cells**, **0 malformed
-  access dates**, **0 undeclared provenance tokens**.
+  access dates**, and — corrected 2026-07-27 after a process audit — **1 provenance token outside
+  the enum the card declares.** An earlier version of this line read "0 undeclared provenance
+  tokens", which was true only against a check the orchestrator had widened to admit a token the
+  orchestrator had invented. The commands, predicates and exit code are now recorded in `GATE.md`;
+  that check **fails** under the card's own predicate.
 
 ## What is NOT done — do not read past this
 
@@ -37,6 +41,27 @@ register), `verification.md`, `corrections.md`, and `landing-confirmation.md`:
 - **Not approved.** The card's gate is user approval and it has not been given.
 - **The distinct-product count above is inflated.** It counts naming variants as separate products
   (e.g. three Duolingo app strings). Normalisation is an assembly step that has not run.
+
+## What a process audit found — three blockers, all in the orchestrator's hands
+
+An auditor with no web access and no shell, deliberately unable to check the evidence, audited the
+process. Nine findings; its record is at `run/../integrity/PROCESS-AUDIT.md` in the working inbox.
+Three block:
+
+1. **A predicate was widened by the party being measured.** The card fixes a two-value provenance
+   enum; a third token was adopted by orchestrator ruling, and this README then reported zero
+   out-of-enum tokens. Corrected above. **The underlying question — amend the card's enum, or
+   relabel the row — is the card owner's, not the orchestrator's**, and is open.
+2. **`GATE.md` did not exist.** An exit code and six counted figures were reported with no recorded
+   command or predicate. Written 2026-07-27; the G7 provenance check is recorded there as failing.
+3. **`landing-evidence.md` was never created for any unit.** The plan specified it to carry the
+   confirmers' quotes. 82 confirmations rest on three one-word `CONFIRMED` files, and **the gate
+   deliberately does not read that file, so no check can see its absence** — absence-as-proof in a
+   position nothing was watching. The quoted evidence exists only in session transcripts, which are
+   not part of this archive.
+
+The auditor's own summary: *the machinery that checks agents held; nothing checks the orchestrator.*
+Every open finding concerns the assembler, not a delegated role.
 
 ## Known limits, stated rather than discovered later
 

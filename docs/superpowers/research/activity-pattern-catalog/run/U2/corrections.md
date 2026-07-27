@@ -70,6 +70,7 @@ of C1–C15, and supplied a duplicate map.
 | C30 | A quote truncates before "improving their likelihood to remember the correct idea" with no ellipsis; same defect as C7 and C8, landed for consistency | LANDED |
 | C31 | A top-up narrative passage still states that U2-S13 was not relabelled and that its provenance cell still reads independent; that cell now reads compensated-third-party. Mark the passage superseded and cross-reference the register row | LANDED |
 | C32 | The C29 cell pre-empts the fading keyword trap but not two further near-miss strings in the same source, both confirmed to be difficulty-progression rather than assistance-withdrawal; record them so a re-checker need not re-derive them | LANDED |
+| C21 | Retired as a duplicate of C6 — same defect, same two occurrences. Recorded as a row rather than by omission, because retiring an ID by leaving it out breaks the append-only convention and makes the gate blind to it | LANDED |
 
 ## Notes for the editor
 
