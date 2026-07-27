@@ -97,6 +97,18 @@ from **substantive**. A downstream consumer that reads it as "these formats meas
 misreading it — U1's own unit-level caveat says plainly that nothing in it evidences that changing
 format alone changes what a learner learns.
 
+## What is in this archive
+
+| File | What it holds |
+|---|---|
+| `run/U*/audit.md` | The evidence. Patterns, rejected candidates with their failing test, and the source register with access dates and provenance. **This is the primary record — verify any claim against it.** |
+| `run/U*/verification.md` | Two independent verification passes per unit, and their sufficiency verdicts. |
+| `run/U*/corrections.md` | The correction ledgers. 82 IDs, each appearing twice — raised, then landed. |
+| `run/U*/landing-confirmation.md` | One word each. See the limit above: the confirmers' quoted evidence is **not** in this archive. |
+| `classification.md` | **Every pattern classified substantive or cosmetic**, the six rows that carry the catalog's evidentiary weight, and five ways a reader could be misled. Read this before using the catalog. |
+| `GATE.md` | Every gate command, predicate, count and exit code — including what the gate does *not* establish. |
+| `integrity/PROCESS-AUDIT.md` | An audit of the process rather than the evidence, by an agent with no web access and no shell. Nine findings, three blocking, all in the orchestrator's hands. |
+
 ## Citation rule
 
 Cite a pattern from here **and verify it against `run/<unit>/audit.md`**, which carries the source
