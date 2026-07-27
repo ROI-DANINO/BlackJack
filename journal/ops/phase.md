@@ -5,7 +5,7 @@ objective: Design the learning blueprint — what is taught, in what order, thro
 sub_phase: learning-design-blueprint
 plan: ROADMAP.md  # phase 4 has no separate plan doc; ROADMAP §Phase 4 holds its deliverables, order, and exit criteria, and the LDB board holds its cards. Restructure record: docs/superpowers/plans/2026-07-26-repo-restructure.md (complete) + docs/superpowers/audits/2026-07-26-restructure-review.md (what it still owed). Phase-5 build plan held ready: docs/superpowers/plans/2026-07-23-graded-decision-practice.md (11 tasks, cards retired 2026-07-26, re-shape with fresh IDs when phase 5 opens)
 spec: docs/superpowers/specs/2026-07-22-product-design-inputs.md  # what phase 4 may assume; its §0 states what may not be leaned on. Approved slice design: docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md
-step: Restructured the repo around layers and numbered phases, landed every audit correction that had never been applied, banked an evidence index and an Assumption Register, rebuilt the board on phase 4's real deliverables, and survived two independent reviews.
+step: LDB-02 closed 2026-07-27 — the activity-pattern catalog is banked and approved. 32 patterns from 24 products that are neither a dealt hand nor a multiple-choice question, 50 sources, 82 corrections landed and each independently confirmed, research-gate PASS. Its main output is a decision rule rather than a list: changing the input widget buys little, changing what is asked buys a lot — so the catalog separates cosmetic from substantive format change, and six rows carry real evidentiary weight against 26 that do not. Three constraints bind downstream design: learner self-rating is never a mastery signal, 'no jeopardy' is narrower than the source literature claims, and format change alone is not evidence of measurement change.
 prior_phase: adaptive-learning-progress-build
 sessions:
   - journal/ops/sessions/the-rules-that-didnt-fire-2026-07-26T0255.md
@@ -52,6 +52,6 @@ sessions:
 # survive in journal/decisions.md and in session-file history.
 detour: []
 blocking: ""  # RESOLVED 2026-07-20T2015: the '28 unpushed commits' were phantom stale-ref data. After `git fetch --prune`, main was behind 9 / ahead 0 and fast-forwarded clean. PR #9 merged at 6def4b6. No manual push was ever required.
-next: Start LDB-02, the activity-pattern catalog: plan the pass with the research-plan skill, then read the two seed passages in v2-research-06-ux-foundations.md and survey outward under the card's research contract.
+next: Start LDB-01, the learning outcomes and skill graph — it has no dependencies and everything downstream needs it scoped. Read P2-verdict-catalog §Bottom line C for which sequencing beliefs are assumptions, then draft the outcome list against the accepted Subject A/B/C spine. Every outcome must be an observable decision behaviour, every edge carries an evidence label, and every assumption earns a register row. LDB-03 is now substantially cheaper than its card assumes: LDB-02 already maps all 32 patterns to a candidate capability and classifies each substantive or cosmetic with a reason.
 note: journal/ops/sessions/the-rules-that-didnt-fire-2026-07-26T0255.md
 ---

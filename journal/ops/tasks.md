@@ -89,18 +89,6 @@
 - Gate: user-approval
 - Evidence: pending
 - Updated: 2026-07-26T02:37:21.745Z
-### LDB-02 — Build the activity-pattern catalog
-- Type: research
-- Milestone: LDB
-- Intent: the product's stated intent is Duolingo- and Brilliant-style learning games, and every exercise format this project holds is a dealt hand or a multiple-choice question.
-- Depends on: none
-- Source: docs/imports/v2-research-2026-07-11/research/v2-research-03-course-and-source-audit.md:116
-- Outcome: A catalog of interactive activity patterns that are neither a dealt hand nor a multiple-choice question, each with what it measures well and what it measures poorly. The corpus holds exactly two seeds, both Accepted-but-Deferred and both under-specified — the ruleset-delta comparison view and the live-highlighted chart with fading assistance. Named as a recommended research artifact on 2026-07-11 and never produced. RESEARCH CONTRACT, because the last unpaved research phase produced the mess: every source is opened first-hand and no claim rests on a snippet, an abstract, or another document's description of it; a source register records each source with its access date and whether it is vendor self-description or independent; at least eight patterns from at least five distinct products; any claim carried into the taxonomy is verified by a separate agent before it lands. Approvable when: the register exists, every pattern names the capability it could measure, and no unopened source is cited.
-- Next: Plan this pass with the research-plan skill before collecting — it owns the role contract, the produce-verify-land-confirm loop, and the gate rules. Then read the two seed passages in v2-research-06-ux-foundations.md and survey outward.
-- Load: docs/imports/v2-research-2026-07-11/research/v2-research-06-ux-foundations.md, docs/imports/v2-research-2026-07-11/course-bundle/how-to-teach.md
-- Gate: user-approval
-- Evidence: pending
-- Updated: 2026-07-26T02:36:56.394Z
 ### LDB-01 — Decide the learning outcomes and the skill graph
 - Type: design
 - Milestone: LDB
@@ -121,6 +109,18 @@
 ## Verification
 
 ## Done
+### LDB-02 — Build the activity-pattern catalog
+- Type: research
+- Milestone: LDB
+- Intent: the product's stated intent is Duolingo- and Brilliant-style learning games, and every exercise format this project holds is a dealt hand or a multiple-choice question.
+- Depends on: none
+- Source: docs/imports/v2-research-2026-07-11/research/v2-research-03-course-and-source-audit.md:116
+- Outcome: A catalog of interactive activity patterns that are neither a dealt hand nor a multiple-choice question, each with what it measures well and what it measures poorly. The corpus holds exactly two seeds, both Accepted-but-Deferred and both under-specified — the ruleset-delta comparison view and the live-highlighted chart with fading assistance. Named as a recommended research artifact on 2026-07-11 and never produced. RESEARCH CONTRACT, because the last unpaved research phase produced the mess: every source is opened first-hand and no claim rests on a snippet, an abstract, or another document's description of it; a source register records each source with its access date and whether it is vendor self-description or independent; at least eight patterns from at least five distinct products; any claim carried into the taxonomy is verified by a separate agent before it lands. Approvable when: the register exists, every pattern names the capability it could measure, and no unopened source is cited.
+- Next: Plan this pass with the research-plan skill before collecting — it owns the role contract, the produce-verify-land-confirm loop, and the gate rules. Then read the two seed passages in v2-research-06-ux-foundations.md and survey outward.
+- Load: docs/imports/v2-research-2026-07-11/research/v2-research-06-ux-foundations.md, docs/imports/v2-research-2026-07-11/course-bundle/how-to-teach.md
+- Gate: user-approval
+- Evidence: 5b92ddb docs/superpowers/research/activity-pattern-catalog/ — 32 patterns from 24 products, 50 sources, 82 corrections landed and independently confirmed, research-gate PASS. Classification, buildability and process audit banked alongside. journal/ops/tasks.md
+- Updated: 2026-07-27T02:16:36.516Z
 
 
 
