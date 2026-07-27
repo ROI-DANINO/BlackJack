@@ -21,7 +21,8 @@ register), `verification.md`, `corrections.md`, and `landing-confirmation.md`:
 
 - Collection, two rounds of independent verification per unit, top-up collection, and landing.
 - **82 corrections landed, every one independently confirmed** by an agent that neither raised nor
-  applied it — but see the limit below: **the confirmers' quoted evidence is not in this archive.**
+  applied it. Their quoted evidence is in `run/U*/landing-evidence.md` — **recovered from session
+  transcripts on 2026-07-27 after a process audit found the files had never been created.**
 - `scripts/research-gate.ts` **PASSES** (exit 0) over all three units.
 - Counted checks at snapshot time: **32 pattern rows** across **24 distinct products/sources** (29 raw strings before normalising naming variants — three Duolingo apps, one product),
   **50 source rows**, **9 UNREACHABLE and cited by nothing**, **0 blank cells**, **0 malformed
@@ -56,11 +57,13 @@ Three block:
    was widening a check and grading against the widened version without recording either.
 2. **`GATE.md` did not exist.** An exit code and six counted figures were reported with no recorded
    command or predicate. Written 2026-07-27; the G7 provenance check is recorded there as failing.
-3. **`landing-evidence.md` was never created for any unit.** The plan specified it to carry the
-   confirmers' quotes. 82 confirmations rest on three one-word `CONFIRMED` files, and **the gate
-   deliberately does not read that file, so no check can see its absence** — absence-as-proof in a
-   position nothing was watching. The quoted evidence exists only in session transcripts, which are
-   not part of this archive.
+3. **`landing-evidence.md` was never created for any unit.** ~~The quoted evidence exists only in
+   session transcripts.~~ **Recovered 2026-07-27**: each confirmer's final return is now filed
+   verbatim at `run/U*/landing-evidence.md`, extracted from its agent transcript. 165 KB across
+   eight confirmation passes. **The filing is post-hoc — the words are the confirmers' own, the
+   archiving is not.** The underlying defect stands as a lesson: the gate deliberately does not read
+   that path, so **no check could see the files were missing** — absence-as-proof in a position
+   nothing was watching.
 
 The auditor's own summary: *the machinery that checks agents held; nothing checks the orchestrator.*
 Every open finding concerns the assembler, not a delegated role.
@@ -104,7 +107,8 @@ format alone changes what a learner learns.
 | `run/U*/audit.md` | The evidence. Patterns, rejected candidates with their failing test, and the source register with access dates and provenance. **This is the primary record — verify any claim against it.** |
 | `run/U*/verification.md` | Two independent verification passes per unit, and their sufficiency verdicts. |
 | `run/U*/corrections.md` | The correction ledgers. 82 IDs, each appearing twice — raised, then landed. |
-| `run/U*/landing-confirmation.md` | One word each. See the limit above: the confirmers' quoted evidence is **not** in this archive. |
+| `run/U*/landing-confirmation.md` | One word each — what the gate reads. |
+| `run/U*/landing-evidence.md` | **The confirmers' quoted evidence**, verbatim, 165 KB across eight passes. Recovered post-hoc; see the limit above. |
 | `classification.md` | **Every pattern classified substantive or cosmetic**, the six rows that carry the catalog's evidentiary weight, and five ways a reader could be misled. Read this before using the catalog. |
 | `GATE.md` | Every gate command, predicate, count and exit code — including what the gate does *not* establish. |
 | `integrity/PROCESS-AUDIT.md` | An audit of the process rather than the evidence, by an agent with no web access and no shell. Nine findings, three blocking, all in the orchestrator's hands. |
