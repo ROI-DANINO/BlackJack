@@ -95,6 +95,8 @@
 
 
 ## Verification
+
+## Done
 ### LDB-01 — Decide the learning outcomes and the skill graph
 - Type: design
 - Milestone: LDB
@@ -105,10 +107,8 @@
 - Next: Read P2-verdict-catalog §Bottom line C for which sequencing beliefs are assumptions, then draft the outcome list against the accepted Subject A/B/C spine. FROM LDB-02: docs/superpowers/research/activity-pattern-catalog/classification.md §Strongest substantive cases supplies catalogued measurable forms for stating probability, EV and variance outcomes as observable decision behaviours — calibrated interval estimates and whole-policy production. Caution, constraint 3 of docs/superpowers/research/activity-pattern-catalog/FOR-LDB-03.md: do not write an outcome that presumes a format measures it; that rationale needs its own support. journal/ops/tasks.md
 - Load: docs/superpowers/research/evidence-index/P2-verdict-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
 - Gate: user-approval
-- Evidence: DRAFT AWAITING APPROVAL — docs/superpowers/specs/2026-07-30-learning-outcomes-and-skill-graph.md. 18 outcomes (A1-A5, B1-B6, C1-C3, P1-P4), each an observable decision behaviour; A1 and B6 rewritten out of knowledge-claim form. 26 skill-graph edges, recounted from the rendered tables: 16 Domain-necessary, 0 Evidence-backed, 8 Product judgement, 2 Assumption. No prerequisite edge is evidence-backed and the doc says so rather than borrowing §1.1's strength. 20 new skill ids over the shipped 16. Both bridge decisions settled: D-1 EV is interpretive literacy only, never a decision rule (A-14/P-2); D-2 the false ten-heuristic is not adopted, recorded as running against the evidence (A-16/P-4, stays open). Five new register rows A-23..A-27. A-01 not spent: the 7-stage order is NOT asserted as edges.
-- Updated: 2026-07-30T07:28:12.796Z
-
-## Done
+- Evidence: 3ab6780 docs/superpowers/specs/2026-07-30-learning-outcomes-and-skill-graph.md — APPROVED 2026-07-30. 18 outcomes (A1-A5, B1-B6, C1-C3, P1-P4), each an observable decision behaviour; A1 and B6 rewritten out of knowledge-claim form. 26 skill-graph edges recounted from the rendered tables: 16 Domain-necessary, 0 Evidence-backed, 8 Product judgement, 2 Assumption — no prerequisite edge is evidence-backed, and the doc says so rather than borrowing §1.1's strength. 20 new skill ids over the shipped 16. D-1: EV is interpretive literacy, never a decision rule (A-14/P-2). D-2: the false ten-heuristic is not adopted, recorded as running against the evidence (A-16/P-4, stays open). Five new register rows A-23..A-27. A-01 not spent — the 7-stage order is NOT asserted as edges.
+- Updated: 2026-07-30T07:39:05.552Z
 ### LDB-02 — Build the activity-pattern catalog
 - Type: research
 - Milestone: LDB

@@ -1,8 +1,14 @@
 # Learning Outcomes and the Skill Graph — LDB-01
 
-> **Status: draft for approval.** Gate: user-approval. This is deliverable 1 (skill graph and
-> prerequisites) and deliverable 2 (learning outcomes including probability, EV and variance) of
-> ROADMAP Phase 4.
+> **Status: APPROVED 2026-07-30** (owner, gate `user-approval`). This is deliverable 1 (skill graph
+> and prerequisites) and deliverable 2 (learning outcomes including probability, EV and variance) of
+> ROADMAP Phase 4, and both are now closed.
+>
+> **What approval binds.** The 18 outcomes and the 26 labelled edges are the curriculum spine
+> downstream cards build against. `D-1` (EV is interpretive literacy, never a decision rule) and
+> `D-2` (the false ten-heuristic is not adopted) are settled product judgements — changeable on
+> `P-2` and `P-4` data respectively, not by preference. Register rows `A-23`–`A-27` are live
+> obligations from this date.
 >
 > **Binding input:** `docs/superpowers/specs/2026-07-22-product-design-inputs.md`. Its §0 states what
 > may not be leaned on. Nothing in Phases 1–3 is reopened here.
