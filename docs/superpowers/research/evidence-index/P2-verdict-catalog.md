@@ -3,11 +3,25 @@
 Source archive: `docs/superpowers/research/foundation-audit-p2/`. This page is a navigation
 index over it, not a replacement for it. Open the cited record before relying on a row.
 
-**The structural fact that governs everything below:** Phase 2 modified **zero product
-documents** (`P2-gate-summary.md:288`, verified against `04ad04c`). The 26 corrections that
-"landed" landed in the *audit records*, not in the specs. **None of the 24 Relabels and none of
-the 7 Revises has been applied to any document the product actually reads.** They are all
-outstanding.
+**The structural fact that governed everything below, and what changed since.** Phase 2 itself
+modified **zero product documents** (`P2-gate-summary.md:288`, verified against `04ad04c`): its 26
+corrections landed in the *audit records*, not in the specs. That is a fact about Phase 2 and it
+stands.
+
+**It is no longer the current state.** A correction sweep on 2026-07-26 applied the verdicts to the
+documents, and this page went on asserting they were all outstanding. Re-checked 2026-07-30 by
+enumerating every `K-U*` marker present in `docs/specs/`, `docs/superpowers/specs/`,
+`journal/decisions.md` and `web/src/`, and matching that set against the 31 verdicts below:
+
+- **28 of 31 have landed** — every one whose locus is a document, each carrying a dated
+  `(Relabel|Revise applied 2026-07-26, K-…)` marker at the point of the claim.
+- **3 are outstanding, and they are exactly the three whose locus is code**: `K-U6-003`,
+  `K-U6-005`, `K-U6-009`. A repo-wide search returns **no `K-U6-*` marker outside this archive**.
+  The sweep was a document sweep and did not reach `web/src/`.
+
+Per-verdict status is on the rows below. Do not read this section as clearance for the three that
+remain: `K-U6-005` in particular is a live mislabel in shipped code, and `LDB-04` already owns it
+("assistance is recorded only when assistance was actually delivered").
 
 ## The eight units
 
@@ -36,6 +50,10 @@ There is no gate criterion for sufficiency, so the finding never propagated.
 
 A Relabel means the claim **stands** but its evidence level was demoted. These are the claims
 that read as settled fact and are actually design bets or values choices.
+
+**Status (re-checked 2026-07-30):** 22 of 24 landed on 2026-07-26, each as a dated parenthetical at
+the claim itself. The **2 outstanding are both in the U6 sub-table below** — `K-U6-003` and
+`K-U6-009`, both at code loci — and are marked there.
 
 ### `docs/specs/product-vision.md` — 6 (the most exposed document)
 
@@ -83,12 +101,15 @@ that read as settled fact and are actually design bets or values choices.
 | K-U4-003 | ALR-001, `:121` | Multiple choice tagged `PUBLISHED/INFERENCE` to `DUO-001`, `BRI-001`, `SCI-001` | **Product judgement** | **None of the three sources speaks to format validity.** The `PUBLISHED` half is unearned. This is the requirement that governs 100% of shipped mastery evidence. |
 | K-U4-005 | ALR-005, `:145-146` | Immediate canonical correction during acquisition, tagged to `SCI-005` | **Assumption** | The source reports **delayed** feedback as slightly *more* effective. The configure-by-mode half survives as inference; the immediate-by-default half is not derived from it. |
 
-### Shipped code — 2 (U6)
+### Shipped code — 2 (U6) — **both OUTSTANDING**
 
-| ID | Locus | Claim | New label | Why |
-|---|---|---|---|---|
-| K-U6-003 | `web/src/learn/validate.ts:65-66` | Required checks must be `question` steps | **Product judgement** | Filed as an authoring rule, it is actually **a pedagogical commitment about what counts as evidence**. Consequence: a played hand can never satisfy completion. |
-| K-U6-009 | `web/src/learn/content/blackjack-basics.ts:290` | Recap copy "You can explain and use Hit." | **Product judgement** | Asserts learner capability and is **never conditioned on evidence** — a hand step advances to recap regardless of correctness. Reads as attestation; is coverage-summary copy. |
+Neither carries a marker at its locus. Verified 2026-07-30: a repo-wide search for `K-U6-` returns
+nothing outside this archive.
+
+| ID | Locus | Claim | New label | Why | Status |
+|---|---|---|---|---|---|
+| K-U6-003 | `web/src/learn/validate.ts:65-66` | Required checks must be `question` steps | **Product judgement** | Filed as an authoring rule, it is actually **a pedagogical commitment about what counts as evidence**. Consequence: a played hand can never satisfy completion. | **OUTSTANDING** — and `LDB-04` is scoped to replace the commitment outright, so this may retire rather than land. |
+| K-U6-009 | `web/src/learn/content/blackjack-basics.ts:290` | Recap copy "You can explain and use Hit." | **Product judgement** | Asserts learner capability and is **never conditioned on evidence** — a hand step advances to recap regardless of correctness. Reads as attestation; is coverage-summary copy. | **OUTSTANDING** — copy fix, no owner card. |
 
 ### Decision log — 1 (U5)
 
@@ -100,17 +121,18 @@ that read as settled fact and are actually design bets or values choices.
 
 ## The 7 Revise verdicts
 
-Wording must change. **None applied to any product document.**
+Wording must change. **6 of 7 applied 2026-07-26; 1 outstanding** — re-checked 2026-07-30 by opening
+each locus. The outstanding one is the only Revise whose locus is code.
 
-| ID | Locus | Required change |
-|---|---|---|
-| K-U3-001 | `…architecture-design.md:285` | "Exact values are research-calibrated configuration" — the overstatement is the **present-tense participle**. Say the values are configuration **to be calibrated by** the named gates, not already calibrated. |
-| K-U3-002 | `…architecture-design.md:412` | "versioned, research-calibrated curriculum/reducer policy" → "versioned policy whose values are **assumptions pending calibration**". The more consequential of the two — it governs the reducer. |
-| K-U4-004 | ALR-004, `:139` | **Drop "existing … attempt-record project contracts" from the evidence basis.** `AttemptRecord` has one `response` field and a scalar `assistance` — the existing contract is **the gap this requirement addresses, not evidence for it.** |
-| K-U4-013 | ALR-022, `:253` | **Strike "and current `AttemptRecord` seam"**; keep "approved attempt envelope." Four of six items ALR-022 names are absent from the seam it cites. |
-| K-U4-016 | ALR-040, `:363-365` | **Mark the reduced-motion element as resting on a Level AAA criterion** (SC 2.3.3). Reflow (1.4.10) and Text Spacing (1.4.12) are AA; Timing Adjustable (2.2.1) is A. U4 states no conformance level anywhere. |
-| K-U6-005 | `web/src/learn/controller.ts:123` | The `'instruction'` label **records retry depth, not assistance received.** No instruction is delivered; `retry()` clears feedback and the only affordance is a Retry button. **No hint ladder exists.** The mislabel propagates into a test that calls it "a hinted attempt." |
-| K-U7-009 | `2026-07-10-v2-learning-foundations-roadmap-design.md:56-57` | State that **the closest analogous evidence favours introducing mixed practice earlier**, and that this is an open design question, not settled sequencing. Held at Revise not Replace only because domain transfer is untested. This is CFL-007. |
+| ID | Locus | Required change | Status |
+|---|---|---|---|
+| K-U3-001 | `…architecture-design.md:285` | "Exact values are research-calibrated configuration" — the overstatement is the **present-tense participle**. Say the values are configuration **to be calibrated by** the named gates, not already calibrated. | **APPLIED** — now reads "configuration to be calibrated … and not already calibrated", marked `K-U3-001`. |
+| K-U3-002 | `…architecture-design.md:412` | "versioned, research-calibrated curriculum/reducer policy" → "versioned policy whose values are **assumptions pending calibration**". The more consequential of the two — it governs the reducer. | **APPLIED** — at `:416`, verbatim to the required wording. |
+| K-U4-004 | ALR-004, `:139` | **Drop "existing … attempt-record project contracts" from the evidence basis.** `AttemptRecord` has one `response` field and a scalar `assistance` — the existing contract is **the gap this requirement addresses, not evidence for it.** | **APPLIED** — evidence basis now `SCI-001/004/009` only, marked `K-U4-004`. |
+| K-U4-013 | ALR-022, `:253` | **Strike "and current `AttemptRecord` seam"**; keep "approved attempt envelope." Four of six items ALR-022 names are absent from the seam it cites. | **APPLIED** — marked `K-U4-013`. |
+| K-U4-016 | ALR-040, `:363-365` | **Mark the reduced-motion element as resting on a Level AAA criterion** (SC 2.3.3). Reflow (1.4.10) and Text Spacing (1.4.12) are AA; Timing Adjustable (2.2.1) is A. U4 states no conformance level anywhere. | **APPLIED** — all four criteria now carry levels. Note `LDB-07` still owes the *target* conformance level, which is a separate obligation. |
+| K-U6-005 | `web/src/learn/controller.ts:123` | The `'instruction'` label **records retry depth, not assistance received.** No instruction is delivered; `retry()` clears feedback and the only affordance is a Retry button. **No hint ladder exists.** The mislabel propagates into a test that calls it "a hinted attempt." | **OUTSTANDING** — `controller.ts:123` still reads `this.assistance = this.assistance === 'none' ? 'retry' : 'instruction'`, and the doc comment above it still says "escalating assistance". `LDB-04` owns the fix. |
+| K-U7-009 | `2026-07-10-v2-learning-foundations-roadmap-design.md:56-57` | State that **the closest analogous evidence favours introducing mixed practice earlier**, and that this is an open design question, not settled sequencing. Held at Revise not Replace only because domain transfer is untested. This is CFL-007. | **APPLIED** — now reads "Category-blocked-then-mixed is one candidate order, not a settled one", with the interleaving evidence cited. |
 
 ---
 
@@ -151,7 +173,7 @@ never claimed to be implemented.**
 | CFL-004 | Feedback timing, **four positions**, all re-verified verbatim. **Addendum: `SCI-005`'s own meta-regression found feedback timing did not contribute significantly.** | |
 | CFL-005 | Speed as evidence — U1's scoring factors vs ALR-022's "without equating speed with ability" | dormant; U1's factors sit under a "Factors later:" deferral |
 | CFL-006 | Learner-identity wording — "at most pseudonymous" vs bare "anonymous". A privacy over-claim, still live | |
-| **CFL-007** | **Curriculum sequencing.** Roadmap says blocked-then-mixed; held evidence (Rohrer, Dedrick & Burgess 2014, Q2 RCT, n=140) shows **interleaved 72% vs blocked 38%, d=1.05** on a directly analogous task. Domain transfer untested. | **The register's own note calls this the single most product-consequential row** — the one place the project's held evidence points against a decision already written into the roadmap. Resolved 2026-07-22 by owner ruling: *block to introduce, interleave to practise.* The `:56-57` revision is still unapplied. |
+| **CFL-007** | **Curriculum sequencing.** Roadmap says blocked-then-mixed; held evidence (Rohrer, Dedrick & Burgess 2014, Q2 RCT, n=140) shows **interleaved 72% vs blocked 38%, d=1.05** on a directly analogous task. Domain transfer untested. | **The register's own note calls this the single most product-consequential row** — the one place the project's held evidence points against a decision already written into the roadmap. Resolved 2026-07-22 by owner ruling: *block to introduce, interleave to practise.* The `:56-57` revision **landed on 2026-07-26** — this row asserted it was still unapplied until 2026-07-30, when the target was reopened and found corrected. The conflict itself stays OPEN because `P-3` has not been run: the ruling is a bet on untested domain transfer (`A-15`), not a settled sequencing finding. |
 
 Two further tensions recorded outside the register, both still live:
 - `ROADMAP.md:43` calls AL-D1 "the active slice" while `PROGRESS.md:53` records it complete;
