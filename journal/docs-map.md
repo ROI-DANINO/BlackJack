@@ -68,6 +68,8 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | docs/specs/qa-playtest-process.md | The AI playtest QA process: agent pack, session protocols, scoping rules, run mechanics. |
 | journal/qa/ledger.md | QA coverage state (area × last-passed commit) + findings register. Read before scoping any QA run. |
 | journal/qa/runs/ | Per-run QA reports (one dir per run, one file per agent). |
+| journal/qa/notes/ | Raw in-session playtest note exports (tracked), and why they are kept apart from the gitignored gameplay logs in `data/history/`. Evidence behind ledger findings, not a substitute for the ledger. |
+| web/src/tuning/params.ts | **The single source of every invented constant the learning design runs on** — mastery weights and threshold, review horizon, session presets, pool/dosage constants — each with its Assumption Register row and whether it is a product judgement, an owner ruling, or one a spec named and never set. A constant spelled inline at its use site instead of read from here is a defect. Version stamped onto every playtest note and durable session row. |
 | docs/specs/ | Design specs (pre-superpowers flow). |
 | docs/plans/ | Implementation plans for active specs. |
 | docs/superpowers/specs/ | Design specs (active superpowers/White Lotus flow) — where current designs land. |

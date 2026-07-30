@@ -1,6 +1,8 @@
 // @vitest-environment jsdom
 import { beforeAll, describe, expect, it } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render as rtlRender, screen, fireEvent, act } from '@testing-library/react';
+import type { ReactElement } from 'react';
+import { NoteProvider } from '../notes/context';
 import { initCoreForTest } from '../bridge/test-init';
 import { WasmTransport } from '../bridge/core-client';
 import type { CoreTransport } from '../bridge/transport';
@@ -11,6 +13,10 @@ import { OPENINGS } from '../learn/situations';
 import { Lesson } from './Lesson';
 
 beforeAll(async () => { await initCoreForTest(); });
+
+// Lesson reports its current step to the note context so a playtest note lands on the right step,
+// so it renders inside a provider here exactly as it does under <App>.
+const render = (ui: ReactElement) => rtlRender(<NoteProvider>{ui}</NoteProvider>);
 
 // A small unit covering every LessonStep type through a REAL WasmTransport-backed engine,
 // so grading (hand_total, and the eleven's legal actions) is proven against the actual core

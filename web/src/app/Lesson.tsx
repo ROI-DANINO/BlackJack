@@ -3,25 +3,44 @@
 // no CSS, animation, images, drag/drop, rewards, or custom layout infrastructure; that product
 // polish is out of scope until V3. Reuses HandView for hand steps rather than re-rendering cards.
 
+import { useEffect } from 'react';
 import type { Action } from '../bridge/types';
 import type { LessonController } from '../learn/controller';
 import type { LessonStep } from '../learn/types';
+import { useNotes } from '../notes/context';
 import { HandView } from './HandView';
+import { NoteField } from './NoteField';
 import { useLesson } from './useLesson';
 
 const ACTION_LABELS: Record<Action, string> = { hit: 'Hit', stand: 'Stand', double: 'Double', split: 'Split' };
 
 export function Lesson({ controller, onExit }: { controller: LessonController; onExit: () => void }) {
   const state = useLesson(controller);
+  const notes = useNotes();
+
+  // Report what is on screen so a note taken from anywhere lands on the right step. setAnchor is
+  // idempotent on an equal anchor, so running this every render is safe.
+  const step = state.step;
+  useEffect(() => {
+    if (!step) return;
+    notes.setAnchor({
+      surface: 'learn',
+      detail: `${state.unit.title} · ${step.type} ${step.id}`,
+      unitId: state.unit.id,
+      stepId: step.id,
+      stepType: step.type,
+    });
+  }, [notes, state.unit.id, state.unit.title, step]);
 
   if (state.fatal) return <div role="alert">{state.fatal}</div>;
-  if (!state.step) return null; // before begin() populates the first step
+  if (!step) return null; // before begin() populates the first step
 
-  const step = state.step;
   return (
     <section>
       {state.error && <p role="alert">{state.error}</p>}
       {renderStep(step, state, controller, onExit)}
+      {/* A decision just resolved: this is free play's attach-on-Deal moment, for the trainer. */}
+      {state.feedback != null && <NoteField label="Note on this step" />}
     </section>
   );
 }

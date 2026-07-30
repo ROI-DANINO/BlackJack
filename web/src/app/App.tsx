@@ -1,15 +1,33 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { WasmTransport } from '../bridge/core-client';
 import { MemorySink } from '../bridge/log/memory-sink';
 import { GameController } from '../bridge/game';
+import { NoteProvider, useNotes } from '../notes/context';
 import { Table } from './Table';
 import { Learn } from './Learn';
+import { NoteBar } from './NoteBar';
+import { TuningPanel } from './TuningPanel';
 
 type Mode = 'free_play' | 'learn';
 
 export function App() {
+  return (
+    <NoteProvider>
+      <AppShell />
+    </NoteProvider>
+  );
+}
+
+function AppShell() {
   const game = useRef<GameController | null>(null);
   const [mode, setMode] = useState<Mode>('free_play');
+  const notes = useNotes();
+
+  // Free play has no step identity to report, so the shell anchors it. Learn and Lesson set their
+  // own finer anchors, and only mount while `mode === 'learn'`, so the two never fight.
+  useEffect(() => {
+    if (mode === 'free_play') notes.setAnchor({ surface: 'free-play', detail: null });
+  }, [mode, notes]);
 
   if (!game.current) {
     game.current = new GameController(
@@ -36,6 +54,9 @@ export function App() {
       {mode === 'free_play' && (<><h1>Blackjack Free Play</h1><Table controller={game.current} /></>)}
 
       {mode === 'learn' && <Learn />}
+
+      <NoteBar />
+      {(import.meta.env.DEV || import.meta.env.VITE_BREAKIT) && <TuningPanel />}
     </main>
   );
 }

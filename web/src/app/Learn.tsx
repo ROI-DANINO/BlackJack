@@ -7,17 +7,25 @@
 // `if (import.meta.env.DEV || import.meta.env.VITE_BREAKIT)` branch, so a normal `npm run build`
 // folds it to a dead branch and tree-shakes breakit-hook.ts out entirely.
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WasmTransport } from '../bridge/core-client';
 import { BLACKJACK_BASICS } from '../learn/content/blackjack-basics';
 import { LessonController } from '../learn/controller';
 import { LearnEngine } from '../learn/engine';
 import type { Unit } from '../learn/types';
+import { useNotes } from '../notes/context';
 import { Lesson } from './Lesson';
 import { freshSeed } from './seed';
 
 export function Learn() {
   const [controller, setController] = useState<LessonController | null>(null);
+  const notes = useNotes();
+
+  // The unit list is a real place to have an opinion ("these titles do not tell me what I'd learn"),
+  // so it anchors notes too. Lesson takes over the anchor once a unit is open.
+  useEffect(() => {
+    if (!controller) notes.setAnchor({ surface: 'unit-list', detail: BLACKJACK_BASICS.title });
+  }, [controller, notes]);
 
   const open = (unit: Unit) => {
     const next = new LessonController(

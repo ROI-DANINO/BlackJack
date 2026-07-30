@@ -172,10 +172,23 @@ here rather than assumed, and flagged in §8 as handed forward.
 Engineered tail encounters are scheduled, not awaited. Two dosage constants, both invented, both
 pooled into one register sub-row with the mix constants (§7):
 
-- **A minimum rate of engineered tail events per session** at or above `standard` size — dealer
-  naturals, a losing run under correct play, a correct-play hand that loses to a dealer draw-out.
-- **A floor on the losing-run length** that counts as a `P4` measurement, since a two-hand loss is not
-  a run and would make `A-26` unfalsifiable.
+- **Minimum engineered tail events per session** at or above `standard` size: **1**. Qualifying
+  encounters are dealer naturals, a losing run under correct play, and a correct-play hand that loses
+  to a dealer draw-out.
+- **Losing-run floor that counts as a `P4` measurement**: **4 consecutive losing resolved hands
+  under correct play**. A floor is needed because a two-hand loss is not a run and would leave `A-26`
+  unfalsifiable; three is common enough to be indistinguishable from ordinary variance.
+
+**Both numbers were absent from this document until 2026-07-30.** The section named two constants,
+defended them, and registered them without ever stating a value — and §8's self-check passed anyway,
+because it only checked that every number present had a register row, never that every registered
+constant had a number. The values above are **proposals with no evidence behind them**, and they are
+the weakest content in this document.
+
+**They are also no longer stated here alone.** Per §9, they live in
+`web/src/tuning/params.ts` as `pool.minEngineeredTailEventsPerSession` and `pool.p4LosingRunFloor`,
+carrying status `invented-unset-in-spec`, which is what the tuning panel displays while they are
+being changed.
 
 **Constraint from LDB-04, so this does not drift into rigging:** engineered exposure selects *when the
 learner meets a situation*, never what the shoe contains mid-hand. The mission line holds — build shoes,
@@ -203,9 +216,31 @@ rather than settles).
 
 ## 8. Approvability self-check
 
-**1. The session-size numbers carry register rows.** All six numbers in §3 plus the three dosage/mix
-constants in §5.2 and §6 are covered by `A-07b` and `A-07c` — pooled, with the non-independence reason
-stated rather than asserted. No number appears anywhere above without one of those two rows behind it.
+**1. The session-size numbers carry register rows — checked in both directions.** All six numbers in
+§3 plus the three dosage/mix constants in §5.2 and §6 are covered by `A-07b` and `A-07c` — pooled,
+with the non-independence reason stated rather than asserted. No number appears anywhere above
+without one of those two rows behind it, **and no registered constant lacks a number.**
+
+That second clause is new, and it is here because its absence hid a real defect for the whole first
+draft. The check as originally written — "no number without a row" — can only fail when a number is
+present. It passed silently over §6's two constants, which had rows and no values. This is the
+project's standing failure shape: *a check that can only fail when a record exists passes on a
+missing one.* Enumerated positively, the nine constants and their values are:
+
+| Constant | Value | Row |
+|---|---|---|
+| `short` duration / activities | 3 min / 5 | `A-07b` |
+| `standard` duration / activities | 8 min / 12 | `A-07b` |
+| `long` duration / activities | 15 min / 20 | `A-07b` |
+| First-exposure graduation count | 1 completed introduction | `A-07c` |
+| Minimum engineered tail events per `standard`+ session | 1 | `A-07c` |
+| `P4` losing-run floor | 4 consecutive losing hands | `A-07c` |
+
+**The same defect exists in an approved document.** `2026-07-30-evidence-and-mastery-rules.md:142-143`
+names F5's minimum series length and calibration bar as constants sharing `A-07`'s sub-row, and sets
+neither. That is LDB-04, already approved. It is recorded here because this card found it; repairing
+it belongs to LDB-04's owner, and the two values now have proposals in the params module
+(`mastery.calibration.*`) so nothing downstream has to invent them a second time.
 
 **2. The blocked-versus-mixed rule is stated per activity.** §5.2 states it at the activity level by
 reading LDB-03's contract C-F declarations, and adds the two rules C-F does not cover: one-way
@@ -223,3 +258,67 @@ placement, now register rows rather than a binary in a decision list.
   no voided evidence.
 - Provisional on **`P-3`**. `A-15` records the mixed-by-default ruling as a bet; this card makes the bet
   measurable rather than assumed, which is the most it can do before data exists.
+
+---
+
+## 9. Delivery constraints (owner decision, 2026-07-30)
+
+Two constraints the owner set on how this design — and every remaining Phase 4 design — reaches
+code. They are recorded here because this is the card that introduced the constants they govern, and
+they **bind `LDB-05`, `LDB-07`, and `LDB-08`** rather than advising them.
+
+### 9.1 No invented constant is spelled at its use site
+
+Every number `A-07` calls *invented until measured* lives in **one versioned module**,
+`web/src/tuning/params.ts`, and is read from there. The rule and its reasons:
+
+- **One source, so retuning is a value change, not a code hunt.** A threshold spelled inline in a
+  reducer and again in a component has already forked.
+- **Versioned and stamped.** `TUNING_PARAMS_VERSION` plus the set of active overrides travels with
+  every playtest note, and belongs on every durable session row. The schema was already built for
+  this: `SessionRecord` carries `budget.presetId`, `reducerVersion`, and `curriculumVersion`
+  (`progress/types.ts:129-134`) — three fields whose purpose is tagging which constants produced
+  which data. Retuning therefore does not corrupt the record it is calibrated against; it partitions
+  it.
+- **Changeable at runtime, with provenance visible.** A dev-only tuning panel changes any constant
+  mid-session and shows, next to each one, its register row and whether it is a product judgement, an
+  owner ruling, or one of the four a spec named and never set. An unlabelled dial invites treating an
+  invented constant as a measured one — the exact overclaim `A-07` exists to prevent.
+
+**A consequence worth stating, because it is the reason the owner asked for this.** Once the numbers
+are defaults in a versioned module and the register routes them to playtest, **the exact values stop
+being approval-blocking.** `A-07b`'s presets and `A-07c`'s dosage are *starting positions to be felt
+and moved*, not decisions this document has to get right in advance. That is what makes §3's
+conflict-spanning honest rather than evasive: spanning `A-08` is only defensible if moving the
+numbers afterwards is cheap, and this constraint is what makes it cheap.
+
+**It also found four holes.** TypeScript cannot compile against "a minimum rate", so building the
+module surfaced every registered constant with no value: §6's two, and LDB-04 §2.2's two. Prose can
+ship an unset constant and pass its own self-check; a module cannot.
+
+### 9.2 Every surface captures playtest notes, anchored and stamped
+
+Free play's per-hand note — attach-on-Deal, riding out on the round's JSONL line — produced three
+product findings in its first sixteen-round session (`journal/ops/run-notes.md`). It is the only
+mechanism this project has that reliably converts using the product into recorded evidence, and
+until now the trainer had none of it. Every activity surface must therefore support:
+
+- **A note at the moment a decision resolves** — the attach-on-answer analogue of attach-on-Deal —
+  **and a note-now affordance available on any screen**, including screens with no decision on them.
+- **An anchor supplied by the surface**, not inferred by the note UI: unit and step for a lesson,
+  round index for a hand, `activityId` for a future activity. A note reading *"this drags"* is close
+  to useless without knowing what was on screen and which preset was live.
+- **A kind** — change-request or observation — because a thing to fix and evidence about whether the
+  design works are triaged differently.
+- **The params stamp**, per note rather than per session, since an override may change mid-session.
+- **Export to `journal/qa/notes/`** — tracked, and triaged into `journal/qa/ledger.md` like any QA
+  finding. Deliberately *not* `data/history/`: that path is gitignored because gameplay logs are
+  personal and `origin` is public, so a note exported there could never reach the repo where the
+  design it concerns lives. Free play's per-hand note keeps riding the round line and stays with the
+  gameplay data; these are design findings and are kept apart from it.
+
+**This partially covers, and does not replace, §5.3.** A note's anchor records what the learner was
+looking at; it does not record what the session's pool was composed of. `SessionRecord` still needs
+its additive pool-composition field before `P-3` can be answered from recorded data. Notes are
+owner-authored evidence about the design; attempts are learner-generated evidence about learning.
+Neither substitutes for the other.

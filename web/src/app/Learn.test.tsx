@@ -1,11 +1,16 @@
 // @vitest-environment jsdom
 import { beforeAll, describe, expect, it } from 'vitest';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render as rtlRender, screen, fireEvent, within } from '@testing-library/react';
+import type { ReactElement } from 'react';
+import { NoteProvider } from '../notes/context';
 import { initCoreForTest } from '../bridge/test-init';
 import { BLACKJACK_BASICS } from '../learn/content/blackjack-basics';
 import { Learn } from './Learn';
 
 beforeAll(async () => { await initCoreForTest(); });
+
+// Learn and Lesson both anchor playtest notes, so they render inside a provider as under <App>.
+const render = (ui: ReactElement) => rtlRender(<NoteProvider>{ui}</NoteProvider>);
 
 const UNIT_TITLES = [
   'Meet Blackjack',

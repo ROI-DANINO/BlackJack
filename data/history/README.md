@@ -12,6 +12,12 @@ committed.
   downloads to your `~/Downloads` as `blackjack-session-<timestamp>.jsonl`. Move it here.
 - **Future CLI / Node harness:** would write `.jsonl` directly into this directory.
 
+**Playtest notes do not belong here.** The in-app note bar's "Download notes" produces
+`blackjack-notes-<timestamp>.jsonl`, which goes to **`journal/qa/notes/`** — tracked, because a
+design finding is useless if it cannot travel back into the repo, whereas everything in this
+directory is deliberately ignored. Free play's *per-hand* note is the exception and stays here: it
+rides out on the round line as the `note` field, part of the gameplay record.
+
 ## Format
 
 JSON Lines (`.jsonl`) — one JSON object per line:
