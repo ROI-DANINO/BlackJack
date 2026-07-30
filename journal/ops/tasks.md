@@ -41,18 +41,6 @@
 - Gate: user-approval
 - Evidence: pending
 - Updated: 2026-07-27T03:22:24.891Z
-### LDB-06 — Decide session composition
-- Type: design
-- Milestone: LDB
-- Intent: a session is the unit a learner actually experiences, and its shape decides whether practice is mixed or blocked.
-- Depends on: LDB-03, LDB-04
-- Source: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md
-- Outcome: Session entry, size, stopping, and mix. Practice pools are mixed by default, per the ruling block to introduce, interleave to practise — mixed review is the steady state, not a final stage. A blocked pool is permitted only for first exposure and must be declared as such. Rare-event exposure is engineered rather than awaited — note the bridge contradicts itself here, listing this as an open decision in section 7 while stating it as a requirement in section 4.6; resolve it explicitly rather than inheriting one side. No loss-framed pressure and no penalty for stopping. Provisional on playtest question P-3. Approvable when: the session-size numbers carry register rows, the blocked-versus-mixed rule is stated per activity, and the bridge contradiction is resolved in writing.
-- Next: FROM LDB-02: U3's spacing evidence is now first-hand in the archive — spaced M=.61 versus massed M=.35, d=0.99, in docs/superpowers/research/activity-pattern-catalog/run/U3/audit.md — supporting a mixed-by-default session. The 78-78 result additionally warns against letting learner preference choose blocked versus mixed. Catalogued session-shape options: U1-5 treats a whole shoe as the session unit with a deferred debrief; U2-11 and U2-12 are external pacing, substantive only if the stream advances independently of the response. journal/ops/tasks.md
-- Load: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
-- Gate: user-approval
-- Evidence: pending
-- Updated: 2026-07-27T03:22:24.586Z
 ### LDB-05 — Design the motivation and chips economy
 - Type: design
 - Milestone: LDB
@@ -71,6 +59,18 @@
 
 
 ## Verification
+### LDB-06 — Decide session composition
+- Type: design
+- Milestone: LDB
+- Intent: a session is the unit a learner actually experiences, and its shape decides whether practice is mixed or blocked.
+- Depends on: LDB-03, LDB-04
+- Source: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md
+- Outcome: Session entry, size, stopping, and mix. Practice pools are mixed by default, per the ruling block to introduce, interleave to practise — mixed review is the steady state, not a final stage. A blocked pool is permitted only for first exposure and must be declared as such. Rare-event exposure is engineered rather than awaited — note the bridge contradicts itself here, listing this as an open decision in section 7 while stating it as a requirement in section 4.6; resolve it explicitly rather than inheriting one side. No loss-framed pressure and no penalty for stopping. Provisional on playtest question P-3. Approvable when: the session-size numbers carry register rows, the blocked-versus-mixed rule is stated per activity, and the bridge contradiction is resolved in writing.
+- Next: FROM LDB-02: U3's spacing evidence is now first-hand in the archive — spaced M=.61 versus massed M=.35, d=0.99, in docs/superpowers/research/activity-pattern-catalog/run/U3/audit.md — supporting a mixed-by-default session. The 78-78 result additionally warns against letting learner preference choose blocked versus mixed. Catalogued session-shape options: U1-5 treats a whole shoe as the session unit with a deferred debrief; U2-11 and U2-12 are external pacing, substantive only if the stream advances independently of the response. journal/ops/tasks.md
+- Load: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
+- Gate: user-approval
+- Evidence: DRAFT AWAITING APPROVAL — docs/superpowers/specs/2026-07-30-session-composition.md. THE CONTRADICTION IS RESOLVED IN WRITING (§1), both loci verified: product-design-inputs.md:230 states rare-event exposure as requirement §4.6, while :294 lists it as an open decision AND CITES :230, so neither section overlooked the other. Ruling: §4.6 stands, exposure is engineered, §7's entry withdrawn as mis-scoped. Three grounds — (a) §4.6 rests on §1.2 [VERIFIED], >70,000 choices, experience-taught learners underweight rare events, while §7 offers no counter-evidence, and an unwarranted 'open' does not reopen a warranted requirement; (b) 'organic' is not the weaker option but the very condition §1.2 measured and found wanting, since waiting for the shoe IS sampling at the shoe's own frequencies; (c) approved outcome P4 requires an engineered losing run to be measurable at all (A-26). What remains genuinely open is dosage and placement, now register constants rather than a binary in a decision list. SESSION SHAPE written against the existing schema rather than invented: progress/types.ts:129-130 already defines closeReason with exactly four values and budget as presetId/targetDurationMs/maxActivities. Three presets spanning the A-08 conflict rather than picking a side. Stopping policy per close reason, with time-bound and activity-bound closing at END OF ACTIVITY so a truncated attempt is not recorded as abandoned. learner-stopped forfeits nothing — a BINDING constraint on LDB-05, not advice. MIX: mixed by default per CFL-007, with spacing evidence now first-hand (spaced M=.61 vs massed M=.35, d=0.99, run/U3/audit.md). The learner may NOT select blocked over mixed — a deliberate exception to recommend-don't-lock, because 78% performed better spaced while 78% rated massing as good or better, so preference is anti-correlated with benefit; the exception's reason is stated and its scope narrowed against the navigation case. FOUND: SessionRecord carries no pool-composition field, so P-3's arms are indistinguishable after the fact — additive, handed forward. Register: two sub-rows only (A-07b presets, A-07c pool composition), pooled with the non-independence reason stated.
+- Updated: 2026-07-30T11:50:38.572Z
 
 ## Done
 ### LDB-04 — Decide the per-activity evidence and mastery rules
