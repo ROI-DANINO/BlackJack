@@ -1,7 +1,19 @@
 # Activity Taxonomy and Capability Map — LDB-03
 
-> **Status: draft for approval.** Gate: user-approval. ROADMAP Phase 4 deliverables 3 (activity
-> taxonomy) and 4 (which activity measures which capability).
+> **Status: APPROVED 2026-07-30** (owner, gate `user-approval`). ROADMAP Phase 4 deliverables 3
+> (activity taxonomy) and 4 (which activity measures which capability), both now closed.
+>
+> **Approved after two review passes, whose standing differs and is recorded rather than blurred.**
+> The judgement half was **independent** (`audits/2026-07-30-ldb-03-claim-examination.md`) and returned
+> 11 non-Preserve verdicts; all landed, each verified present in this file by positive enumeration.
+> The citation half (`audits/2026-07-30-ldb-03-citation-verification.md`) confirmed 12 of 12 figures,
+> quotes and loci — but was **re-run by this document's own author** after the independent verifier run
+> was lost, so it closes a mechanical gap and is not a second hand on judgement.
+>
+> **What approval binds.** The seven families are a closed list: a new activity type needs a card, not
+> an author's discretion. Contracts C-A through C-F bind every family. The §3 map is authoritative on
+> which outcome each family may serve, and on which rows carry which contract. `A-28` and `A-29` are
+> live obligations from this date.
 >
 > **Inputs.** `2026-07-22-product-design-inputs.md` §4 (the six activity-evidence requirements);
 > the 18 approved outcomes of `2026-07-30-learning-outcomes-and-skill-graph.md` (LDB-01); the 32

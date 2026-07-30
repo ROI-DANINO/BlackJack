@@ -102,14 +102,14 @@ node's `Roadmap:` must equal the active number.
 **Exit criteria.** The owner approves a blueprint that says what is taught, in what order, through
 which activities, measured by what evidence — and approves the slice to build in Phase 5.
 
-**Deliverables.** Nine, three of them done.
+**Deliverables.** Nine, five of them done.
 
 | # | Deliverable | State |
 |---|---|---|
 | 1 | Skill graph and prerequisites | **done** — `docs/superpowers/specs/2026-07-30-learning-outcomes-and-skill-graph.md` §3, approved 2026-07-30 (`LDB-01`) |
 | 2 | Learning outcomes, including probability, EV and variance | **done** — same document §2 and §4; EV settled as interpretive literacy only (`D-1`), approved 2026-07-30 (`LDB-01`) |
-| 3 | Activity taxonomy | open |
-| 4 | Which activity measures which capability | open |
+| 3 | Activity taxonomy | **done** — `docs/superpowers/specs/2026-07-30-activity-taxonomy-and-capability-map.md` §1-2 (seven families, six contracts), approved 2026-07-30 (`LDB-03`) |
+| 4 | Which activity measures which capability | **done** — same document §3 and §5; all 18 outcomes mapped, all 32 LDB-02 patterns dispositioned, approved 2026-07-30 (`LDB-03`) |
 | 5 | Per-activity evidence and mastery rules | open |
 | 6 | Session composition | open |
 | 7 | Interaction UX | open |
