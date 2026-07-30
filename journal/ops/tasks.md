@@ -80,9 +80,6 @@
 
 
 ## Active
-
-
-## Verification
 ### LDB-03 — Define the activity taxonomy and map capabilities to activities
 - Type: design
 - Milestone: LDB
@@ -93,8 +90,11 @@
 - Next: Read docs/superpowers/research/activity-pattern-catalog/FOR-LDB-03.md first. FROM LDB-02: classification.md already supplies a candidate adopt-or-reject reason for all 32 patterns, which is most of this card's last approvable-when clause. Rule the word-bank versus Parsons boundary once, in writing — the two units drew it differently on the same interaction. Do not inherit two known defects: U1-5, U1-8 and U1-9 are Evidence-backed and independent on a single compilation, not vendor self-description; and classify from the sourced pattern, never the candidate-capability column, where three rows over-rate. journal/ops/tasks.md
 - Load: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
 - Gate: user-approval
-- Evidence: DRAFT AWAITING APPROVAL — docs/superpowers/specs/2026-07-30-activity-taxonomy-and-capability-map.md, revised 2026-07-30 after owner review of two rulings. Seven families: three already-approved kept (Multiple Choice demoted per A-10/K-U4-003 so recognition is never sole evidence for a decision outcome), four added. Five contracts C-A..C-E. RULING 1 REVISED: F2 survives on two stated admission conditions — the response space must defeat enumeration, and the pool must over-supply with distractors that must be rejected. Condition 1 corrected two of this document's own first-draft mappings: A3 is a conditional loop not a permutation, and B1's three-element order is six permutations, fully enumerable, so neither belongs in F2. F2 now maps to A4 order-of-play only. Both units were right — word bank fails both conditions, Parsons can meet both. Condition 2's empirical half registered A-28. RULING 2 REVISED: C-A keeps contract form and gains the separate-datum requirement — classification recorded under its own outcome id, scorable and gateable independently, so a correct-classify/wrong-action learner is distinguishable in the record. All 18 outcomes mapped and all 32 patterns dispositioned, both re-verified by enumeration after the revision: 17 adopted, 11 rejected outright, 4 conditional or deferred.
-- Updated: 2026-07-30T08:02:46.394Z
+- Evidence: FAILED VERIFICATION 2026-07-30 — returned to Active. Draft: docs/superpowers/specs/2026-07-30-activity-taxonomy-and-capability-map.md. Examiner record: docs/superpowers/audits/2026-07-30-ldb-03-claim-examination.md (all 10 claims examined; 2 Preserve, 7 Revise, 3 Relabel, 1 Replace). A concurrent citation-verifier run produced nothing and was killed — its analysis is lost, so the 12 figure/quote claims and the counts remain UNVERIFIED by any second hand except §5's disposition arithmetic, which the examiner checked and found sound. OUTSTANDING, none landed: (1) condition 1 drops the classifier's 'to the same effect' and substitutes cardinality, contradicting this document's own supply logic; threshold undefined; applied numerically to reject B1 but qualitatively to admit A4. (2) REPLACE — the document attributes a length reading to the classifier whose recorded reasoning is supply-based, and its 'catalog's call stands unchallenged' asserts agreement it did not establish. (3) F2's sole admitted instance is refuted by shipped content: blackjack-basics.ts:199-210 poses the 4-element round order as a TWO-option question — orchestrator-reverified, CONFIRMED. (4) F2 is primary evidence for A4, a behavioural outcome, while measuring declarative sequence knowledge. (5) A3's 'content is the soft-17 condition' is false — LDB-01:83 calls the draw sequence forced. (6) C-A's italicised 'classification should be measured separately from action selection' is not in §1.1; it is A-24, an Assumption, and LDB-01 drew that line one card earlier. (7) condition 1 carries no evidence label anywhere. (8) C-B's 'a simulation that does not first capture a prediction is decoration' is an unregistered empirical claim. (9) P3 has an in-play behavioural clause no assigned family measures, and calling it a non-decision amends approved LDB-01 unlabelled. (10) §6 coverage headline HOLDS but three supporting statements are false — P1's primary is F5, P3's is F1, P2 names none, and the asserted F4→B3 mapping is absent from B3's row. (11) §4.2 mixed-by-default pools is decided by silence — neither imposed nor handed forward. PRESERVED: F1/C1 recognition carve-out, and C-B's defective-source disclosure ruled not laundering on three grounds.
+- Updated: 2026-07-30T09:03:16.212Z
+
+
+## Verification
 
 ## Done
 ### LDB-01 — Decide the learning outcomes and the skill graph
