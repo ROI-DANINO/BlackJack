@@ -1,6 +1,17 @@
 # Per-Activity Evidence and Mastery Rules — LDB-04
 
-> **Status: draft for approval.** Gate: user-approval. ROADMAP Phase 4 deliverable 5.
+> **Status: APPROVED 2026-07-30** (owner, gate `user-approval`). ROADMAP Phase 4 deliverable 5, now
+> closed.
+>
+> **What approval binds.** The weight table and the 3.0 threshold are the mastery computation until
+> `A-07a` is settled on this product's own data — not defaults to be quietly re-tuned. The
+> at-least-one-unassisted clause is structural and may not be relaxed into a weight. Confidence enters
+> no mastery calculation, ever (`A-17`, contract C-E). Mastery recommends and does not lock, and
+> reversing that would make `A-01` load-bearing at runtime, which LDB-01 declined to do in prose.
+>
+> **Two constants the owner was told are the weakest part, and approved anyway:** the weights and the
+> 3.0 threshold are invented, defended only by `A-07a`; and F1's 0.5 ceiling for `C1` is a
+> single-sentence judgement. Both are the first things to revisit when real attempt data exists.
 >
 > **Inputs.** `2026-07-22-product-design-inputs.md` §3 (mastery constraints); LDB-01's 18 outcomes;
 > LDB-03's seven families and six contracts; `web/src/progress/types.ts` (the durable schema);
