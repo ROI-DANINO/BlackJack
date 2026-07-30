@@ -35,7 +35,7 @@ is a decision.
 | # | Family | The learner… | May measure | May **not** measure |
 |---|---|---|---|---|
 | **F1** | **Recognition check** *(existing: Multiple Choice)* | selects from a bounded option set | outcomes whose real task is itself recognition | any decision outcome, as sole evidence |
-| **F2** | **Ordered assembly** *(existing: Assemble Blocks)* | arranges a supplied pool into a sequence or grouping | outcomes where the *ordering* is the capability | anything the pool's contents supply |
+| **F2** | **Ordered assembly** *(existing: Assemble Blocks)* | arranges an **over-supplied** pool into a sequence, leaving distractors unused | sequence knowledge whose orderable elements are too many to enumerate as an option set — see the two admission conditions in §4 | any sequence short enough to pose as options; any pool that supplies rather than over-supplies |
 | **F3** | **Engine-backed hand** *(existing)* | plays dealt state to resolution through the engine | decision outcomes, procedural transfer | distributional concepts without a prediction |
 | **F4** | **Free production** *(new)* | produces the answer with no option set — names, enumerates, or writes a rule | recall breadth, abstraction across cells | anything requiring graded natural language |
 | **F5** | **Calibrated estimate** *(new)* | states a probability or interval under a proper scoring rule | calibration, distributional literacy | correctness on any single estimate |
@@ -55,11 +55,22 @@ attempt right or wrong; calibration is a property of a *series* of estimates and
 
 These bind every family. A family is not a licence to skip them.
 
-**C-A — Classification gate (§4.3).** Any activity measuring a decision outcome must capture the
-learner's classification *before* offering the action, and must never display the class. An activity
-that says "this is a soft total" is not measuring the skill. This is what makes `A2` and `B1`
-measurable inside F3 rather than needing a family of their own — a standalone classification exercise
-would be recognition, which §4.1 forbids for a decision outcome.
+**C-A — Classification gate (§4.3), and it is recorded separately.** Any activity measuring a
+decision outcome must capture the learner's classification *before* offering the action, and must
+never display the class. An activity that says "this is a soft total" is not measuring the skill.
+This is what makes `A2` and `B1` measurable inside F3 rather than needing a family of their own — a
+standalone classification exercise would be recognition, which §4.1 forbids for a decision outcome.
+
+**The capture is recorded as its own attempt datum, under its own outcome id, scorable and gateable
+independently of the action taken on the same hand.** This clause is not decoration. The corpus's
+strongest asset is the finding that *interleaving improves discrimination, and classification should
+be measured **separately** from action selection* (discrimination errors 46% vs 10%; 72% vs 38%,
+d=1.05). A gate that captured the classification and then folded it into one right-or-wrong verdict
+on the hand would satisfy the wording of §4.3 and lose exactly what that evidence is about. Two
+consequences follow, and both are requirements: a learner who classifies correctly and then plays the
+wrong action must be distinguishable in the record from one who misclassified and played consistently
+with their error; and mastery of a classification outcome may be computed from classification data
+alone, without a correct action on the same hand.
 
 **C-B — Prediction gate (§4.4).** No distributional display renders until a prediction is recorded.
 A simulation that does not first capture a prediction is decoration. Applies to F3, F5 and F6 alike.
@@ -94,10 +105,10 @@ Every one of LDB-01's 18 outcomes, and the family that measures it. **Bold** = p
 |---|---|---|---|
 | `A1` pursue the dealer, not 21 | **F3** | C-A | Only the discriminating case counts — low total vs weak upcard. |
 | `A2` read a hand before acting | **F3** (via C-A), F4 | C-A | The classification capture *is* the measurement. |
-| `A3` read what the dealer shows and hides | **F2**, F3 | C-B | F2 measures the forced draw sequence as an ordering. |
-| `A4` legal action through a full round | **F3** | — | |
+| `A3` read what the dealer shows and hides | **F3** | C-B | *Not F2.* The dealer procedure is a conditional loop, not a permutation — its content is the soft-17 condition, which is a decision. |
+| `A4` legal action through a full round | **F3**, **F2** | — | F2 isolates the order-of-play dimension F3 confounds with action legality: `round-flow`, `split-hands`, `complete-round`. The only outcome meeting §4's two conditions today. |
 | `A5` settle a round before it settles itself | **F3** | C-B | Prediction before payout renders. |
-| `B1` classify before lookup | **F3** (via C-A), F2 | C-A | F2 measures the pair→soft→hard *order*; F3 measures its use. |
+| `B1` classify before lookup | **F3** (via C-A) | C-A | *Not F2.* Three elements is six orderings — fully enumerable as an option set, so assembly buys nothing. The C-A datum is the measurement. |
 | `B2` charted action, chart open | **F3** | C-A | |
 | `B3` charted action, chart withdrawn | **F3**, **F7** | C-A | F3 measures cells; F7 measures whether a policy is held. Both. |
 | `B4` fall back when the action is illegal | **F3** | C-A | |
@@ -123,23 +134,53 @@ discharges the card's clause that no decision capability is measured only by rec
 assembly as a qualifying pattern. These are the same interaction — a supplied pool, one target
 arrangement — and each unit is defensible alone. FOR-LDB-03 requires this be ruled once, in writing.
 
-**Ruling: the widget is not the determinant. The pool's relationship to the answer is.**
+**Ruling: two admission conditions. A supplied-pool activity is F2 only if it meets both.**
 
-> Supplied-pool assembly is **admitted as F2, and only where the ordering itself is the capability.**
-> Where the pool supplies content the learner should have produced, it is cosmetic and rejected.
+> **Condition 1 — the response space must defeat enumeration.** The orderable elements must be too
+> many for the same question to be posed as an option set over orderings.
+>
+> **Condition 2 — the pool must over-supply.** It must contain distractors that have to be left
+> unused, so that using it requires *rejection* and not merely arrangement.
+>
+> Fail either, and the activity is cosmetic and rejected.
 
-Applied:
+**Why condition 1 is the real content of the cosmetic call.** The classifier's operative test was
+whether the same question over the same stimulus could be posed to the same effect with a selection
+widget. For an ordering, that is not a property of the widget — it is a property of the *length*.
+Three elements is six permutations, which any option set can hold. Six elements is 720, which none
+can. **Cosmetic-versus-substantive for ordering is a function of the response space**, and the test
+must be applied per instance rather than to the pattern in the abstract.
 
-- **Admitted** — the dealer's fixed procedure as an ordered routine (`A3`); the pair→soft→hard
-  classification order (`B1`). In both, the *sequence* is the thing being learned, and the items are
-  known to the learner anyway. The pool supplies nothing the outcome is about.
-- **Rejected** — any strategy-cell recall using a supplied pool. The pool supplies exactly the recall
-  `B3` is meant to measure. This is where a word bank does its damage, and it is why U2 was right.
+**Why condition 2 is what makes a pool safe.** It is stated in U3-7's own description — *"some of
+which may be distractors that must be left unused."* A pool holding exactly the answer **supplies**
+it. A pool that over-supplies forces the learner to reject, and rejection is discrimination — the
+mechanism behind the corpus's strongest asset (discrimination errors 46% → 10%). An over-supplied
+pool is therefore measuring the thing §1.1 is about; an exact pool is handing it over.
 
-This ruling makes both units correct in their own scope, and neither travels. It also explains the
-catalog's own finding without contradicting it: U3-7 and U3-2 are its two **best-evidenced** rows and
-both are **cosmetic** — evidence standing does not track the substantive axis, and "well-sourced" is
-not a proxy for "worth building."
+**Applied, including against two of my own earlier mappings:**
+
+- **Admitted** — order of play and resolution sequence under `A4` (`round-flow`, `split-hands`,
+  `complete-round`). Enough elements to defeat enumeration, and the pool can genuinely over-supply:
+  seed it with a mis-placed hole-card reveal, or an illegal step such as the player acting after the
+  dealer completes.
+- **Rejected, correcting this document's own first draft** — `A3`'s dealer procedure fails condition
+  1 and is not even a permutation; it is a conditional loop whose content is the soft-17 condition, a
+  decision. `B1`'s pair→soft→hard order fails condition 1 outright at six permutations.
+- **Rejected** — any strategy-cell recall over a supplied pool, which fails condition 2: the pool
+  supplies exactly the recall `B3` measures. This is where a word bank does its damage.
+
+**Both units were right.** Word-bank assembly fails *both* conditions — the response is a single term,
+not an ordering, and the pool supplies it — so U2 was correct to reject it. Parsons-style assembly
+*can* meet both, so U3 was correct to admit it as a pattern; it is cosmetic in the short-sequence
+instances the classifier judged, and substantive in long-sequence instances with distractors. Neither
+unit's ruling travels beyond its own scope, and the catalog's classification of both rows as cosmetic
+stands unchallenged — these conditions say when an instance escapes it, not that the call was wrong.
+
+**One provenance note this family owes.** `ALR-007`–`012`, the six requirements attached to Assemble
+Blocks, carry **only an abstention** in the Phase 2 audit — no verifier confirmed them. The two
+conditions above are this document's own reasoning and do not descend from those six, so F2's
+narrowed scope does not rest on unverified requirements. Condition 2's empirical half — that an
+over-supplied pool measures discrimination rather than arrangement — is registered as `A-28`.
 
 ---
 
@@ -190,9 +231,9 @@ needs language understanding this project has no reason to build.
 | U2-11 ⚠ | Out of scope — running-count material, and LDB-01 scoped counting out. Also over-rates: the source is self-paced; external pacing appears only in the analogue. |
 | U2-12 | Out of scope — external pacing is the automaticity rung, stage 7, explicitly later work. |
 | U2-13 ⚠ | Admitted **only under C-B**. Over-rates as sourced (the source solves a puzzle; the analogue merely demonstrates), and `A-22` records that the teaching claim is unevidenced while the mechanic is free. A sandbox that captures no prediction is decoration by §4.4. |
-| U3-2 | Cosmetic, and the word-bank half of §4's ruling: the pool supplies the recall the outcome measures. |
+| U3-2 | Cosmetic, and the word-bank half of §4's ruling — it fails **both** admission conditions: the response is a single term rather than an ordering, and the pool supplies the recall the outcome measures. |
 | U3-6 | Rejected on its own evidence — the freer widget performed **worse** against the external criterion (r = .243 n.s. vs .551 p<.05; interrater 0.81 vs 0.92). Also the largest build of the substantive set. Lowest priority; not adopted. |
-| U3-7 | Cosmetic, and the Parsons half of §4's ruling — admitted into F2 **only** where ordering is the capability, which is `A3` and `B1`, not strategy recall. |
+| U3-7 | **Conditionally admitted**, and the Parsons half of §4's ruling. Cosmetic in the short-sequence form the classifier judged; admitted into F2 where both conditions hold — order of play and resolution under `A4`, with an over-supplied pool. Never for strategy recall, which fails condition 2. |
 
 **Counted, and the counts were recounted from the rendered tables rather than asserted from
 drafting.** All 32 patterns appear above; a search of this section returns 32 distinct ids. They
@@ -200,20 +241,22 @@ disposition as:
 
 - **17 adopted** — the 15 in the table, plus `U2-6` and `U2-14` in the prose beneath it. One of the
   17, `U1-6`, is adopted **in its binary form only**.
-- **12 rejected outright** — `U2-1`, `U2-2`, `U2-3`, `U2-4`, `U2-7`, `U2-8`, `U2-9`, `U2-11`,
-  `U2-12`, `U3-2`, `U3-6`, `U3-7`.
-- **3 dispositioned other than adopt/reject**, stated rather than rounded to the nearest column:
+- **11 rejected outright** — `U2-1`, `U2-2`, `U2-3`, `U2-4`, `U2-7`, `U2-8`, `U2-9`, `U2-11`,
+  `U2-12`, `U3-2`, `U3-6`.
+- **4 dispositioned other than adopt/reject**, stated rather than rounded to the nearest column:
   `U2-5` is split — its shape survives as contract C-B, its standalone form is rejected; `U2-13` is
-  **conditionally admitted**, valid only under C-B; `U2-10` is **deferred on build cost**, not
-  rejected on merit, and returns when F7 justifies a rule language.
+  **conditionally admitted**, valid only under C-B; `U3-7` is **conditionally admitted**, valid only
+  where §4's two conditions both hold; `U2-10` is **deferred on build cost**, not rejected on merit,
+  and returns when F7 justifies a rule language.
 
-17 + 12 + 3 = 32. `U1-6` and `U2-5` are the two patterns appearing in both columns, and both splits
+17 + 11 + 4 = 32. `U1-6` and `U2-5` are the two patterns appearing in both columns, and both splits
 are stated above rather than resolved silently in favour of the adopted half.
 
-*Reconciling the rejected table's row count, which is 16 and not 12:* it carries the 12 outright
-rejections plus the four rows that are not outright rejections — `U1-6`'s EV-graded form, `U2-5`'s
-standalone form, `U2-10`'s build deferral, and `U2-13`'s conditional admission. They sit in that
-table because that is where a reader looks for them, not because they were rejected on merit. `U2-11` and `U2-12`
+*Reconciling the rejected table's row count, which is 16 and not 11:* it carries the 11 outright
+rejections plus the five rows that are not outright rejections — `U1-6`'s EV-graded form, `U2-5`'s
+standalone form, `U2-10`'s build deferral, and the conditional admissions of `U2-13` and `U3-7`. They
+sit in that table because that is where a reader looks for them, not because they were rejected on
+merit. `U2-11` and `U2-12`
 both return if and when counting enters scope — recorded here so the deferral is visible.
 
 **Three defects deliberately not inherited.** `U1-5`, `U1-8` and `U1-9` are **Evidence-backed** and
@@ -228,8 +271,10 @@ needed, a register row was written instead (`A-24`, `A-25`, `A-26`).
 ## 6. Approvability self-check
 
 **1. Every activity maps to at least one capability.** Seven families, all mapped in §3:
-F1→`C1`,`P3`; F2→`A3`,`B1`; F3→`A1`,`A2`,`A4`,`A5`,`B1`–`B5`,`C2`; F4→`A2`,`B3`; F5→`P1`,`P3`;
-F6→`B6`,`C3`,`P4`; F7→`B3`,`C2`. No family is unmapped. Taking the union in the other direction, all
+F1→`C1`,`P3`; F2→`A4`; F3→`A1`,`A2`,`A3`,`A4`,`A5`,`B1`–`B5`,`C2`; F4→`A2`,`B3`; F5→`P1`,`P3`;
+F6→`B6`,`C3`,`P4`; F7→`B3`,`C2`. No family is unmapped — F2 maps to one outcome, which is narrow but
+honest: it is the only outcome meeting §4's conditions today, and the conditions are what would let
+it grow if a longer sequence enters scope. Taking the union in the other direction, all
 18 outcomes are named: `A1`–`A5`, `B1`–`B6`, `C1`–`C3`, `P1`–`P4` — with `P2` carried by contract C-B
 rather than by a family, which §3 marks explicitly rather than leaving it to look like an omission.
 
