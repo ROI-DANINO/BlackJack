@@ -176,11 +176,31 @@ instances the classifier judged, and substantive in long-sequence instances with
 unit's ruling travels beyond its own scope, and the catalog's classification of both rows as cosmetic
 stands unchallenged — these conditions say when an instance escapes it, not that the call was wrong.
 
-**One provenance note this family owes.** `ALR-007`–`012`, the six requirements attached to Assemble
-Blocks, carry **only an abstention** in the Phase 2 audit — no verifier confirmed them. The two
-conditions above are this document's own reasoning and do not descend from those six, so F2's
-narrowed scope does not rest on unverified requirements. Condition 2's empirical half — that an
-over-supplied pool measures discrimination rather than arrangement — is registered as `A-28`.
+**One provenance note this family owes — completed 2026-07-30 by opening the underlying record, which
+an earlier draft of this section cited without opening.**
+
+`ALR-007`–`012`, the six requirements attached to Assemble Blocks, **carry only an abstention** and
+were assessed by nobody. That much is accurate, and the phrase is this project's own — it appears at
+`P2-verdict-catalog.md:231` and `P2-unlanded-and-lost.md:189`. What the earlier draft omitted is the
+part that changes what the abstention means.
+
+`foundation-audit-p2/verification/V-U4.md:157-186`, under the heading *"Ruling on the ALR-007–ALR-012
+abstention"*, rules it **"Partially legitimate; the stated rationale is wrong and must be
+corrected."** The U4 audit abstained on all six on the ground that their evidence leans on `SCI-004`
+and `SCI-009`; checked against the unit, that ground holds for **only two** — `ALR-007` and
+`ALR-011`, which the verifier calls *"correct proportional restraint"*. The other four (`ALR-008`,
+`ALR-009`, `ALR-010`, `ALR-012`) cite `DUO-004`, `TECH-001`, `TECH-002`, `STD-001` and `STD-002`, all
+re-opened in that same pass, and so **were assessable from sources already in hand**. Correction
+`C-U4-003` landed that finding; as `P2-unlanded-and-lost.md:189` puts it, *"the landing corrected the
+reason for abstaining; it assessed nothing."*
+
+**What that means here, and it is not what the earlier draft implied.** The abstention is a recorded
+gap in the *audit's coverage* — four of the six were assessable and simply were not assessed — rather
+than a finding that the requirements are weak. It is therefore **not** a reason to narrow F2, and this
+document does not use it as one. F2's narrowing rests solely on the two admission conditions above,
+which are this document's own reasoning and descend from none of the six. Condition 2's empirical half
+— that an over-supplied pool measures discrimination rather than arrangement — is registered as
+`A-28`.
 
 ---
 
