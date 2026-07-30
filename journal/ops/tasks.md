@@ -77,6 +77,12 @@
 - Gate: user-approval
 - Evidence: pending
 - Updated: 2026-07-27T03:22:23.859Z
+
+
+## Active
+
+
+## Verification
 ### LDB-03 — Define the activity taxonomy and map capabilities to activities
 - Type: design
 - Milestone: LDB
@@ -87,14 +93,8 @@
 - Next: Read docs/superpowers/research/activity-pattern-catalog/FOR-LDB-03.md first. FROM LDB-02: classification.md already supplies a candidate adopt-or-reject reason for all 32 patterns, which is most of this card's last approvable-when clause. Rule the word-bank versus Parsons boundary once, in writing — the two units drew it differently on the same interaction. Do not inherit two known defects: U1-5, U1-8 and U1-9 are Evidence-backed and independent on a single compilation, not vendor self-description; and classify from the sourced pattern, never the candidate-capability column, where three rows over-rate. journal/ops/tasks.md
 - Load: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md, docs/superpowers/specs/2026-07-22-product-design-inputs.md
 - Gate: user-approval
-- Evidence: pending
-- Updated: 2026-07-27T03:22:23.520Z
-
-
-## Active
-
-
-## Verification
+- Evidence: DRAFT AWAITING APPROVAL — docs/superpowers/specs/2026-07-30-activity-taxonomy-and-capability-map.md. Seven activity families: the three already approved (Multiple Choice, Assemble Blocks, Engine-Backed Hand) kept, with Multiple Choice demoted per A-10/K-U4-003 so recognition is never sole evidence for a decision outcome; four added (Free production, Calibrated estimate, Deferred-verdict session, Whole-policy production) because four LDB-01 outcomes had no family that could measure them. Five cross-cutting contracts C-A..C-E. All 18 outcomes mapped, verified by enumeration. All 32 LDB-02 patterns dispositioned, verified as 32 distinct ids: 17 adopted, 12 rejected outright, 3 other (U2-5 split, U2-13 conditional on C-B, U2-10 deferred on build cost). Word-bank/Parsons ruled once: the widget is not the determinant, the pool's relationship to the answer is — admitted only where ordering is the capability. Classified from the sourced pattern throughout; U2-3/U2-11/U2-13 marked as over-rating in the candidate-capability column; U1-5/U1-8/U1-9 not rejected as vendor self-description.
+- Updated: 2026-07-30T07:46:56.846Z
 
 ## Done
 ### LDB-01 — Decide the learning outcomes and the skill graph
