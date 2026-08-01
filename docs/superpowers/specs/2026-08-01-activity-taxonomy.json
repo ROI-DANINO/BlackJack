@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "card": "LDB-03",
+  "spec": "docs/superpowers/specs/2026-08-01-activity-taxonomy-and-skill-mapping.md",
+  "consumes": "docs/superpowers/specs/2026-08-01-skill-graph.json",
+  "note": "Design data, not shipped content. An Activity type is individuated by shown x produced x withheld. Feedback timing, scoring rule, provenance and Condition-axis settings are parameters, not types. Widget is not here at all - it is LDB-07's.",
+
+  "poolRule": {
+    "id": "measurement-target-test",
+    "statement": "A supplied pool is cosmetic when it discloses any part of what is being measured; substantive when the measured target is not in the pool.",
+    "evidenceLabel": "Product judgement",
+    "rules": [
+      { "case": "word bank over 'which hands would you double'", "verdict": "cosmetic", "why": "the pool contains the answers" },
+      { "case": "fragment assembly where the target is the order", "verdict": "substantive", "why": "the pool supplies elements; the order is not in it" },
+      { "case": "the 169-cell strategy grid", "verdict": "substantive", "why": "the grid supplies the space, not the actions" },
+      { "case": "the Hit/Stand/Double/Split action set", "verdict": "exempt", "why": "not a supplied pool - a real table enumerates the action space too" }
+    ],
+    "overturns": "U2/audit.md:80's generation-from-scratch test, which that row itself records as a borderline rejection half-decided by dispatch scope.",
+    "disagreesWith": "classification.md's cosmetic call on U3-7, which is reclassified substantive here and disposed of on a different ground (no target)."
+  },
+
+  "recognitionRule": {
+    "id": "recognition-bites-on-the-stimulus",
+    "statement": "An activity measures by recognition when the prompt assembles candidate answers for that item, or supplies a Classification the learner should have made. Displaying the invariant action set is not recognition.",
+    "evidenceLabel": "Product judgement",
+    "consequence": "strategy-action, legal-fallback and adherence-under-loss are all classificationIncluded:true, so their prompts may never name the hand shape, so they must show cards, so those cards must have come from a shoe. All three are unmeasurable without dealt hands.",
+    "notRequired": "Withholding the action set to force production. Roediger et al. (U3/audit.md:18): production scored 6-7% lower on matched items, and on the delayed exam tested 70% vs nontested 73%, 'opposite the predicted direction', F=1.50."
+  },
+
+  "provenance": {
+    "values": ["organic", "arranged", "posed"],
+    "recordedAs": "read off existing card ids - 'deck-N-...' is organic, 'arranged-N-...' is arranged, no cards at all is posed",
+    "schemaDelta": "none",
+    "mechanism": "crates/blackjack-core/src/shoe.rs:62 create_prefix_shoe - each arranged card replaces a shuffled card of the same rank and suit, so composition is unchanged and the arrangement labels itself",
+    "ruling": "Arranged is dealt evidence for the Skill. Whether arranged-only evidence can reach mastery is LDB-04's to rule; see A-23."
+  },
+
+  "coverageRule": {
+    "forward": "every Activity type declares at least one Skill it measures",
+    "reverse": "every Skill names at least one Activity type that could produce primary evidence for it",
+    "onGap": "a Skill no type can cover is recorded as a finding against LDB-01 - never filled by inventing an activity",
+    "checkedOn": "2026-08-01",
+    "result": "18 of 18 Skills covered by primary evidence"
+  },
+
+  "activityTypes": [
+    {
+      "id": "deal-and-decide",
+      "title": "Deal and decide",
+      "shown": "a Decision situation as dealt cards plus the dealer upcard, under a named ruleset",
+      "produced": "the Classification (pair / soft / hard) when the target Skill has classificationIncluded:true, then one action from the legal set",
+      "withheld": "the Classification, the correct action, and the hand outcome",
+      "gradedBy": ["engine", "oracle"],
+      "provenance": ["organic", "arranged"],
+      "classificationSupplied": false,
+      "primaryFor": ["hit", "stand", "double", "split", "classify-hand", "strategy-action", "legal-fallback", "adherence-under-loss"],
+      "secondaryFor": [],
+      "parameters": [
+        { "id": "feedbackTiming", "values": ["immediate", "deferred-to-debrief"], "source": "U1-5", "owner": "LDB-06" },
+        { "id": "scoringGranularity", "values": ["binary"], "source": "U1-6", "owner": "LDB-04", "note": "the EV-graded form is foreclosed - LDB-01 gives EV no Skill and the oracle returns an action, not a number" },
+        { "id": "segmentation", "values": ["whole-shoe", "segment-repeat-until-clean"], "source": "U1-8", "owner": "LDB-06" },
+        { "id": "criteriaPublishedInAdvance", "values": [true, false], "source": "U1-9", "owner": "LDB-04" },
+        { "id": "supportFading", "values": ["table-open", "table-closed", "faded"], "source": "U3-3", "owner": "LDB-04", "note": "realises the existing support Condition axis; rungs are A-04" },
+        { "id": "ruleCardAvailable", "values": ["hidden", "shown-mid-session"], "source": "U3-5", "owner": "LDB-06" },
+        { "id": "pace", "values": ["untimed", "timed"], "source": "U2-12", "owner": "LDB-06", "note": "realises the existing pace Condition axis; A-02" },
+        { "id": "assistanceRecording", "values": ["resources-consulted"], "source": "U1-4", "owner": "LDB-04", "note": "record which resources the learner actually opened - product-design-inputs 4.5" }
+      ],
+      "note": "classify-hand is carried here as a separately graded sub-response, not as its own Activity type. P2 Bottom line A.2: classification should be measured separately from action selection (discrimination errors 46% vs 10%; 72% vs 38%, d=1.05)."
+    },
+    {
+      "id": "state-report",
+      "title": "State report",
+      "shown": "a dealt hand, a round in progress, or a resolved hand and its wager - always as real cards",
+      "produced": "the stated value, total, predicate, settlement, or bankroll change",
+      "withheld": "the value itself, and for natural-blackjack the Classification",
+      "gradedBy": ["engine"],
+      "provenance": ["organic", "arranged"],
+      "classificationSupplied": false,
+      "primaryFor": ["card-values", "hand-total", "ace-value", "bust", "dealer-info", "outcomes", "wager-result", "natural-blackjack"],
+      "secondaryFor": [],
+      "parameters": [
+        { "id": "feedbackTiming", "values": ["immediate", "deferred-to-debrief"], "source": "U1-5", "owner": "LDB-06" },
+        { "id": "assistanceRecording", "values": ["resources-consulted"], "source": "U1-4", "owner": "LDB-04" }
+      ],
+      "note": "natural-blackjack is classificationIncluded:true, so its prompt may not say 'this is a natural' - it must show the two cards and let the learner name it."
+    },
+    {
+      "id": "policy-paint",
+      "title": "Policy paint",
+      "shown": "the strategy space - either as a grid of Decision situations, or withheld entirely so the learner must generate the region too",
+      "produced": "an action for every situation in the region - a complete policy, not a cell",
+      "withheld": "the correct policy",
+      "gradedBy": ["oracle"],
+      "provenance": ["posed"],
+      "classificationSupplied": true,
+      "classificationSuppliedNote": "In the presented-grid setting the grid is organised by pair / soft / hard, which hands the learner the Classification. Evidence from this type therefore covers the action-selection half of strategy-action only. The withheld setting does not supply it. LDB-04 rules whether classification-supplied evidence can reach mastery.",
+      "primaryFor": [],
+      "secondaryFor": ["strategy-action"],
+      "parameters": [
+        { "id": "space", "values": ["presented-grid", "withheld"], "source": "U3-1", "owner": "LDB-04", "note": "presented-grid supplies the Classification; withheld does not, and is the setting that satisfies classificationIncluded:true" },
+        { "id": "region", "values": ["whole-table", "named-region"], "owner": "LDB-06" }
+      ],
+      "register": "A-21",
+      "note": "Adopted from U1-1. classification.md: decomposing a policy into per-cell items destroys the measurement, because presenting the cell supplies the recall. This is also why LDB-01's 'a cellId is not a licence to drill cells as items' is not violated here - the response object is the policy."
+    },
+    {
+      "id": "rule-card-read",
+      "title": "Rule card read",
+      "shown": "an active table and its behaviour, with the rule card itself withheld",
+      "produced": "the table's dealer soft-17 rule, deck count, double-after-split rule, and blackjack payout",
+      "withheld": "the rule card",
+      "gradedBy": ["engine"],
+      "provenance": ["organic", "arranged"],
+      "classificationSupplied": false,
+      "primaryFor": ["read-rule-card"],
+      "secondaryFor": [],
+      "parameters": [
+        { "id": "ruleCardAvailable", "values": ["hidden", "shown-mid-session"], "source": "U3-5", "owner": "LDB-06", "note": "the shown-mid-session setting is U3-5's dynamic assessment - present the resource and measure whether the learner applies it" }
+      ]
+    },
+    {
+      "id": "predict-then-reveal",
+      "title": "Predict then reveal",
+      "shown": "a named event and a stated number of upcoming hands, before they are played",
+      "produced": "one frequency - how often the learner expects the event to occur",
+      "withheld": "the outcome; the hands have not been played yet",
+      "gradedBy": ["catalog"],
+      "provenance": ["posed"],
+      "classificationSupplied": false,
+      "primaryFor": ["variance-expectation"],
+      "secondaryFor": [],
+      "parameters": [
+        { "id": "scoringRule", "values": ["unset"], "source": "U3-8", "owner": "LDB-04", "note": "inherits A-07. Constraint carried from the source: 'single items are near-useless' - the signal must aggregate across many predictions before any threshold is read off it" },
+        { "id": "revealMode", "values": ["play-it-out", "configured-sandbox"], "source": "U2-13", "owner": "LDB-06", "register": "A-22", "note": "the sandbox is the reveal half only. product-design-inputs 4.4: a simulation that does not first capture a prediction is decoration" }
+      ],
+      "note": "PRODUCED is one number because the approved Learning outcome says 'states how often they expect the event to occur'. U1-3's two-bound interval would have amended an outcome approved 2026-08-01."
+    },
+    {
+      "id": "rule-contrast",
+      "title": "Rule contrast",
+      "shown": "the same Decision situations resolved under two different rulesets, side by side",
+      "produced": "which of the table's rules differs between them",
+      "withheld": "the rule, and any surfaced verdict on the learner's answer",
+      "gradedBy": ["engine"],
+      "provenance": ["organic", "arranged"],
+      "classificationSupplied": false,
+      "primaryFor": [],
+      "secondaryFor": ["read-rule-card", "strategy-action"],
+      "parameters": [
+        { "id": "verdictSurfaced", "values": [false], "owner": "LDB-07", "note": "recorded, never shown as pass/fail - U1-5's surviving licence" }
+      ],
+      "divergesFromSource": "U3-4's construct is invention whose value is orthogonal to answer correctness - 'the students in the inventing condition did not generate a correct standardizing procedure during instruction, yet they were more prepared to learn the procedure.' This design grades the named differing rule so the activity produces evidence at all, and keeps the source's caution by not surfacing the verdict. Labelled Product judgement; the divergence is real and recorded rather than smoothed.",
+      "note": "Its downstream evidence is the deal-and-decide attempts that follow under ruleset: novel-profile."
+    }
+  ],
+
+  "patternVerdicts": [
+    { "id": "U1-1", "name": "Whole-policy range painting (169 cells)", "verdict": "adopted-as-type", "target": "policy-paint", "reason": "The response object is a complete policy over a space the prompt does not mark. classification.md: decomposing it into per-cell items destroys the measurement." },
+    { "id": "U1-2", "name": "Pastcasting behind an information cut-off", "verdict": "not-adopted-no-target", "reason": "Substantive, but retrospective. variance-expectation is prospective by its approved outcome - 'before they are played'. No Skill in the graph is retrospective forecasting." },
+    { "id": "U1-3", "name": "Two-bound interval elicitation, hit-rate scored", "verdict": "rejected", "reason": "The approved Learning outcome states a frequency, not bounds, so adopting it would amend a spec approved 2026-08-01. Provenance is vendor-self-description and the audit withdrew its corroboration claim on 2026-07-26. The source concedes the score is gamed by widening - slide 11: high scorers 'are simply willing to use wider ranges. Generally about 2 to 10 times wider.'" },
+    { "id": "U1-4", "name": "Open-ended information gathering before hypothesis", "verdict": "adopted-as-parameter", "target": "assistanceRecording", "reason": "Its core idea - score what the learner consulted separately from the answer - becomes an honest-assistance recording obligation on every type, per product-design-inputs 4.5." },
+    { "id": "U1-5", "name": "LOFT uninterrupted run, judgement deferred to debrief", "verdict": "adopted-as-parameter", "target": "feedbackTiming: deferred-to-debrief", "reason": "Evidence-backed and independent on its own row label, discounted only for resting on one compilation. The deferral is a timing setting, not a question shape - the prompt is unchanged, which classification.md says outright." },
+    { "id": "U1-6", "name": "Post-hoc graded decision-quality session review", "verdict": "adopted-as-parameter", "target": "scoringGranularity: binary", "reason": "The binary form is a scoring setting on the deferred debrief. The catalogued EV-graded form is foreclosed: LDB-01 gives EV no Skill, and strategy.rs is a lookup returning an action with zero matches for expected_value across the crate." },
+    { "id": "U1-7", "name": "Key-features critical-step-only case, write-in half", "verdict": "rejected", "reason": "Conditional resolved. Reducing a shoe to its 2-5 critical decisions requires telling the learner which decisions are critical - which supplies exactly the discrimination the recognition rule says the stimulus must not supply." },
+    { "id": "U1-8", "name": "SPOT interruptible single-objective segment drill", "verdict": "adopted-as-parameter", "target": "segmentation", "reason": "Segmenting a shoe and repeating until clean changes how much is attempted, not what is asked." },
+    { "id": "U1-9", "name": "LOE event-set scoring, criteria fixed in advance", "verdict": "adopted-as-parameter", "target": "criteriaPublishedInAdvance", "reason": "Publishing the criteria before the run is a scoring policy over an unchanged prompt. It is also the concrete form of U1-5's surviving licence - issue no pass/fail verdict, but do not grade nothing." },
+    { "id": "U2-1", "name": "Free-typed transcription of an audio stimulus", "verdict": "rejected", "reason": "Cosmetic - a widget over an unchanged stimulus." },
+    { "id": "U2-2", "name": "Spoken production scored by speech recognition", "verdict": "rejected", "reason": "Cosmetic - classification.md's own words, 'a channel swap over an unchanged target'. The response deadline that would make it substantive is separable from the microphone, and is adopted separately as the pace parameter." },
+    { "id": "U2-3", "name": "Stroke tracing on a touch surface", "verdict": "rejected", "reason": "Cosmetic as sourced. Its substantive reading comes from the candidate-analogue column, which the archive warns over-rates this row. The blank-grid analogue it points at is already registered as A-21 and is adopted through policy-paint instead." },
+    { "id": "U2-4", "name": "Continuous placement on a number line", "verdict": "rejected", "reason": "Cosmetic - a continuous widget over a question a selection widget asks equally well." },
+    { "id": "U2-5", "name": "Free-form sketch before formal representation", "verdict": "not-adopted-no-target", "reason": "Substantive, but its blackjack use - sketch the bust-rate curve before the chart is revealed - produces a curve. The only distributional Skill in the graph produces a frequency. Same ground as U1-3, without U1-3's provenance problems: hold it for a graph that has a curve-shaped outcome." },
+    { "id": "U2-6", "name": "Construct-an-object-to-hit-a-target", "verdict": "rejected", "reason": "Its blackjack form is the inverse chart cell - give the action, ask which situation produces it. That is cell drilling under a different label, which LDB-01 forecloses: a cellId records where evidence came from and is not a licence to drill cells as items." },
+    { "id": "U2-7", "name": "Multi-item categorisation (card sort)", "verdict": "rejected", "reason": "Cosmetic as sourced. classify-hand already has primary evidence in situ as a graded sub-response of deal-and-decide, which is what P2 Bottom line A.2 asks for - measured separately, not measured elsewhere." },
+    { "id": "U2-8", "name": "Semantically graded symbolic / numeric entry", "verdict": "rejected", "reason": "Cosmetic - a grading tolerance over an unchanged question." },
+    { "id": "U2-9", "name": "Typed free recall + learner self-rating", "verdict": "rejected", "reason": "Cosmetic on the typing half, and the self-rating half is affirmatively contradicted by evidence this project already holds: Kornell and Bjork, 78% performed better spaced while 78% rated massed as good or better. The learner does not know what worked. This is the strongest rejection in the set." },
+    { "id": "U2-10", "name": "Author an artifact judged by a test suite", "verdict": "rejected", "reason": "It measures the same thing policy-paint measures - a complete policy over an unpresented space - and needs a rule language and a parser to do it. Two instruments for one Skill; the cheaper one is already adopted. Buildability tier recorded, not the reason." },
+    { "id": "U2-11", "name": "Continuous timed stream, per-element statistics", "verdict": "not-adopted-no-target", "reason": "Conditional resolved substantive - the blackjack analogue is externally paced, and external pacing is what the determinant asks for. But per-element statistics over a counting stream needs a counting Skill, and none exists. This is card counting's natural home; the graph already anticipates it as a fifth Condition axis." },
+    { "id": "U2-12", "name": "Real-time performance on an external instrument", "verdict": "adopted-as-parameter", "target": "pace: timed", "reason": "Dealing on a fixed clock rather than on response realises the pace Condition axis the graph already declares. Note this row alone carries compensated-third-party provenance." },
+    { "id": "U2-13", "name": "Simulation-configuration puzzle", "verdict": "adopted-as-parameter", "target": "revealMode: configured-sandbox", "reason": "Adopted as the reveal half of predict-then-reveal only. product-design-inputs 4.4 is explicit that a simulation which does not first capture a prediction is decoration, and A-22 already registers the unevidenced teaching claim." },
+    { "id": "U2-14", "name": "Free-composition typed answer to an open prompt", "verdict": "rejected", "reason": "Graded, it needs language understanding this project has no reason to build. Ungraded, it produces no evidence. And there is no Skill left for it either way: LDB-01 dropped the 'explain' half of every compound Skill under 1.7, measure play not quiz scores." },
+    { "id": "U3-1", "name": "Unaided free recall ('write down everything')", "verdict": "adopted-as-parameter", "target": "space: withheld", "reason": "Free recall over a region is policy-paint with the grid taken away. That matters beyond economy: the presented grid is organised by pair / soft / hard and so supplies the Classification, and this setting is the one that does not. Evidence-backed, independent, in the catalog's six-row base." },
+    { "id": "U3-2", "name": "Short-answer test with a lesson-wide word bank", "verdict": "rejected", "reason": "Cosmetic under the measurement-target test - the bank contains the answers, so it discloses part of the target. This card's ruling agrees with classification.md here." },
+    { "id": "U3-3", "name": "Guidance-faded worked example / completion problem", "verdict": "adopted-as-parameter", "target": "supportFading", "reason": "This is Seed B, and it realises the support Condition axis that LDB-01 made primary on the owner's 2026-07-23 decision. The principle is evidence-backed; the specific rungs are A-04." },
+    { "id": "U3-4", "name": "Contrasting-cases invention task", "verdict": "adopted-as-type", "target": "rule-contrast", "reason": "Two rulesets side by side, learner infers the rule that explains the difference. Rulesets are already parameterised in the engine. Divergence from the source recorded on the type: this design grades the named rule so the activity produces evidence, and keeps the source's caution by not surfacing a verdict." },
+    { "id": "U3-5", "name": "Dynamic assessment with an embedded learning resource", "verdict": "adopted-as-parameter", "target": "ruleCardAvailable: shown-mid-session", "reason": "The strongest substantive case in the catalog on its own source's words - 'the two forms of instruction would have looked the same had we not included the resource item from which students could learn.' Present the rule card mid-session and measure whether the learner applies it." },
+    { "id": "U3-6", "name": "Construct-a-concept-map, learner-created phrases", "verdict": "rejected", "reason": "No Skill in the graph is a proposition network, and the row's own evidence runs against its headline: the freer widget performed worse against the external criterion, r = .243 n.s. vs .551 p<.05, interrater 0.81 vs 0.92. Rejected rather than held open, because both the target and the merits are against it." },
+    { "id": "U3-7", "name": "Fragment-assembly ordering (Parsons-style)", "verdict": "not-adopted-no-target", "reason": "Reclassified substantive by this card's pool ruling - the pool supplies fragments and distractors, the target is the order, and the two do not intersect. This overturns classification.md's cosmetic call. It is then not adopted for an unrelated reason: LDB-01 retired round-flow and complete-round, so no Skill in the approved graph is an ordering. The boundary is ruled and has nothing to attach to." },
+    { "id": "U3-8", "name": "Continuous probability estimate, proper scoring rule", "verdict": "adopted-as-type", "target": "predict-then-reveal", "reason": "Independent and Evidence-backed, and its response shape matches the approved Learning outcome verbatim. Its own recorded weakness - 'single items are near-useless' - is a threshold problem, which is LDB-04's and which the graph already flags as inheriting A-07." },
+    { "id": "U3-9", "name": "Convergent-cue generation (one answer, six cues)", "verdict": "rejected", "reason": "Presenting five situations as a group that share an action tells the learner they are the same kind - supplying the Classification for a classificationIncluded:true Skill, which the recognition rule forbids. Independently, it is the weakest-evidenced substantive row in the catalog: N=20, one experiment, no replication, measuring later memory rather than abstraction, and its own authors call it contrived." }
+  ],
+
+  "verdictCounts": {
+    "adopted-as-type": 3,
+    "adopted-as-parameter": 10,
+    "not-adopted-no-target": 4,
+    "rejected": 15,
+    "total": 32
+  },
+
+  "proceduralRulesApplied": [
+    "Classified from the sourced pattern, never the candidate-analogue column - U2-3, U2-11 and U2-13 over-rate on that column.",
+    "Used each row's own provenance label, not its unit's - U1-5, U1-8 and U1-9 are Evidence-backed and independent, so 'vendor self-description' would have been a false reason for them.",
+    "Buildability tier recorded where relevant, never used as a reason - that file is self-declared Product judgement and converges on the standing phase-5 candidate by the same author."
+  ],
+
+  "registerDelta": {
+    "new": ["A-23"],
+    "cited": ["A-02", "A-04", "A-07", "A-21", "A-22"],
+    "checkedAndAlreadyPresent": [
+      "A-21 covers U2-3's blank-grid analogue, which policy-paint adopts",
+      "A-22 covers U2-13's variance sandbox, which predict-then-reveal adopts as its reveal half"
+    ],
+    "netNewRows": 1
+  }
+}

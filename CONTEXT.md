@@ -38,6 +38,25 @@ The circumstances a Skill was exercised under, on four axes — support, scope, 
 Recorded per attempt; never a Skill in its own right.
 _Avoid_: Stage, level, rung, tier, learning target
 
+**Activity type**:
+One way of asking, individuated by what is **shown**, what must be **produced**, and what is
+**withheld**. It declares the Skills it measures, its Grading authority, and which provenance modes
+it may use. Feedback timing, scoring rule, and Condition settings are *parameters* on a type, never
+new types; the widget is not part of it at all.
+_Avoid_: Exercise, question type, activity pattern, format, drill
+
+**Supplied pool**:
+Elements the prompt puts on screen for the learner to work from. **Cosmetic** when it discloses any
+part of what is being measured; **substantive** when the measured target is not in it. The four
+legal actions are not a supplied pool — a real table enumerates them too.
+_Avoid_: Word bank, tile bank, option set, choices
+
+**Provenance mode**:
+Where an Activity type's Decision situations come from: `organic` (met in natural shoe order),
+`arranged` (a composition-honest opening chosen via `create_prefix_shoe`), or `posed` (stated
+directly, no cards). Read off card ids, never stored separately.
+_Avoid_: Source, origin, generation mode
+
 ## Strategy decisions
 
 **Decision situation**:
