@@ -78,6 +78,24 @@ were written down again by the same session that created it.
 - **Never encode priority as a dependency.** `Depends on` means blocked-by, not do-this-first. A
   priority smuggled in as a dependency has already had to be surgically removed once.
 
+## Agent skills
+Per-repo configuration for the `mattpocock-skills` engineering pack, scaffolded 2026-08-01. These
+three files are what `to-tickets`, `to-spec`, `triage`, `code-review`, `qa`, and `wayfinder` read;
+without `docs/agents/issue-tracker.md` the first four refuse to run.
+
+### Issue tracker
+GitHub Issues on `ROI-DANINO/BlackJack`, via the `gh` CLI. The remote is **public** — issue bodies
+are world-readable. The kanban board remains the current-phase execution authority and issues do not
+override it. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+The five canonical roles, each label string equal to its name. `wontfix` already exists on the repo;
+the other four are created on first use. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+Single-context. `CONTEXT.md` is the glossary; decisions live in `journal/decisions.md`, **not**
+`docs/adr/`, which does not exist here and must not be created. See `docs/agents/domain.md`.
+
 ## Current phase
 See `journal/phase.md`. Only the current phase gets detailed tasks
 (`journal/tasks.md`); future phases stay in `ROADMAP.md`.
