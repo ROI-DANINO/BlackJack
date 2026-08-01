@@ -367,3 +367,77 @@ artifact phase 5 consumes. Prose plus a hand-transcription step is the exact fai
 records — corrections that landed in audit records and never reached the documents, 14 of them
 surviving a pass built to certify they had. It also turns both approval criteria into fields a script
 can check. Writing design data is not building: no UI, no behaviour, no engine change.
+
+---
+
+## 2026-08-01 — `LDB-03`: the activity taxonomy and the skill mapping
+
+**The unit is a new node, not either inventory the project already holds.** An **Activity type** is a
+question shape with its Skills and grading authority; the 32 catalog patterns are *sources* adopted
+into or rejected from it. Making the taxonomy *be* the adopted patterns would have handed `LDB-06` a
+session document that has to say "`U3-5`", and would inherit the vocabulary of `U2` — the one unit
+with no reachable independent source.
+
+**An Activity type is individuated by SHOWN × PRODUCED × WITHHELD.** Everything else is a parameter
+with a declared range and a named owner card. This is taken from the research rather than from taste:
+identical items scored 73.3% vs 73.5% across widgets (p = 0.93), construct-matched formats track at
+r = 0.81, and formats that change *what is asked* diverge at r = 0.51. The cost is stated rather than
+hidden — `U1-5` and `U1-6`, two of the design's most load-bearing sources, become parameters and not
+types.
+
+**The supplied-pool boundary, ruled once:** *a pool is cosmetic when it discloses any part of what is
+being measured; substantive when the measured target is not in it.* The two units were reopened
+first-hand and had applied **different tests** — `U2` a generation-from-scratch test, `U3` a
+not-one-of-N test. `U2`'s is overturned, on the ground its own row records: the rejection was
+*"borderline"* and half-decided by *"the dispatch explicitly steers past this format"*, which is a
+process fact, not a measurement finding. The decisive consequence is that `U2`'s test also
+disqualifies `U1-1`, the catalog's highest-value pattern, because the 169 cells are supplied on
+screen. This ruling **disagrees with `classification.md`'s cosmetic call on `U3-7`**, and says so.
+
+**The recognition ban bites on the stimulus, not the widget.** Showing Hit/Stand/Double/Split is not
+recognition — a real table enumerates the action space too. Forcing production by hiding the actions
+is *not* required, because the project's own evidence is against it: production scored 6–7% lower on
+matched items and the delayed exam ran 70% tested vs 73% untested, *"opposite the predicted
+direction"*, F = 1.50. **The consequence is recorded now rather than discovered in phase 5:**
+`strategy-action`, `legal-fallback` and `adherence-under-loss` are all `classificationIncluded: true`,
+so they may never be shape-named, so they must show cards, so those cards must come from a shoe. All
+three are unmeasurable without real dealt hands.
+
+**Provenance takes three values and costs no schema.** `create_prefix_shoe` (`shoe.rs:62`) already
+builds composition-honest arranged openings whose card ids label themselves — `arranged-0-10-hearts`
+against `deck-3-10-hearts`. Targeted rare-event practice is therefore buildable without faking card
+flow. **Arranged counts as dealt evidence for a Skill; whether arranged-*only* evidence can reach
+mastery is deliberately left to `LDB-04`**, because §1.1's interleaving result is a *discrimination*
+result and a learner drilled on arranged hard-16s never had to notice one arise. That is `A-23`, the
+card's only new register row.
+
+**Coverage runs both directions, and a gap reports upward.** The card as written required only
+activity → Skill. The reverse clause is added, but a Skill nothing can measure is a **finding against
+`LDB-01`**, never a prompt to invent an activity — which is exactly how `LDB-01` disposed of `goal`
+and `round-flow`. Checked by script: 18/18 Skills carry primary evidence across six types, 32/32
+patterns carry a verdict, and no classification-supplying or posed-only type is primary for a
+`classificationIncluded: true` Skill.
+
+**Four verdicts, not two.** The card's adopt-or-reject binary cannot tell the truth about `U1-5`: the
+design leans on it heavily and builds no activity from it. So: adopted-as-type (3),
+adopted-as-parameter (10), not-adopted-no-target (4), rejected (15). The two conditionals resolved
+from rulings already made — `U1-7` **rejected**, because reducing a shoe to its critical decisions
+tells the learner which decisions are critical; `U2-11` **substantive but not adopted**, because no
+Skill is a paced stream.
+
+**The Parsons boundary is ruled and has nothing to attach to.** `U3-7` is reclassified *substantive*
+by this card's own pool rule — and then not adopted, because `LDB-01` retired `round-flow` and
+`complete-round`, so no Skill in the approved graph is an ordering. Ruling the boundary and building
+nothing on it is the honest outcome; rejecting the format to dodge the question is not.
+
+**Predict-then-reveal produces one number, chosen by the approved spec rather than by preference.**
+`variance-expectation`'s outcome already says *"states how often they expect the event to occur"* — a
+frequency. `U1-3`'s two-bound interval would have amended a spec approved the same day, and rests on
+vendor-only provenance whose corroboration the audit withdrew, from an instrument that concedes high
+scorers *"are simply willing to use wider ranges. Generally about 2 to 10 times wider than the people
+scoring far below average."*
+
+**One divergence from a source is recorded rather than smoothed.** `U3-4`'s construct is invention
+whose value is orthogonal to correctness. `rule-contrast` grades the named differing rule anyway,
+because an ungraded prompt produces no evidence — and keeps the source's caution by never surfacing
+the verdict, which is `U1-5`'s surviving licence: issue no pass/fail verdict, not grade nothing.
