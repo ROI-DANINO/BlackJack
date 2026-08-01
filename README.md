@@ -65,5 +65,5 @@ penetration. Basic Strategy recommendations are specific to this ruleset.
 Delivery phases 1–3 are complete: the simulation foundation, the learning-mechanics prototype
 (Blackjack Foundations plus the verified strategy profiles and the durable-progress port), and the
 research foundation. **Phase 4 — the learning design blueprint — is active, and it builds nothing.**
-Its eight open deliverables are on the board (`journal/ops/tasks.md`, milestone `LDB`). See the
+Its eight open deliverables are on the board (`journal/tasks.md`, milestone `LDB`). See the
 [roadmap](ROADMAP.md) for layers and phases.

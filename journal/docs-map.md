@@ -17,8 +17,9 @@ modules:
   telemetry: true           # private route/review economics under .wl/ (gitignored); false opts out
   secret_scan: true         # /wl-end eyeballs staged files for secret patterns before any commit
 private:
-  - context/
-  - ops/sessions/
+  - active.md
+  - next.md
+  - sessions/
   - memory/
   - raw/
   - log.md
@@ -45,13 +46,13 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | AGENTS.md | Mission, constraints, current-phase pointer. Read first. |
 | ROADMAP.md | Destination, phase list, milestones, exit criteria. |
 | PROGRESS.md | What is done / in progress now; open questions. |
-| journal/ops/phase.md | Machine-readable current phase state. |
-| journal/ops/tasks.md | Agent Kanban (`agent-kanban:v2`) for executable current-phase cards, priority, live state, and evidence. Written only via scripts/kanban.ts. |
-| scripts/kanban.ts | The board's only write path plus its read verbs (board/next/validate). Derived port of workspace scripts/kanban.ts — regenerate from that master, never patch here. |
+| journal/phase.md | Machine-readable current phase state. |
+| journal/tasks.md | Agent Kanban (`agent-kanban:v2`) for executable current-phase cards, priority, live state, and evidence. Written only via scripts/kanban.ts. |
+| scripts/kanban.ts | The board's only write path plus its read verbs (board/next/validate). **Formerly a derived port of `workspace/scripts/kanban.ts`; that master was archived to `workspace/archive/scripts/kanban.ts` (commit `0af7b33`) when the 2026-07-28 lifecycle simplification cut the kanban from White Lotus.** This copy is now the only living one — patch it here; there is nothing left to regenerate from. |
 | scripts/check-doc-drift.sh | Read-only tripwires for documents disagreeing about state. Five checks, one per pair that has already drifted silently. Run before republishing an authority doc and at every `/wl-end`. Exits non-zero on drift; fix the document, not the check. |
-| journal/context/active.md | Resume context for /wl-start. |
-| journal/ops/sessions/ | /wl-end handoff files (history). |
-| journal/context/next.md | Cheap cross-chat bridge (`/wl-next`); consumed + reset by `/wl-end`. |
+| journal/active.md | Resume context for /wl-start. Flat per the 2026-07-28 simplified-lifecycle spine; the engine reads it here. |
+| journal/sessions/ | /wl-end handoff files (history). |
+| journal/next.md | Former cross-chat bridge. Inert: `/wl-next` was retired with the 2026-07-28 lifecycle simplification and the plugin no longer ships the command. Kept for its content only. |
 | journal/decisions.md | ADR sink — terse "why we chose X", appended by `/wl-end` at milestones. |
 | journal/memory/ | Recall index + atomic fact files for **project/phase** facts (this repo's work). Cross-cutting user/feedback/environment facts live in the **global store** (`~/.claude/projects/-home-roking-Desktop-Projects-blackjack/memory/`), which auto-loads every session. Two stores by role, not by accident; a `[[wikilink]]` resolves in-repo only, so name the global store inline when pointing at it. |
 | journal/raw/ | Local inbox for unprocessed raw imports; fold useful details into owned docs before relying on them. |

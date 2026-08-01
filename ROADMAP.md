@@ -4,7 +4,7 @@
 >
 > Two axes, deliberately separate. **Layers** are the architecture — what the software is made of.
 > They mature independently and never end. **Phases** are the delivery sequence — what gets built
-> when. A phase names which layers it advances. `journal/ops/phase.md` binds to the numbered
+> when. A phase names which layers it advances. `journal/phase.md` binds to the numbered
 > phase list via `roadmap_step:`.
 >
 > QA gates: every feature ships with a scoped feature QA; every phase closes with a milestone QA
@@ -86,7 +86,7 @@ reduced-motion element rests on SC 2.3.3, **Level AAA**, while the rest of the s
 
 ## Delivery map
 
-Numbered phases. `journal/ops/phase.md` binds here via `roadmap_step:`, and every kanban milestone
+Numbered phases. `journal/phase.md` binds here via `roadmap_step:`, and every kanban milestone
 node's `Roadmap:` must equal the active number.
 
 1. [x] **Simulation foundations** — the L1 engine, Free Play, and an honest ordered shoe.
@@ -133,7 +133,7 @@ this phase picks is a product judgement until calibrated on this product's own d
 **Order — intent; the board is the running order.** Broadly: outcomes and skill graph, the activity
 taxonomy, evidence and mastery rules, the economy, then session composition and interaction UX.
 
-The board (`journal/ops/tasks.md`) is what actually sequences the work — its dependency graph and
+The board (`journal/tasks.md`) is what actually sequences the work — its dependency graph and
 lane order, which `journal/docs-map.md` assigns priority to. Two deliberate departures from the
 prose above: **`LDB-02`, the pattern catalog, runs first or in parallel** — it is dependency-free
 research feeding the taxonomy, and it addresses the corpus's largest hole; and session composition

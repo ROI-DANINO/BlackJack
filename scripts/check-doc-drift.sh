@@ -18,8 +18,8 @@ FAIL=0
 note() { printf '  %s\n' "$1"; }
 fail() { printf 'DRIFT: %s\n' "$1"; FAIL=1; }
 
-BOARD=journal/ops/tasks.md
-PHASE=journal/ops/phase.md
+BOARD=journal/tasks.md
+PHASE=journal/phase.md
 
 # 1 — phase.md's next: versus the board's selected card.
 #     The lifecycle engine resolves board-first, so a hand-written phase.md next: is silently
@@ -86,7 +86,7 @@ printf '3. closed milestones described as active\n'
 # so an ID-based grep passes on the exact text that motivated the check. Closed-node archive
 # fragments carry the prose name in their heading, which is where it comes from.
 CLOSED=0
-for frag in journal/ops/archive/*.md; do
+for frag in journal/archive/*.md; do
   [ -f "$frag" ] || continue
   case "$(basename "$frag")" in tasks-*|docs-map-*|phase-*) continue ;; esac
   TITLE=$(sed -n '1s/^### [A-Z0-9-]* — \(.*\) \[.*/\1/p' "$frag")

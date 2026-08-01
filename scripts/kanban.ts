@@ -39,7 +39,7 @@
 //                                    `Research: needed` Ready card that would otherwise be next earns
 //                                    a loud `GATE:` banner and is skipped, never silently.
 //
-// Board path defaults to journal/ops/tasks.md (cwd-relative) when omitted; phase path defaults to a
+// Board path defaults to journal/tasks.md (cwd-relative) when omitted; phase path defaults to a
 // sibling phase.md next to the board file when omitted. For a v2 board the phase file's
 // `roadmap_step:` key is REQUIRED — every milestone node's `Roadmap:` is cross-checked against it.
 //
@@ -163,7 +163,7 @@ function pointerPath(raw: string): string {
 }
 
 // Load paths resolve against the repo root the board file lives in (so a board at
-// journal/ops/tasks.md with `Load: docs/…` resolves from the repo root, not journal/ops/, and a
+// journal/tasks.md with `Load: docs/…` resolves from the repo root, not journal/, and a
 // board with `Load: .wl/…` still resolves even though .wl/ is gitignored). Falls back to the
 // board's own directory when it isn't inside a git repo (the test fixtures).
 function resolveBaseDir(boardDir: string): string {
@@ -194,7 +194,7 @@ function extractPhaseField(content: string, key: string): string {
 
 // Node IDs must be unique across the desk's history: scan the board's sibling `archive/` directory
 // for a node heading `### <ID> ` in a `node-close` archive **fragment**. (The archive lives next to
-// the board — journal/ops/archive/ beside journal/ops/tasks.md.) No archive dir → nothing to
+// the board — journal/archive/ beside journal/tasks.md.) No archive dir → nothing to
 // collide with.
 //
 // Full-board SNAPSHOTS are excluded. `/end`'s archive-before-mutate step copies the whole live
@@ -1516,7 +1516,7 @@ function main(): void {
     errorExit(1, `unknown verb (${verb || '<none>'}) — expected ${[...READ_VERBS, ...WRITE_VERBS].join('|')}`);
   }
 
-  const DEFAULT_BOARD = 'journal/ops/tasks.md';
+  const DEFAULT_BOARD = 'journal/tasks.md';
   const isRead = READ_VERBS.includes(verb);
   // Read verbs keep their positional [board] [phase] form; --board/--phase override. Write verbs use
   // the flags only (their positionals are verb arguments).

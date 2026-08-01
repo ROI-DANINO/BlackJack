@@ -2,17 +2,18 @@
 /.worktrees/
 /.claude/worktrees/
 # Cold archive of untracked local scratch (e.g. the retired /.superpowers/ tool
-# era). Kept on disk for recovery, deliberately never published — journal/ops/
+# era). Kept on disk for recovery, deliberately never published — journal/
 # archive/ itself is tracked, so this subtree needs its own rule.
-/journal/ops/archive/cold/
+/journal/archive/cold/
 /.wl/
 
 # Gameplay history exports (personal/ephemeral) — keep the dir + README, ignore the data.
 /data/history/*
 !/data/history/README.md
 
-journal/context/
-journal/ops/sessions/
+journal/active.md
+journal/next.md
+journal/sessions/
 journal/memory/
 journal/raw/
 journal/log.md

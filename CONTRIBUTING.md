@@ -75,4 +75,4 @@ language/runtime rationale is in [docs/specs/stack-boundaries.md](docs/specs/sta
 
 Keep product documentation aligned with [journal/docs-map.md](journal/docs-map.md): the documents
 listed there are authoritative for their subjects. Avoid adding future-phase task detail to
-`journal/ops/tasks.md`; that file is only for the current phase.
+`journal/tasks.md`; that file is only for the current phase.
