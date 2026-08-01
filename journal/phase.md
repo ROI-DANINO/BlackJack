@@ -1,8 +1,7 @@
 ---
-roadmap_step: 4  # REQUIRED by scripts/kanban.ts — every write verb exits 3 without it. The spine engine's checkpoint writer DROPS this key on every /wl-end (reproduced 2026-08-01, again at the-borrowed-verified-tag checkpoint, and again at the-script-that-never-existed), so it must be restored after each checkpoint until wl-spine.ts preserves unknown front-matter keys.
 objective: "Design the learning blueprint — what is taught, in what order, through which activities, measured by what evidence — so phase 5 can build a slice that produces real learner data."
-blocking: null
+blocking: "PR #11 (claude/correct-work-rwm8me, open since 2026-07-30, 19 commits, none in main) is a parallel implementation of Phase 4 deliverables. LDB-04 must not start until it is ruled — close-and-salvage or reconcile."
 plan: "ROADMAP.md  # phase 4 has no separate plan doc; ROADMAP §Phase 4 holds its deliverables, order, and exit criteria, and the LDB board holds its cards. Restructure record: docs/superpowers/plans/2026-07-26-repo-restructure.md (complete) + docs/superpowers/audits/2026-07-26-restructure-review.md (what it still owed). Phase-5 build plan held ready: docs/superpowers/plans/2026-07-23-graded-decision-practice.md (11 tasks, cards retired 2026-07-26, re-shape with fresh IDs when phase 5 opens)"
 spec: "docs/superpowers/specs/2026-08-01-activity-taxonomy-and-skill-mapping.md + 2026-08-01-activity-taxonomy.json  # LDB-03, APPROVED 2026-08-01 (all three live rulings — §3.2, §4.1, §6.3 — approved individually; six criteria re-run green via scripts/check-ldb03-taxonomy.js) — authoritative for what is asked and what it measures; owns no threshold, session shape, or widget. Still binding and APPROVED: 2026-08-01-learning-outcomes-and-skill-graph.md + 2026-08-01-skill-graph.json (what is taught and what must precede what). Still binding on what phase 4 may assume: 2026-07-22-product-design-inputs.md §0. Approved slice design: 2026-07-23-graded-decision-practice-design.md"
-last_checkpoint: "the-script-that-never-existed — 2026-08-01T14:15:46.874Z"
+last_checkpoint: "the-other-phase-four — 2026-08-01T14:39:10.345Z"
 ---
