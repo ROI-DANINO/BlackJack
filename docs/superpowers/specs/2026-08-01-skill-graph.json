@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "card": "LDB-01",
+  "spec": "docs/superpowers/specs/2026-08-01-learning-outcomes-and-skill-graph.md",
+  "note": "Design data, not shipped content. Phase 5 decides where this lives in the source tree. Every Learning outcome names a grading authority; an outcome that could only name 'none' is not observable and is not here.",
+
+  "conditionAxes": [
+    { "id": "support", "values": ["table-open", "table-closed"], "primary": true, "basis": "owner decision 2026-07-23 — tableOpen is the project's mastery axis" },
+    { "id": "scope", "values": ["single-decision", "full-hand"], "primary": false, "basis": "absorbed from the retired 'complete-round' and 'split-hands' skills" },
+    { "id": "ruleset", "values": ["trained-profile", "novel-profile"], "primary": false, "basis": "absorbed from Subject C's rule-change outcomes" },
+    { "id": "pace", "values": ["untimed", "timed"], "primary": false, "basis": "A-02, inherited not newly asserted" }
+  ],
+  "conditionAxesClosed": false,
+  "conditionAxesNote": "Four for now, explicitly open. Card counting is expected to add a fifth (count visible / hidden). A later axis is an extension, not a schema break.",
+
+  "subjects": [
+    { "id": "blackjack-foundations", "title": "Blackjack Foundations", "shippedAs": "web/src/learn/content/blackjack-basics.ts" },
+    { "id": "strategy-table-fundamentals", "title": "Strategy Table Fundamentals", "shippedAs": null },
+    { "id": "rule-variation-literacy", "title": "Rule Variation Literacy", "shippedAs": null }
+  ],
+
+  "skills": [
+    {
+      "id": "card-values",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a dealt card",
+        "theLearner": "states its blackjack value",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "hand-total",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a dealt hand",
+        "theLearner": "states its total",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "card-values", "evidenceLabel": "Product judgement", "note": "a total cannot be stated without card values" }
+      ],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "ace-value",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a dealt hand containing an Ace",
+        "theLearner": "states the total the Ace is counted at and the resulting hand total",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "hand-total", "evidenceLabel": "Product judgement", "note": "the dual value is a property of the total" }
+      ],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "bust",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a dealt hand",
+        "theLearner": "states whether it has busted",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "hand-total", "evidenceLabel": "Product judgement", "note": "bust is a predicate on the total" }
+      ],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "dealer-info",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a round in progress",
+        "theLearner": "states the dealer's upcard and what remains hidden",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "card-values", "evidenceLabel": "Product judgement", "note": "the upcard is named by its value" }
+      ],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "hit",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a hand where Hit is legal",
+        "theLearner": "takes the Hit action",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [],
+      "evidenceLabel": "Product judgement",
+      "restatedFrom": "'Explain and use Hit' — the explain half is dropped (§1.7: measure play, not quiz scores)"
+    },
+    {
+      "id": "stand",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a hand where Stand is legal",
+        "theLearner": "takes the Stand action",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [],
+      "evidenceLabel": "Product judgement",
+      "restatedFrom": "'Explain and use Stand' — explain half dropped"
+    },
+    {
+      "id": "outcomes",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a resolved hand",
+        "theLearner": "states whether it won, lost, or pushed",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "hand-total", "evidenceLabel": "Product judgement", "note": "settlement is a comparison of totals" }
+      ],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "wager-result",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a resolved hand and its wager",
+        "theLearner": "states the resulting change to the bankroll",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "outcomes", "evidenceLabel": "Product judgement", "note": "the bankroll change follows the settlement" }
+      ],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "natural-blackjack",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a two-card hand totalling 21 or a multi-card 21",
+        "theLearner": "states which is a natural and which is not",
+        "judgedBy": "engine",
+        "classificationIncluded": true
+      },
+      "prerequisites": [
+        { "skillId": "hand-total", "evidenceLabel": "Product judgement", "note": "both cases are stated as totals" }
+      ],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "double",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a hand where Double is legal",
+        "theLearner": "takes the Double action and states the resulting wager",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "wager-result", "evidenceLabel": "Product judgement", "note": "doubling is stated in terms of the wager" }
+      ],
+      "evidenceLabel": "Product judgement",
+      "restatedFrom": "'Explain and use Double' — explain half dropped"
+    },
+    {
+      "id": "split",
+      "subjectId": "blackjack-foundations",
+      "outcome": {
+        "given": "a hand where Split is legal",
+        "theLearner": "takes the Split action and states the resulting number of hands and wagers",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "card-values", "evidenceLabel": "Product judgement", "note": "a pair is defined by rank" },
+        { "skillId": "wager-result", "evidenceLabel": "Product judgement", "note": "the second wager cannot be stated without it" }
+      ],
+      "evidenceLabel": "Product judgement",
+      "restatedFrom": "'Explain and use Split' — explain half dropped; the 'follow split hands' half becomes scope: full-hand"
+    },
+
+    {
+      "id": "classify-hand",
+      "subjectId": "strategy-table-fundamentals",
+      "outcome": {
+        "given": "a Decision situation",
+        "theLearner": "names the hand as a pair, a soft total, or a hard total",
+        "judgedBy": "engine",
+        "classificationIncluded": true
+      },
+      "prerequisites": [
+        { "skillId": "hand-total", "evidenceLabel": "Product judgement", "note": "classification is stated over the total" },
+        { "skillId": "ace-value", "evidenceLabel": "Product judgement", "note": "soft/hard is an Ace property" },
+        { "skillId": "card-values", "evidenceLabel": "Product judgement", "note": "pair is defined by rank" }
+      ],
+      "evidenceLabel": "Evidence-backed",
+      "evidenceNote": "P2 Bottom line A.2: interleaving improves discrimination, and classification should be measured separately from action selection (discrimination errors 46% vs 10%; 72% vs 38%, d=1.05). This is the one Skill whose separate existence is evidence-backed rather than a design choice."
+    },
+    {
+      "id": "strategy-action",
+      "subjectId": "strategy-table-fundamentals",
+      "outcome": {
+        "given": "a Decision situation under a named ruleset",
+        "theLearner": "produces the action the ruleset-matched strategy prescribes",
+        "judgedBy": "oracle",
+        "classificationIncluded": true
+      },
+      "prerequisites": [
+        { "skillId": "classify-hand", "evidenceLabel": "Evidence-backed", "note": "P2 Bottom line A.2 — the action cannot be produced without the classification, and the two are measured separately" },
+        { "skillId": "dealer-info", "evidenceLabel": "Product judgement", "note": "the situation is not stated without the upcard" }
+      ],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "legal-fallback",
+      "subjectId": "strategy-table-fundamentals",
+      "outcome": {
+        "given": "a Decision situation whose charted action is not legal at this table",
+        "theLearner": "produces the prescribed fallback action",
+        "judgedBy": "oracle",
+        "classificationIncluded": true
+      },
+      "prerequisites": [
+        { "skillId": "strategy-action", "evidenceLabel": "Product judgement", "note": "a fallback is stated relative to the charted action" }
+      ],
+      "evidenceLabel": "Product judgement"
+    },
+    {
+      "id": "variance-expectation",
+      "subjectId": "strategy-table-fundamentals",
+      "outcome": {
+        "given": "a named event and a stated number of upcoming hands, before they are played",
+        "theLearner": "states how often they expect the event to occur",
+        "judgedBy": "catalog",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "outcomes", "evidenceLabel": "Product judgement", "note": "the event is stated in terms of settlement" }
+      ],
+      "evidenceLabel": "Product judgement",
+      "evidenceNote": "Exists because bridge §1.2 [VERIFIED] holds that experience-taught learners systematically underweight rare events. Predict-then-reveal, not a lesson unit (decision B2). The scoring band is an unset threshold and inherits A-07."
+    },
+    {
+      "id": "adherence-under-loss",
+      "subjectId": "strategy-table-fundamentals",
+      "outcome": {
+        "given": "a Decision situation reached after a run of losing hands",
+        "theLearner": "produces the same ruleset-correct action they would produce after a run of wins",
+        "judgedBy": "oracle",
+        "classificationIncluded": true
+      },
+      "prerequisites": [
+        { "skillId": "strategy-action", "evidenceLabel": "Product judgement", "note": "adherence is stated relative to the correct action" },
+        { "skillId": "outcomes", "evidenceLabel": "Product judgement", "note": "a losing run is stated in terms of settlement" }
+      ],
+      "evidenceLabel": "Product judgement",
+      "evidenceNote": "This is the decision variance actually changes — not the action chosen, but whether correct play survives a losing streak. Carries the P-1 and P-5 instruments."
+    },
+
+    {
+      "id": "read-rule-card",
+      "subjectId": "rule-variation-literacy",
+      "outcome": {
+        "given": "an active table",
+        "theLearner": "states its dealer soft-17 rule, deck count, double-after-split rule, and blackjack payout",
+        "judgedBy": "engine",
+        "classificationIncluded": false
+      },
+      "prerequisites": [
+        { "skillId": "double", "evidenceLabel": "Product judgement", "note": "the double-after-split rule is unstatable without Double" },
+        { "skillId": "split", "evidenceLabel": "Product judgement", "note": "same" }
+      ],
+      "evidenceLabel": "Product judgement"
+    }
+  ],
+
+  "retired": [
+    { "id": "goal", "was": "Explain the goal of blackjack", "disposition": "dropped as a Skill — a knowledge claim whose only possible authority is catalog. Survives as framing prose in a Subject goal." },
+    { "id": "round-flow", "was": "Follow a blackjack round", "disposition": "dropped as a Skill — 'follow' names no observable act. Absorbed by scope: full-hand." },
+    { "id": "split-hands", "was": "Follow separately played split hands", "disposition": "dropped as a Skill — same. Absorbed by scope: full-hand." },
+    { "id": "complete-round", "was": "Complete and explain a full round", "disposition": "demoted to a Condition of evidence — scope: full-hand. It was stage 5 (procedural transfer) wearing a Skill costume." }
+  ],
+
+  "notTaught": [
+    { "topic": "expected value", "decision": "No Skill. EV appears only as rationale in feedback copy.", "basis": "bridge §2.2 evidenced absence; §1.8's on-domain source contends EV inference from subjective probability may be uncommon and non-normative; every in-scope decision is already determined by the ruleset-matched table.", "register": "A-14 — dormant", "reopenIf": "insurance ceases to be auto-declined. Insurance is the one in-scope decision the strategy table does not cover; it is currently removed from the decision space by ruleset config (types.rs:73, rules.rs:25,29-34, session.rs:101-104, web/src/learn/engine.ts:30), not by the table answering it." },
+    { "topic": "assume-the-next-card-is-a-ten heuristic", "decision": "Explanatory frame only. Never a policy, never a grading authority.", "basis": "It inverts 27 of 50 hard-12–16 cells against the shipped table, identical under H17 and S17, including hard 16 vs 10 — the hand the approved slice singles out as the most counterintuitive call in basic strategy.", "register": "A-16 — validation method rewritten; P-4 declared out of the phase-5 subset." }
+  ]
+}

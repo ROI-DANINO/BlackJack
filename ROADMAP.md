@@ -102,12 +102,12 @@ node's `Roadmap:` must equal the active number.
 **Exit criteria.** The owner approves a blueprint that says what is taught, in what order, through
 which activities, measured by what evidence — and approves the slice to build in Phase 5.
 
-**Deliverables.** Nine, one of them done.
+**Deliverables.** Nine, three of them done — 1 and 2 at `LDB-01` (approved 2026-08-01), and 8.
 
 | # | Deliverable | State |
 |---|---|---|
-| 1 | Skill graph and prerequisites | open |
-| 2 | Learning outcomes, including probability, EV and variance | open |
+| 1 | Skill graph and prerequisites | **done** — approved 2026-08-01; `docs/superpowers/specs/2026-08-01-learning-outcomes-and-skill-graph.md` + `2026-08-01-skill-graph.json` |
+| 2 | Learning outcomes — probability, EV and variance discharged **by decision behaviour, not by topic coverage** (amended 2026-08-01): they ship only where they change a decision at the table, with no separate maths Subject and no lesson unit. §1.7 `[VERIFIED]` is the ground — teaching the maths produced knowledge gain and no behaviour change. EV gets no Skill at all (`A-14` dormant, reopening condition recorded). | **done** — approved 2026-08-01; same spec, §5 |
 | 3 | Activity taxonomy | open |
 | 4 | Which activity measures which capability | open |
 | 5 | Per-activity evidence and mastery rules | open |
@@ -156,6 +156,13 @@ Without that second clause this phase can exit "passing" without answering the q
 to answer. The one existing instrumentation design covers `P-3` and `P-5`, hooks `P-1`, and does not
 cover `P-2` or `P-4` — and `LDB-08` is permitted to replace that design, which would silently take
 the instrumentation with it.
+
+**Amended 2026-08-01 (`LDB-01`, approved):** `P-2` and `P-4` are **declared unanswerable by
+this product**, not merely uncovered. `P-2` has no EV-instructed arm because EV is not taught
+explicitly; `P-4` has no heuristic-policy arm because the heuristic is adopted as an explanatory
+frame only. The candidate subset is therefore `P-1`, `P-3`, `P-5`. `LDB-08` still chooses the subset
+and must record these as **deliberate exclusions** — the standing slice design happening to cover
+exactly this set is convergence, not confirmation.
 
 **Scope.** Build the L2 foundation the blueprint specifies and wire it into the **existing**
 unstyled web surface. This phase does not build L3. It ends with something a person can sit down
