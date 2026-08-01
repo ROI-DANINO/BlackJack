@@ -294,3 +294,76 @@ and `GATE.md` states which predicate it is measured against.
 U3 was assigned under the earlier two-value scheme and was **never checked for compensation** — so
 the tokens are not comparable across units, and that limit is recorded in the archive rather than
 quietly harmonised away.
+
+---
+
+## 2026-08-01 — `LDB-01`: learning outcomes and the skill graph
+
+Six decisions from one grilling session. **All APPROVED by the owner on 2026-08-01** at the `LDB-01`
+user-approval gate.
+Spec: `docs/superpowers/specs/2026-08-01-learning-outcomes-and-skill-graph.md`.
+
+**Canonical domain vocabulary, and a root `CONTEXT.md` to hold it.** Four words were in circulation
+for one referent — `Skill`, `outcomeId`, `capabilities`, "learning target" — and the shipped durable
+schema had already begun collapsing them (`progress/types.ts:79`). Canonical: **Skill** (the node),
+**Learning outcome** (the sentence about it), **Condition of evidence**, **Subject**, **Decision
+situation**, **Dealt-hand provenance**, **Cell**, **Classification**, **Grading authority**. The
+glossary is a repo-wide surface because the collision spans docs, cards and code; putting it inside
+one design spec would hide it from LDB-03 onward. Registered in `docs-map.md`; it holds no decision.
+
+**A Cell is derived by construction, not an authored grammar.** The 2026-07-17 ProgressStore decision
+left curriculum owing "stable injective cell ids" and blocked all real writes until they existed. A
+Cell is a pure function of a Decision situation, and every input is already persisted
+(`progress/types.ts:99-103`) — so the obligation is discharged by dissolving it. Stored as a cache
+rather than derived on read, so an exported attempt log stays readable without a WASM oracle.
+**Boundary stated with it:** a `cellId` says where evidence came from and is *not* a licence to drill
+cells as items — `classification.md:128-130` holds that per-cell decomposition destroys the
+whole-policy measurement.
+
+**Decision situation is split from dealt-hand provenance.** Today `engine: AttemptEngineContext |
+null` carries both, so "no dealt hand" loses the *situation* along with the traceability — and with
+it the derivable Cell. Splitting them lets an activity pose a situation without dealing while the
+Cell derives identically. Paired rule: an undealt prompt may name a hand *shape* but may never render
+cards that did not come from a shoe. A shape-named prompt supplies the Classification for free, so it
+may only serve outcomes flagged `classificationIncluded: false` — which is what makes bridge §4.3
+enforceable per Skill instead of a slogan.
+
+**The 7-stage hierarchy is split, not adopted; `A-01` is withdrawn rather than closed.** Stages 1–3
+name content and are absorbed into the existing Subject partition; stages 4–7 name *conditions of
+performance* and become four Condition axes — support, scope, ruleset, pace. Shipped code had already
+half-made this move (`progress/types.ts:86-91`, and the owner's 2026-07-23 ruling that `tableOpen` is
+the mastery axis). Only **support** is asserted as primary; scope, ruleset and pace are left unordered
+for LDB-06, because asserting a four-step progression would have manufactured three assumptions with
+nothing behind them. The axis set is explicitly open — counting will want a fifth. **Net new register
+rows across the whole card: zero.**
+
+**Probability, EV and variance ship only where they change a decision (`ROADMAP.md` deliverable 2
+amended).** No fourth Subject and no lesson unit. The ground is §1.7 `[VERIFIED]`, the bridge's own
+"single most important line for scoping": 198 students taught probability with gambling examples
+showed better odds calculation six months later and **no change in gambling behaviour** — a standalone
+maths Subject is that study's arm that failed. But §1.2 `[VERIFIED]` says experience-only learners
+underweight the tail, so description still has to arrive: as a post-shoe debrief, a prediction
+captured beforehand, and frequency framing in copy — results and stakes, never a teaching surface.
+**EV gets no Skill at all** and appears only as rationale in feedback; `P-2` is declared out of the
+phase-5 subset and `A-14` goes dormant. **Reopening condition recorded:** insurance is the one
+in-scope decision the table does not cover, and it is absent only because `insurance_auto_decline:
+true` removes it from the decision space — a config flag, not a law.
+
+**The "assume the next card is a ten" heuristic is an explanatory frame, never a policy.** It may
+explain why a dealer 6 busts; it never issues an action and is never a grading authority. Two
+structural grounds, both established first-hand: it implies Stand where the shipped table says Hit on
+**27 of 50 hard-12–16 cells** (identical H17/S17, including hard 16 vs 10 — the hand the approved
+slice calls the most counterintuitive in basic strategy), and teaching it as policy would require a
+second grading authority that bridge §5 and the slice design both forbid. `P-4` is declared out and
+`A-16`'s validation method is rewritten to test the frame instead.
+**A defect was found in the evidence and deliberately not fixed here:** bridge §1.8 claims the
+heuristic beats *"unaided play"*, but the archive holds only the publisher abstract, which names **no
+comparator** — and `P3-evidence-catalog.md:236` repeats the phrase. That correction needs an
+independent re-check before landing in both files together; applying it on one agent's reading is
+this repo's named inherited-error class. The decision above does not depend on it.
+
+**The deliverable is a spec plus a serializable graph file.** `2026-08-01-skill-graph.json` is the
+artifact phase 5 consumes. Prose plus a hand-transcription step is the exact failure `AGENTS.md`
+records — corrections that landed in audit records and never reached the documents, 14 of them
+surviving a pass built to certify they had. It also turns both approval criteria into fields a script
+can check. Writing design data is not building: no UI, no behaviour, no engine change.
