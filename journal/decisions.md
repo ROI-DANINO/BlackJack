@@ -441,3 +441,28 @@ scoring far below average."*
 whose value is orthogonal to correctness. `rule-contrast` grades the named differing rule anyway,
 because an ungraded prompt produces no evidence — and keeps the source's caution by never surfacing
 the verdict, which is `U1-5`'s surviving licence: issue no pass/fail verdict, not grade nothing.
+
+## 2026-08-02 — A phase decision does not enter `main` as code ahead of its card's gate
+
+**Chose:** discard the working, tested code on PR #11 rather than cherry-pick it, and make the rule
+general: an unapproved card's decisions may not land in `main` as an implementation, however sound
+the implementation is. Salvage the *findings* instead, as explicitly non-authoritative input to the
+grill that will decide the card.
+
+**Why:** PR #11's `web/src/tuning/params.ts` is a 314-line constants module whose comments cite
+`LDB-04 §2.2` as *"already approved"* and draw values from `LDB-04 §1.1/§2.1/§2.2/§3` and
+`LDB-06 §3/§5.2/§6`. Those sections exist only in two specs on that branch; on `main`, LDB-04 and
+LDB-06 sit in Ready at `Evidence: pending`. Landing the module would have adopted both cards'
+decisions in code while the salvage plan was simultaneously refusing to adopt them in prose — the
+same failure that produced the incident, arriving through a different door. The cost is real and
+was accepted knowingly: the code was tested and is now discarded, and re-deriving it after the gate
+is the difference between phase 4 *making* a decision and phase 4 *ratifying* one already made.
+
+**What this does not say.** It is not a rule against prototyping ahead of a gate — a prototype that
+stays out of `main` answers a design question and is welcome. The line is landing on `main`, because
+that is what turns an experiment into an inheritance no later session knows to question.
+
+**Recorded because the failure mode is silent.** Without this, a later session finds working, tested
+code on a dead branch and re-lands it as an obvious win. The mechanical half of the same incident —
+the forked board — is now guarded by check 6 in `scripts/check-doc-drift.sh`; this half has no
+mechanism and rests on the record.
