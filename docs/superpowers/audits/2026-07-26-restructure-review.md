@@ -189,3 +189,40 @@ Primary research papers — outside the repo; claims about them checked only aga
 ## The shortest path to "yes"
 
 In order: F2 (mark the plan done), F1 (two sentences), F3 (create the register), F4 (P-IDs onto cards and into phase-5's exit), F5 (one label, one line number, one commitment), F14 (fifteen lines of PROGRESS). That set converts the verdict: the corrections are already trustworthy, the board is already valid, and the remaining failures are all documents disagreeing about state — the one class of failure this project has proven it cannot afford to leave undetected.
+
+---
+
+## Disclosure added 2026-08-02, by a later pass — not part of the original review
+
+> This section was appended during the PR #11 salvage. **The body above is left exactly as written
+> on 2026-07-26.** It is a dated, signed record of what one reviewer concluded on one day, and
+> rewriting it in place would destroy the evidence that the reviewer miscounted — which is the
+> useful part, not the number.
+
+**The claim.** The "Verified sound" section (`:181`) ends: *"The four deliberately-unapplied code
+verdicts are carried forward as stated."*
+
+**There are three, not four.** Re-derived first-hand on 2026-08-02:
+
+- Every non-`Preserve` verdict was enumerated directly from the eight audit records in
+  `foundation-audit-p2/audit/U*-audit.md` — 24 `Relabel` + 7 `Revise` = **31**, out of 102 claims.
+- Each of the 31 loci was then read. Exactly **three** have a code locus: `K-U6-003`
+  (`web/src/learn/validate.ts`), `K-U6-005` (`web/src/learn/controller.ts`), `K-U6-009`
+  (`web/src/learn/content/blackjack-basics.ts`). The other 28 all have document loci.
+- This agrees with the archive's own arithmetic: `landing/L-U6.md:5` records U6 as "Preserve 6,
+  Relabel 2, Revise 1" by direct enumeration, and U6 is the only unit whose surface is shipped code.
+- Verdicts from other units that *mention* code paths — `K-U5-005/011/013`, `K-U8-002/006`,
+  `K-U6-001/002/004/006/008` — are all `Preserve` and carry nothing to apply, so none of them is a
+  fourth unapplied verdict.
+
+**What this disclosure does not establish.** "Verdict" is Phase 2's vocabulary (Phase 1 uses
+"finding", `C-*`), so the sentence was read as Phase-2-scoped. **Phase 1 findings at code loci were
+not enumerated.** If the original sentence was meant to span both phases, this correction does not
+reach it, and that enumeration is still owed.
+
+**Why it matters beyond the digit.** The miscount sits in the section certifying *other* work
+accurate. This project's documented failure mode is a reviewer's record being trusted without the
+underlying source being reopened; a wrong count inside a "Verified sound" list is exactly the shape
+that gets inherited. Per-verdict status now lives on the rows of
+`docs/superpowers/research/evidence-index/P2-verdict-catalog.md`, and each of the three has a named
+owner: `K-U6-003` and `K-U6-005` on `LDB-04`, `K-U6-009` as `QA-019` in `journal/qa/ledger.md`.

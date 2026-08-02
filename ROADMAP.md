@@ -102,14 +102,16 @@ node's `Roadmap:` must equal the active number.
 **Exit criteria.** The owner approves a blueprint that says what is taught, in what order, through
 which activities, measured by what evidence — and approves the slice to build in Phase 5.
 
-**Deliverables.** Nine, three of them done — 1 and 2 at `LDB-01` (approved 2026-08-01), and 8.
+**Deliverables.** Nine, **five** of them done — 1 and 2 at `LDB-01` and 3 and 4 at `LDB-03` (all
+approved 2026-08-01), and 8. *(Corrected 2026-08-02: this line read "three of them done" and the
+rows for 3 and 4 read "open" for a day after `LDB-03` was approved and moved to Done on the board.)*
 
 | # | Deliverable | State |
 |---|---|---|
 | 1 | Skill graph and prerequisites | **done** — approved 2026-08-01; `docs/superpowers/specs/2026-08-01-learning-outcomes-and-skill-graph.md` + `2026-08-01-skill-graph.json` |
 | 2 | Learning outcomes — probability, EV and variance discharged **by decision behaviour, not by topic coverage** (amended 2026-08-01): they ship only where they change a decision at the table, with no separate maths Subject and no lesson unit. §1.7 `[VERIFIED]` is the ground — teaching the maths produced knowledge gain and no behaviour change. EV gets no Skill at all (`A-14` dormant, reopening condition recorded). | **done** — approved 2026-08-01; same spec, §5 |
-| 3 | Activity taxonomy | open |
-| 4 | Which activity measures which capability | open |
+| 3 | Activity taxonomy | **done** — approved 2026-08-01; `docs/superpowers/specs/2026-08-01-activity-taxonomy-and-skill-mapping.md` + `2026-08-01-activity-taxonomy.json` |
+| 4 | Which activity measures which capability | **done** — approved 2026-08-01; same spec (the skill mapping half), with all 32 pattern verdicts available as data in the JSON |
 | 5 | Per-activity evidence and mastery rules | open |
 | 6 | Session composition | open |
 | 7 | Interaction UX | open |

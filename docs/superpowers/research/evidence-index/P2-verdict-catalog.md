@@ -3,11 +3,20 @@
 Source archive: `docs/superpowers/research/foundation-audit-p2/`. This page is a navigation
 index over it, not a replacement for it. Open the cited record before relying on a row.
 
-**The structural fact that governs everything below:** Phase 2 modified **zero product
-documents** (`P2-gate-summary.md:288`, verified against `04ad04c`). The 26 corrections that
-"landed" landed in the *audit records*, not in the specs. **None of the 24 Relabels and none of
-the 7 Revises has been applied to any document the product actually reads.** They are all
-outstanding.
+**The structural fact about Phase 2, which does not change:** Phase 2 modified **zero product
+documents** (`P2-gate-summary.md:288`, verified against `04ad04c`). Its 26 corrections landed in the
+*audit records*, not in the specs. That is a fact about the Phase 2 run and it stands permanently.
+
+**It is not a statement about the present, and this page no longer makes one.** A correction sweep
+on 2026-07-26 applied verdicts to the documents. Between then and 2026-08-02 this header went on
+asserting that all 31 were outstanding, because it stated a live count that nothing re-opened when
+the state changed. **Current status is on the rows below and nowhere else** — one place, so there is
+no second copy to drift. Each row carries its own status; the U6 sub-table marks the ones still
+open and names who owns them.
+
+*(Header rewritten 2026-08-02. It previously read "None of the 24 Relabels and none of the 7
+Revises has been applied … They are all outstanding", which was false for 28 of the 31. The lesson
+is kept deliberately: a navigation index over a frozen archive should describe, never track.)*
 
 ## The eight units
 
@@ -36,6 +45,17 @@ There is no gate criterion for sufficiency, so the finding never propagated.
 
 A Relabel means the claim **stands** but its evidence level was demoted. These are the claims
 that read as settled fact and are actually design bets or values choices.
+
+**Status, re-derived first-hand 2026-08-02** by enumerating every verdict in
+`foundation-audit-p2/audit/U*-audit.md` and then opening each locus: **22 of 24 landed** on
+2026-07-26 as a dated parenthetical at the claim itself. The **2 outstanding are both in the U6
+sub-table below**, and both have code loci.
+
+*A caution for anyone re-checking this mechanically:* the landed marker is **not spelled
+consistently** — `audited 2026-07-26` on the Relabels, `Relabelled 2026-07-26` in
+`journal/decisions.md`, `Revise applied 2026-07-26` on the Revises — and some wrap across a line
+break. A single-pattern grep reports false "outstanding" hits; the 2026-08-02 check returned 12
+before the loci were opened by hand.
 
 ### `docs/specs/product-vision.md` — 6 (the most exposed document)
 
@@ -83,12 +103,17 @@ that read as settled fact and are actually design bets or values choices.
 | K-U4-003 | ALR-001, `:121` | Multiple choice tagged `PUBLISHED/INFERENCE` to `DUO-001`, `BRI-001`, `SCI-001` | **Product judgement** | **None of the three sources speaks to format validity.** The `PUBLISHED` half is unearned. This is the requirement that governs 100% of shipped mastery evidence. |
 | K-U4-005 | ALR-005, `:145-146` | Immediate canonical correction during acquisition, tagged to `SCI-005` | **Assumption** | The source reports **delayed** feedback as slightly *more* effective. The configure-by-mode half survives as inference; the immediate-by-default half is not derived from it. |
 
-### Shipped code — 2 (U6)
+### Shipped code — 2 (U6) — **both OUTSTANDING**
 
-| ID | Locus | Claim | New label | Why |
-|---|---|---|---|---|
-| K-U6-003 | `web/src/learn/validate.ts:65-66` | Required checks must be `question` steps | **Product judgement** | Filed as an authoring rule, it is actually **a pedagogical commitment about what counts as evidence**. Consequence: a played hand can never satisfy completion. |
-| K-U6-009 | `web/src/learn/content/blackjack-basics.ts:290` | Recap copy "You can explain and use Hit." | **Product judgement** | Asserts learner capability and is **never conditioned on evidence** — a hand step advances to recap regardless of correctness. Reads as attestation; is coverage-summary copy. |
+Neither carries a marker at its locus. Verified 2026-08-02 by opening both files: the 2026-07-26
+sweep was a **document** sweep and never reached `web/src/`. Together with `K-U6-005` in the Revise
+table below, these are the **three** — not four — verdicts still unapplied, and all three are
+exactly the ones whose locus is code.
+
+| ID | Locus | Claim | New label | Why | Status |
+|---|---|---|---|---|---|
+| K-U6-003 | `web/src/learn/validate.ts:65-66` | Required checks must be `question` steps | **Product judgement** | Filed as an authoring rule, it is actually **a pedagogical commitment about what counts as evidence**. Consequence: a played hand can never satisfy completion. | **OUTSTANDING** — owned by `LDB-04`, which cites it by ID. That card may **retire** it rather than land it, since it is scoped to replace the commitment outright; either outcome must be stated. |
+| K-U6-009 | `web/src/learn/content/blackjack-basics.ts:290` | Recap copy "You can explain and use Hit." | **Product judgement** | Asserts learner capability and is **never conditioned on evidence** — a hand step advances to recap regardless of correctness. Reads as attestation; is coverage-summary copy. | **OUTSTANDING** — owned by **QA-019** in `journal/qa/ledger.md`, deferred to phase 5. **This verdict names 1 of 16 instances of its own defect:** the same pattern runs to 16 capability assertions across all 9 recap steps, and the other 15 are named in no P2 record. |
 
 ### Decision log — 1 (U5)
 
@@ -100,7 +125,10 @@ that read as settled fact and are actually design bets or values choices.
 
 ## The 7 Revise verdicts
 
-Wording must change. **None applied to any product document.**
+Wording must change. **6 of 7 applied 2026-07-26; 1 outstanding** — re-derived 2026-08-02 by
+opening each locus. The six that landed each carry a `(Revise applied 2026-07-26, K-…)` marker at
+the point of the change. The seventh, `K-U6-005`, carries no marker anywhere: it is the only Revise
+whose locus is code, and the sweep did not reach code.
 
 | ID | Locus | Required change |
 |---|---|---|
@@ -109,7 +137,7 @@ Wording must change. **None applied to any product document.**
 | K-U4-004 | ALR-004, `:139` | **Drop "existing … attempt-record project contracts" from the evidence basis.** `AttemptRecord` has one `response` field and a scalar `assistance` — the existing contract is **the gap this requirement addresses, not evidence for it.** |
 | K-U4-013 | ALR-022, `:253` | **Strike "and current `AttemptRecord` seam"**; keep "approved attempt envelope." Four of six items ALR-022 names are absent from the seam it cites. |
 | K-U4-016 | ALR-040, `:363-365` | **Mark the reduced-motion element as resting on a Level AAA criterion** (SC 2.3.3). Reflow (1.4.10) and Text Spacing (1.4.12) are AA; Timing Adjustable (2.2.1) is A. U4 states no conformance level anywhere. |
-| K-U6-005 | `web/src/learn/controller.ts:123` | The `'instruction'` label **records retry depth, not assistance received.** No instruction is delivered; `retry()` clears feedback and the only affordance is a Retry button. **No hint ladder exists.** The mislabel propagates into a test that calls it "a hinted attempt." |
+| K-U6-005 | `web/src/learn/controller.ts:123` | **OUTSTANDING.** The `'instruction'` label **records retry depth, not assistance received.** No instruction is delivered; `retry()` clears feedback and the only affordance is a Retry button. **No hint ladder exists.** The mislabel propagates into a test that calls it "a hinted attempt." Owned by `LDB-04`, which cites it by ID — its Outcome already requires that "assistance is recorded only when assistance was actually delivered". A live mislabel in shipped code until that card lands. |
 | K-U7-009 | `2026-07-10-v2-learning-foundations-roadmap-design.md:56-57` | State that **the closest analogous evidence favours introducing mixed practice earlier**, and that this is an open design question, not settled sequencing. Held at Revise not Replace only because domain transfer is untested. This is CFL-007. |
 
 ---
