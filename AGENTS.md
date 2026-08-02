@@ -71,10 +71,14 @@ were written down again by the same session that created it.
 - Delegated agents may read cards but must return `Card`, `Result`, `Evidence`, `Next`, `Files`, and
   `Blocker`; they never claim, move, or edit cards directly.
 - Finish started work before pulling new work. Respect the board's WIP and transition policies.
-- **Never activate a milestone node before its phase has actually started.** There is no
-  `node-deactivate` and `node-close` refuses while any card is not Done, so a node activated early
-  is stuck handing out the wrong card. This happened once and the board was knowingly left wrong
-  for days because no verb could fix it.
+- **Never activate a milestone node before its phase has actually started.** A node activated early
+  hands out the wrong card, and `node-close` refuses while any card is not Done. This happened once
+  and the board was knowingly left wrong for days. **The way back is `node-deactivate`**
+  (`scripts/kanban.ts:1338`), which flips `[active]` → `[shaped]`; it refuses while a card of that
+  node sits in Active, so move that card back to Ready first. *(Corrected 2026-08-02: this rule
+  previously said no such verb existed and "no verb could fix it". The verb landed in `e4c91d2` on
+  2026-07-26 — the same day this rule was written — so the two crossed. The advice stands; the
+  claim that recovery was impossible did not.)*
 - **Never encode priority as a dependency.** `Depends on` means blocked-by, not do-this-first. A
   priority smuggled in as a dependency has already had to be surgically removed once.
 
