@@ -138,9 +138,53 @@ else
   note "agree on $INPROG"
 fi
 
+# 6 — more than one live kanban board.
+#     PR #11 relocated the board to journal/ops/tasks.md, a path neither the spine engine nor
+#     kanban.ts resolves. Nothing broke loudly; instead the execution authority FORKED, and
+#     LDB-04 reached Done on one board while still sitting in Ready on the other. AGENTS.md
+#     already forbade the move in prose, and the move happened anyway — hence a mechanism.
+#
+#     Enumerated POSITIVELY: list every tracked file whose FIRST LINE is the v2 marker, then
+#     partition. kanban.ts:275 uses exactly that first-line test, so this check and the tool
+#     agree on what counts as a board — a grep for the marker anywhere would instead match
+#     AGENTS.md, this repo's docs, and kanban.ts's own source. Snapshots under journal/archive/
+#     are legitimate copies written by /end's archive-before-mutate step.
+#
+#     Stated limit, rather than a silent one: only TRACKED files are scanned. An untracked
+#     second board would go unseen — but it also cannot become a shared authority, which is
+#     the failure this guards.
+printf '6. exactly one live kanban board\n'
+MARKED=""
+for f in $(git ls-files -- '*.md' 2>/dev/null); do
+  [ -f "$f" ] || continue
+  [ "$(head -1 "$f")" = "<!-- agent-kanban:v2 -->" ] && MARKED="$MARKED $f"
+done
+LIVE=""
+ARCH=0
+for f in $MARKED; do
+  case "$f" in
+    journal/archive/*) ARCH=$((ARCH + 1)) ;;
+    *) LIVE="$LIVE $f" ;;
+  esac
+done
+LIVE_TRIM=$(echo $LIVE)
+LIVE_COUNT=$(printf '%s' "$LIVE_TRIM" | wc -w | tr -d ' ')
+if [ "$LIVE_COUNT" -eq 0 ]; then
+  fail "no live agent-kanban:v2 board found; expected $BOARD"
+  note "every board-dependent check above is unreliable without it"
+elif [ "$LIVE_COUNT" -gt 1 ]; then
+  fail "more than one live kanban board: $LIVE_TRIM"
+  note "a second board forks the execution authority and the two then disagree in silence (PR #11)"
+elif [ "$LIVE_TRIM" != "$BOARD" ]; then
+  fail "the live board is '$LIVE_TRIM', expected '$BOARD'"
+  note "kanban.ts and the spine engine both resolve $BOARD as a fixed path; moving it breaks one of them"
+else
+  note "one live board ($BOARD), plus $ARCH archived snapshot(s)"
+fi
+
 printf '\n'
 if [ "$FAIL" -eq 0 ]; then
-  printf 'No document drift detected across 5 checks.\n'
+  printf 'No document drift detected across 6 checks.\n'
 else
   printf 'Document drift detected. Each pair above has drifted before; fix the document, not the check.\n'
 fi
