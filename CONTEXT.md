@@ -57,6 +57,26 @@ Where an Activity type's Decision situations come from: `organic` (met in natura
 directly, no cards). Read off card ids, never stored separately.
 _Avoid_: Source, origin, generation mode
 
+**Mastery**:
+The claim that a learner can perform a Skill's Learning outcome unaided, computed from recent
+evidence. Never a permanent property, never a lock.
+_Avoid_: Completion, proficiency, level
+
+**Presentation**:
+One posing of one item to the learner, together with every response to it. The unit the mastery
+window counts.
+_Avoid_: Attempt (when the presentation is meant), question, item
+
+**Review due**:
+The state of a Skill whose Mastery was reached and whose recent evidence no longer meets the bar. A
+prompt to return, never a demotion.
+_Avoid_: Expired, lapsed, decayed, lost
+
+**Completion**:
+That a learner performed the required steps of a unit. Distinct from Mastery: it records work done,
+not capability shown, and it is the economy's trigger.
+_Avoid_: Mastery, done, passed
+
 ## Strategy decisions
 
 **Decision situation**:

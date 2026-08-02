@@ -1,8 +1,13 @@
 # Per-Activity Evidence and Mastery Rules — LDB-04
 
-> **Status: DRAFT FOR APPROVAL — not approved.** On `main`, `LDB-04` sits in `Ready` at
-> `Evidence: pending`. Nothing in this document may be cited as settled, implemented in code, or
-> quoted by another document as a decision until the owner approves it at the `user-approval` gate.
+> **Status: APPROVED 2026-08-03** at the `user-approval` gate. All five §12 divergences were put to
+> the owner; **divergences 0, 1 and 2 were approved as ruled** — one mastery state per Skill (D1),
+> `supportFading` binary with the fade reassigned to LDB-06 (D11), and `space` declined and reassigned
+> to LDB-07 (D11). Divergence 3 is a board-text correction, applied at approval. Divergence 4 was
+> already corrected 2026-08-03.
+>
+> Approval landed four `CONTEXT.md` terms (§16), the `A-07a` register sub-row (§10), and `A-10`'s
+> retirement (§10) — each verified present in its target file, not merely approved.
 >
 > ROADMAP Phase 4 deliverable 5. **Phase 4 designs and builds nothing** — this document produces no
 > code and authorises none.
@@ -629,6 +634,11 @@ LDB-07's, and is tested wherever that card decides. This document deliberately o
 The two constants are pooled rather than split because **moving `n` changes what `k` means** — they
 are not independently validatable, which is the same pooling ground the owner has already accepted.
 
+**This delta lands at approval, not before** — the same rule §16 states for the glossary terms, and
+for the same reason: writing a row into an authority document ahead of its gate is a decision adopted
+by side effect. **Landed 2026-08-03 as `A-07a`**, and `A-10` retired in the same pass. §15 criterion 2
+is satisfied by the row being *in the register*, not by this table describing it.
+
 **Rows this leans on without spending:**
 
 - **`A-06`** — no sub-row. Gains a **reopening trigger** in place of a horizon (D8).
@@ -665,7 +675,12 @@ discovered.
 
 ### 12. Divergences from approved specs, surfaced not applied
 
-Five. Each requires the owner's assent at the gate; none is treated as settled by this document.
+Five. Each required the owner's assent at the gate.
+
+**Resolved 2026-08-03.** Divergences **0, 1 and 2** were put to the owner individually and each was
+**approved as ruled**. Divergence **3** is a board-text correction and was applied at approval.
+Divergence **4** was already corrected. The five statements below are left as written — they record
+what was surfaced and why, and the ruling on each is now the owner's rather than this document's.
 
 0. **The card's `FROM LDB-01` handoff says mastery is "per Skill × Condition-vector, not per Skill."
    D1 rules one mastery state per Skill, with the bar naming a required Condition.** These are not
@@ -781,8 +796,12 @@ counter-example.
    never folded in — contract C-E forbids the fold.
 
 **Additionally checkable at the gate:** the six parameters in D11 each carry a value or an explicit
-declination; the four divergences in §12 are each stated rather than applied; and the glossary terms
-in §16 are landed **at approval**, not before.
+declination; the **five** divergences in §12 are each stated rather than applied; and the glossary
+terms in §16 and the register sub-row in §10 are landed **at approval**, not before.
+
+*(Corrected 2026-08-03: this paragraph said "four divergences" while §12 said five. Divergence 0 was
+added to §12 after this checklist was written and the count here never caught up — a checklist that
+had gone stale against the thing it checks. Found at the gate, before approval.)*
 
 ### 16. Vocabulary owed to `CONTEXT.md` — to land at approval, not before
 
@@ -790,6 +809,9 @@ Four terms crystallised in this design and are absent from the glossary. **They 
 written yet.** Nothing here is approved, and writing rulings into an authority document ahead of its
 gate is the PR #11 failure exactly — a decision adopted by side effect rather than at a gate. On
 approval, add:
+
+**Landed 2026-08-03 under `CONTEXT.md` §Learning model** — all four verified present in that file
+after writing, per the *corrections do not execute themselves* rule.
 
 - **Mastery** — the claim that a learner can perform a Skill's Learning outcome unaided, computed from
   recent evidence. Never a permanent property, never a lock. *Avoid:* completion, proficiency, level.
