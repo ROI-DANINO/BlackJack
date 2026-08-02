@@ -173,7 +173,7 @@ and `product-design-inputs` §4.6's "rare-event exposure must be deliberate" is 
 `LDB-04`'s to rule, and is handed over as an open question rather than answered here — because the
 interleaving benefit is a **discrimination** benefit: 72% vs 38%, d = 1.05 (`product-design-inputs`
 §1.1 `[VERIFIED]`), and discrimination errors 46% vs 10% (**P2 Bottom line A.2**,
-`docs/superpowers/research/evidence-index/P2-verdict-catalog.md:170` — that figure is *not* in §1.1
+`docs/superpowers/research/evidence-index/P2-verdict-catalog.md:198` — that figure is *not* in §1.1
 and does not carry its `[VERIFIED]` tag). A learner drilled on arranged hard-16s has produced the right action many times without
 ever having to notice a hard 16 arise. **That gap is `A-23`.**
 
