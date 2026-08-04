@@ -102,9 +102,12 @@ node's `Roadmap:` must equal the active number.
 **Exit criteria.** The owner approves a blueprint that says what is taught, in what order, through
 which activities, measured by what evidence — and approves the slice to build in Phase 5.
 
-**Deliverables.** Nine, **five** of them done — 1 and 2 at `LDB-01` and 3 and 4 at `LDB-03` (all
-approved 2026-08-01), and 8. *(Corrected 2026-08-02: this line read "three of them done" and the
-rows for 3 and 4 read "open" for a day after `LDB-03` was approved and moved to Done on the board.)*
+**Deliverables.** Nine, **six** of them done — 1 and 2 at `LDB-01` and 3 and 4 at `LDB-03` (all
+approved 2026-08-01), 5 at `LDB-04` (approved 2026-08-03), and 8. *(Corrected 2026-08-02: this line
+read "three of them done" and the rows for 3 and 4 read "open" for a day after `LDB-03` was approved
+and moved to Done on the board. Corrected again 2026-08-04: it read "five" and row 5 read "open"
+after `LDB-04` was approved 2026-08-03 — the same drift, second occurrence, caught only because a
+`/start` reader compared the table against the board.)*
 
 | # | Deliverable | State |
 |---|---|---|
@@ -112,7 +115,7 @@ rows for 3 and 4 read "open" for a day after `LDB-03` was approved and moved to 
 | 2 | Learning outcomes — probability, EV and variance discharged **by decision behaviour, not by topic coverage** (amended 2026-08-01): they ship only where they change a decision at the table, with no separate maths Subject and no lesson unit. §1.7 `[VERIFIED]` is the ground — teaching the maths produced knowledge gain and no behaviour change. EV gets no Skill at all (`A-14` dormant, reopening condition recorded). | **done** — approved 2026-08-01; same spec, §5 |
 | 3 | Activity taxonomy | **done** — approved 2026-08-01; `docs/superpowers/specs/2026-08-01-activity-taxonomy-and-skill-mapping.md` + `2026-08-01-activity-taxonomy.json` |
 | 4 | Which activity measures which capability | **done** — approved 2026-08-01; same spec (the skill mapping half), with all 32 pattern verdicts available as data in the JSON |
-| 5 | Per-activity evidence and mastery rules | open |
+| 5 | Per-activity evidence and mastery rules — mastery is 8 of the last 10 table-closed presentations | **done** — approved 2026-08-03; `docs/superpowers/specs/2026-08-03-evidence-and-mastery-rules.md` |
 | 6 | Session composition | open |
 | 7 | Interaction UX | open |
 | 8 | The first vertical slice, designed | **done** — `docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md`, approved 2026-07-25 |

@@ -65,9 +65,11 @@
 
 **Phase 4 — the learning design blueprint — is active, and it builds nothing.** Delivery phases 1–3
 are closed: the simulation foundation, the learning-mechanics prototype, and the research
-foundation. The eight open deliverables are on the board as milestone `LDB`
-(`journal/tasks.md`), which is also what sequences them. `ROADMAP.md` §Phase 4 holds their
-scope, their exit criteria, and the ordering intent behind the board.
+foundation. Its eight cards are on the board as milestone `LDB` (`journal/tasks.md`), which is also
+what sequences them — four Done (`LDB-01` through `LDB-04`, the last approved 2026-08-03) and four
+open (`LDB-05` through `LDB-08`). `ROADMAP.md` §Phase 4 holds their scope, their exit criteria, and
+the ordering intent behind the board, and is authoritative for **deliverable** state — which counts
+nine, not eight, and does not map one-to-one onto the cards.
 
 The 2026-07-26 restructure landed: an evidence index over the three research archives
 (`docs/superpowers/research/evidence-index/`), every outstanding audit correction applied, ROADMAP
