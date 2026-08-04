@@ -53,6 +53,12 @@
 - Gate: user-approval
 - Evidence: pending
 - Updated: 2026-08-01T14:08:12.393Z
+
+
+## Active
+
+
+## Verification
 ### LDB-05 — Design the motivation and chips economy
 - Type: design
 - Milestone: LDB
@@ -60,17 +66,11 @@
 - Depends on: LDB-04
 - Source: docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md
 - Outcome: Answers to E-1 through E-7. E-1 decides whether a won hand returns chips — rewarding outcome is the one thing the learning design decouples, and the saving grace is that chips buy nothing. E-5 resolves that XP accumulates while a rating rises and falls, so they cannot be linked directly without choosing which property to drop. E-6 sets the below-25-user rating fallback. E-7 records that a real leaderboard implies server authority. Approvable when: all seven questions have written answers, E-1's answer names how it will be tested (register row A-20), and no mechanic rewards money won.
-- Next: Wait on LDB-04 — the economy comes after evidence and mastery rules per ROADMAP, and the chips-return question is an evidence question in an economy costume. FROM LDB-02: U1-6's analogue states the E-1-adjacent mechanism directly, a per-session decision rating displayed separately from chips won. And U1-5's corrected reading bounds the framing: the licence is no pass-or-fail verdict in the debrief, not grade nothing. A score may exist without being surfaced as jeopardy. FROM LDB-01 (approved 2026-08-01): EV gets no Skill at all, so no economy mechanic may present an expected-value number as a learner-facing score — EV survives only as rationale in feedback copy. E-1 now has a named Skill to be measured against: adherence-under-loss, judged by the oracle, is the Skill that carries the P-1 and P-5 instruments, and whether a won hand returns chips is testable as its divergence. Note also that probability, EV and variance ship only where they change a decision (ROADMAP deliverable 2 as amended), which forecloses any chips mechanic justified as teaching the maths. FROM LDB-03 (approved 2026-08-01): the taxonomy contains no reward mechanic at all, so nothing here is pre-decided — but three constraints now bind. U2-9 is rejected outright, so no economy mechanic may take a learner self-rating as an input to anything. No activity surfaces a pass/fail verdict (U1-5's surviving licence, applied concretely as rule-contrast's verdictSurfaced false), so an economy that displays one would reintroduce exactly what the activity design removed. And E-1 finally has a named instrument: adherence-under-loss is primary in deal-and-decide, so whether a won hand returns chips is testable as its divergence across matched arranged and organic runs.
+- Next: DESIGNED 2026-08-04; awaiting the user-approval gate. Spec docs/superpowers/specs/2026-08-04-motivation-and-chips-economy.md. REVIEW ORDER: section 0 (what it does NOT own), then section 17's three checkable approval criteria, then section 12's THREE DIVERGENCES which each need explicit assent — (1) the premise's governing sentence at 2026-07-26-chips-xp-and-progression-economy.md:47 is amended from 'learning earns table time' to 'learning OR WINNING earns table time', on the owner's direct 2026-08-04 ruling; (2) the practice-availability rule reverses an earlier same-session statement, progressive section opening supersedes post-curriculum-only, and BOTH statements travel to LDB-06 so the reversal is visible; (3) the per-window cap IS a regeneration timer, breaches none of product-vision.md:88-90's four prohibitions and arguably serves the loss-chasing one, adopted knowingly and filed as A-25. Section 10 rewrites A-20 because 'cosmetic' is FALSE under D1 — winning returns real chips that buy real table time, so the mitigation is narrower than the row claims. THREE CORRECTIONS FOUND AND OWED AT APPROVAL (section 16): the premise doc cites how-to-teach.md:120 which is a BLANK LINE, real locus :122, and this spec's own draft copied :120 before the check ran — the inherited-error class caught in flight; LDB-04 cites journal/decisions.md:182 for a phrase that is at :179-180; and 2026-08-03-evidence-and-mastery-rules.md is ABSENT from journal/docs-map.md while LDB-01's and LDB-03's specs are registered. Register delta: three A-07 sub-rows (b,c,d), two new rows A-24 and A-25, A-20 rewritten — all land AT approval, not before, and are verified present after writing.
 - Load: docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md, docs/superpowers/research/evidence-index/P1-evidence-catalog.md
 - Gate: user-approval
-- Evidence: pending
-- Updated: 2026-08-01T14:08:12.687Z
-
-
-## Active
-
-
-## Verification
+- Evidence: DESIGNED 2026-08-04, awaiting the user-approval gate. Spec docs/superpowers/specs/2026-08-04-motivation-and-chips-economy.md — twelve decisions D1-D12 answering E-1 through E-7, produced by a grill-with-docs session in which the owner answered every question directly. THE ECONOMY: chips are earned by WINNING OR LEARNING, money never buys chips, chips buy table time and nothing else. The wallet is unwalled and persists across sessions and logouts; a real buy-in moves chips wallet-to-stack and cash-out returns the whole stack uncapped. An empty wallet is a real setback with learning as the only refill. Practice is the standing bounded faucet: due work at full rate, mastered-material practice at a trickle that never reaches zero, all inside a per-window cap. Free Play opens early at COMPLETE_ROUND; mastery gates table CHARACTER, never access. Three meters never blended — chips, XP (monotonic), player score (a rating) — linked by the rating scaling XP earn rate, with the rating ingesting oracle-graded Free Play decisions so standing moves with HOW YOU PLAYED and never with WHAT YOU WON. The rating fits per-learner online from a published default constant, so no minimum population and no below-25 fallback is needed. E-7 recorded as inherited from ROADMAP.md:249 / CLOUD-06, not re-decided.
+- Updated: 2026-08-04T03:37:48.559Z
 
 ## Done
 ### LDB-04 — Decide the per-activity evidence and mastery rules
