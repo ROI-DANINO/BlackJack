@@ -397,7 +397,7 @@ Three independent grounds, each `[Evidence-backed]` at its source:
 
 **Boundary, stated so LDB-05 does not misread this.** *Nothing is locked by mastery* is not *nothing
 is ever gated*. The economy premise — chips *"earned by completing lessons and units"* and spent only
-in Free Play, `journal/decisions.md:182` — is a gate, and a legitimate one. It is an **economy** gate
+in Free Play, `journal/decisions.md:179-180` — is a gate, and a legitimate one. It is an **economy** gate
 owned by LDB-05, not a mastery gate.
 
 ### D10. The criteria are published — rule and count both
@@ -506,7 +506,7 @@ why *"a played hand can never satisfy completion."*
 > computations.
 
 They must stay separate because **completion is the economy's trigger** — chips are *"earned by
-completing lessons and units"* (`journal/decisions.md:182`). Retiring completion inside a mastery
+completing lessons and units"* (`journal/decisions.md:179-180`). Retiring completion inside a mastery
 ruling would delete LDB-05's central mechanic as a side effect.
 
 The branch draft retired `K-U6-003` on the reasoning that its §2 replaced the rule outright. **That

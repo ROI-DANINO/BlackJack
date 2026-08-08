@@ -1,10 +1,15 @@
 # The Motivation and Chips Economy — LDB-05
 
-> **Status: DESIGNED 2026-08-04, awaiting the `user-approval` gate.**
+> **Status: APPROVED by the owner 2026-08-05 at the `user-approval` gate. Authoritative.**
 >
 > Every ruling below was put to the owner during a `grill-with-docs` session on 2026-08-04 and
-> answered directly. The three §12 divergences need explicit assent at the gate; nothing else here
-> is offered as a question.
+> answered directly. The three §12 divergences were put individually at the gate: **1 assented and
+> widened, 2 assented, 3 dropped.** The gate record — what was verified, how, and the four defects
+> found and fixed before approval — is **§18**.
+>
+> **Changed at the gate, so a reader of the 2026-08-04 draft is not misled:** the per-window practice
+> cap is **gone** (D5, §12.3), and tables are now **tiered by stakes** with a minimum bet and a
+> buy-in range, which moves D3's setback boundary off zero and widens what chips may gate in D7.
 >
 > ROADMAP Phase 4 deliverable 6. **Phase 4 designs and builds nothing** — this document produces no
 > code and authorises none. Its schema deltas (§11) are owed to phase 5, not applied here.
@@ -169,10 +174,19 @@ progression happens — driven by *how you played*, never by *what you won*.
     economy points me at what is actually worth doing.
 14. As a learner, I want practice on material I have fully mastered to still pay something, so that
     being good at everything never leaves me with no way to earn.
-15. As a learner, I want a bound on how much I can earn from practice in a given window, so that the
-    product is not asking me to grind.
-16. As the owner, I want that bound to be a named, changeable constant, so that playtesting can move
-    it rather than argue about it.
+15. ~~As a learner, I want a bound on how much I can earn from practice in a given window, so that the
+    product is not asking me to grind.~~ — **NOT MET. Deliberately unanswered at the 2026-08-05 gate**,
+    which dropped the per-window cap (§12 divergence 3) because it contradicted D3. The grind concern
+    is real and now unowned by this card: `LDB-06` may answer it in *session shape*, and the owner's
+    stated intent is a free-tier bound arriving later as an energy or error-rate mechanism
+    (`journal/decisions.md`, deferred-monetization row). Struck rather than deleted, so the gap stays
+    visible.
+16. ~~As the owner, I want that bound to be a named, changeable constant, so that playtesting can move
+    it rather than argue about it.~~ — **NOT MET**, follows 15. No bound exists to name.
+16b. As a learner, I want tables at different stakes, so that my wallet decides what I can play for
+    the way it would at a real casino.
+16c. As a learner, I want a bigger balance to buy bigger swings and never an easier game, so that
+    money cannot counterfeit skill.
 17. As a learner, I want the tables to open early, so that I reach the game while I am still curious
     about it.
 18. As a learner, I want to be able to complete a round before I am dropped at a real table, so that
@@ -237,10 +251,32 @@ learner has bought more hands at a table whose character cannot improve without 
 have advanced on no axis. `[Product judgement]` on the ruling; `[Evidence-backed]` that the engine
 already computes settlement this way (`session.rs:63-74`, `:214`, `:235-242`, `:383-384`).
 
-### D2. The buy-in is a real transfer, and cash-out returns everything — `E-1`
+### D2. The buy-in is a real transfer, bounded by the table, and cash-out returns everything — `E-1`
 
 Sitting down moves chips from the **wallet** to a **table stack**. Leaving moves the whole remaining
 stack back, wins included, with nothing withheld.
+
+**Tables are tiered by stakes, as real tables are.** Each table tier declares three numbers: a
+**minimum bet**, a **minimum buy-in** (the least you may sit down with) and a **maximum buy-in** (the
+most you may bring to that table). A learner sits at whatever tier their wallet can cover. Owner
+ruling of 2026-08-05, folded in at the approval gate.
+
+**This is what makes D1's safety argument concrete rather than abstract.** "Chips buy table time" is
+a promise about nothing until table time has structure. With tiers, a large wallet buys **higher
+stakes** — and stakes are not one of the four axes D1 protects. Basic strategy is identical at every
+tier; the chart does not change with the bet size, so a stake tier is **not a difficulty tier**. The
+learner who wins big has bought bigger swings, not an easier game and not a faster route through
+anything. `[Product judgement]`
+
+**Stake tier and table character are separate gates and must stay separate** — see D6. Your wallet
+decides *how much you are playing for*; your mastery decides *what kind of game it is*. A lucky run
+may seat you at a high-minimum table; it may never hand you chart-off play, a new ruleset, a faster
+pace, or a count tool.
+
+**Nothing in the engine models this today** — `Ruleset` (`crates/blackjack-core/src/types.rs:63-74`)
+carries no bet limits, and `validate_bet` (`session.rs:499-507`) checks only positivity and the 3:2
+even-units rule. Both were read first-hand 2026-08-05. The table catalogue is owed to phase 5 as §11
+item 6. `[Evidence-backed]` on the absence, by direct reading of both loci.
 
 **This maps one-to-one onto shipped machinery.** `start_session(seed, bankroll, default_bet, ruleset)`
 (`session.rs:8-12`) already takes a bankroll at session start; `start_round` already refuses when
@@ -257,10 +293,20 @@ a real casino does, which is the stated frame; busting a stack becomes a real mo
 session without ending the learner's standing; and a stake level gives table tiers something to be
 denominated in when D6's mastery-gated table character arrives.
 
-### D3. An empty wallet is a real setback, and learning is the only refill — `E-2`
+### D3. A wallet that cannot cover a seat is a real setback, and learning is the only refill — `E-2`
 
-At zero chips, Free Play closes. **The only route back is learning.** No timer, no regeneration, no
-top-up, no purchase, ever — the last of those being the premise's one absolute.
+**Free Play closes when the wallet falls below the lowest table tier's minimum buy-in** (D2) — which
+is a number above zero, not zero. An earlier draft of this ruling said *"at zero chips"*; that was
+correct only while every table was free to sit at, and D2's tiers make it wrong. Corrected at the
+2026-08-05 gate.
+
+**The only route back is learning.** No timer, no regeneration, no top-up, no purchase, ever — the
+last of those being the premise's one absolute.
+
+**The boundary is a product lever, not an accident.** Where the lowest tier's minimum buy-in sits
+decides how often a learner meets this state at all: set it low and going broke is rare and mild, set
+it high and the table is a place you have to earn your way to. It is filed with the other stake
+constants under `A-07b`.
 
 **Where the refill comes from depends on where the learner is.** Mid-curriculum it is the curriculum
 itself: the next lesson or unit pays on `Completion`, which `LDB-04` D14 preserved for exactly this
@@ -277,8 +323,10 @@ in which a learner has no way to earn.** `[Product judgement]`
 ### D4. Practice is the standing faucet, and it is bounded — `E-2`
 
 An always-available practice mode serves activities over material the learner has already covered,
-and pays as they go. It is **bounded, not open**: it opens progressively as learning stacks, and what
-it can pay in a given window is capped (D5).
+and pays as they go. It is **bounded by coverage, not by quantity**: it opens progressively as
+learning stacks (§12 divergence 2), and the only thing limiting what it pays is the trickle rate on
+mastered material (D5.2). *(The pre-gate draft also bounded it by a per-window cap; the gate dropped
+that — §12 divergence 3.)*
 
 **It cannot be used to skip the ladder.** Practice runs only over material already covered, so it is
 never a route past the curriculum — it is a route *back through* it. `[Product judgement]`
@@ -294,9 +342,9 @@ already assigns session composition there, and D8 of that document assigns stale
 recommender rather than to mastery. **This ruling is written to hold whatever subset of sections is
 open**, so nothing here is blocked on that answer. See §13.
 
-### D5. The pay tier: full rate, trickle, cap — `E-3`
+### D5. The pay tier: full rate, then trickle — `E-3`
 
-Three rules, no numbers.
+Two rules, no numbers, no bound.
 
 1. **Due and maintenance work pays the full rate.** A Skill in `Review due` — mastery reached, live
    window since fallen (`LDB-04` D8) — and a first `Completion` of new material both pay full.
@@ -304,16 +352,29 @@ Three rules, no numbers.
    what makes D3's guarantee true rather than aspirational. The recommender's suggestion becomes the
    *economically preferred* path rather than the only paid one — a steer expressed in the economy
    instead of in a lock, which matters because `LDB-04` D9 ruled that mastery locks nothing.
-3. **Both sit inside a per-window cap.** Total practice earnings are bounded per window.
+
+**There is no per-window cap.** A third rule bounding total practice earnings per window was designed
+and was **dropped at the 2026-08-05 approval gate** — see §12 divergence 3, which records why. The
+short version: it contradicted D3. D3 guarantees *"no reachable state in which a learner has no way to
+earn"*, and rule 2 was offered as what makes that guarantee true rather than aspirational; a cap on
+rule 2 re-created the exact state D3 forbids, for a learner who was broke, had nothing due, and had
+hit the window. The guarantee is now literally true: **learning always pays, at some rate, always.**
+
+**What bounds the refill is the trickle rate itself**, not a wall. A fully-mastered learner earns
+slowly; a learner with due work earns fast, which is the steer D5.2 wants. Nothing produces a
+come-back-later moment. `[Product judgement]`
 
 **Wrong answers cost nothing.** Learning activities never debit the wallet — premise, held
 everywhere, no entry fees and no penalties. Punitive mechanics are counterproductive where wrong
 answers are the teaching mechanism (`docs/imports/v2-research-2026-07-11/course-bundle/how-to-teach.md:122`,
-reopened first-hand 2026-08-04 — see §16 correction 3).
+reopened first-hand 2026-08-04 — see §16 correction 3). **This is now the economy's whole position on
+bounding learning**, and any future mechanism that gates learning by errors or by a regenerating
+resource must be argued against that quote directly — see `journal/decisions.md`, deferred-monetization
+row of 2026-08-05.
 
-**Every constant here is a placeholder** and is filed in §10: the buy-in, the table minimum, the full
-rate, the trickle rate, the cap amount, and the window length. `[Product judgement]` on the shape;
-the values are `[Assumption]` and carry rows.
+**Every constant here is a placeholder** and is filed in §10: the table minimum bet, the minimum and
+maximum buy-in per table tier (D2), the full rate, and the trickle rate. `[Product judgement]` on the
+shape; the values are `[Assumption]` and carry rows.
 
 ### D6. Free Play opens early; mastery gates table *character*, not access — `E-4`
 
@@ -322,11 +383,23 @@ the values are `[Assumption]` and carry rows.
 premise's fixed onboarding chip grant lands. "Has chips" and "has reached the level" are therefore
 the same moment, and the premise's two-part gate collapses into one.
 
-**After that, access never closes except by an empty wallet.** What improves with mastery is the
-table itself: chart-off tables, new rulesets, pace tiers, later count tools. This is the established
-line — *"unlocks based primarily on mastery"* (`learning-mastery-and-scoring.md:173`) — applied to
-the table rather than to the curriculum, and it is consistent with `LDB-04` D9's ruling that mastery
-locks no *content*, since D9 explicitly reserved the economy gate to this card.
+**After that, access never closes except by a wallet that cannot cover the lowest seat** (D3). What
+improves with mastery is the table itself: chart-off tables, new rulesets, pace tiers, later count
+tools. This is the established line — *"unlocks based primarily on mastery"*
+(`learning-mastery-and-scoring.md:173`) — applied to the table rather than to the curriculum, and it
+is consistent with `LDB-04` D9's ruling that mastery locks no *content*, since D9 explicitly reserved
+the economy gate to this card.
+
+**Two gates on one object, and they never merge.** A table has a **stake tier** and a **character**.
+
+| Property of a table | Gated by | May a lucky run buy it? |
+|---|---|---|
+| Stake tier — minimum bet, buy-in range | The wallet (D2) | **Yes.** Bigger swings, same game. |
+| Character — chart-off, ruleset, pace, count tools | Mastery (`LDB-04`) | **Never.** |
+
+Writing them as one gate is the failure mode to avoid: a single "table level" rising on either input
+would let a balance counterfeit demonstrated skill, which is user story 20 and `product-vision.md:88-90`'s
+*"celebrate money won"*. They are two columns and must render as two (`LDB-07`). `[Product judgement]`
 
 **Why not later.** Constraint 3 — it is a game and it has to be fun. Gating the table behind a whole
 Subject buys pedagogical safety with the thing the product is for. Constraint 4 — table literacy — is
@@ -334,12 +407,17 @@ satisfied by `COMPLETE_ROUND`, which is precisely the literacy it names. `[Produ
 
 ### D7. Three meters, three jobs, never blended — `E-5`
 
-| Meter | What it is | Moves with | May gate |
-|---|---|---|---|
-| **Chips** | A persistent wallet | Winning, losing, learning | Table time only |
-| **XP** | The effort ledger; monotonic, never falls | Work done, scaled by rating (D8) | Nothing |
-| **Player score** | A rating; rises and falls | Decision quality, including at the table (D9) | Difficulty only |
-| *Mastery* | *Not a meter — computed evidence (`LDB-04`)* | *Decision behaviour* | *Table character (D6)* |
+| Meter | What it is | Moves with | May gate | May **never** gate |
+|---|---|---|---|---|
+| **Chips** | A persistent wallet | Winning, losing, learning | Table time, and **stake tier** (D2) | Table character, difficulty, any unit, Skill or rank |
+| **XP** | The effort ledger; monotonic, never falls | Work done, scaled by rating (D8) | Nothing | Anything |
+| **Player score** | A rating; rises and falls | Decision quality, including at the table (D9) | Difficulty only | Table access, stake tier |
+| *Mastery* | *Not a meter — computed evidence (`LDB-04`)* | *Decision behaviour* | *Table character (D6)* | *Stake tier* |
+
+**Stake tier was added to the chips row at the 2026-08-05 gate**, with D2's tiered tables. It is a
+widening of what chips may gate and is deliberate: a stake tier is not a difficulty tier, because the
+strategy chart is identical at every stake. The final column exists so the widening cannot creep —
+each meter's prohibitions are now written positively rather than left to be inferred from the others.
 
 **They are displayed side by side and never summed.** One player card, three separate facts. This is
 what makes progression read as a single thing without any of it being blended.
@@ -476,12 +554,16 @@ recovery suite (`2026-07-17-progressstore-cycle1-design.md`).
   existing corruption/quota/`versionchange` failure modes. Prior art:
   `web/research/browser-storage/src/suite.ts` and the ProgressStore cycle-1 suite.
 - **The earn/spend reducer** — that a `Completion` credits, that a `Review due` clear credits at full
-  rate, that mastered-material practice credits a non-zero lesser amount, that the per-window cap
-  bounds a window's total, and that no learning activity ever debits.
-- **The buy-in and cash-out path** — that a buy-in cannot exceed the wallet, that cash-out returns
-  the full remaining stack, and that leaving mid-round cannot lose committed wager state.
-- **The access gate** — that Free Play refuses below the `COMPLETE_ROUND` gate and at a zero wallet,
-  and opens otherwise.
+  rate, that mastered-material practice credits a non-zero lesser amount, that **no window, session
+  length, or accumulated total ever reduces an earn to zero** (D5, post-gate — the positive form of
+  "there is no cap", written as an assertion rather than as the absence of one), and that no learning
+  activity ever debits.
+- **The buy-in and cash-out path** — that a buy-in cannot exceed the wallet, that it is **rejected
+  below the tier's minimum buy-in and clamped at its maximum** (D2), that cash-out returns the full
+  remaining stack, and that leaving mid-round cannot lose committed wager state.
+- **The access gate** — that Free Play refuses below the `COMPLETE_ROUND` gate and **whenever the
+  wallet is below the lowest tier's minimum buy-in** (D3 — *not* at zero; the boundary is a
+  derived value and a test hardcoding `0` would pass while the rule was wrong), and opens otherwise.
 - **The rating** — that it moves on oracle-graded decision correctness and is **invariant to hand
   outcome**. This is the single most important test in the economy: a property test asserting that
   two identical decision sequences with opposite `HandOutcome` results produce the identical rating
@@ -515,16 +597,19 @@ This document does not claim the check exists; it specifies it as owed to phase 
 
 ### 10. Register delta
 
-**Three sub-rows under `A-07`, two new top-level rows, and one existing row corrected.** To land at
+**Two sub-rows under `A-07`, one new top-level row, and one existing row corrected.** To land at
 approval, not before.
 
 | Filed as | Covers | Validation |
 |---|---|---|
-| **`A-07b`** | The stake constants — buy-in amount and table minimum bet | **production telemetry.** Named first test: what fraction of sessions end by busting the stack within N hands? A buy-in that busts too fast makes the table feel punitive; one that never busts makes it feel weightless. |
-| **`A-07c`** | The pay rates — full rate per `Completion` and per `Review due` clear, and the reduced trickle for mastered-material practice | **production telemetry.** Named first test: measured wallet trajectories — how many minutes of learning fund one session, and does the trickle alone keep a fully-mastered learner solvent? |
-| **`A-07d`** | The per-window cap — amount and window length | **playtesting.** Named first test: do learners report hitting the cap, and does hitting it read as a stopping point or as a wall? |
+| **`A-07b`** | The stake constants — per table tier, the minimum bet, the minimum buy-in and the maximum buy-in; and how many tiers there are | **production telemetry.** Named first test: what fraction of sessions end by busting the stack within N hands? A buy-in that busts too fast makes the table feel punitive; one that never busts makes it feel weightless. **Second test, added with D2's tiers:** how often does a learner fall below the *lowest* tier's minimum buy-in — the D3 setback boundary — and does that read as a prompt or as a wall? |
+| **`A-07c`** | The pay rates — full rate per `Completion` and per `Review due` clear, and the reduced trickle for mastered-material practice | **production telemetry.** Named first test: measured wallet trajectories — how many minutes of learning fund one session, and does the trickle alone keep a fully-mastered learner solvent? **This test carries more weight now that no cap exists:** the trickle rate is the *only* thing bounding refill speed, so it is doing the job two constants shared in the pre-gate design. |
 | **`A-24`** | Per-learner online item fitting from one published default constant is sufficient for this product's rating at n = 1 learner | **production telemetry.** Named first test: does the fitted per-item parameter stabilise within one learner's own response history, and does difficulty selection track measured accuracy? **Two qualifications recorded on the row:** the architecture is population-*light*, not population-free — the default constant is itself population-derived, and the claim that the requirement was falsified was struck as overstated (`P1-evidence-catalog.md:59`); and F17/F24/F25/F26 are **one lab, one system, one commercial lineage**, not four independent lines of evidence. |
-| **`A-25`** | The per-window practice cap does not read as an energy gate | **playtesting.** Named first test: after hitting the cap, do learners describe the product as asking them to wait? Population is narrow by construction — it can only bite a learner who is both broke and out of full-rate work. |
+
+**`A-07d` and `A-25` were designed and then never filed.** Both existed only to cover the per-window
+cap, which was dropped at the 2026-08-05 gate (§12 divergence 3). They are named here so that a reader
+comparing the pre-gate draft against the register does not read their absence as an omission. **No row
+was retired** — neither was ever written.
 
 **`A-20` is corrected, not merely cited.** It currently reads *"the chips economy's **cosmetic**
 reward for winning does not teach outcome bias."* Under D1 the reward is **not cosmetic** — winning
@@ -558,60 +643,101 @@ Everything this design persists is new:
 2. **A ledger of economic events** — earn and spend, each with its source (`Completion`, `Review due`
    clear, practice trickle, buy-in, cash-out) — without which `A-07b`–`A-07d` cannot be validated
    from telemetry, and their named tests would be unrunnable.
-3. **A per-window earned total**, or a derivation of it from the ledger, to enforce D5's cap.
-4. **An XP total** and **a rating value**, plus the per-item fitted parameters D10 requires.
-5. **A support Condition on Free Play attempts** — D9 requires `table-open`/`table-closed` to be
+3. **An XP total** and **a rating value**, plus the per-item fitted parameters D10 requires.
+4. **A support Condition on Free Play attempts** — D9 requires `table-open`/`table-closed` to be
    captured at the table, not only in drills.
+5. **A table catalogue** — per tier, a minimum bet, a minimum buy-in and a maximum buy-in (D2).
+   **This one is not in `web/src/progress/` but in the engine**, and it is genuinely absent today:
+   `Ruleset` (`crates/blackjack-core/src/types.rs:63-74`) declares `decks`, `penetration_percent`,
+   `dealer_soft_17`, `blackjack_payout`, `max_split_hands`, `double_after_split`, `resplit_aces`,
+   `split_aces_receive_one_card`, `insurance_auto_decline` — and **no bet limit of any kind**.
+   `validate_bet` (`session.rs:499-507`) enforces only `bet > 0` and the 3:2 even-units rule. Both
+   read first-hand 2026-08-05. Whether the limits belong on `Ruleset` or on a table type beside it is
+   phase 5's call; this document only records that nothing holds them now.
+6. **The D3 boundary as a derived value** — Free Play's open/closed test is `wallet ≥ lowest tier's
+   minimum buy-in`, so it reads item 5 and cannot be hardcoded to zero.
+
+**The former item 3 is gone.** A per-window earned total was owed only to enforce D5's cap, which the
+gate dropped; it is named here rather than silently renumbered.
 
 Item 2 is the one most likely to be dropped as an implementation detail and is the one that makes
 this design falsifiable.
 
 ### 12. Divergences from approved or premised documents, surfaced not applied
 
-**Three. Each needs the owner's assent at the gate.**
+**Three. Each was put to the owner individually at the 2026-08-05 gate and each is resolved below.**
 
-1. **The premise's governing sentence is amended.**
+1. **The premise's governing paragraph is amended — ASSENTED, and widened at the gate.**
    `2026-07-26-chips-xp-and-progression-economy.md:47` reads *"Learning earns table time; money never
    buys chips."* D1 rules **learning *or winning* earns table time**. The owner stated this directly
    on 2026-08-04 — *"to earn them you need to win or learn thats the point"* — so the divergence is
-   from the recorded premise, not from the owner's position. It is surfaced because the premise
-   document is cited elsewhere and a reader arriving at line 47 would otherwise find this design in
-   contradiction with it. **On approval, line 47 is corrected in place with a dated note.**
+   from the recorded premise, not from the owner's position.
 
-2. **The practice-availability rule reverses an earlier statement made in the same session.**
+   **Found at the gate: the divergence as drafted was under-scoped.** Lines 45-47 are one paragraph
+   and D1-D3 contradict **three** of its clauses, not one:
+
+   | Premise clause | Contradicted by |
+   |---|---|
+   | `:45` *"Chip quantity does not really affect anything."* | D2 and D3 — quantity decides which tier you may sit at, and whether you may sit at all. |
+   | `:46-47` *"not stake, pressure, or reward for winning."* | D1 and D2 — the table stack **is** a stake, and winning **is** rewarded in chips. |
+   | `:47` *"Learning earns table time"* | D1 — learning *or winning* earns it. |
+
+   Correcting only `:47` would have left the two preceding clauses contradicting this design inside
+   the same paragraph. **The owner ruled the whole paragraph amended**, with a dated note. Applied
+   2026-08-05.
+
+2. **The practice-availability rule reverses an earlier statement made in the same session — ASSENTED.**
    Stated first: *"when you finished the learning skills and mastery only then you can play the
    freelearn."* Stated after: *"Free-learn opens sections as learnings stack and can be played with
-   just what the user already learned."* **The second supersedes**, and D4 is written to the second.
+   just what the user already learned."* **The second supersedes**, confirmed by the owner at the
+   2026-08-05 gate, and D4 is written to the second.
+
    Both are recorded here and both travel to `LDB-06` (§13), so whoever designs the opening rule sees
    the reversal rather than inheriting half of it. The economic consequence is real — under the first
    statement a mid-curriculum learner who went broke had only the next lesson; under the second they
    also have practice — which is why D4 is deliberately written to hold **whatever subset of sections
    is open**.
 
-3. **A per-window cap is a regeneration timer, and is adopted knowingly.**
-   Checked against the actual prohibitions rather than a paraphrase: `product-vision.md:88-90` forbids
-   celebrating money won, encouraging loss chasing, implying guaranteed profit, and punishing a
-   learner for ending a session. **A per-window cap breaches none of them**, and it arguably serves
-   the second — a learner cannot grind their way back into a tilt session. The risk is against
-   constraint 3, *it has to be fun*, and it lands on the narrowest possible population: a learner who
-   is simultaneously broke and out of full-rate work. Adopted as ruled, filed as `A-25`, and named
-   here rather than left to be discovered.
+3. **A per-window cap is a regeneration timer — put to the owner, and DROPPED at the gate.**
+
+   The pre-gate design adopted it knowingly. Checked against the actual prohibitions rather than a
+   paraphrase: `product-vision.md:88-90` forbids celebrating money won, encouraging loss chasing,
+   implying guaranteed profit, and punishing a learner for ending a session. **A per-window cap
+   breaches none of them**, and it arguably serves the second — a learner cannot grind their way back
+   into a tilt session. The risk was against constraint 3, *it has to be fun*.
 
    **The nearest documented caution names an energy gate specifically, so it is quoted rather than
-   paraphrased.** `how-to-teach.md:122`, reopened first-hand 2026-08-04: *"Punitive mechanics can
-   backfire. Duolingo's 'hearts' (lose a heart per mistake, get locked out) are criticized for
-   creating anxiety around mistakes — and mistakes are how people learn. In a decision trainer where
-   wrong answers are the whole teaching mechanism, a lock-you-out-for-errors system is especially
-   counterproductive."*
+   paraphrased.** `how-to-teach.md:122`, reopened first-hand 2026-08-04 and again 2026-08-05:
+   *"Punitive mechanics can backfire. Duolingo's 'hearts' (lose a heart per mistake, get locked out)
+   are criticized for creating anxiety around mistakes — and mistakes are how people learn. In a
+   decision trainer where wrong answers are the whole teaching mechanism, a lock-you-out-for-errors
+   system is especially counterproductive."*
 
-   **Why the cap is not that mechanism.** Hearts are debited *per mistake* and lock the learner out
+   **Why the cap was not that mechanism.** Hearts are debited *per mistake* and lock the learner out
    *for being wrong*. Nothing in this economy is debited for a wrong answer — D5 states it directly,
-   wrong answers cost nothing, and no learning activity ever debits the wallet. Chips are lost only
-   at the table, by playing, never by erring in a lesson. The two mechanisms share a *shape*, not a
-   trigger. **The residual is honest and is what `A-25` measures:** a cap can still produce the
-   locked-out *feeling* even when nothing punished a mistake, and no source held here tests that
-   distinction. `[Evidence-backed]` on the quote and on the trigger difference; `[Assumption]` that
-   the difference is one learners actually experience.
+   and no learning activity ever debits the wallet. Chips are lost only at the table, by playing,
+   never by erring in a lesson. The two mechanisms share a *shape*, not a trigger. That defence was
+   and remains sound.
+
+   **What killed it was not the hearts caution but D3.** Found while explaining the divergence at the
+   gate: D3 guarantees *"there is no reachable state in which a learner has no way to earn"*, and D5
+   rule 2 was offered as *"what makes D3's guarantee true rather than aspirational"* — then rule 3
+   capped rule 2. A learner who was broke, had nothing due, and had hit the window had **no way to
+   earn**, which is exactly the state D3 declares unreachable. The document argued its own guarantee
+   true and then bounded the thing that made it true, three lines later. A second defect travelled
+   with it: *"Both sit inside a per-window cap"* never made clear whether "both" included first
+   `Completion` of new material, so the cap's blast radius was undefined.
+
+   **Owner ruling, 2026-08-05: drop the cap.** D5 is now two rules. The trickle rate alone bounds
+   refill speed, without a come-back-later moment. `A-07d` and `A-25` were never filed (§10). User
+   story 15 — *"I want a bound on how much I can earn from practice in a given window, so that the
+   product is not asking me to grind"* — is **deliberately left unanswered for now**, recorded here
+   rather than dropped silently; the owner's stated intent is that a free-tier bound arrives later as
+   an energy or error-rate mechanism, which is the deferred-monetization row in `journal/decisions.md`
+   of 2026-08-05. **That future mechanism is the one the hearts quote above actually names**, so the
+   quote is now load-bearing against a mechanic this project intends to build rather than against one
+   it declined. `[Evidence-backed]` on the quote and on the trigger difference; `[Product judgement]`
+   on dropping the cap.
 
 ### 13. Handed forward
 
@@ -620,6 +746,11 @@ this design falsifiable.
 - **When practice sections open, and what the mode serves.** D4 rules that the faucet exists and D5
   rules what it pays; neither depends on the answer. **Both of the owner's contradictory statements
   are recorded at §12 divergence 2** — do not merge them silently.
+- **Nothing bounds practice any more.** The gate dropped the per-window cap (§12 divergence 3), so
+  the economy imposes **no** stopping condition on a practice session. If session composition wants
+  one — a session length, a stopping rule, a natural end — it is `LDB-06`'s to invent and it may not
+  reach back for a chip cap to do it. User story 15's grind concern is live and unowned; `LDB-06` is
+  the card best placed to answer it in session shape rather than in currency.
 - **The `Review due` → full-rate coupling.** D5 pays full rate for clearing a `Review due` Skill,
   which makes the recommender an economic actor. Whatever `LDB-06` decides about staleness and
   recommendation ordering now has a chip consequence.
@@ -680,6 +811,10 @@ decision adopted by side effect — the failure `LDB-04` §16 names. On approval
   the Wallet is meant), buy-in (when the stack is meant), pot.
 - **Buy-in** — the transfer of chips from the Wallet to a Table stack on sitting down. Its reverse is
   cash-out, which returns the whole remaining stack. *Avoid:* entry fee, stake, ante.
+- **Table tier** — a stakes band: a minimum bet, a minimum buy-in, and a maximum buy-in. Gated by the
+  Wallet alone. Distinct from **table character**, which is gated by mastery alone and never by chips.
+  The strategy chart is identical at every tier, so a tier is *not* a difficulty level.
+  *Avoid:* table level, table rank, high roller (as a mechanic name).
 - **XP** — the monotonic effort ledger. Records work done, never falls, and gates nothing. Distinct
   from Player score, which moves in both directions. *Avoid:* points, score, rating.
 - **Player score** — the learner's rating: internal, two-directional, fitted per learner, moving with
@@ -693,14 +828,29 @@ decision adopted by side effect — the failure `LDB-04` §16 names. On approval
 
 ### 16. Corrections landed and owed
 
+**Five items: four owed corrections, plus item 5 which §10 owns.** The pre-gate draft of this section
+said "three" in its own §17 and on the kanban card while listing five here — a checklist gone stale
+against the thing it checks, which is precisely the defect `LDB-04` caught at *its* gate (§15 said
+four divergences while §12 said five). Recounted at the 2026-08-05 gate.
+
 **Found while writing this document, each verified first-hand rather than taken from a citing
-document.**
+document.** All four owed corrections were applied at the 2026-08-05 gate and each was verified
+present in its target file after writing.
 
 1. **Citation drift in the premise document.** `2026-07-26-chips-xp-and-progression-economy.md` cites
    `product-vision.md:78-80` for the four motivation prohibitions and `:27` for the not-centred-on-chips
    line. They are at **`:88-90`** and **`:32`**. Opened and confirmed 2026-08-04. **Owed:** correct
-   both citers at approval. The same file's `journal/ops/phase.md` references are also stale — that
-   path no longer exists; the journal is flat (`journal/phase.md`).
+   both citers at approval. The same file's `journal/ops/phase.md` references (`:11`, `:61`) are also
+   stale.
+
+   **This correction's own repair instruction was stale and was itself corrected at the gate.** It
+   said the target was `journal/phase.md` — "the journal is flat". It is flat, but ADR-0004 renamed
+   `journal/phase.md` to **`journal/milestone.md`**, and `journal/phase.md` does not exist either
+   (checked directly 2026-08-05). Applying this correction as drafted would have replaced one dead
+   path with another. A correction that has itself gone stale between being written and being applied
+   is a new instance of this repository's corrections-do-not-execute-themselves family, and is the
+   argument for the rule that a correction pass ends by re-checking its targets rather than trusting
+   its own text.
 2. **`2026-08-03-evidence-and-mastery-rules.md` is absent from `journal/docs-map.md`.** LDB-01's and
    LDB-03's specs are registered (`docs-map.md:84-87`); LDB-04's approved spec is not — confirmed by
    direct grep, zero hits. An approved authority document missing from the map `AGENTS.md` calls
@@ -719,20 +869,48 @@ document.**
    holds the co-equal-priorities clause instead. Verified by printing lines 178-184 directly. Minor,
    and it does not affect D14's reasoning — but it is the same drift class as correction 1, in an
    approved document. **Owed:** correct both loci at approval, or record it as accepted process
-   history if the owner prefers not to edit an approved spec.
+   history if the owner prefers not to edit an approved spec. *(Owner ruled at the 2026-08-05 gate:
+   correct them.)*
+
+   **A blanket replace would have been wrong, and this was checked before applying.**
+   `journal/decisions.md:182` occurs **four** times in `2026-08-03-evidence-and-mastery-rules.md`, and
+   **two of them are correct**: `:62` and `:66` cite it for the co-equal-priorities clause, which
+   genuinely is at `:181-182`. Only `:400` (*"spent only in Free Play"*, actually `:180`) and `:509`
+   (*"completing lessons and units"*, actually `:179-180`) point at the wrong line. Those two were
+   corrected; the two correct citations were left untouched. Enumerated positively: four occurrences
+   found, two changed, two verified correct and deliberately kept.
 
 5. **`A-20`'s "cosmetic" is wrong under D1** — see §10 for the rewritten row.
+
+6. **FOUND AT THE GATE, 2026-08-05 — a third stale citation in the premise document.**
+   `2026-07-26-chips-xp-and-progression-economy.md` cites `learning-mastery-and-scoring.md:152-165`
+   for the five-item rating model (*internal rating like chess, visible rank/level, mastery per skill,
+   unlocks driven primarily by mastery, difficulty adjusted by rating*). **`:152-165` is the Hint
+   System section** — a graded hint ladder — and contains none of the five. They are at **`:170-174`**,
+   the locus this document already cites correctly at D8. Both opened first-hand. **Applied 2026-08-05.**
+
+   **The pattern is worth naming, because it is now three.** Corrections 1, 3 and 6 are all stale
+   citations in the *same* premise document, each pointing a few lines off or into an adjacent
+   section, and each survived because the citing text was plausible and nobody reopened the target.
+   Two of the three (1 and 3) were found while *writing* this design; the third was found only at the
+   gate, by a reader checking a locus this document had already cited correctly from elsewhere — which
+   is to say it was found by the one check that compares two documents' citations of the same fact
+   against each other. That check is cheap and is not in `scripts/check-doc-drift.sh`.
 
 ### 17. Approval criteria — checkable
 
 The card's three tests, enumerated positively. **Nothing below is satisfied by the absence of a
 counter-example.**
 
-1. **All seven questions have written answers.** `E-1` → D1, D2. `E-2` → D3, D4. `E-3` → D5, as a
-   shape with all six constants filed (§10) — the owner ruled shape-not-numbers explicitly on
-   2026-08-04. `E-4` → D6. `E-5` → D7, D8, D9. `E-6` → D10. `E-7` → D11, recorded as inherited from
-   `ROADMAP.md:249` / `CLOUD-06` rather than re-decided. **Checked in both directions:** each of D1
-   through D11 is reachable from at least one `E-` number, and no `E-` number is unanswered.
+1. **All seven questions have written answers.** ✅ **VERIFIED at the 2026-08-05 gate against
+   `2026-07-26-chips-xp-and-progression-economy.md:53-78`, read first-hand.** `E-1` → D1, D2. `E-2` →
+   D3, D4. `E-3` → D5, as a shape with its constants filed (§10) — the owner ruled shape-not-numbers
+   explicitly on 2026-08-04. `E-4` → D6. `E-5` → D7, D8, D9. `E-6` → D10. `E-7` → D11, recorded as
+   inherited from `ROADMAP.md:249` / `CLOUD-06` rather than re-decided. **Checked in both directions:**
+   each of D1 through D11 is reachable from at least one `E-` number, and no `E-` number is
+   unanswered. D12 is a prohibitions block rather than an answer and is correctly outside the mapping.
+   *(The pre-gate text said "all six constants"; the gate dropped two of them with the cap and D2 added
+   two more, so the count is no longer fixed and the claim is stated without one.)*
 2. **`E-1`'s answer names how it will be tested, in register row `A-20`.** The row is rewritten in
    §10 with `adherence-under-loss` divergence across matched arranged and organic runs as its named
    test, sharing the `P-1` instrument. The criterion is satisfied by the row being **in the
@@ -745,8 +923,51 @@ counter-example.**
    leaderboard, no celebration keyed to a win (D12). The one place a win *does* pay — the wallet — is
    the subject of `A-20` and is flagged as untested rather than claimed safe.
 
-**Additionally checkable at the gate:** the three §12 divergences are each **stated** rather than
-applied; every constant in D5 and D2 carries a §10 row and every §10 sub-row corresponds to a
-constant this document actually names; the §15 glossary terms and the §10 rows land **at approval**
-and are verified present in their target files after writing; and the three §16 corrections are
-applied.
+**Additionally checkable at the gate:** the three §12 divergences were each **stated** rather than
+applied, and each was put individually and resolved — 1 assented and widened, 2 assented, 3 dropped;
+every constant in D5 and D2 carries a §10 row and every §10 sub-row corresponds to a constant this
+document actually names; the §15 glossary terms and the §10 rows land **at approval** and are verified
+present in their target files after writing; and the **four** owed §16 corrections are applied.
+
+---
+
+### 18. Gate record — 2026-08-05
+
+**APPROVED by the owner.** Criteria 1 and 3 verified fresh against the artifacts rather than trusted
+from this document's summaries; criterion 2 verified **after** landing, since it is satisfied by the
+row being in the register and not by §10 describing it.
+
+**Re-opened first-hand at the gate**, each confirmed at the locus this document states:
+`product-vision.md:88-90` (four prohibitions, verbatim), `:32`, `:84-86`, `:69-71` ·
+`P1-evidence-catalog.md:36`, `:54`, `:59`, `:113`, `:179` — including the *"four citations on C1's
+central question… not four independent lines of evidence"* clause · `ROADMAP.md:249` ·
+`learning-mastery-and-scoring.md:170-174` (five items, **no XP**) · `decisions.md:10`, `:194-195` ·
+`v2-research-06-ux-foundations.md:87`, `:137` · `session.rs:8-12`, `:74`, `:499-507` ·
+`types.rs:63-74` · `Table.tsx:8` · `blackjack-basics.ts:613-623` (nine units, `COMPLETE_ROUND` last).
+
+**Criterion 3's instrument checked as data, not as prose:** `2026-08-01-activity-taxonomy.json` gives
+`deal-and-decide` `primaryFor` all eight decision Skills including `adherence-under-loss`, with
+`provenance: ["organic","arranged"]`. D9's named instrument is real.
+
+**Criterion 3's structural half:** `web/src/progress/types.ts` holds no economic field — confirmed by
+word-bounded search for wallet, chip, bankroll, XP, rating, balance, stack and buy-in, zero hits.
+`LearnerEnvelope` carries `attempts`, `sessions`, `cachedMastery` only. *(A first pass used an
+unbounded pattern, which matched `export` on `xp` and returned eighteen false positives. Noted because
+a grep that appears to find something is the friendlier failure; the one that finds nothing because it
+was written wrong is this repository's absence-as-proof family, and the same care applies in reverse.)*
+
+**Four defects found at the gate and fixed before approval**, each recorded where it was found rather
+than only here: §16's count was stale against §16 (§17 and the kanban card both said three, §16 lists
+five); §16 correction 1's own repair instruction named a path that ADR-0004 had already renamed;
+§12 divergence 1 was under-scoped against the premise paragraph it corrects; and §16 correction 4's
+"both loci" needed enumerating before applying, because two of the four occurrences were correct.
+
+**One finding outside this document, recorded and not acted on:** the `LDB-03` kanban card's evidence
+text asserts `P2-verdict-catalog.md:170` contains the 46-vs-10 and 72-vs-38 d=1.05 figures *"at exactly
+that line"*. Line 170 is `---`; the figures are at `:198`. The documents are right — `A-23` and
+`2026-08-01-activity-taxonomy-and-skill-mapping.md:176` both cite `:198`, both checked. Only the board
+record is wrong, and only the board record needs fixing.
+
+**Scope added at the gate, not merely approved:** D2's tiered tables. Folded in because D3 would
+otherwise have shipped saying *"at zero chips"* when the rule is *below the lowest tier's minimum
+buy-in* — a correction to what was being approved, not a future refinement.

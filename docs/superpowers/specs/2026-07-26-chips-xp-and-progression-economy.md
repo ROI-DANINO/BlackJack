@@ -8,7 +8,7 @@
 
 The economy is one of Phase 4's design deliverables. It has been discussed twice and recorded
 only as fragments — a premise line in `journal/decisions.md` (2026-07-25) and a `next:` pointer
-in `journal/ops/phase.md`. This file holds the whole statement in one place so the design cycle
+in `journal/milestone.md`. This file holds the whole statement in one place so the design cycle
 starts from the owner's actual model rather than reconstructing it.
 
 Evidence posture, stated once: **the entire model below is product judgement.** No phase of the
@@ -27,8 +27,10 @@ returns the next day, the product remembers where they are in the learning path,
 score, their ability level, and their chip balance.
 
 **Player score.** A chess-style rating. The owner designed this early in the project; it survives
-in `docs/specs/learning-mastery-and-scoring.md:152-165` as: internal rating like chess, visible
+in `docs/specs/learning-mastery-and-scoring.md:170-174` as: internal rating like chess, visible
 rank/level, mastery per skill, unlocks driven primarily by mastery, difficulty adjusted by rating.
+*(Locus corrected 2026-08-05 at the `LDB-05` gate — this document cited `:152-165`, which is the
+Hint System section and contains none of the five items. Both loci opened and read first-hand.)*
 
 **XP and the leaderboard.** Progressing through learning stages earns XP toward a leaderboard.
 The owner's current position is that XP should be linked directly to the player score.
@@ -42,9 +44,31 @@ level that grants table access. Which score or which completed unit grants acces
 **At the table.** Once unlocked, the player plays as much as they want under the table rules.
 There is no cap on winnings.
 
-**The framing that governs all of it.** Chip quantity does not really affect anything. The
+**The framing that governs all of it.** ~~Chip quantity does not really affect anything. The
 purpose of chips is realism — the texture of a real table — not stake, pressure, or reward for
-winning. Learning earns table time; money never buys chips.
+winning. Learning earns table time; money never buys chips.~~
+
+> **AMENDED 2026-08-05 by owner ruling at the `LDB-05` approval gate.** The paragraph above is
+> superseded in full — three of its clauses, not one. The design that supersedes it is
+> `docs/superpowers/specs/2026-08-04-motivation-and-chips-economy.md` (approved, authoritative);
+> the amendment is recorded there at §12 divergence 1. It now reads:
+>
+> **The framing that governs all of it.** Chip quantity decides what you may play for and whether
+> you may sit at all: tables are tiered by stakes, each with a minimum bet and a buy-in range, and
+> Free Play closes when the wallet cannot cover the lowest tier (`LDB-05` D2, D3). The purpose of
+> chips is realism — the texture of a real table — and that realism *includes* the stake and the
+> pressure. **Learning or winning earns table time; money never buys chips.**
+>
+> What survives unchanged is the sink and the one absolute. Chips buy **table time and nothing
+> else**: a large balance advances the learner on no axis — not a unit, not a Skill, not a rank,
+> not a difficulty tier — and buys bigger swings rather than an easier game, because the strategy
+> chart is identical at every stake. Table *character* — chart-off play, new rulesets, faster pace,
+> count tools — opens on demonstrated mastery and **never** on balance. And money never buys chips.
+>
+> *Why the original was written the other way:* this premise was captured before the economy had a
+> sink. With nothing to spend chips on, "quantity does not affect anything" was true and was the
+> whole safety argument. `LDB-05` gave chips a sink, which made the clause false and the safety
+> argument structural instead.
 
 ## Open questions
 
@@ -58,7 +82,7 @@ Numbered so they can be cited from a task card.
   **playtest question P-1**, not a question literature can answer.
 - **E-2 — What happens at an empty wallet?** Undecided. Options range from a real setback
   (Free Play closes until more learning is done) to an automatic top-up. This is the
-  "is running out a setback or a quick top-up" question recorded in `journal/ops/phase.md`.
+  "is running out a setback or a quick top-up" question recorded in `journal/milestone.md`.
 - **E-3 — Chips per lesson and per unit.** Undecided. Note the standing constraint that no
   numeric constant in this product is research-calibrated; any figure chosen is a product
   judgement until measured on this product's own data.
@@ -88,14 +112,14 @@ rediscover them.
 
 - Motivation must reward practice, comprehension, and improving decision quality. It must not
   celebrate money won, encourage loss chasing, imply guaranteed profit, or punish a learner for
-  ending a session (`docs/specs/product-vision.md:78-80`).
-- The product is not centred on chips, bankroll, or casino fantasy (`docs/specs/product-vision.md:27`).
+  ending a session (`docs/specs/product-vision.md:88-90`).
+- The product is not centred on chips, bankroll, or casino fantasy (`docs/specs/product-vision.md:32`).
   The stated model is compatible with this: chips are earned by learning, buy nothing, and are
   never purchased with money.
 - No loss-framed streaks, leagues, or penalties for ending a session
   (`docs/superpowers/specs/2026-07-16-adaptive-learning-product-activity-research.md:388`).
 - Punitive mechanics are counterproductive in a trainer where wrong answers are the teaching
-  mechanism (`docs/imports/v2-research-2026-07-11/course-bundle/how-to-teach.md:120`).
+  mechanism (`docs/imports/v2-research-2026-07-11/course-bundle/how-to-teach.md:122`).
 - Streaks are a non-binding progression idea, not an approved mechanic
   (`docs/imports/2026-07-15-v2-future-guidance/INDEX.md`, CLOUD-02).
 - Bankroll and learning score stay visually distinct; a lucky wrong decision must not receive the

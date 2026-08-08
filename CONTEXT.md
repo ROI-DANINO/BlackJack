@@ -77,6 +77,54 @@ That a learner performed the required steps of a unit. Distinct from Mastery: it
 not capability shown, and it is the economy's trigger.
 _Avoid_: Mastery, done, passed
 
+## Economy
+
+**Chips**:
+The product's only currency. Earned by winning at the table or by learning; spent only on table time;
+never bought with money. A balance advances the learner on no axis.
+_Avoid_: Coins, credits, currency, money
+
+**Wallet**:
+A learner's persistent chip balance, surviving rounds, sessions, and logouts. Distinct from a Table
+stack.
+_Avoid_: Bankroll, balance, account
+
+**Table stack**:
+The chips a learner has brought to one Free Play session, session-scoped and settled by real play.
+The engine's `bankroll` field is this, not the Wallet.
+_Avoid_: Bankroll (when the Wallet is meant), buy-in (when the stack is meant), pot
+
+**Buy-in**:
+The transfer of chips from the Wallet to a Table stack on sitting down. Its reverse is cash-out,
+which returns the whole remaining stack.
+_Avoid_: Entry fee, stake, ante
+
+**Table tier**:
+A stakes band: a minimum bet, a minimum buy-in, and a maximum buy-in. Gated by the Wallet alone.
+Distinct from table character, which is gated by mastery alone and never by chips. The strategy chart
+is identical at every tier, so a tier is not a difficulty level.
+_Avoid_: Table level, table rank, high roller (as a mechanic name)
+
+**XP**:
+The monotonic effort ledger. Records work done, never falls, and gates nothing. Distinct from Player
+score, which moves in both directions.
+_Avoid_: Points, score, rating
+
+**Player score**:
+The learner's rating: internal, two-directional, fitted per learner, moving with decision quality and
+never with hand outcome. Drives difficulty only.
+_Avoid_: XP, level, mastery, rank (when the number is meant rather than its display)
+
+**Free Play**:
+The honest casino simulator: real rules, real settlement, a real Table stack.
+_Avoid_: Casino mode (when the product surface is meant), sandbox, practice
+
+**Practice**:
+The always-available learning mode over already-covered material, which pays into the Wallet. Named
+to keep "free" meaning only "no chips required to enter". _(Proposed; the naming call against "Free
+Learn" travels to `LDB-07`.)_
+_Avoid_: Free learn, free play, drill, grind
+
 ## Strategy decisions
 
 **Decision situation**:
