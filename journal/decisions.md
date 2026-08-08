@@ -466,3 +466,98 @@ that is what turns an experiment into an inheritance no later session knows to q
 code on a dead branch and re-lands it as an obvious win. The mechanical half of the same incident —
 the forked board — is now guarded by check 6 in `scripts/check-doc-drift.sh`; this half has no
 mechanism and rests on the record.
+
+---
+
+## 2026-08-05 — LDB-05 approved: the motivation and chips economy
+
+**Chose:** the economy design at `docs/superpowers/specs/2026-08-04-motivation-and-chips-economy.md`,
+approved at the `user-approval` gate. **Chips are earned by winning or by learning; money never buys
+chips; chips buy table time and nothing else.** The Wallet is unwalled and persists across sessions
+and logouts. Tables are **tiered by stakes** — each tier a minimum bet and a buy-in range — so a
+larger balance buys bigger swings, never an easier game. Free Play closes when the Wallet cannot cover
+the lowest tier, and the only route back is learning. Three meters, never blended: chips, XP
+(monotonic), and the player score (a rating that ingests oracle-graded Free Play decisions, so
+standing moves with *how you played* and never with *what you won*).
+
+**Why:** `E-1` was the load-bearing question and every route out of it looked like a trap — rewarding
+outcome is the one thing the learning design decouples, but a table where winning does not pay is a
+worse distortion, teaching that every hand loses. The trap dissolves at the **sink**, not the faucet:
+winning may fund the wallet freely because a full wallet advances the learner on no axis. The
+separation is enforced where the bias actually operates — in what moves standing and in what the
+product celebrates — rather than by rigging the payouts.
+
+**Three divergences were put individually.** (1) The premise's governing paragraph is amended —
+*"learning **or winning** earns table time"* — and widened at the gate to cover all three of its
+contradicted clauses rather than the one originally surfaced. (2) The practice-availability reversal
+resolves to progressive section opening; both of the owner's contradictory statements travel to
+`LDB-06` so the reversal stays visible. (3) The per-window practice cap was **dropped** — see the next
+entry.
+
+**Scope added at the gate rather than merely approved:** stake-tiered tables. Folded in because D3
+would otherwise have shipped saying *"at zero chips"* when the rule is *below the lowest tier's minimum
+buy-in* — a correction to what was being approved, not a future refinement.
+
+**Register:** `A-07b` and `A-07c` filed as sub-rows, `A-24` added, `A-20` rewritten because
+*"cosmetic"* became false under D1. `A-07d` and `A-25` were drafted and never filed — the cap they
+covered no longer exists.
+
+---
+
+## 2026-08-05 — The per-window practice cap was dropped because it contradicted its own guarantee
+
+**Chose:** no bound of any kind on what learning pays. `LDB-05` D5 is two rules — full rate for due
+and new work, a trickle for already-mastered material that never reaches zero — and nothing caps the
+total.
+
+**Why:** the cap was defensible against the evidence and indefensible against the document it lived
+in. Checked first-hand, a per-window cap breaches none of `product-vision.md:88-90`'s four
+prohibitions and arguably serves the loss-chasing one. It is also genuinely *not* the Duolingo hearts
+mechanic `how-to-teach.md:122` warns about, because hearts are debited **per mistake** and lock you out
+**for being wrong**, while nothing in this economy is ever debited for a wrong answer. Both defences
+held. What killed it was internal: D3 guarantees *"there is no reachable state in which a learner has
+no way to earn"*, and D5's trickle was offered as *"what makes D3's guarantee true rather than
+aspirational"* — then the cap bounded the trickle. A learner who was broke, had nothing due, and had
+hit the window had no way to earn: exactly the state D3 declares unreachable. The document argued its
+guarantee true and bounded the thing that made it true, three lines later.
+
+**What this costs, stated rather than dropped:** user story 15 — *"I want a bound on how much I can
+earn from practice in a given window, so that the product is not asking me to grind"* — is now unmet.
+`LDB-06` may answer it in session shape; it may not reach back for a chip cap to do it.
+
+**Recorded because the lesson generalises.** The cap survived its adversarial check against the
+research and died to a two-line internal consistency read. A mechanism can pass every external test
+and still contradict the guarantee written above it.
+
+---
+
+## 2026-08-05 — Free-tier gating by energy or error rate, and ads for lives or chips: DEFERRED, not approved
+
+**Chose:** nothing. This records a stated future direction and the two things it collides with, so
+that whoever designs it meets them at the start rather than discovering them late.
+
+**The direction, as stated by the owner 2026-08-05:** *"for now, we dont need to cap the how many
+learning session a player can have, but in the future we would need to cap it with like energy count
+or error rate like in duolingo free subscription and the player would need to watch an ad to have more
+lives to learn with or watch an ad to get some money."* A real and ordinary free-tier model. It is not
+designed, not approved, and not scheduled.
+
+**Collision 1 — ads for chips versus the premise's one absolute.** *"Money never buys chips"* is the
+single non-negotiable in `2026-07-26-chips-xp-and-progression-economy.md`, and it survived the `LDB-05`
+gate untouched. An ad is not literally money — but it is real-world value converting into chips, and
+the product taking revenue for it. That is the absolute in substance if not in letter. It needs an
+explicit ruling; the observation that "an ad is not money" does not settle it.
+
+**Collision 2 — error-rate lives is the one mechanic the corpus warns about by name.**
+`how-to-teach.md:122`: *"Punitive mechanics can backfire. Duolingo's 'hearts' (lose a heart per
+mistake, get locked out) are criticized for creating anxiety around mistakes — and mistakes are how
+people learn. In a decision trainer where wrong answers are the whole teaching mechanism, a
+lock-you-out-for-errors system is especially counterproductive."* `LDB-05` argued its per-window cap
+was *not* this mechanism precisely because nothing was debited for a wrong answer. An error-rate gate
+**is** this mechanism, on its own trigger. An energy count that depletes with time rather than with
+errors is a different and much weaker case.
+
+**Why recorded now:** neither collision is a reason not to build it — Duolingo ships this profitably,
+and a free tier is a real business need. They are reasons it must be decided **against** the evidence
+rather than around it. This entry exists so that decision starts from the quote rather than
+rediscovering it.
