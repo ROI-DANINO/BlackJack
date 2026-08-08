@@ -1,6 +1,6 @@
 # AGENTS.md — Read First
 
-> Mission, constraints, and the current-phase pointer for blackjack.
+> Mission, constraints, and the current-milestone pointer for blackjack.
 > Authoritative per `journal/docs-map.md`.
 
 ## Mission
@@ -67,7 +67,7 @@ were written down again by the same session that created it.
   authority. It is written **only** via `scripts/kanban.ts` — never by hand, including by the
   orchestrator. Single writer, validated path.
 - Cards are scoped to the active ROADMAP delivery step through their `Milestone`, which
-  `journal/phase.md`'s `roadmap_step:` declares. The board cannot span future milestones.
+  `journal/milestone.md`'s `roadmap_step:` declares. The board cannot span future milestones.
 - Delegated agents may read cards but must return `Card`, `Result`, `Evidence`, `Next`, `Files`, and
   `Blocker`; they never claim, move, or edit cards directly.
 - Finish started work before pulling new work. Respect the board's WIP and transition policies.
@@ -100,8 +100,8 @@ the other four are created on first use. See `docs/agents/triage-labels.md`.
 Single-context. `CONTEXT.md` is the glossary; decisions live in `journal/decisions.md`, **not**
 `docs/adr/`, which does not exist here and must not be created. See `docs/agents/domain.md`.
 
-## Current phase
-See `journal/phase.md`. Only the current phase gets detailed tasks
+## Current milestone
+See `journal/milestone.md`. Only the current milestone gets detailed tasks
 (`journal/tasks.md`); future phases stay in `ROADMAP.md`.
 
 ## Commands
@@ -112,7 +112,7 @@ The White Lotus plugin ships exactly three commands since the 2026-07-28 lifecyc
 
 `/wl-next` was retired with that simplification; `journal/next.md` is its inert leftover.
 
-The journal is **flat** (`journal/{active,phase,tasks,decisions,log,docs-map}.md`, `sessions/`,
+The journal is **flat** (`journal/{active,milestone,tasks,decisions,log,docs-map}.md`, `sessions/`,
 `archive/`) because the spine engine resolves those names directly beside `docs-map.md`, and
-`scripts/kanban.ts` resolves `phase.md` and `archive/` as siblings of the board. Both tools agree
+`scripts/kanban.ts` resolves `milestone.md` and `archive/` as siblings of the board. Both tools agree
 only while the board stays at `journal/tasks.md` — moving it re-breaks one of them.

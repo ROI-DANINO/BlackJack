@@ -40,7 +40,7 @@
 //                                    a loud `GATE:` banner and is skipped, never silently.
 //
 // Board path defaults to journal/tasks.md (cwd-relative) when omitted; phase path defaults to a
-// sibling phase.md next to the board file when omitted. For a v2 board the phase file's
+// sibling milestone.md next to the board file when omitted. For a v2 board the phase file's
 // `roadmap_step:` key is REQUIRED — every milestone node's `Roadmap:` is cross-checked against it.
 //
 // Exit codes (the spec's table): 0 success · 1 file error (missing/unreadable/bad invocation) ·
@@ -497,21 +497,21 @@ function validateV2(
   baseDir: string,
   phasePath: string | undefined,
 ): void {
-  // ---- resolve the active ROADMAP step from phase.md (REQUIRED for a v2 board) ----
+  // ---- resolve the active ROADMAP step from milestone.md (REQUIRED for a v2 board) ----
   let phaseFile = phasePath;
   if (!phaseFile) {
-    const sibling = join(boardDir, 'phase.md');
+    const sibling = join(boardDir, 'milestone.md');
     if (existsSync(sibling)) phaseFile = sibling;
   }
   if (!phaseFile || !existsSync(phaseFile)) {
-    fail('v2 board requires a phase.md with roadmap_step:', 'phase.md');
+    fail('v2 board requires a milestone.md with roadmap_step:', 'milestone.md');
   }
   const phaseStepRaw = extractPhaseField(readFileSync(phaseFile, 'utf8'), 'roadmap_step');
-  if (!phaseStepRaw) fail('phase.md has no roadmap_step: key (required for a v2 board)', 'phase.md/roadmap_step');
+  if (!phaseStepRaw) fail('milestone.md has no roadmap_step: key (required for a v2 board)', 'milestone.md/roadmap_step');
   // Take the FIRST integer run so a trailing `# comment` (whose text may contain digits, e.g. "v2")
   // never pollutes the step number.
   const phaseStepNum = (phaseStepRaw.match(/\d+/) ?? [''])[0];
-  if (!phaseStepNum) fail(`phase.md roadmap_step has no numeric step: ${phaseStepRaw}`, 'phase.md/roadmap_step');
+  if (!phaseStepNum) fail(`milestone.md roadmap_step has no numeric step: ${phaseStepRaw}`, 'milestone.md/roadmap_step');
 
   // ---- node rules ----
   const nodeIds = new Set<string>();
@@ -521,12 +521,12 @@ function validateV2(
     nodeIds.add(node.id);
     if (node.status === 'active') activeCount++;
 
-    // Roadmap present and equal to phase.md's roadmap_step (no spanning future milestones)
+    // Roadmap present and equal to milestone.md's roadmap_step (no spanning future milestones)
     if (!node.roadmap) fail('milestone node missing Roadmap:', `${node.id}/Roadmap`);
     const nodeStepNum = (node.roadmap.match(/\d+/) ?? [''])[0];
     if (nodeStepNum !== phaseStepNum) {
       fail(
-        `node Roadmap "${node.roadmap}" is not the active step (phase.md roadmap_step: ${phaseStepNum})`,
+        `node Roadmap "${node.roadmap}" is not the active step (milestone.md roadmap_step: ${phaseStepNum})`,
         `${node.id}/Roadmap`,
       );
     }
@@ -847,10 +847,10 @@ function renderBoard(parsed: ParsedBoard, phasePathArg: string | undefined): str
   const { cards, nodes, version, boardDir } = parsed;
   const out: string[] = [];
 
-  // Resolve phase.md: explicit arg, else sibling to the board file, else PHASE: (unknown).
+  // Resolve milestone.md: explicit arg, else sibling to the board file, else PHASE: (unknown).
   let phaseFile = phasePathArg;
   if (!phaseFile) {
-    const sibling = join(boardDir, 'phase.md');
+    const sibling = join(boardDir, 'milestone.md');
     if (existsSync(sibling)) phaseFile = sibling;
   }
 

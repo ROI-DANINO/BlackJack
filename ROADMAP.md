@@ -4,7 +4,7 @@
 >
 > Two axes, deliberately separate. **Layers** are the architecture — what the software is made of.
 > They mature independently and never end. **Phases** are the delivery sequence — what gets built
-> when. A phase names which layers it advances. `journal/phase.md` binds to the numbered
+> when. A phase names which layers it advances. `journal/milestone.md` binds to the numbered
 > phase list via `roadmap_step:`.
 >
 > QA gates: every feature ships with a scoped feature QA; every phase closes with a milestone QA
@@ -86,7 +86,7 @@ reduced-motion element rests on SC 2.3.3, **Level AAA**, while the rest of the s
 
 ## Delivery map
 
-Numbered phases. `journal/phase.md` binds here via `roadmap_step:`, and every kanban milestone
+Numbered phases. `journal/milestone.md` binds here via `roadmap_step:`, and every kanban milestone
 node's `Roadmap:` must equal the active number.
 
 1. [x] **Simulation foundations** — the L1 engine, Free Play, and an honest ordered shoe.

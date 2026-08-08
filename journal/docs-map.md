@@ -47,7 +47,7 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | CONTEXT.md | The project's canonical domain vocabulary — one entry per term, with the synonyms it retires. A glossary only: it holds no decision, design, or rationale. When a document or identifier disagrees with it, fix the document. |
 | ROADMAP.md | Destination, phase list, milestones, exit criteria. |
 | PROGRESS.md | What is done / in progress now; open questions. |
-| journal/phase.md | Machine-readable current phase state. |
+| journal/milestone.md | Machine-readable current milestone state. |
 | journal/tasks.md | Agent Kanban (`agent-kanban:v2`) for executable current-phase cards, priority, live state, and evidence. Written only via scripts/kanban.ts. |
 | scripts/kanban.ts | The board's only write path plus its read verbs (board/next/validate). **Formerly a derived port of `workspace/scripts/kanban.ts`; that master was archived to `workspace/archive/scripts/kanban.ts` (commit `0af7b33`) when the 2026-07-28 lifecycle simplification cut the kanban from White Lotus.** This copy is now the only living one — patch it here; there is nothing left to regenerate from. |
 | scripts/check-doc-drift.sh | Read-only tripwires for documents disagreeing about state. Five checks, one per pair that has already drifted silently. Run before republishing an authority doc and at every `/wl-end`. Exits non-zero on drift; fix the document, not the check. |

@@ -22,7 +22,7 @@ Infer the repo from `git remote -v` — `gh` does this automatically when run in
 `journal/tasks.md` (`agent-kanban:v2`) is the **current-phase execution authority** per `AGENTS.md`,
 and it is written only via `scripts/kanban.ts`. GitHub Issues do not override it.
 
-- The board holds cards for the **active ROADMAP delivery step** only, scoped by `journal/phase.md`'s
+- The board holds cards for the **active ROADMAP delivery step** only, scoped by `journal/milestone.md`'s
   `roadmap_step:`. It cannot span future milestones.
 - `to-tickets` output lands as GitHub issues. An issue becomes executable work by being shaped onto
   the board with `scripts/kanban.ts` when its milestone is active — never by being worked straight

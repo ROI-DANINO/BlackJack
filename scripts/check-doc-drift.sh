@@ -19,12 +19,12 @@ note() { printf '  %s\n' "$1"; }
 fail() { printf 'DRIFT: %s\n' "$1"; FAIL=1; }
 
 BOARD=journal/tasks.md
-PHASE=journal/phase.md
+PHASE=journal/milestone.md
 
-# 1 — phase.md's next: versus the board's selected card.
-#     The lifecycle engine resolves board-first, so a hand-written phase.md next: is silently
+# 1 — milestone.md's next: versus the board's selected card.
+#     The lifecycle engine resolves board-first, so a hand-written milestone.md next: is silently
 #     discarded when they disagree. It disagreed on 2026-07-26 and nothing said so.
-printf '1. phase.md next: vs board NEXT\n'
+printf '1. milestone.md next: vs board NEXT\n'
 if [ -f "$BOARD" ] && [ -f "$PHASE" ]; then
   # A broken board must alarm, not skip. Without this, a parse failure or a missing runtime
   # yields an empty selection and the check reports "nothing to compare" — absence as proof.
@@ -37,15 +37,15 @@ if [ -f "$BOARD" ] && [ -f "$PHASE" ]; then
   if [ -z "$BOARD_NEXT" ]; then
     note "board selects nothing (no active node or no eligible card) — nothing to compare"
   elif [ -z "$PHASE_NEXT" ]; then
-    note "phase.md has no next: — board wins by default"
+    note "milestone.md has no next: — board wins by default"
   else
     CARD_ID=${BOARD_NEXT%% *}
     if printf '%s' "$PHASE_NEXT" | grep -qF "$CARD_ID"; then
       note "agree on $CARD_ID"
     else
-      fail "board selects '$BOARD_NEXT' but phase.md next: does not mention $CARD_ID."
-      note "phase.md says: $PHASE_NEXT"
-      note "The engine resolves board-first, so phase.md's text will not be reported."
+      fail "board selects '$BOARD_NEXT' but milestone.md next: does not mention $CARD_ID."
+      note "milestone.md says: $PHASE_NEXT"
+      note "The engine resolves board-first, so milestone.md's text will not be reported."
     fi
   fi
 else
@@ -88,7 +88,7 @@ printf '3. closed milestones described as active\n'
 CLOSED=0
 for frag in journal/archive/*.md; do
   [ -f "$frag" ] || continue
-  case "$(basename "$frag")" in tasks-*|docs-map-*|phase-*) continue ;; esac
+  case "$(basename "$frag")" in tasks-*|docs-map-*|phase-*|milestone-*) continue ;; esac
   TITLE=$(sed -n '1s/^### [A-Z0-9-]* — \(.*\) \[.*/\1/p' "$frag")
   [ -z "$TITLE" ] && continue
   CLOSED=$((CLOSED + 1))
@@ -122,9 +122,9 @@ if [ -f ROADMAP.md ] && [ -d crates ]; then
   fi
 fi
 
-# 5 — exactly one plan may claim to be in progress, and phase.md must point at it.
+# 5 — exactly one plan may claim to be in progress, and milestone.md must point at it.
 #     A plan left marked "in progress" after completion makes a literal follower re-execute it.
-printf '5. in-progress plan vs phase.md plan:\n'
+printf '5. in-progress plan vs milestone.md plan:\n'
 INPROG=$(grep -ln '^> Status: \*\*in progress' docs/superpowers/plans/*.md 2>/dev/null || true)
 COUNT=$(printf '%s' "$INPROG" | grep -c . || true)
 PHASE_PLAN=$(sed -n 's/^plan: \([^ #]*\).*/\1/p' "$PHASE" 2>/dev/null)
@@ -133,7 +133,7 @@ if [ "$COUNT" -eq 0 ]; then
 elif [ "$COUNT" -gt 1 ]; then
   fail "more than one plan claims to be in progress: $(printf '%s ' $INPROG)"
 elif [ "$INPROG" != "$PHASE_PLAN" ]; then
-  fail "plan '$INPROG' says in progress but phase.md points at '$PHASE_PLAN'"
+  fail "plan '$INPROG' says in progress but milestone.md points at '$PHASE_PLAN'"
 else
   note "agree on $INPROG"
 fi
