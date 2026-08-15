@@ -102,12 +102,19 @@ node's `Roadmap:` must equal the active number.
 **Exit criteria.** The owner approves a blueprint that says what is taught, in what order, through
 which activities, measured by what evidence — and approves the slice to build in Phase 5.
 
-**Deliverables.** Nine, **six** of them done — 1 and 2 at `LDB-01` and 3 and 4 at `LDB-03` (all
-approved 2026-08-01), 5 at `LDB-04` (approved 2026-08-03), and 8. *(Corrected 2026-08-02: this line
+**Deliverables.** Nine, **seven** of them done — 1 and 2 at `LDB-01` and 3 and 4 at `LDB-03` (all
+approved 2026-08-01), 5 at `LDB-04` (approved 2026-08-03), 9 at `LDB-05` (approved 2026-08-05), and
+8. *(Corrected 2026-08-02: this line
 read "three of them done" and the rows for 3 and 4 read "open" for a day after `LDB-03` was approved
 and moved to Done on the board. Corrected again 2026-08-04: it read "five" and row 5 read "open"
 after `LDB-04` was approved 2026-08-03 — the same drift, second occurrence, caught only because a
-`/start` reader compared the table against the board.)*
+`/start` reader compared the table against the board. **Corrected a third time 2026-08-15:** it read
+"six" and row 9 read "premise captured, undesigned" for ten days after `LDB-05` was approved
+2026-08-05 — the same drift, third occurrence, caught the same way and by nothing else.
+`scripts/check-doc-drift.sh` does not check this pair: its six checks are board/milestone `next:`,
+QA role enumeration, closed-milestone prose, Rust test count, in-progress plan, and
+single-live-board. Three occurrences of one drift with no mechanism watching it is the standing
+argument for adding a seventh check that compares this table against the board's Done lane.)*
 
 | # | Deliverable | State |
 |---|---|---|
@@ -119,7 +126,7 @@ after `LDB-04` was approved 2026-08-03 — the same drift, second occurrence, ca
 | 6 | Session composition | open |
 | 7 | Interaction UX | open |
 | 8 | The first vertical slice, designed | **done** — `docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md`, approved 2026-07-25 |
-| 9 | Motivation and economy | premise captured, undesigned — `docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md`, open questions `E-1`–`E-7` |
+| 9 | Motivation and economy — chips earned by winning **or** learning, money never buys chips, chips buy table time and nothing else, three meters never blended | **done** — approved 2026-08-05; `docs/superpowers/specs/2026-08-04-motivation-and-chips-economy.md`, answering `E-1`–`E-7`. The captured premise it supersedes is `docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md`, whose governing paragraph was amended at the gate |
 
 **A tenth, added 2026-07-26: the activity-pattern catalog.** Every exercise format in every
 document this project holds is a dealt hand or a multiple-choice question. A sweep of the whole
