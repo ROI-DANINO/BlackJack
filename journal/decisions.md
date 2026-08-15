@@ -561,3 +561,107 @@ errors is a different and much weaker case.
 and a free tier is a real business need. They are reasons it must be decided **against** the evidence
 rather than around it. This entry exists so that decision starts from the quote rather than
 rediscovering it.
+
+---
+
+## 2026-08-15 — The pre-gate grill: twelve decisions on playability and change-agility
+
+**Why this happened before a gate rather than at one.** The `LDB-06` gate was presented on
+2026-08-14 and the owner **held it open** rather than ruling, to grill phase 4 on two things first:
+is the design fun, and what is expensive to reverse if he dislikes it at the end of phase 6. The
+session ran `grill-with-docs` on 2026-08-15 over the five approved LDB specs plus the `LDB-06` draft.
+Twelve decisions. `LDB-06` is redrafted and **still unapproved**; its gate is where it was.
+
+**The finding that drove most of it, verified against `2026-08-01-activity-taxonomy.json` rather
+than recalled.** `LDB-02` was commissioned because *"every exercise format this project holds is a
+dealt hand or a multiple-choice question."* It returned 32 patterns from 24 products. They were
+disposed as 15 rejected, 10 adopted-as-parameter, 4 no-target, **3 adopted-as-type**. `primaryFor`
+counts: `deal-and-decide` 8, `state-report` 8, `rule-card-read` 1, `predict-then-reveal` 1,
+`policy-paint` 0, `rule-contrast` 0 — and `LDB-04` D12 gives `predict-then-reveal` no bar. **So 17 of
+18 Mastery bars are reachable only through a dealt hand or a question about a dealt hand**, which is
+what the catalog was commissioned to escape. `classification.md`'s header records why nobody noticed:
+the classifier was told *"not to rank on usefulness to the product"*, so its only axis is
+substantive-vs-cosmetic on **measurement**. **The question "would this be good to play" has never been
+asked of that evidence.** `LDB-09` asks it.
+
+**The mechanism, named so it is not mistaken for an accident.** Three rules compose into narrowness,
+each individually right: `LDB-01` §2's ship test (an outcome with no grading authority does not
+ship); `LDB-03` §6's coverage rule, which permits activities **only** in service of a Skill and
+forbids inventing one; and `LDB-04` D6, which admits only `primaryFor` evidence. Nothing may enter the
+product unless it measures a Skill, and the Skill set was fixed first by a graph with **one**
+evidence-backed edge. `LDB-04` D6 already wrote the counter-argument — *"an app in which every
+interaction is graded is a quiz with a card table drawn behind it"* — and nothing was built on it.
+Register row `A-18`'s named method is *"instrument the first non-quiz activity against a quiz
+baseline"*, and it is **unclosable as designed**, because the design produced no non-quiz activity.
+
+**The decisions.**
+
+1. **The economy builds in phase 5.** `LDB-05` was approved 2026-08-05 and **no phase claimed it** —
+   phase 5 named the L2 foundation and the two orphans, phase 6 named L3, and the standing phase-5
+   candidate slice was designed 2026-07-23, before `LDB-05` existed. The Wallet is also what makes
+   `ProgressStore`'s first consumer real. **Two of its six deltas defer to phase 6** — the engine-side
+   table catalogue and the Table tiers it denominates — because that one crosses the WASM boundary,
+   the wire contract and the golden fixtures, and every number in it is invented (`A-07b`). Phase 5
+   ships one tier, and D3's boundary reads that tier rather than a hardcoded zero.
+2. **`LDB-06` D3's per-session organic Closing run is withdrawn.** It **deadlocked**: D7 bounds a
+   Short session at 10 Presentations, D8 forbids starting an activity after a bound, D9 makes a
+   Closing run a whole shoe — so a Short arranged session could not legally end. The cheap repair was
+   already foreclosed, because the examiner's own F5 fix had just made table evidence
+   non-window-eligible for exactly the Skills the rule served. `LDB-04` D7 carries the guarantee
+   unchanged; the bridge §4.6/§7 resolution D3 exists to deliver is untouched.
+3. **The table gets an optional Classification capture** (`LDB-06` §12 divergence 5). The 2026-08-08
+   scope limit made `classify-hand`, `strategy-action`, `legal-fallback` and `adherence-under-loss`
+   unmasterable at a table, so *"measure play, not quiz scores"* was true only of
+   hit/stand/double/split — an inversion that arrived from a taxonomy `produced` contract rather than
+   a product ruling. It was declined on 2026-08-08 as bending the honest simulator;
+   `product-vision.md:69-71`, reopened, permits help **around** the game and forbids manipulating
+   cards, and an optional control manipulates nothing. Costs one new field (`LDB-06` §11 item 5).
+4. **An up-only streak ships, and a removal must name its replacement.** `ACT:388` bans *loss-framed*
+   streaks; the 2026-08-08 ruling declined every streak on the wider claim that all shipped streaks
+   are loss-framed by construction — a claim about other products. The standing rule is now in
+   `AGENTS.md` §Constraints, and the evidence for it is that `LDB-05` §0.1 named the
+   design-the-fun-out habit and `LDB-06` D8 removed streaks three decisions later anyway.
+5. **The evidence index is corrected; the live half is carded.** Its README asserted in the present
+   tense that 14 Phase 1 corrections were still absent from the archive. **False** — `96b0f05` banked
+   the index, `6da7e9f` landed the corrections the same day, and nobody returned. Verified by
+   searching each correction's own string in the promoted dossiers and counting hits. **The Phase 3
+   half is genuinely open** and is now `LDB-10`: ten `V-C7-topup` corrections never applied, which
+   `P3-evidence-catalog.md:369` records as **net pessimism-correcting** against `V-C7.md:190` — *"the
+   dossier is systematically pessimistic on trainability, and that pessimism is an artefact of where
+   its search stopped."* **The blueprint was designed on the uncorrected version**, which bears
+   directly on whether the design came out too strict.
+6. **Delete the duplicate rather than watch it.** ROADMAP's phase-4 deliverable **status** column
+   drifted against the board three times — 2026-08-02, 2026-08-04, 2026-08-15 — each time the same
+   way, each time caught only by a `/start` reader comparing by hand. The proposed fix was a seventh
+   `check-doc-drift.sh` check. **The status column is deleted instead**; `journal/tasks.md`'s Done
+   lane is the record, and a tool already validates it. The deliverable *list* survives, because it
+   defines phase-4 scope, never drifted, and holds the only record of deliverable 8, which has no card.
+7. **`LDB-09` runs before the `LDB-06` gate** — sequencing, deliberately **not** encoded as a
+   `Depends on` edge, per the `AGENTS.md` rule this repo has already had to enforce surgically once.
+8. **An Activity type may grade nothing if it names the Skill it rehearses.** A fixed budget of such
+   types was offered and refused: it would be a constant with nothing behind it.
+9. **Whether the eight `state-report` Skills keep Mastery bars is `LDB-09`'s to rule.** A learner who
+   plays 20 hands has shown `card-values` and `hand-total` without being asked. **This is the Skill
+   list — the most expensive artifact in the blueprint to change**, because every `ProgressAttempt`
+   carries `evidence.skillId` and the Mastery window keys on it. It is cheap **only** until phase 5
+   stores its first Presentation.
+10. **The shell pass is owed to phase 6, and named now.** `LDB-02` catalogued exercise formats;
+    nobody has catalogued the path, the map, the daily goal, the return ritual, characters or sound.
+    It is L3 and cannot precede a loop to wrap — but phase 6's exit is *a first playable game*, and
+    discovering the shell missing at that exit is the mirror of the error the roadmap already refuses.
+11. **`LDB-09` gets its own card and its own gate**, rather than reopening `LDB-02`, whose Done card
+    holds its research-gate evidence.
+12. **A change to an approved spec is surfaced as a divergence at a gate**, the way `LDB-04` §12
+    divergence 0 was — so `LDB-01` is amended because the owner assented, never because a later
+    document quietly disagreed.
+
+**Phase 7 is not pure expansion, recorded because it reads as though it is.** The counting on-ramp
+adds a **fifth Condition axis** — a change to the evidence model every stored attempt is recorded
+against — and a real leaderboard implies server authority. `LDB-01` §4 designed for the axis
+deliberately, so it is cheap if it stays additive; both are now named in `ROADMAP.md` §Phase 7.
+
+**One gap in the instrument, worth more than any single decision here.** `LDB-06`'s `audit-examiner`
+pass assessed 48 claims and found 12 to revise. The D3/D7/D8 deadlock was **not** among them, and
+could not have been: every one of the three rulings is individually warranted by its evidence, and
+the pass asks whether each claim is warranted, never whether the rulings **compose**. A clean examiner
+result is not a clean design, and the next document to run one should not read it as one.
