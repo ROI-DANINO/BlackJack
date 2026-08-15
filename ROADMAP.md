@@ -102,31 +102,38 @@ node's `Roadmap:` must equal the active number.
 **Exit criteria.** The owner approves a blueprint that says what is taught, in what order, through
 which activities, measured by what evidence — and approves the slice to build in Phase 5.
 
-**Deliverables.** Nine, **seven** of them done — 1 and 2 at `LDB-01` and 3 and 4 at `LDB-03` (all
-approved 2026-08-01), 5 at `LDB-04` (approved 2026-08-03), 9 at `LDB-05` (approved 2026-08-05), and
-8. *(Corrected 2026-08-02: this line
-read "three of them done" and the rows for 3 and 4 read "open" for a day after `LDB-03` was approved
-and moved to Done on the board. Corrected again 2026-08-04: it read "five" and row 5 read "open"
-after `LDB-04` was approved 2026-08-03 — the same drift, second occurrence, caught only because a
-`/start` reader compared the table against the board. **Corrected a third time 2026-08-15:** it read
-"six" and row 9 read "premise captured, undesigned" for ten days after `LDB-05` was approved
-2026-08-05 — the same drift, third occurrence, caught the same way and by nothing else.
-`scripts/check-doc-drift.sh` does not check this pair: its six checks are board/milestone `next:`,
-QA role enumeration, closed-milestone prose, Rust test count, in-progress plan, and
-single-live-board. Three occurrences of one drift with no mechanism watching it is the standing
-argument for adding a seventh check that compares this table against the board's Done lane.)*
+**Deliverables — the list, not the status.**
 
-| # | Deliverable | State |
+> **The status column was deleted 2026-08-15, by owner decision.** It said how many deliverables were
+> done and which, and it drifted against the board three times — on 2026-08-02, 2026-08-04, and
+> 2026-08-15, each time the same way, each time caught only because a `/start` reader compared it
+> against the board by hand. The proposed fix had been a seventh `check-doc-drift.sh` check. The
+> owner took the other option: **delete the duplicate rather than add a mechanism to watch it.**
+> `journal/tasks.md`'s Done lane is now the single record of what is finished, and it is the one a
+> tool already validates.
+>
+> The list below survives because it defines phase 4's *scope*, which never drifted — only the status
+> did. Deliverable 8 in particular has no `LDB` card: it was approved 2026-07-25, before the board
+> existed, and deleting the whole table would have deleted the only record of it.
+
+| # | Deliverable | Where it is decided |
 |---|---|---|
-| 1 | Skill graph and prerequisites | **done** — approved 2026-08-01; `docs/superpowers/specs/2026-08-01-learning-outcomes-and-skill-graph.md` + `2026-08-01-skill-graph.json` |
-| 2 | Learning outcomes — probability, EV and variance discharged **by decision behaviour, not by topic coverage** (amended 2026-08-01): they ship only where they change a decision at the table, with no separate maths Subject and no lesson unit. §1.7 `[VERIFIED]` is the ground — teaching the maths produced knowledge gain and no behaviour change. EV gets no Skill at all (`A-14` dormant, reopening condition recorded). | **done** — approved 2026-08-01; same spec, §5 |
-| 3 | Activity taxonomy | **done** — approved 2026-08-01; `docs/superpowers/specs/2026-08-01-activity-taxonomy-and-skill-mapping.md` + `2026-08-01-activity-taxonomy.json` |
-| 4 | Which activity measures which capability | **done** — approved 2026-08-01; same spec (the skill mapping half), with all 32 pattern verdicts available as data in the JSON |
-| 5 | Per-activity evidence and mastery rules — mastery is 8 of the last 10 table-closed presentations | **done** — approved 2026-08-03; `docs/superpowers/specs/2026-08-03-evidence-and-mastery-rules.md` |
-| 6 | Session composition | open |
-| 7 | Interaction UX | open |
-| 8 | The first vertical slice, designed | **done** — `docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md`, approved 2026-07-25 |
-| 9 | Motivation and economy — chips earned by winning **or** learning, money never buys chips, chips buy table time and nothing else, three meters never blended | **done** — approved 2026-08-05; `docs/superpowers/specs/2026-08-04-motivation-and-chips-economy.md`, answering `E-1`–`E-7`. The captured premise it supersedes is `docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md`, whose governing paragraph was amended at the gate |
+| 1 | Skill graph and prerequisites | `docs/superpowers/specs/2026-08-01-learning-outcomes-and-skill-graph.md` + `2026-08-01-skill-graph.json` (`LDB-01`) |
+| 2 | Learning outcomes — probability, EV and variance discharged **by decision behaviour, not by topic coverage** (amended 2026-08-01): they ship only where they change a decision at the table, with no separate maths Subject and no lesson unit. §1.7 `[VERIFIED]` is the ground — teaching the maths produced knowledge gain and no behaviour change. EV gets no Skill at all (`A-14` dormant, reopening condition recorded). | Same spec, §5 (`LDB-01`) |
+| 3 | Activity taxonomy | `docs/superpowers/specs/2026-08-01-activity-taxonomy-and-skill-mapping.md` + `2026-08-01-activity-taxonomy.json` (`LDB-03`) |
+| 4 | Which activity measures which capability | Same spec, the skill mapping half; all 32 pattern verdicts available as data in the JSON (`LDB-03`) |
+| 5 | Per-activity evidence and mastery rules — mastery is 8 of the last 10 table-closed presentations | `docs/superpowers/specs/2026-08-03-evidence-and-mastery-rules.md` (`LDB-04`) |
+| 6 | Session composition | `docs/superpowers/specs/2026-08-08-session-composition.md` (`LDB-06`) |
+| 7 | Interaction UX | `LDB-07` |
+| 8 | The first vertical slice, designed | `docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md`, approved 2026-07-25. **No card** — it predates the board |
+| 9 | Motivation and economy — chips earned by winning **or** learning, money never buys chips, chips buy table time and nothing else, three meters never blended | `docs/superpowers/specs/2026-08-04-motivation-and-chips-economy.md`, answering `E-1`–`E-7` (`LDB-05`). The captured premise it supersedes is `docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md`, whose governing paragraph was amended at the gate |
+
+**A tenth and an eleventh, added 2026-08-15.** `LDB-09` re-verdicts the 19 catalog patterns nobody
+adopted, against a question never asked of them — *would this be good to play, accepting that it
+measures nothing* — and rules whether the eight `state-report` Skills keep Mastery bars. `LDB-10`
+lands the ten unapplied Phase 3 corrections. Both exist because of the same finding: **17 of the 18
+Mastery bars are reachable only through `deal-and-decide` or `state-report`** — a dealt hand, or a
+question about a dealt hand — which is the thing the catalog was commissioned to escape.
 
 **A tenth, added 2026-07-26: the activity-pattern catalog.** Every exercise format in every
 document this project holds is a dealt hand or a multiple-choice question. A sweep of the whole
@@ -183,6 +190,23 @@ and use, ugly and complete, producing durable attempts.
 It wires both orphans: the strategy oracle gets a `CoreCommand` so the browser can ask what is
 correct, and `ProgressStore` gets its first product consumer.
 
+**The economy is built here — added 2026-08-15, by owner decision.** `LDB-05` was approved
+2026-08-05 and **no phase claimed it**: phase 5's scope named only the L2 foundation and the two
+orphans, phase 6 named L3, and the standing phase-5 candidate slice was designed 2026-07-23, before
+`LDB-05` existed. So the Wallet, the Buy-in and Table stack transfer, `Completion` and `Review due`
+paying, the practice trickle, XP, and the Player score are **phase 5**, on `LDB-05` §11's schema
+deltas 1–4 and 6. The Wallet is also what makes `ProgressStore`'s first consumer a real one, and
+`LDB-05` D3 — *learning is the only refill* — is unplayable without it.
+
+**Two of `LDB-05`'s six deltas are deferred to phase 6**, and the reason is reversal cost, not
+scope. Delta 5, the **table catalogue** (per Table tier: a minimum bet, a minimum buy-in, a maximum
+buy-in), lands in the **Rust engine** — `Ruleset` (`crates/blackjack-core/src/types.rs:63-74`)
+declares no bet limit of any kind and `validate_bet` (`session.rs:499-507`) enforces only `bet > 0`
+and the 3:2 even-units rule. That crosses the WASM boundary, the JSON wire contract, and the golden
+fixtures, and every number in it is invented (`A-07b`). Phase 5 therefore ships **one tier**, and
+delta 6 — Free Play's open/closed test as `wallet ≥ lowest tier's minimum buy-in` — reads that one
+tier rather than a hardcoded zero, which is the `LDB-05` D3 boundary stated correctly from the start.
+
 **Why playable rather than infrastructure-only.** Five questions are settled as unanswerable from
 literature and routed to playtest — whether decision/outcome separation can be trained, whether EV
 instruction changes play, whether mixed practice helps this audience or overwhelms beginners,
@@ -202,15 +226,42 @@ strategy matters.
 
 **Scope.** L3 from nothing — navigation and routing, onboarding, game feel, progression and mastery
 presentation, accessible feedback, responsive layout. State a target WCAG conformance level first.
+Plus the two `LDB-05` deltas phase 5 deferred: the **table catalogue** in the engine, and the Table
+tiers it denominates.
 
 This phase builds on a learning design that Phase 5 has tested on a human. Building the visual
 system before that test would style an untested pedagogy.
+
+**The shell pass is owed here, and is named now so it is not a discovery at the end — added
+2026-08-15, by owner decision.** `LDB-02` catalogued **exercise formats** from 24 products. Nothing
+in this project has ever catalogued the **shell**: the path, the map, the daily goal, the return
+ritual, unlocks, characters, sound — what actually makes a Duolingo-shaped product feel like one.
+That is L3 and it cannot be designed before there is a loop to wrap, which is why it is here and not
+in phase 4. But it is the likeliest remaining home of "the product is one-dimensional", and phase 6's
+exit criterion is *a first playable game*. Discovering the shell is missing at that exit would be the
+mirror of the error this roadmap already refuses two paragraphs above.
 
 ## Phase 7 — Expansion
 
 The full curriculum and activity catalog; basic strategy, table reading, and the counting on-ramp,
 each scaled to learner level. Each major topic gets its own research, spec, and implementation plan
 when it becomes active.
+
+**It is not purely additive, and the two structural items are named here — added 2026-08-15.** The
+phase reads as "just more content" and two things in it are not.
+
+1. **The counting on-ramp adds a fifth Condition axis.** `2026-08-01-learning-outcomes-and-skill-graph.md`
+   §4 states the axis set is open and *"card counting is expected to add a fifth (count visible /
+   hidden)"*. That is a change to the evidence model every stored attempt is recorded against, not a
+   new Subject. `LDB-01` designed for it deliberately — *"naming it open now means a later axis is an
+   extension rather than a schema break"* — so it is cheap **if** it stays additive, and it is named
+   here so nobody discovers it as a migration.
+2. **A real leaderboard is an architecture change.** Per the capability table below: the engine is
+   client-authoritative and the browser can see the entire undealt shoe, so a leaderboard here is
+   forgeable. `CLOUD-06` defers it, and a real one implies server authority.
+
+**What is genuinely additive:** curriculum content, activity instances, and Subject growth. The phase
+is mostly that. These two are the exceptions, and they are the ones worth costing before it opens.
 
 ## Historical milestone record
 

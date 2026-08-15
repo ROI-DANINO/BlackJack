@@ -1,3 +1,17 @@
+> **STATUS, added 2026-08-15: this page is a historical record, dated 2026-07-26. Read §0 in the
+> past tense.** The fourteen corrections it enumerates **landed** in `6da7e9f` on 2026-07-26, hours
+> after this page was written. Verified 2026-08-15 by searching each correction's own string in
+> `docs/superpowers/research/foundation-audit-p1/dossiers/` and counting hits — the table is in
+> `README.md` §What this index exists to keep visible, item 1.
+>
+> **What is not re-checked:** §1's claim that twelve verifier rulings never reached
+> `P1-gate-summary.md`, §2's later rows, and everything from §3 on. Those concern the gate summary
+> and the process records, not the dossiers, and no pass has revisited them. Treat them as
+> unverified rather than as either true or false.
+>
+> §0's substantive readings still stand — C5's F4 is **interleaving** evidence and not spacing
+> evidence, and that remains the most product-consequential item here. Only "never landed" is stale.
+
 I've read all 27 verification records, 14 remediation reports, both registers, both manifests, PROCESS-AUDIT, the templates, and the gate summary — and spot-checked disputed claims against the dossier text. Here is what was lost.
 
 ---

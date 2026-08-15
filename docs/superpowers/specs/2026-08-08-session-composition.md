@@ -1,6 +1,6 @@
 # Session Composition — LDB-06
 
-> **Status: DRAFT, 2026-08-08.** Awaiting the `LDB-06` `user-approval` gate. Nothing here is
+> **Status: DRAFT, 2026-08-08. REVISED 2026-08-15, still awaiting its gate.** Nothing here is
 > authoritative until that gate records an approval, and the vocabulary in §14 and the
 > `journal/decisions.md` rows in §13 land **at approval, not before** — the convention `LDB-04` §16
 > and `LDB-05` §15 both set.
@@ -8,9 +8,27 @@
 > Phase 4 deliverable 6. Consumes the approved `LDB-01`, `LDB-03`, `LDB-04` and `LDB-05` specs and
 > values the six `LDB-03` parameters this card owns.
 >
-> **Four divergences from prior documents are recorded in §12, each with what it costs.** Three were
-> surfaced and approved by the owner on 2026-08-08 before this document was written; the fourth was
-> found afterwards by the `LDB-06` examiner pass and approved the same day. §16 is the audit record.
+> **Six divergences are recorded in §12, each with what it costs.** Three were surfaced and approved
+> by the owner on 2026-08-08 before this document was written; the fourth was found afterwards by the
+> `LDB-06` examiner pass and approved the same day. §16 is the audit record.
+>
+> **Divergences 5 and 6 are new on 2026-08-15, and both reverse this document's own rulings.** The
+> owner **held the gate open** on 2026-08-08 rather than ruling on it, in order to grill phase 4 on
+> playability and change-agility first; that session ran 2026-08-15 and settled twelve decisions,
+> three of which land here. **What changed:**
+>
+> - **D2** — the scope limit gains an **opt-in Classification capture** at the table, so a learner who
+>   names the hand shape reaches the bar for all eight Skills rather than four (divergence 5).
+> - **D3** — the per-session organic **Closing run is WITHDRAWN**. It deadlocked against D7 and D8, and
+>   `LDB-04` D7 already carries the guarantee. The bridge resolution D3 exists to deliver is unchanged.
+> - **D8** — no-streak becomes an **up-only streak**, with a standing rule that a removal must name its
+>   replacement (divergence 6).
+>
+> The grill also produced work outside this document: `LDB-09` (re-verdict the unadopted catalog
+> patterns for play; rule the eight `state-report` Skills), `LDB-10` (land the ten unapplied Phase 3
+> corrections), and ROADMAP amendments placing the economy in phase 5. **`LDB-09` may change the
+> Activity type set, which would add rows to D4's table** — that is an amendment this document should
+> expect rather than a contradiction.
 
 **Card:** `LDB-06` — *Decide session composition.*
 **Source:** `docs/superpowers/research/evidence-index/activity-and-storage-catalog.md` §3.
@@ -88,8 +106,10 @@ in §7.
 > shoe, in `organic` Provenance mode, with no strategy table and no correction until the debrief.
 >
 > **A Table sitting is a Closing run that the learner paid to sit at** — and its decisions count for
-> Mastery on the four action Skills, `hit`, `stand`, `double` and `split`. They do not reach the bar
-> for the four Skills that require a Classification the table never asks for (D2).
+> Mastery on the four action Skills, `hit`, `stand`, `double` and `split` — and on the other four
+> too, whenever the learner takes D2's optional Classification capture. A table decision where they
+> say nothing reaches the action Skills only, because the table never asks for a Classification (D2,
+> §12 divergence 5).
 
 Everything else in this document follows from those three sentences, or bounds them.
 
@@ -169,7 +189,7 @@ the evidence question (D2).
 
 `[Product judgement]`
 
-### D2. A Table sitting's decisions enter the Mastery window — for the four action Skills
+### D2. A Table sitting's decisions enter the Mastery window — four Skills by default, eight on request
 
 Every table decision is a Presentation of `deal-and-decide`, in `organic` Provenance mode, graded by
 the strategy oracle, and it counts toward `8 of the last 10` for **`hit`, `stand`, `double` and
@@ -185,14 +205,38 @@ the strategy oracle, and it counts toward `8 of the last 10` for **`hit`, `stand
 > **does not reach the bar**. Those decisions are still recorded and still move the Player score
 > (`LDB-05` D9); they are not window-eligible.
 >
-> **Two escapes were considered and declined.** Capturing the Classification at the table would meet
-> the contract and would be a widget — `LDB-07`'s — but it bends the honest simulator, which
-> `product-vision.md:69-71` fences off. Inferring the Classification from a correct action would
-> assert the converse of `A-23`, whose whole worry is a learner *"produc[ing] the correct action many
-> times without ever having to notice a hard 16 arise."*
+> **Two escapes were considered. One is declined; the other was taken on 2026-08-15.** Inferring the
+> Classification from a correct action stays declined — it asserts the converse of `A-23`, whose
+> whole worry is a learner *"produc[ing] the correct action many times without ever having to notice
+> a hard 16 arise."*
+>
+> **The escape now taken: an optional Classification capture at the table.** ⚠ **Owner decision,
+> 2026-08-15 — see §12 divergence 5.** The learner may name the Classification before acting. If they
+> do, the Presentation meets `deal-and-decide`'s `produced` contract and reaches the bar for **all
+> eight** Skills. If they do not, it reaches the four action Skills only, exactly as the scope limit
+> above rules. The control is `LDB-07`'s to design.
+>
+> **Why the 2026-08-08 objection does not survive.** That draft declined this escape on the ground
+> that it *"bends the honest simulator, which `product-vision.md:69-71` fences off."* Reopened
+> 2026-08-15: `:69-71` permits the learning layer to help **around** the game — optional table access,
+> hints, count tools, post-session feedback — and forbids **manipulating cards for lesson purposes**.
+> An optional control the learner may ignore manipulates no card and changes no card flow. It is the
+> same shape as `LDB-04` D4's *"show me"*, which is already approved and already sits at the table.
+> The fence was cited against a mechanic it does not cover.
+>
+> **What the scope limit was costing, stated because it is the reason this reopened.** Under it,
+> `classify-hand`, `strategy-action`, `legal-fallback` and `adherence-under-loss` — the four Skills
+> that are the product's differentiator — could **never** be mastered at a table. The founding
+> commitment bridge §1.7 states, *"measure play, not quiz scores,"* was literally true only of
+> `hit`/`stand`/`double`/`split`. The four best Skills were reachable only through a Learning
+> session. That inversion arrived as a side effect of a taxonomy `produced` contract, not as a
+> product ruling, and the owner declined to keep it.
+>
+> **The scope limit itself is not deleted.** It is now the *default* rather than the ceiling, and it
+> still governs every table Presentation where the learner says nothing — which will be most of them.
 >
 > **This was found by the `LDB-06` examiner pass (F5) after the first draft ruled it unqualified.**
-> Owner call, 2026-08-08: scope it. See §16.
+> Owner call, 2026-08-08: scope it. Owner call, 2026-08-15: give it an opt-in escape. See §16.
 
 **This was unowned, and it is the ruling that makes the founding commitment literally true.** Bridge
 §1.7 `[VERIFIED]`: *"Measure play, not quiz scores."* `LDB-05` D9 already rules that every Free Play
@@ -222,7 +266,7 @@ once a ledger exists (`LDB-05` §11), and it needs no new instrument.
 contract the scope limit reads off; `[Product judgement]` on the ruling and on accepting
 consequence 3.
 
-### D3. Engineered exposure teaches; an organic Closing run closes the claim
+### D3. Engineered exposure teaches; `LDB-04` D7's organic floor closes the claim
 
 **This resolves the bridge contradiction the card owes.** `2026-07-22-product-design-inputs.md` §4.6
 states *"Rare-event exposure must be deliberate"* as a **requirement**; §7 lists *"Whether rare-event
@@ -232,8 +276,8 @@ the same document.
 **They are not in conflict once *exposure* is separated from *evidence*.** §4.6 is about the
 curriculum not *waiting* for the shoe — which bridge §1.2 `[VERIFIED]` justifies, since
 experience-taught learners systematically underweight rare events. §7 is about whether the product
-engineers the encounter. The resolution takes both: **engineer the encounter, require the organic
-close.**
+engineers the encounter. The resolution takes both: **engineer the encounter; `LDB-04` D7 already
+requires the organic close.**
 
 **The shape is `U1-8`, and it is in the archive rather than invented here.** SPOT, per the
 SACAA-approved facilitator guide §9.3, quoted in `run/U1/audit.md`'s `U1-8` row and reopened
@@ -242,14 +286,37 @@ of the phase of the approach that needs attention. Once all phases have been sat
 completed, a \"full\" simulation of the approach from start to finish can be demonstrated and
 experienced by the student as a whole."* `[sic, source grammar]`
 
-Translated to this product: **a Learning session whose pool was `arranged` does not end without a
-Closing run over the same material, in `organic` Provenance mode.**
+> ### The per-session Closing run is WITHDRAWN — owner decision, 2026-08-15
+>
+> The 2026-08-08 draft translated `U1-8` into a rule of its own: *"a Learning session whose pool was
+> `arranged` does not end without a Closing run over the same material, in `organic` Provenance
+> mode."* **That rule is withdrawn.** It was invented here, it was strictly larger than the floor it
+> sat on, and it deadlocked against this document's own D7.
+>
+> **The deadlock, which no pass caught — not the design interview, not the examiner.** D7 bounds a
+> Short session at 10 Presentations. D8 rules that *"no activity begins after a bound or explicit
+> stop."* D9 makes a Closing run `segmentation: whole-shoe`. So a learner who picks Short, drills an
+> arranged pool, and reaches Presentation 10 hits a bound that forbids starting anything — while the
+> withdrawn rule forbade the session ending. **A Short arranged session could not legally end.**
+>
+> **And the obvious repair was already foreclosed.** A Table sitting *is* a Closing run (D9), so it
+> looks like the cheap way to discharge the obligation. But D7's organic floor applies only to
+> `classificationIncluded: true` Skills, and D2's scope limit — the examiner's own F5 fix — had just
+> made table evidence non-window-eligible for exactly those. **The F5 fix silently removed the
+> cheapest route to satisfying the rule F5 did not touch.** Two correct local repairs composing into
+> a dead end is the failure mode this document's §16 exists to catch, arriving one layer above where
+> §16 was looking.
+>
+> **Nothing is lost by withdrawing it**, which is why this is a withdrawal and not a trade.
 
-**Stated in terms of evidence, which is the form the card demands.** This sits directly on `LDB-04`
-D7's floor — at least one `organic` Presentation in the window for any Skill with
-`classificationIncluded: true` — and supplies the session-shaped half D7 explicitly left here:
-*"Engineered exposure still teaches, still practises, and still fills most of a window — it simply
-cannot be the only thing a learner ever met."*
+**What now carries the organic close: `LDB-04` D7, unchanged and already approved.** At least one
+`organic` Presentation in the window for any Skill with `classificationIncluded: true`. D7 explicitly
+left the session-shaped half here — *"Engineered exposure still teaches, still practises, and still
+fills most of a window — it simply cannot be the only thing a learner ever met"* — and this card's
+answer is now that **no session-shaped rule is needed**: D7 is a claim about a Skill's window, which
+is exactly the form the card asked for (*"resolve it in terms of what evidence a session must
+yield"*), and it binds across sessions rather than inside one. A per-session rule could only ever
+have been the same guarantee, scoped worse.
 
 **It is buildable without faking card flow.** `crates/blackjack-core/src/shoe.rs:62-66`, reopened
 first-hand 2026-08-08: `create_prefix_shoe` builds a real shuffled shoe and swaps a chosen opening to
@@ -261,20 +328,25 @@ per-rank/suit composition are unchanged"*, with arranged cards carrying arranged
 post-shoe debrief, a captured prediction, or frequency framing in copy. D16 places it; D11 places the
 prediction.
 
-**The two "one"s count different units, said so the parity does not mislead.** `LDB-04` D7's floor is
-one `organic` Presentation **in a Skill's window**, and only for the five `classificationIncluded:
-true` Skills. This rule is one whole organic shoe **per arranged Learning session**, with no Skill
-restriction — differently scoped, and strictly the larger of the two. It is not a divergence: D7
-`:335-337` says outright *"**It leaves LDB-06 free.**"* But it sits above D7's floor rather than
-level with it.
+**The two "one"s no longer need telling apart.** The 2026-08-08 draft carried a paragraph explaining
+that `LDB-04` D7's *one organic Presentation in a Skill's window* and this card's *one whole organic
+shoe per arranged session* counted different units (examiner F7). With the second withdrawn, there is
+one "one" and it is D7's. **The examiner finding stands and its subject is gone** — recorded rather
+than quietly dropped, because F7 was correct and a reader of §16 will look for what became of it.
 
-**Strictness stays at one run, deliberately.** A number of organic hands would be a constant with
+**A Coached session may still end on its own.** After the withdrawal, an arranged Learning session
+closes on any of D8's four exits with nothing owed. Whether the learner has met the Skill organically
+is a question about their **window**, answered by `LDB-04` D7 whenever Mastery is computed — not a
+debt the session carries, and therefore not something D17 has to persist across a reload. The
+withdrawal removes an obligation that had no carrier as well as one that deadlocked.
+
+**Strictness stays at D7's one, deliberately.** A number of organic hands would be a constant with
 nothing behind it and would need its own row. `A-23` is the standing row and its named validation
 method — an arranged-only arm against a mixed arm, tested on organic play, scoring classification
 errors separately — is what would justify raising it.
 
 `[Evidence-backed]` on the two source quotations and on the code locus; `[Product judgement]` on the
-ruling.
+ruling and on the 2026-08-15 withdrawal.
 
 ### D4. Blocked versus mixed, stated per Activity type — and it applies to two of six
 
@@ -420,10 +492,43 @@ recorded, excluded from the window, and **not** counted as a failure. `AttemptDi
 `{ status: 'abandoned' }` as a real domain value (`types.ts:50`, read first-hand). Stopping mid-hand
 is abandonment and costs nothing.
 
-**No streak in v1.** ⚠ **A product judgement, approved by the owner 2026-08-08 — see §12 divergence
-2.** Every shipped streak mechanic is loss-framed by construction: its entire motivational force is
-the fear of losing it, which is what `ACT:388` names. XP and levels already carry `LDB-05` D8's
-celebration layer.
+**An up-only streak ships in v1. A losable one does not.** ⚠ **Reversed by owner decision
+2026-08-15; the 2026-08-08 ruling was no streak at all — see §12 divergences 2 and 6.**
+
+A **session count that only rises** and can never be lost, broken, or reset. No fire, no "don't lose
+your streak", no notification, no repair purchase, no grace token — none of those are needed, because
+there is nothing to lose. It lives on the XP layer with `LDB-05` D8's levels and daily goals.
+
+**Why the 2026-08-08 ruling was too wide.** It read: *"Every shipped streak mechanic is loss-framed
+by construction: its entire motivational force is the fear of losing it."* `ACT:388` bans
+*loss-framed* streaks — *"Loss-framed streaks, leagues, or penalties for ending a session"*, reason
+*"Controlled pressure conflicts with non-punitive stopping and the training-product mission."* A
+counter that cannot fall triggers none of that: it applies no pressure, penalises no ending, and is
+compatible with D8's *"stopping is never punished"* because stopping costs it nothing. The 2026-08-08
+generalisation was an empirical claim about **other products**, not a reading of the prohibition, and
+the owner declined to keep it.
+
+**`product-vision.md:90` is satisfied positively, not by absence.** It forbids punishing a learner for
+ending a session. An up-only count records that sessions happened; ending one adds to it.
+`LDB-05` D12 already anticipated exactly this shape — *"if streaks exist at all they are gentle,
+XP-layer only"* — so this is that clause being used rather than a new mechanic.
+
+> **The standing rule this comes with: a removal must name its replacement.** ⚠ **Owner decision,
+> 2026-08-15, binding on every later card — see §12 divergence 6.**
+>
+> Enumerate what the blueprint had removed before this ruling: streaks, timers, cooldowns,
+> self-rating, leaderboards, win celebration, cumulative profit and loss, surfaced verdicts, locks,
+> gates, loss framing, pass marks. **Every one is individually well argued and the list is still too
+> long.** `LDB-05` §0.1 names the mechanism in the owner's own words — *"this repository has a
+> documented habit of designing the fun out of things by making every mechanism safe"* — and then D8
+> removed streaks anyway, three decisions later, in this document. **A rule stated in a spec did not
+> fire on the spec that stated it**, which is this repository's recorded failure class applied to
+> motivation instead of to citations.
+>
+> So: **from 2026-08-15, a design document that removes a motivational mechanic must name what
+> carries that motivation instead, or record that nothing does.** Not a gate and not a veto — a
+> sentence. The cost of the rule is one line per removal; the cost of its absence is a list of twelve
+> that nobody assembled until it was twelve long.
 
 **What answers user story 15 — and what does not.** `LDB-05` §13 states that nothing bounds practice
 any more and forbids this card from reaching back for a chip cap. What this card offers instead is an
@@ -712,15 +817,24 @@ handoff names six and there are six** — checked positively against the JSON on
 
 1. **A Closing run cannot begin with an `arranged` shoe.** Assert that a session whose
    `EvidenceMode` is `assessment` produces attempts whose `engine.playerCardIds` all start `deck-`,
-   never `arranged-` — the check reads real card ids rather than a flag (D3).
-2. **A Coached session whose pool was arranged is not closeable without a Closing run.** Fixture: a
-   learner drills an arranged hard-16 pool to clean and stops; assert the session's Skills show no
-   organic Presentation and that `LDB-04` D7 therefore withholds Mastery. This is a *positive*
-   enumeration of what was checked, not a test that passes on an empty pool.
-3. **A Table sitting produces window-eligible attempts.** Assert a table decision commits with
-   `gradedBy.authority: 'oracle'`, `attemptOrdinal: 1`, `disposition.status: 'graded'`, and
-   `tableVisibility` recorded — and that it is **not** `{ status: 'ungraded' }`. See §11 item 2: the
-   shipped comment says otherwise and is now wrong.
+   never `arranged-` — the check reads real card ids rather than a flag (D9). *(This test survives
+   D3's withdrawal: it constrains what a Closing run **is**, which D9 rules, not when one is
+   **owed**, which was the withdrawn half.)*
+2. **An arranged-only window withholds Mastery, and the session still closes.** *(Rewritten
+   2026-08-15: the 2026-08-08 version asserted a Coached session was "not closeable without a Closing
+   run" — the rule that deadlocked and is withdrawn at D3.)* Fixture: a learner drills an arranged
+   hard-16 pool to clean and stops. Assert two things, not one — that the session reaches a normal
+   `closeReason` with nothing owed, **and** that `LDB-04` D7 withholds Mastery because the window
+   holds no `organic` Presentation. The second half is a *positive* enumeration of what was checked,
+   not a test that passes on an empty pool.
+3. **A Table sitting produces window-eligible attempts, and its scope depends on the opt-in.** Assert
+   a table decision commits with `gradedBy.authority: 'oracle'`, `attemptOrdinal: 1`,
+   `disposition.status: 'graded'`, and `tableVisibility` recorded — and that it is **not**
+   `{ status: 'ungraded' }`. See §11 item 2: the shipped comment says otherwise and is now wrong.
+   **Then assert both arms of divergence 5**: a table Presentation *without* a Classification reaches
+   the bar for `hit`/`stand`/`double`/`split` and **not** for the four `classificationIncluded: true`
+   Skills; the same Presentation *with* one reaches all eight. A test covering only the default arm
+   would pass while the escape was unbuilt.
 4. **`closeReason: 'time-bound'` is never emitted.** Under D7 it is unreachable; assert no producer
    exists. §11 item 1 retires it, and the assertion guards the interim.
 5. **A missed item does not return within 3 Presentations.** Direct test of `A-07f`.
@@ -778,8 +892,9 @@ rows. New rows start at `A-07e`.
 
 ### 11. Owed schema delta
 
-Four items. Each was checked against `web/src/progress/types.ts`, read first-hand 2026-08-08, rather
-than assumed.
+**Five items.** Items 1–4 were checked against `web/src/progress/types.ts`, read first-hand
+2026-08-08, rather than assumed. Item 5 was added 2026-08-15 with divergence 5 and grepped the same
+way.
 
 1. **`SessionRecord.budget` and `closeReason`.** `budget` is
    `{ presetId: string; targetDurationMs: number; maxActivities: number }` (`types.ts:130`) and
@@ -793,8 +908,8 @@ than assumed.
 2. **`AttemptDisposition`'s free-play comment is now wrong.** `types.ts:49` reads
    `| { status: 'ungraded' } // responded; no grading authority (e.g. free play action)`. `LDB-05` D9
    (approved 2026-08-05) rules that **every** Free Play decision is graded by the oracle, and D2
-   above makes those decisions window-eligible for the four action Skills. **No type change is
-   needed** — `{ status: 'graded' }` and `gradedBy.authority: 'oracle'` both already exist.
+   above makes those decisions window-eligible for the four action Skills, and for all eight where
+   the learner takes the optional Classification capture. **No type change is needed** — `{ status: 'graded' }` and `gradedBy.authority: 'oracle'` both already exist.
 
    **Owed: the annotation, in TWO places.** `web/src/progress/types.ts:49` **and**
    `docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md:452`, the approved parent the
@@ -818,6 +933,21 @@ than assumed.
    which is fine. **Owed:** one vocabulary reconciliation, so `hidden` and `table-closed` stop being
    two names for one thing.
 
+5. **The opt-in Classification is not recordable today — added 2026-08-15 with divergence 5.**
+   Grepped `web/src/progress/types.ts` on 2026-08-15: `ProgressAttempt` carries no field stating
+   whether the learner supplied a Classification. **It cannot ride on item 3.** `resourcesConsulted`
+   distinguishes *strategy table* from *rule card* — both are things the learner **consumed**, and
+   consuming either keeps a Presentation *out* of the window (D10, `LDB-04` D4). The Classification is
+   something the learner **produced**, and producing it puts a Presentation *into* four more windows.
+   Opposite direction, opposite effect on eligibility; one field cannot carry both without meaning two
+   things.
+
+   **Owed:** a per-Presentation record of whether the Classification was produced and whether it was
+   correct. The grading rule already exists and only the storage does not — `LDB-01` §2 requires
+   Classification declared per Skill, and `LDB-03` §6.1 rules it *"graded separately **inside**
+   `deal-and-decide`"*. **This is the one genuinely new field divergence 5 adds**, and naming it here
+   is the cost of that divergence stated rather than discovered in phase 5.
+
 **Checked and *not* owed, enumerated positively rather than assumed absent:** the replay snapshot
 `ALR-018` requires already exists as `ProgressAttempt.engine` and `ProgressAttempt.activity`
 (`types.ts:103` / `56-62`, and `106-112`); the session shape needs no field because it is derivable from
@@ -827,19 +957,29 @@ than assumed.
 
 ### 12. Divergences, surfaced and approved
 
-**Four.** Divergences 1–3 were put to the owner individually on 2026-08-08 and approved before this
+**Six.** Divergences 1–3 were put to the owner individually on 2026-08-08 and approved before this
 document was written. Divergence 4 was found by the examiner pass afterwards and approved the same
-day. **All four are approved.**
+day. **Divergences 5 and 6 are new on 2026-08-15**, from a `grill-with-docs` session run at the
+owner's request *before* the gate rather than at it — he held the gate open on 2026-08-08 to grill
+phase 4 on playability and change-agility first. **All six are approved.**
+
+> **Two of this document's own 2026-08-08 rulings were reversed at that session, and are recorded as
+> divergences from *itself* rather than edited away:** D2's scope limit gains an opt-in escape
+> (divergence 5), and D8's blanket no-streak becomes an up-only streak (divergence 6). D3's
+> per-session Closing run was **withdrawn** in the same session — that one is not a divergence,
+> because it removes a rule this document invented rather than departing from a source, and its
+> withdrawal is recorded in full at D3.
 
 1. **`ALR-027` requires two bounds; D7 ships one.** The requirement is *"a session-size preset
    resolving to both a target duration and a max activity count."* D7 demotes the duration to a
    displayed estimate. Grounds are in D7; the schema cost is §11 item 1. **APPROVED.**
 
-2. **No streak in v1.** `ACT:388` rejects *loss-framed* streaks; a streak that only counts up is not
-   literally forbidden by it. D8 declines the whole mechanic anyway, on the judgement that every
-   shipped streak is loss-framed by construction. This is a product judgement going beyond the
-   recorded prohibition rather than a divergence from it, and it is recorded as a divergence so the
-   distinction is visible. **APPROVED.**
+2. **~~No streak in v1.~~ SUPERSEDED 2026-08-15 by divergence 6.** As written on 2026-08-08:
+   *"`ACT:388` rejects loss-framed streaks; a streak that only counts up is not literally forbidden
+   by it. D8 declines the whole mechanic anyway, on the judgement that every shipped streak is
+   loss-framed by construction."* **Its own first sentence is what reopened it** — the draft
+   identified the exact gap in the prohibition and then declined to use it. Struck rather than
+   deleted, because the reasoning that reversed this is contained in the entry itself.
 
 3. **`ALR-029`'s second clause is not built.** *"Preserve open goals and in-progress session state
    when the learner stops"* — D17 preserves committed attempts only. Grounds and the reopening
@@ -863,6 +1003,30 @@ day. **All four are approved.**
 
    Both loci reopened first-hand 2026-08-08.
 
+5. **D2's scope limit gains an opt-in escape, diverging from this document's own 2026-08-08 ruling.**
+   That ruling declined a table-side Classification capture because it *"bends the honest simulator,
+   which `product-vision.md:69-71` fences off."* **Reopened first-hand 2026-08-15: `:69-71` permits
+   the learning layer to help *around* the game — it names optional table access, hints, count tools
+   and post-session feedback — and forbids manipulating cards for lesson purposes.** An optional
+   control manipulates no card. The fence was cited against a mechanic it does not cover, and
+   `LDB-04` D4's *"show me"* is the same shape and already approved at the table.
+
+   **What it costs, stated rather than left to phase 5.** A per-Presentation record of whether the
+   Classification was given, which §11 item 3's `resourcesConsulted` delta does not cover — that
+   delta distinguishes *strategy table* from *rule card*, and this is a third thing. The control
+   itself is `LDB-07`'s. **APPROVED, owner 2026-08-15.**
+
+6. **An up-only streak ships, reversing divergence 2.** `ACT:388` forbids *loss-framed* streaks;
+   divergence 2 declined every streak on the wider judgement that all shipped streaks are loss-framed
+   by construction. That is a claim about other products, not a reading of the prohibition. A counter
+   that cannot fall applies no pressure and penalises no ending, and `LDB-05` D12 already licenses
+   *"gentle, XP-layer only"* streaks.
+
+   **It travels with a standing rule** — a design document that removes a motivational mechanic must
+   name what carries that motivation instead, or record that nothing does. The evidence for the rule
+   is this document: `LDB-05` §0.1 names the design-the-fun-out habit, and D8 removed streaks three
+   decisions later anyway. **APPROVED, owner 2026-08-15.**
+
 ### 13. Handed forward
 
 **To `LDB-07`** — *interaction UX*:
@@ -880,20 +1044,44 @@ day. **All four are approved.**
 - **The naming collision `LDB-05` §13 already sent you** — *Free Play* versus *Free Learn*, with
   **Practice** proposed. D13 makes Practice's scope concrete, which may help settle it.
 
+**Added 2026-08-15, from the pre-gate grill:**
+
+- **The optional Classification control at the table** (D2, divergence 5). The hardest constraint on
+  it is that it must not read as the app asking permission to grade you. It is an offer that buys the
+  learner four more Skills' worth of credit, and it must be skippable without a second thought — a
+  learner who ignores it forever loses nothing they had. Nearest approved precedent to design against
+  is `LDB-04` D4's *"I'm not sure — show me"*, which is also an offered control with an evidence
+  consequence.
+- **How the up-only streak renders without acquiring loss framing** (D8, divergence 6). This is the
+  whole risk in the mechanic: the *number* cannot fall, but a flame that greys out, a "keep it going"
+  string, or a notification re-introduces exactly the pressure `ACT:388` names. The count is the
+  mechanic; everything around it is where it can go wrong, and that is yours.
+- **The removal rule** (D8). When `LDB-07` declines a motivational mechanic — and an interaction
+  card will — it names what carries that motivation instead, or records that nothing does.
+
 **To `LDB-08`** — *the blueprint*:
 
 - **The storage boundary is one decision, not two** (D17). Wallet persistence and window persistence
   both force it; the Tool & Runtime Admission Protocol in `docs/specs/stack-boundaries.md` should be
   run once over the pair.
-- **D2 changes the phase-5 instrumentation calculus.** If Table sittings feed the window, a slice
-  that instruments Free Play covers `P-1` and `A-13`. **The `A-20` half is withdrawn:** `A-20`'s
-  named test is `adherence-under-loss` divergence, and D2's scope limit makes table evidence
-  non-window-eligible for exactly that Skill. `A-20` still shares the `P-1` instrument per `LDB-05`
-  §13, so it is not unreachable — but a Free Play slice does not cover it for free, and
-  `adherence-under-loss` must be instrumented in a Learning session. (Examiner F5.)
+- **D2 changes the phase-5 instrumentation calculus, and divergence 5 changed it again.** If Table
+  sittings feed the window, a slice that instruments Free Play covers `P-1` and `A-13`. **The `A-20`
+  half was withdrawn on 2026-08-08 and is restored conditionally on 2026-08-15:** `A-20`'s named test
+  is `adherence-under-loss` divergence; D2's scope limit made table evidence non-window-eligible for
+  exactly that Skill (examiner F5), and divergence 5's opt-in Classification capture makes it
+  eligible again **whenever the learner opts in**.
+
+  **State the condition rather than the coverage.** A Free Play slice covers `A-20` only if it builds
+  the opt-in control and only across Presentations where it was used, so the achieved sample is a
+  learner behaviour rather than a property of the slice. If `LDB-08` declares `A-20` covered, it must
+  say what opt-in rate it is assuming and how it will know. If the control is not built, the
+  2026-08-08 position stands unchanged and `adherence-under-loss` must be instrumented in a Learning
+  session. `A-20` shares the `P-1` instrument either way (`LDB-05` §13), so it is never unreachable.
 - **`A-07e` and `A-07f` both close from stored attempts with no new instrument**, so neither adds
   cost to the slice.
-- **Four schema deltas are owed (§11)**, of which only item 3 (`resourcesConsulted`) is a new field.
+- **Five schema deltas are owed (§11)**, of which **two** are new fields: item 3
+  (`resourcesConsulted`) and item 5 (the produced Classification, added 2026-08-15). They pull in
+  opposite directions on window eligibility and must not be merged into one field.
 
 **To phase 5:**
 
@@ -932,10 +1120,19 @@ defines it** —
 **Two `journal/decisions.md` rows, also at approval** — hard to reverse, surprising without context,
 and the result of a real trade-off, which is the three-part test:
 
-1. **Engineered exposure teaches; an organic Closing run closes the claim** (D3) — with the bridge
-   §4.6 / §7 contradiction named as what it resolves.
+1. **Engineered exposure teaches; `LDB-04` D7's organic floor closes the claim** (D3) — with the
+   bridge §4.6 / §7 contradiction named as what it resolves. *(Retitled 2026-08-15: the row was
+   "an organic Closing run closes the claim", which is the rule the owner withdrew. The decision the
+   row records — engineer the encounter, do not wait for the shoe — is unchanged; what is no longer
+   true is that this card invents the closing mechanism.)*
 2. **The three unordered Condition axes stay unordered; table character carries the progression**
    (D5) — with the note that this asserts no learning order and files no row.
+
+**These two still land at approval and have not landed.** The 2026-08-15 grill wrote a *separate*
+`journal/decisions.md` section recording the owner's twelve rulings from that session — that is a
+record of decisions he made, not of this card's gate, and it does not discharge either row above.
+Checked positively rather than assumed: `grep` for both row titles in `journal/decisions.md` on
+2026-08-15 returns nothing.
 
 `docs/adr/` is **not** created. `docs/agents/domain.md` and `AGENTS.md` both rule decisions live in
 `journal/decisions.md` and that `docs/adr/` must not exist here.
@@ -952,6 +1149,11 @@ fail when a record exists passes silently on a missing one.
    rulings, one exemption with its reason, three `n/a` with their reasons.
 4. **The bridge contradiction is resolved in writing.** D3, naming §4.6 and §7 explicitly, resolving
    in terms of what evidence a session must yield, and citing the code locus that makes it buildable.
+   **Still satisfied after the 2026-08-15 withdrawal, and checked rather than assumed:** what was
+   withdrawn is the per-session Closing run, which was D3's *addition*; the resolution itself —
+   engineer the encounter, and let `LDB-04` D7's organic floor close the claim — is stated at D3 and
+   is the same answer in terms of evidence rather than of engine capability. The card required the
+   contradiction resolved, not a new rule invented to resolve it.
 5. **All six `LDB-03` parameters carrying `owner: LDB-06` are valued.** The parameter table lists six;
    checked against `2026-08-01-activity-taxonomy.json` on 2026-08-08 — `feedbackTiming`,
    `segmentation`, `pace`, `ruleCardAvailable`, `revealMode`, `region`.
@@ -960,8 +1162,10 @@ fail when a record exists passes silently on a missing one.
    minimum → D3; engineered exposure remains available → D3. `LDB-05`: when Practice opens → D13;
    nothing bounds practice → D8, answered partially and said so; the `Review due` full-rate coupling →
    D14; the `"faded"` / D9 interaction → D10 with D2.
-7. **Divergences are surfaced, not applied silently.** Four, each in §12 with its approval; for
-   divergence 1 its schema cost, and for divergence 4 both of its correction targets.
+7. **Divergences are surfaced, not applied silently.** **Six**, each in §12 with its approval; for
+   divergence 1 its schema cost, for divergence 4 both of its correction targets, and for divergence
+   5 the per-Presentation record it owes that §11 item 3 does not cover. Divergence 2 is **struck and
+   superseded** by 6 rather than rewritten, so the reasoning that reversed it stays readable.
 8. **No claim describes a source that was not opened.** Sources reopened first-hand for this document
    on 2026-08-08 and named as such: `run/U3/audit.md:31,33`; `run/U1/audit.md` rows `U1-5` and `U1-8`;
    `crates/blackjack-core/src/shoe.rs:62-100`; `web/src/progress/types.ts:1-179` (the whole file); the four binding
@@ -1024,3 +1228,26 @@ instance should re-check them. Nine of the twelve were re-checked first-hand aga
 before landing — F2, F3, F5, F6, F9, F10, F11, F12 and the `A-22` text behind F8 — and all nine held.
 **F1, F4 and F7 were landed on the examiner's reading without independent re-check**, and that is
 recorded here rather than left as an implied verification.
+
+### 16.1 What the 2026-08-15 grill did to two examiner findings
+
+The table above is the record of **2026-08-08** and is left exactly as it was. Two of its rows have
+since changed status, and that is recorded here rather than by editing history.
+
+- **F5 — scoped, then given an escape.** F5 was correct: `deal-and-decide`'s `produced` contract does
+  require the Classification, and a table decision does not supply it. The 2026-08-08 fix was to
+  narrow D2 to four Skills. **The 2026-08-15 grill found what that fix cost** — the four Skills that
+  are the product's differentiator became unmasterable at a table, making *"measure play, not quiz
+  scores"* true only of `hit`/`stand`/`double`/`split`. Divergence 5 adds an opt-in rather than
+  reversing F5: the contract still governs, and the learner may now meet it.
+- **F7 — correct, and its subject is gone.** F7 observed that D3 and `LDB-04` D7 both said "one" and
+  counted different units. D3's "one" is withdrawn, so there is one "one" left. The finding was right
+  and needed no repair beyond the removal of what it was about.
+
+**And one thing neither the examiner nor the design interview caught, recorded because it is the
+point of this section.** D3's withdrawn rule **deadlocked against D7 and D8 inside this same
+document** — a Short arranged session could not legally end. The examiner assessed 48 claims for
+whether each was warranted by its evidence, and every one of the three rulings involved was
+individually warranted. **Nothing in the pass looked at whether the rulings composed.** That is a gap
+in the instrument, not a lapse in its execution, and it is worth stating before the next document
+runs an examiner pass and reads a clean result as a clean design.
