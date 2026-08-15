@@ -665,3 +665,81 @@ pass assessed 48 claims and found 12 to revise. The D3/D7/D8 deadlock was **not*
 could not have been: every one of the three rulings is individually warranted by its evidence, and
 the pass asks whether each claim is warranted, never whether the rulings **compose**. A clean examiner
 result is not a clean design, and the next document to run one should not read it as one.
+
+---
+
+## 2026-08-15 — `LDB-09` approved: five ungraded Activity types, and the eight `state-report` Skills keep their bars
+
+**The gate.** `LDB-09` was created by the pre-gate grill earlier the same day (previous section) and
+ruled at its own `user-approval` gate that evening. Spec:
+`docs/superpowers/specs/2026-08-15-play-verdicts-and-ungraded-activities.md`. Six divergences were
+surfaced in its §12 and ruled together; none was applied before the ruling.
+
+**The premise this card was created on was false, and the correction is why it matters.** Decision 9
+of the grill read: *"A learner who plays 20 hands has shown all eight `state-report` Skills without
+being asked."* Checked against the shipped table rather than recalled, it is **false** — the engine
+performs all eight and the player watches. `HandView.tsx:13,16` prints the summed total;
+`totals.ts:22` resolves the Ace to `7/17`; `Table.tsx:12-14` prints Win/Loss/Push; `Table.tsx:15`
+makes `blackjack` its own settlement label, handing over the Classification for the one
+`classificationIncluded: true` Skill in the set; `Table.tsx:19-20,45` prints the delta and bankroll.
+And the word *"bust"* appears **nowhere** in the shipped UI — 0 non-test hits across
+`web/src/app/*.tsx`, searched positively rather than inferred from silence.
+
+**So the choice was never "bar, or redundant with play". It was "bar, or nothing."** These eight are
+exercised in exactly one place today and that place is the quiz.
+
+**The ruling: all eight keep their Skill AND their bar; the evidence route changes.** A totals
+disclosure setting is introduced, and with totals hidden the evidence is produced **in situ** during
+play — the move `LDB-03` §6.1 already made for `classify-hand` inside `deal-and-decide`. The
+standalone question survives as the first-exposure form only. **Reversal cost: nil.** No Skill id, no
+bar and no `schemaVersion` moves, and `LDB-04` D12 already precedents keeping a Skill without a bar.
+The expense the grill named as the reason this could not wait turned out not to be incurred.
+
+**Had the other horn been taken**, 9 bars would remain and 8 of them would run through
+`deal-and-decide` alone. Demotion would have **concentrated** the narrowness, not relieved it.
+
+**An Activity type may now grade nothing, if it names the Skill it rehearses.** `LDB-03` §6's
+coverage rule gains a second admission path (`rehearses`), and rehearsal is deliberately **not**
+coverage — a Skill named only there is still uncovered. No budget of such types: one was offered and
+refused as a constant with nothing behind it.
+
+**Five ungraded types, ranked by cost rather than capped by count**: `hand-sort`,
+`estimate-and-check`, `procedure-order`, `principle-name`, `rule-battery`. Plus a `probe` parameter
+on `rule-contrast`. The taxonomy goes from 6 types to 11.
+
+**All 19 unadopted patterns now carry a play verdict** — a question none of them was ever asked,
+because `classification.md`'s classifier was told *"not to rank on usefulness to the product"*. Six
+admitted, one parameter, two reported forward (`U2-3` to `LDB-07`, `U2-11` to phase 7), ten declined
+each on a **play** ground rather than by inheriting its measurement ground.
+
+**`A-18` stops being unclosable.** Its method — *"instrument the first non-quiz activity against a
+quiz baseline"* — had no non-quiz activity to instrument. Five now exist, and `hand-sort` is the
+cheapest instrument.
+
+**One reuse declined, recorded because it would have been free and wrong.** `tableVisibility`
+(`web/src/progress/types.ts:32`) looks exactly like the totals-disclosure field and is not: the
+`support` axis is `table-open | table-closed`, *"tableOpen is the project's mastery axis"*
+(`2026-08-01-skill-graph.json:8`) — the **strategy chart**, not the blackjack table. `CONTEXT.md`
+now carries the disambiguation.
+
+**Two schema deltas owed to phase 5, and one not owed.** Owed: an additive `InteractionMode`
+widening, and a totals-disclosure field. **Not** owed: ungraded attempts need no schema change at all
+— `{ status: 'ungraded' }` (`:49`, commented *"e.g. free play action"*), `authority: 'none'` (`:100`)
+and `mode: 'acquisition'` (`:30`) already exist.
+
+**Handed forward, not decided here.** To `LDB-04`: is an in-situ capture a separate Presentation, and
+is it window-eligible? To `LDB-06`: **do ungraded activities consume the session bound?** D7 caps a
+Short session at 10 Presentations and D8 forbids starting an activity after a bound, and neither was
+written with an activity that produces no evidence in view. That question is reached only by
+composing D7, D8 and this card's types — the exact blind spot `LDB-06` §16.1 recorded, so it is
+raised to be **asked** rather than discovered.
+
+**Enforcement, not assertion.** `scripts/check-ldb03-taxonomy.js` went from 6 checks to 8 and passes
+all 8. The five new types have `primaryFor` **and** `secondaryFor` empty and would have **failed**
+its check 1 as written — extending check 1 is what makes the coverage clause enforceable. Check 3
+now reports `principle-name` as classification-supplied with no violation, and would fail the moment
+that type were ever graded. Check 7 stops an ungraded type silently acquiring evidence coverage in a
+later edit; check 8 holds the play axis to exactly the 19 unadopted rows.
+
+**Not published to the tracker.** The remote is public and `journal/tasks.md` is the execution
+authority; `ready-for-agent` would also have been a false label on a document that authorises no code.
