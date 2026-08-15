@@ -93,6 +93,7 @@ here wins; fix the other. Every phase ends by tidying these so they stay true.
 | docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md | The chips/XP/rating motivation model as an owner premise, with open questions `E-1`–`E-7` and the constraints that bind them. Not a design and not a research conclusion. |
 | docs/superpowers/plans/2026-07-26-repo-restructure.md | The layers-and-phases restructure: why, the decisions taken, the four stages, and what must not break in the White Lotus machinery. The resume point while it runs. |
 | docs/superpowers/audits/2026-07-26-restructure-review.md | Independent adversarial review of the restructure against the owner's sufficiency criterion — can the plan be followed literally without improvising. Verdict **not yet**, with F1–F18 and a shortest-path-to-yes. Authoritative for what the restructure still owes. |
+| docs/superpowers/audits/2026-08-15-ldb06-redraft-corrections.md | What the two-instance `audit-examiner` pass over the `LDB-06` 2026-08-15 redraft found, as a landing checklist: 10 text repairs, 13 gate rulings (incl. `LDB-09` D11 and the unowned chart-at-a-Table-sitting conflict), 13 recorded-only. Authoritative for what the redraft still owes; its verdicts are unconfirmed — no verifier instance has run. |
 
 Two authoritative surfaces live outside this repository and therefore carry no table row (the
 manifest lint resolves first cells as repo-relative paths):
