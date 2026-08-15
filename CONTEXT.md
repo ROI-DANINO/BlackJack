@@ -45,6 +45,33 @@ it may use. Feedback timing, scoring rule, and Condition settings are *parameter
 new types; the widget is not part of it at all.
 _Avoid_: Exercise, question type, activity pattern, format, drill
 
+**Ungraded Activity type**:
+An Activity type that produces **no mastery evidence at all** and is admitted anyway, because it is
+good to play. It declares `rehearses` in place of the Skills it measures, grades nothing, and never
+reaches a Mastery bar. Five exist: `hand-sort`, `estimate-and-check`, `procedure-order`,
+`principle-name`, `rule-battery`. Its attempts are still **recorded** — an activity that records
+nothing could not be instrumented, and `A-18` requires instrumenting it.
+_Avoid_: Free play, filler, warm-up, mini-game, unscored activity
+
+**Rehearses**:
+The Skills an Ungraded Activity type gives practice at **without producing evidence for**. It is the
+price of admission for a type that grades nothing, and it is deliberately **not** coverage: a Skill
+named only in a `rehearses` list is still uncovered, and still reports as a gap against `LDB-01`.
+_Avoid_: Covers, measures, targets, supports, practises (as a coverage claim)
+
+**Totals disclosure**:
+Whether the blackjack table prints the hand total for the player, or the player keeps it themselves.
+With totals hidden, the eight `state-report` Skills are exercised **in play** rather than by a
+question afterwards; the engine adjudicates identically either way. **Not** the same thing as
+Table visibility — see the collisions note.
+_Avoid_: Table visibility, hint level, assist mode, hard mode
+
+**In-situ capture**:
+Evidence produced **inside** a live hand rather than by a separate question about one — the way
+`classify-hand` is graded within `deal-and-decide`. `state-report` evidence is captured this way when
+totals are hidden. The standalone question survives as the first-exposure form.
+_Avoid_: Inline quiz, embedded question, interstitial
+
 **Supplied pool**:
 Elements the prompt puts on screen for the learner to work from. **Cosmetic** when it discloses any
 part of what is being measured; **substantive** when the measured target is not in it. The four
@@ -155,3 +182,10 @@ _Avoid_: Engine context (when only the situation is meant)
 - "Outcome" is doubly loaded: `HandOutcome` in the engine means the result of a hand (win/loss/push)
   and is unrelated to a Learning outcome. The engine's meaning keeps the bare word; the learning
   side always says **Learning outcome** in full.
+- **"Table" is doubly loaded, and the schema uses both senses.** `ProgressAttempt.tableVisibility`
+  (`web/src/progress/types.ts:32`) and `supportFading`'s `table-open` / `table-closed` mean the
+  **strategy table** — the chart — because the `support` Condition axis is defined that way
+  (*"tableOpen is the project's mastery axis"*, `2026-08-01-skill-graph.json:8`). **Totals
+  disclosure** means the **blackjack table**. They are different Conditions and neither field may be
+  reused for the other. Recorded at `LDB-09` D6, where reusing `tableVisibility` would have been
+  free, convenient and wrong.

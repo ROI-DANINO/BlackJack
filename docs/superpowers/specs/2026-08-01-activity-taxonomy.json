@@ -36,11 +36,22 @@
   },
 
   "coverageRule": {
-    "forward": "every Activity type declares at least one Skill it measures",
+    "forward": "every Activity type declares at least one Skill it measures, OR declares a non-empty rehearses",
     "reverse": "every Skill names at least one Activity type that could produce primary evidence for it",
     "onGap": "a Skill no type can cover is recorded as a finding against LDB-01 - never filled by inventing an activity",
-    "checkedOn": "2026-08-01",
-    "result": "18 of 18 Skills covered by primary evidence"
+    "checkedOn": "2026-08-15",
+    "result": "18 of 18 Skills covered by primary evidence; 11 of 11 types declare coverage or rehearsal",
+    "ungradedAdmission": {
+      "addedBy": "LDB-09 D1, owner decision of 2026-08-15",
+      "clause": "An Activity type may grade nothing PROVIDED it declares rehearses - a non-empty list of Skill ids it gives practice at without producing evidence for.",
+      "rehearsalIsNotCoverage": "rehearses NEVER contributes to the reverse direction. A Skill named only in a rehearses list is still uncovered, and onGap still applies to it.",
+      "notABudget": "No fixed count of ungraded types. A fixed budget was offered to the owner and refused as a constant with nothing behind it.",
+      "citedNotReargued": [
+        "LDB-04 D6: 'not everything the learner does needs to feed a progress meter. An app in which every interaction is graded is a quiz with a card table drawn behind it'",
+        "A-18's validation method: 'instrument the first non-quiz activity against a quiz baseline' - unclosable until these types existed"
+      ],
+      "evidenceLabel": "Product judgement"
+    }
   },
 
   "activityTypes": [
@@ -147,10 +158,122 @@
       "primaryFor": [],
       "secondaryFor": ["read-rule-card", "strategy-action"],
       "parameters": [
-        { "id": "verdictSurfaced", "values": [false], "owner": "LDB-07", "note": "recorded, never shown as pass/fail - U1-5's surviving licence" }
+        { "id": "verdictSurfaced", "values": [false], "owner": "LDB-07", "note": "recorded, never shown as pass/fail - U1-5's surviving licence" },
+        { "id": "probe", "values": ["which-rule-differs", "which-rule-would-flip-this"], "source": "U2-6", "owner": "LDB-07", "addedBy": "LDB-09 D3", "note": "U2-6 inverted: show a decision that must flip, ask which rule flips it. PRODUCED is the same object - the rule - so this is a shown parameter, not a new type. verdictSurfaced:false governs both settings." }
       ],
       "divergesFromSource": "U3-4's construct is invention whose value is orthogonal to answer correctness - 'the students in the inventing condition did not generate a correct standardizing procedure during instruction, yet they were more prepared to learn the procedure.' This design grades the named differing rule so the activity produces evidence at all, and keeps the source's caution by not surfacing the verdict. Labelled Product judgement; the divergence is real and recorded rather than smoothed.",
       "note": "Its downstream evidence is the deal-and-decide attempts that follow under ruleset: novel-profile."
+    },
+    {
+      "id": "hand-sort",
+      "title": "Hand sort",
+      "graded": false,
+      "buildOrder": 1,
+      "cost": "cheap",
+      "shown": "a batch of dealt hands, all at once",
+      "produced": "a partition of the batch into pair / soft / hard",
+      "withheld": "which bucket each hand belongs in",
+      "gradedBy": ["none"],
+      "provenance": ["organic", "arranged"],
+      "classificationSupplied": false,
+      "primaryFor": [],
+      "secondaryFor": [],
+      "rehearses": ["classify-hand"],
+      "parameters": [],
+      "adoptedFrom": "U2-10 is elsewhere; this is U2-7",
+      "note": "LDB-03 rejected U2-7 because classify-hand already has primary evidence in situ inside deal-and-decide - a MEASUREMENT argument that does not bite once the activity measures nothing. Kinetic, fast and forgiving; the most Duolingo-shaped interaction in the catalog. Cheapest instrument for A-18."
+    },
+    {
+      "id": "estimate-and-check",
+      "title": "Estimate and check",
+      "graded": false,
+      "buildOrder": 2,
+      "cost": "cheap",
+      "shown": "either a standing quantity about the game (how often a dealer showing 6 busts) or a live shoe position (from here, how often does hitting win)",
+      "produced": "one number on a continuum",
+      "withheld": "the true value, which already exists and is computable",
+      "gradedBy": ["none"],
+      "provenance": ["organic", "arranged", "posed"],
+      "classificationSupplied": false,
+      "primaryFor": [],
+      "secondaryFor": [],
+      "rehearses": ["variance-expectation", "dealer-info"],
+      "parameters": [
+        { "id": "subject", "values": ["standing-quantity", "this-shoe-from-here"], "source": "U2-4 / U1-2", "owner": "LDB-07" }
+      ],
+      "adoptedFrom": "U1-2 + U2-4, merged",
+      "register": "A-27",
+      "mergeReason": "U1-2 and U2-4 differ only in shown. produced (a number) and withheld (the true value) are identical, and the individuating axis is shown x produced x withheld - so they are one type with a subject parameter, not two types.",
+      "distinctFrom": "predict-then-reveal, whose withheld is 'the outcome; the hands have not been played yet'. That is a forecast whose evidence does not exist at capture time; this is a check against a value already determined. A-13 already carries the this-shoe-from-here half, whose whole point is scoring against the computed value and never against what the shoe did.",
+      "note": "The shoe-position setting is scored against the engine's computed value and NEVER against what the shoe actually did - that is the decision/outcome separation the product exists to teach."
+    },
+    {
+      "id": "procedure-order",
+      "title": "Procedure order",
+      "graded": false,
+      "buildOrder": 3,
+      "cost": "middling",
+      "shown": "the steps of a fixed procedure, scrambled, possibly with distractors to leave unused",
+      "produced": "the steps in their correct order",
+      "withheld": "the order",
+      "gradedBy": ["none"],
+      "provenance": ["posed"],
+      "classificationSupplied": false,
+      "primaryFor": [],
+      "secondaryFor": [],
+      "rehearses": ["strategy-action", "outcomes"],
+      "parameters": [
+        { "id": "procedure", "values": ["dealer-routine", "lookup-sequence"], "owner": "LDB-07", "note": "lookup-sequence is classify -> dealer column -> cell" }
+      ],
+      "adoptedFrom": "U3-7",
+      "doesNotReinstate": "round-flow. That Skill was retired because 'follow' names no observable act. This type creates NO Skill and produces no evidence; ordering is an observable act that here measures nothing. Recorded because the resemblance is close enough to look like a retired Skill returning by the back door.",
+      "note": "LDB-03 reclassified U3-7 substantive under the pool ruling - the pool supplies fragments, the target is the order, and the two do not intersect - then did not adopt it because no Skill in the approved graph is an ordering. That remains true; this type does not change it."
+    },
+    {
+      "id": "principle-name",
+      "title": "Principle name",
+      "graded": false,
+      "buildOrder": 4,
+      "cost": "middling",
+      "shown": "several Decision situations presented as a group, all taking the same action",
+      "produced": "the action they share",
+      "withheld": "the shared action, and the reason they are alike",
+      "gradedBy": ["none"],
+      "provenance": ["organic", "arranged"],
+      "classificationSupplied": true,
+      "classificationSuppliedNote": "Grouping the situations tells the learner they are the same kind, which supplies the Classification. That is exactly why LDB-03 rejected U3-9 under the recognition rule - and it is harmless here ONLY because this type produces no evidence for any classificationIncluded:true Skill. If it ever became graded, the recognition ban would bite immediately.",
+      "primaryFor": [],
+      "secondaryFor": [],
+      "rehearses": ["strategy-action"],
+      "parameters": [
+        { "id": "groupSize", "values": ["unset"], "owner": "LDB-07" }
+      ],
+      "adoptedFrom": "U3-9",
+      "register": "A-26",
+      "note": "Rehearses strategy-action at the REGION level rather than the cell level - the pattern-spotting pleasure, which is a different pleasure from recall-or-decide. Its source is the weakest-evidenced substantive row in the catalog (N=20, one experiment, no replication, contrived by its own authors), which is why A-26 exists and why this is the first of the five to playtest."
+    },
+    {
+      "id": "rule-battery",
+      "title": "Rule battery",
+      "graded": false,
+      "buildOrder": 5,
+      "cost": "expensive",
+      "shown": "a set of fixed parts from which a policy rule can be assembled",
+      "produced": "a rule, then a run of it against generated hands",
+      "withheld": "the cells where the rule breaks",
+      "gradedBy": ["none"],
+      "provenance": ["posed"],
+      "classificationSupplied": false,
+      "primaryFor": [],
+      "secondaryFor": [],
+      "rehearses": ["strategy-action", "read-rule-card"],
+      "parameters": [
+        { "id": "assembly", "values": ["fixed-parts"], "owner": "LDB-07", "note": "fixed-parts ONLY. The free-text form needs a rule language and a parser and stays rejected." }
+      ],
+      "adoptedFrom": "U2-10",
+      "register": "A-28",
+      "costCorrection": "LDB-03 rejected U2-10 partly as needing 'a rule language and a parser'. That costed the FREE-TEXT form. Fixed-part assembly yields a rule object directly and the battery is the existing oracle evaluated over enumerated situations, so the admitted form needs neither. The cheap form was not costed because nobody asked for it.",
+      "note": "The only type in the set with a builder shape rather than a recall-or-decide shape, and the one that most changes what the product is. Surfaces a wrong MODEL rather than a wrong answer - which is what the U2-14 decline gives up, and this is its named replacement."
     }
   ],
 
@@ -197,6 +320,38 @@
     "total": 32
   },
 
+  "playVerdicts": {
+    "addedBy": "LDB-09 D4, 2026-08-15",
+    "question": "Would this be good to PLAY, accepting that it measures nothing? A question none of these rows was asked when it was disposed.",
+    "whyItIsNewRatherThanARerun": "classification.md's classifier was told 'not to rank on usefulness to the product, and not to invent a composite score'. Its only axis is substantive-vs-cosmetic on MEASUREMENT. The 19 rows below were disposed on whether they measure something this product needs measured.",
+    "scope": "Exactly the 19 rows LDB-03 disposed as rejected (15) or not-adopted-no-target (4). The original measurement verdicts are NOT altered - this is a second, independent axis.",
+    "evidenceLabel": "Product judgement",
+    "quotationProvenance": "Where a reason quotes a source, the quotation is reproduced from the catalog row and was NOT re-verified at source. The card forbade new collection. Stated plainly rather than implied.",
+    "counts": { "admitted-as-type": 6, "admitted-as-parameter": 1, "reported-forward": 2, "declined": 10, "total": 19 },
+    "verdicts": [
+      { "id": "U2-7", "play": "admitted-as-type", "target": "hand-sort", "reason": "Dragging cards into buckets is kinetic, fast and forgiving - the most Duolingo-shaped interaction in the catalog. The measurement objection (classify-hand is already measured in situ) does not bite on an activity that measures nothing." },
+      { "id": "U1-2", "play": "admitted-as-type", "target": "estimate-and-check", "reason": "Replaying a resolved hand and asking for a probability, scored against the engine and never against what the shoe did, is decision/outcome separation made visceral - the misconception the product exists to defeat. Merged with U2-4; see the type's mergeReason." },
+      { "id": "U2-4", "play": "admitted-as-type", "target": "estimate-and-check", "reason": "Sliding a guess at the dealer-6 bust rate and watching the true value snap in is a low-friction curiosity beat, and it delivers how-to-teach.md Part 4's 'teach bust rates BEFORE showing the chart'. Merged with U1-2." },
+      { "id": "U3-7", "play": "admitted-as-type", "target": "procedure-order", "reason": "Ordering is a great play shape - tactile, fast, forgiving - and the natural 'how does this game work' onboarding beat. Not adopted for measurement because no Skill is an ordering; that is still true and this type does not change it." },
+      { "id": "U3-9", "play": "admitted-as-type", "target": "principle-name", "reason": "Pattern-spotting is a different pleasure from recall-or-decide, and it is the only row in the set that offers it. The recognition-rule objection dissolves once nothing is measured. Its teaching claim is thin and is filed as A-26." },
+      { "id": "U2-10", "play": "admitted-as-type", "target": "rule-battery", "reason": "Authoring a rule and watching it tested is a builder fantasy and the most distinctive thing in the catalog. The rejection was measurement economy - 'two instruments for one Skill' - which says nothing about play. See the type's costCorrection: the admitted form needs no parser." },
+      { "id": "U2-6", "play": "admitted-as-parameter", "target": "rule-contrast.probe: which-rule-would-flip-this", "reason": "A genuine puzzle, and the only 'aha' shape in the set. The cell-drilling objection misses that the play object is the RULE, not the cell. Same produced object as rule-contrast, so a parameter rather than a type." },
+      { "id": "U2-3", "play": "reported-forward", "to": "LDB-07", "reason": "Good to play - drawing the frontier is tactile and matches how the strategy is actually held, as a shape rather than 169 facts. But it is a WIDGET over policy-paint, and the scope fence puts widget in LDB-07. A-21 already registers the claim; carry the verdict, do not re-derive it." },
+      { "id": "U2-11", "play": "reported-forward", "to": "phase 7", "reason": "Genuinely good to play - the arcade beat, and counting is what casual players find glamorous. Needs the counting Skill that phase 7's fifth Condition axis introduces. Recorded positively so phase 7 inherits the verdict." },
+      { "id": "U1-3", "play": "declined", "reason": "Gameable by widening - its own source concedes high scorers 'are simply willing to use wider ranges. Generally about 2 to 10 times wider.' A game whose winning move is to answer vaguely is a bad game, and predict-then-reveal already occupies the calibration slot." },
+      { "id": "U1-7", "play": "declined", "reason": "Reducing a shoe to its 2-5 critical decisions requires telling the learner which decisions are critical. That kills the play for the same reason it killed the measurement: the interesting part was noticing." },
+      { "id": "U2-1", "play": "declined", "reason": "Typing where tapping is equal. Friction with no payoff." },
+      { "id": "U2-2", "play": "declined", "reason": "Saying the play aloud is genuinely table-like and the most tempting decline here. It needs a microphone and speech recognition, and it excludes accented speakers, non-English speakers and anyone in a public place. The pressure half is separable and already adopted as pace." },
+      { "id": "U2-5", "play": "declined", "reason": "The freehand curve is the fiddly, feel-bad form of estimate-and-check; drawing badly feels like failing. Ten repeated point estimates build the same curve and each one feels like a guess worth making." },
+      { "id": "U2-8", "play": "declined", "reason": "Typing a number where tapping is equal. Friction. The true-count and bet-unit entries it names become live only with phase 7's counting." },
+      { "id": "U2-9", "play": "declined", "reason": "The self-rating half is contradicted by evidence this project already holds - Kornell and Bjork, 78% performed better spaced while 78% rated massed as good or better. It is also a mood-killer. Declined on both counts, as it was rejected on both." },
+      { "id": "U2-14", "play": "declined", "reason": "Free-text 'explain the play' reads as homework, and an open box most players skip is worse than no box. What dies with it is the catalog's only route to surfacing a MISCONCEPTION rather than a wrong answer - replaced by rule-battery and the which-rule-would-flip-this probe, which surface wrong models at no typing cost." },
+      { "id": "U3-2", "play": "declined", "reason": "The word bank contains the answers, so there is no decision left to make. A puzzle with its solution printed beside it is not a puzzle." },
+      { "id": "U3-6", "play": "declined", "reason": "Concept mapping is a school assignment, not a game - and its own evidence runs against its headline widget (r = .243 n.s. vs .551 p<.05; interrater 0.81 vs 0.92). The causal chain it points at is delivered as play by estimate-and-check instead." }
+    ],
+    "removalNamesItsReplacement": "AGENTS.md Constraints. The only decline that gives up a capability nothing else carries is U2-14 (surfacing a misconception rather than a wrong answer). Its replacement is named on its row and is real: rule-battery and rule-contrast.probe both surface wrong models."
+  },
+
   "proceduralRulesApplied": [
     "Classified from the sourced pattern, never the candidate-analogue column - U2-3, U2-11 and U2-13 over-rate on that column.",
     "Used each row's own provenance label, not its unit's - U1-5, U1-8 and U1-9 are Evidence-backed and independent, so 'vendor self-description' would have been a false reason for them.",
@@ -204,12 +359,19 @@
   ],
 
   "registerDelta": {
-    "new": ["A-23"],
-    "cited": ["A-02", "A-04", "A-07", "A-21", "A-22"],
+    "new": ["A-23", "A-26", "A-27", "A-28"],
+    "cited": ["A-02", "A-04", "A-07", "A-13", "A-18", "A-21", "A-22"],
     "checkedAndAlreadyPresent": [
-      "A-21 covers U2-3's blank-grid analogue, which policy-paint adopts",
-      "A-22 covers U2-13's variance sandbox, which predict-then-reveal adopts as its reveal half"
+      "A-21 covers U2-3's blank-grid analogue, which policy-paint adopts and LDB-09 forwards to LDB-07",
+      "A-22 covers U2-13's variance sandbox, which predict-then-reveal adopts as its reveal half",
+      "A-13 covers estimate-and-check's this-shoe-from-here half - training decision evaluation independently of the hand result",
+      "A-18 is the CLASS premise for every ungraded type, and LDB-09 makes it closable: its method needed a first non-quiz activity, and five now exist"
     ],
-    "netNewRows": 1
+    "checkedAndDoesNotStretch": [
+      "A-22 covers a CONFIGURABLE SANDBOX the learner sets up and runs. That is not point-estimate elicitation, which is why estimate-and-check gets A-27 rather than riding A-22. Checked rather than assumed."
+    ],
+    "notReissued": "A-25 - allocated to a cap dropped at LDB-05 and recorded in the register as never filed. LDB-09's rows are A-26 to A-28 so that record stays readable.",
+    "netNewRows": 4,
+    "byCard": { "LDB-03": ["A-23"], "LDB-09": ["A-26", "A-27", "A-28"] }
   }
 }

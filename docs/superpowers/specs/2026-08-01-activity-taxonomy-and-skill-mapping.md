@@ -186,8 +186,26 @@ clause is added here, because a Skill nothing can measure is evidence that `LDB-
 which is precisely why `LDB-01` itself dropped `goal` and `round-flow`. **A Skill no type can cover
 is reported as a finding against `LDB-01`, never filled by inventing an activity.**
 
-Checked 2026-08-01 against the graph, by script: **18 of 18 Skills carry primary evidence; 6 of 6
-types declare at least one Skill; 32 of 32 patterns disposed.**
+Checked 2026-08-15 against the graph, by script (`scripts/check-ldb03-taxonomy.js`, 8 checks):
+**18 of 18 Skills carry primary evidence; 11 of 11 types declare coverage or rehearsal; 32 of 32
+patterns disposed; 19 of 19 unadopted patterns carry a play verdict.**
+
+> **AMENDED 2026-08-15 by `LDB-09` D1**, at that card's `user-approval` gate — surfaced as a
+> divergence and then ruled, never applied quietly. The forward direction gains a second admission
+> path: **an Activity type may grade nothing, provided it declares `rehearses`** — a non-empty list
+> of Skill ids it gives practice at without producing evidence for.
+>
+> **Rehearsal is not coverage.** A Skill named only in a `rehearses` list is still uncovered, and the
+> `onGap` clause above still applies to it in full. Check 2 asserts this rather than trusting it.
+>
+> **It is not a budget.** A fixed count of ungraded types was offered to the owner and refused as a
+> constant with nothing behind it.
+>
+> Two already-approved sentences opened this door and are cited rather than re-argued: `LDB-04` D6 —
+> *"not everything the learner does needs to feed a progress meter. An app in which every interaction
+> is graded is a quiz with a card table drawn behind it"* — and register row `A-18`, whose method is
+> *"instrument the first non-quiz activity against a quiz baseline"*, **unclosable until these five
+> types existed**. `[Product judgement]`
 
 | Type | SHOWN | PRODUCED | WITHHELD | Graded by | Primary for |
 |---|---|---|---|---|---|
@@ -200,6 +218,43 @@ types declare at least one Skill; 32 of 32 patterns disposed.**
 
 Three of the six are the product's own; three are adopted from the catalog (`U1-1`, `U3-4`, `U3-8`).
 The catalog's other contribution is **ten parameters**.
+
+### 6.4 The five ungraded types — added 2026-08-15 by `LDB-09` D2
+
+These grade nothing and produce no mastery evidence. Each declares `rehearses` instead of
+`primaryFor`, per the clause above. They are **ranked by build cost, not capped by count** — the
+owner carried all five and refused a budget.
+
+| # | Type | SHOWN | PRODUCED | WITHHELD | Rehearses | Cost |
+|---|---|---|---|---|---|---|
+| 1 | **hand-sort** | a batch of dealt hands at once | a partition into pair / soft / hard | which bucket each hand is in | `classify-hand` | cheap |
+| 2 | **estimate-and-check** | a standing quantity, or a live shoe position | one number on a continuum | the true value — which already exists | `variance-expectation` `dealer-info` | cheap |
+| 3 | **procedure-order** | the steps of a fixed procedure, scrambled | the steps in order | the order | `strategy-action` `outcomes` | middling |
+| 4 | **principle-name** | several situations grouped, sharing one action | the action they share | the shared action and why they are alike | `strategy-action` | middling |
+| 5 | **rule-battery** | fixed parts a policy rule assembles from | a rule, then a run of it over generated hands | the cells where the rule breaks | `strategy-action` `read-rule-card` | expensive |
+
+**Four boundaries recorded rather than assumed.**
+
+- **`estimate-and-check` is one type, not two.** `U1-2` and `U2-4` differ only in SHOWN; PRODUCED and
+  WITHHELD are identical, and §2 individuates on all three. It stays distinct from
+  `predict-then-reveal`, whose WITHHELD is *the hands have not been played yet* — a forecast, against
+  this type's check on a value already determined.
+- **`procedure-order` does not reinstate `round-flow`.** That Skill was retired because *"'follow'
+  names no observable act."* This type creates no Skill and produces no evidence; ordering is an
+  observable act that here measures nothing. Recorded because the resemblance invites the misreading.
+- **`principle-name` is `classificationSupplied: true`** — grouping the situations tells the learner
+  they are alike, which is exactly why §4's recognition rule rejected `U3-9` for measurement. It is
+  harmless only because nothing is measured. Check 3 would fail the moment this type were graded.
+- **`rule-battery`'s cost was mis-carried.** §7's rejection of `U2-10` costed the *free-text* form,
+  which needs a rule language and a parser. Fixed-part assembly yields a rule object directly and the
+  battery is the existing oracle over enumerated situations. The cheap form was never costed because
+  nobody asked for it; the free-text form stays rejected.
+
+`rule-contrast` additionally gains a `probe` parameter (`which-rule-differs` /
+`which-rule-would-flip-this`, from `U2-6`) — same PRODUCED object, so a parameter and not a type.
+
+Full reasoning, the 19 play verdicts and the six divergences:
+`docs/superpowers/specs/2026-08-15-play-verdicts-and-ungraded-activities.md`.
 
 ### 6.1 `classify-hand` is a sub-response, not a type
 
