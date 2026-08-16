@@ -2,6 +2,38 @@
 
 > **Status: APPROVED 2026-08-15** at the `user-approval` gate. Authoritative.
 >
+> > ### ⚠ AMENDED 2026-08-17 by the `LDB-06` gate grill — owner decision
+> >
+> > **The five admitted types are renamed *Unmeasured Activities*, they are graded, their verdict is
+> > shown to the learner, and they earn XP at a low rate.** `LDB-06` §12 divergence 8 carries the full
+> > reasoning; this banner is the amendment record on the approved spec, so no reader of `LDB-09`
+> > alone can miss it.
+> >
+> > **What changes:** D1's admission phrase *"a type that measures nothing"* becomes *a type that
+> > **certifies** nothing*; D2's `gradedBy: none` becomes each type's actual grading authority, plus
+> > `verdictSurfaced: true` — the parameter `rule-contrast` already carries at `false`; and D8's
+> > title-clause "are recorded" widens to "are graded and recorded".
+> >
+> > **What does NOT change, and it is the load-bearing half:** `primaryFor: []` on all five, and D8's
+> > *"never window-eligible."* No Unmeasured Activity reaches a Mastery bar, on `LDB-03` §6.1's ground
+> > that a decontextualised sort *"measures it out of the situation that makes it hard."*
+> >
+> > **Why.** *Ungraded* had welded four separable properties into one word — recorded, feeds the
+> > Recommender, verdict shown, moves a bar. D8 already made the first two true. Only the fourth was
+> > ever load-bearing. The third was collateral, and a `hand-sort` that will not tell the learner a
+> > hand was hard is not a gentler activity but a broken one.
+> >
+> > **Owed:** the two taxonomy-JSON edits above (`LDB-06` §11 item 9), and the `CONTEXT.md` term,
+> > which lands with `LDB-06`'s vocabulary at **its** approval. `AttemptDisposition`'s
+> > `{ status: 'ungraded' }` is **unchanged** — it describes grading *authority* and remains accurate
+> > for a free-play action.
+> >
+> > **Not yet applied to this document's body.** This banner records the amendment; D1, D2 and D8
+> > below still read as approved on 2026-08-15. Applying it is owed and is tracked at
+> > `LDB-06` §11 item 9 — recorded here rather than left implicit, because "approved" and "applied"
+> > coming apart is this repository's second named failure class.
+>
+
 > Two owner rulings were taken during drafting: the eight `state-report` Skills **keep both Skill and
 > bar** with the evidence route changed (§D5), and **all five** admitted Activity types are carried,
 > sequenced rather than budgeted (§D2). **All six §12 divergences were then ruled together at the
@@ -398,6 +430,19 @@ carry the first attempt.
 `[Product judgement]` on the routing; `[Evidence-backed]` that the row's method reads as quoted.
 
 ### D11. Whether ungraded activities consume the session bound is `LDB-06`'s — and must be asked
+
+> **ANSWERED 2026-08-17: they consume it.** `LDB-06` D7, owner decision at the `LDB-06` gate grill.
+> The first horn below was taken — fun and evidence do share one budget, and `LDB-06` D14's
+> type-selection rule decides the mix rather than a cap.
+>
+> **`LDB-06` D7's stated ground for bounding by Presentation was retired in the same ruling**, which
+> is the part worth reading back here: it had claimed bound and evidence were *"commensurable"*
+> because both count Presentations. They were not, before any Unmeasured Activity existed — an
+> abandoned Presentation (`LDB-04` D5) and a chart-open Presentation (`LDB-04` D4) each consume the
+> bound and fill no window. **This card's question exposed an existing false ground rather than
+> creating a new problem**, which is a better outcome than either horn it offered.
+>
+> Raising it worked, and §16.1 of `LDB-06` is why it was raised.
 
 `LDB-06` D7 bounds a Short session at 10 Presentations and D8 forbids starting an activity after a
 bound. Neither was written with an activity that produces no mastery evidence in view.

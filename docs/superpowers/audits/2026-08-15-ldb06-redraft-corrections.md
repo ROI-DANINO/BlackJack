@@ -165,6 +165,90 @@ failure, and it is not hypothetical here:
 Both were found by running the checks before shipping them. Run any new anchor against the
 unrepaired file first, and record the count it returns.
 
+---
+
+## §7 — EXECUTED 2026-08-17. All 23 items landed; two of the six greps above were themselves defective
+
+All 10 Group 1 repairs and all 13 Group 2 rulings are in their target files, plus one ruling the
+grill itself opened (the Player score). Verified **positively** — each correction grepped for as a
+present string, not merely as a retired anchor — and recorded in `journal/decisions.md` under
+2026-08-17.
+
+**Two of the six anchors above are broken checks, and one of them can never pass.** They were run
+against the repaired files and did not go to zero:
+
+1. **`grep "already licenses\|already anticipated exactly this shape"` — over-broad, and destructive
+   if obeyed.** Its baseline of 3 counted **two** RA-14 loci plus one unrelated sentence: D7's
+   *"`ALR-025` … **already licenses** duration as 'versioned planning input'"*, which is correct,
+   evidence-backed, and has nothing to do with the streak claim. **This check can only reach zero by
+   damaging a sound sentence** — the mirror image of the absence-as-proof failure the §7 preamble
+   was written to prevent. A check that cannot pass without breaking the document is worse than no
+   check, because the obvious way to make it green is to edit the wrong line.
+2. **`grep "6 of 6"` and `grep "Nothing in the pass looked at"` return hits by design.** This
+   repository's convention is that a correction **quotes the text it retires** — `LDB-06` §16 and
+   §12 divergence 2 both do it deliberately, so the reasoning stays readable. A deletion-shaped grep
+   therefore reports a correctly-executed quote-and-strike repair as an unfinished one.
+
+### The retirement-grep is the wrong instrument, and this section proves it twice
+
+**Two replacement patterns were drafted here to fix the two above. Both failed the same way, in this
+file, in the paragraph that had just described the failure.**
+
+- `grep "D12 already"`, offered for RA-14, hits `LDB-06` §13's *"`LDB-05` D12 already assigned
+  decision quality above profit and loss to you"* — a different decision, a sound sentence. **The
+  identical over-broad defect as the pattern it was replacing.**
+- `grep "table has \*\*6 of 6\*\* rows"`, offered for RC-11 as *"the assertion rather than the
+  string"*, hits the RC-11 correction block's own quotation of the retired assertion. **The identical
+  quote-and-strike defect as the pattern it was replacing.**
+
+Recorded rather than quietly re-drafted, because this is `AGENTS.md`'s fourth named recurrence of
+*rules do not fire on their author*: a section written to document a class of broken check produced
+two more instances of that exact class before it finished.
+
+**So the instrument changes, not the patterns.** A deletion-shaped grep is structurally wrong for
+this repository, because the convention is that a correction quotes what it retires — the retired
+string is *supposed* to survive. Verify **positively** instead: grep for the repaired claim as a
+present string. This is also what `AGENTS.md` literally asks for — *"A correction pass ends by
+checking that its corrections are **in the target file**"* — and the retirement greps were a
+weaker proxy for it that nobody had noticed was a proxy.
+
+```sh
+S=docs/superpowers/specs/2026-08-08-session-composition.md
+pos(){ [ "$(grep -c "$1" "$S")" -ge 1 ] && echo "PRESENT  $2" || echo "MISSING  $2"; }
+
+pos "at most\*\* one Mastery window"                    "Q1  D7 bound"
+pos "The bound counts \*\*every\*\* Presentation"        "Q1  ruling"
+pos "The Recommender's band selects the shape"          "Q2  RC-01"
+pos "The chart is available at a Table sitting"         "Q3  unowned"
+pos "never appears in a Closing run"                    "Q4  RC-03"
+pos "A Table sitting cannot be closed in the schema"    "Q5  RC-05"
+pos "A-07e\`'s named test cannot close"                  "Q6  RC-07"
+pos "Nothing states which key the Mastery window folds" "Q7  RC-09"
+pos "produced element\* that diverged"                   "Q8  RC-08"
+pos "The unit is a committed Presentation"              "Q9  RC-06"
+pos "does \*\*not\*\* spend the first-exposure licence"  "Q10 RC-10"
+pos "carries \*\*one row per"                            "Q11 criterion 3"
+pos "hand-sort\` | \*\*Mixed"                             "Q11 D4 row"
+pos "The bands order \*\*Skills\*\*"                     "Q12 RC-04"
+pos "the mitigation lives in an approved spec"          "Q13 RC-12"
+pos "does not move the Player score"                    "Q14 rating"
+pos "Unmeasured Activity"                               "rename"
+```
+
+**All 17 returned `PRESENT` on 2026-08-17**, together with `check-doc-drift.sh` (no drift across 6
+checks) and `check-ldb03-taxonomy.js` (8 passed, 0 failed).
+
+**The general lesson, which is the reusable part.** The original greps were validated for *false
+negatives* — the preamble above shows two being caught for returning 0 against unrepaired files — and
+never for *false positives*. Both directions need a pre-flight. The false-positive direction is the
+more dangerous one here, because a red check invites an edit, and under quote-and-strike red is the
+**correct** state for a finished repair.
+
+**Not repairable by editing `LDB-06`, and correctly not marked done:** `RC-05`'s `closeReason` and
+`RC-07`'s missing preset remain schema deltas owed to phase 5. Both are now in §11's owed list —
+items 6 and 7 — where a phase-5 builder will look, joined by items 8 (a reducer rule) and 9 (two
+taxonomy edits plus the `check-ldb03-taxonomy.js` check-7 adaptation they will trip).
+
 **Two items are not repairable by editing this document and must not be marked done here:**
 `RC-05`'s `closeReason` and `RC-07`'s missing preset are **schema** deltas owed to phase 5. They belong
 in §11's owed list, which is where a phase-5 builder will look.

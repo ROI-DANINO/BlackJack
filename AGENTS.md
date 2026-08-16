@@ -17,7 +17,7 @@ Build a Duolingo-like blackjack training game that feels approachable while mode
   *(Earned 2026-08-15. The blueprint had removed streaks, timers, cooldowns, self-rating,
   leaderboards, win celebration, cumulative profit and loss, surfaced verdicts, locks, gates, loss
   framing and pass marks — each individually well argued, and nobody assembled the list until it was
-  twelve long. `LDB-05` §0.1 had already named the habit in the owner's words, and `LDB-06` D8
+  twelve long. `LDB-05` §0.1 had already named the habit, and `LDB-06` D8
   removed streaks three decisions later anyway: a rule written in a spec did not fire on the spec
   that wrote it, which is this repo's recorded failure class applied to fun instead of to citations.)*
 

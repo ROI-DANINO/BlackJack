@@ -743,3 +743,53 @@ later edit; check 8 holds the play axis to exactly the 19 unadopted rows.
 
 **Not published to the tracker.** The remote is public and `journal/tasks.md` is the execution
 authority; `ready-for-agent` would also have been a false label on a document that authorises no code.
+
+---
+
+## 2026-08-17 — The `LDB-06` gate grill: fourteen rulings closing the session-composition gate
+
+`/mattpocock-skills:grill-with-docs` over Group 2 of
+`docs/superpowers/audits/2026-08-15-ldb06-redraft-corrections.md` — the 13 gate rulings left by the
+two-instance `audit-examiner` pass of 2026-08-15, plus one question the grill itself opened. All
+fourteen are landed in `LDB-06`; the ten Group 1 text repairs are landed with them, and
+`AGENTS.md:20`'s propagated misattribution is fixed.
+
+**`LDB-06` remains DRAFT.** Its gate *questions* are settled; the gate itself has not been recorded,
+so §14's `CONTEXT.md` vocabulary and its two owed `journal/decisions.md` rows still land at approval,
+not here.
+
+| # | Ruling | Where |
+|---|---|---|
+| 1 | **Unmeasured Activities consume the session bound.** D7's "commensurable" ground is retired — it was already false, since abandoned and chart-open Presentations consume the bound and fill no window. Short now fills *at most* one window. | `LDB-06` D7; answers `LDB-09` D11 |
+| 2 | **D14's band selects the session shape.** Bands 2/3 → Coached; bands 1/4 → Closing run. Fills `RC-01`'s gap, which had left five parameters with no producer. Adds no constant; satisfies `RC-16`. | `LDB-06` D9 |
+| 3 | **The strategy chart is available at a Table sitting**, and opening it costs window eligibility. Reverses D9/D10 as drafted, which had removed it by side effect. | `LDB-06` D9, D10; §12 divergence 7 |
+| 4 | **No Unmeasured Activity inside a Closing run.** `acquisition` in an `assessment` session, revealing in-activity against `deferred-to-debrief` — the exact combination Brummer singles out as worse than either alternative. | `LDB-06` D9 |
+| 5 | **A Table sitting produces a `SessionRecord`.** `closeReason` gains `'cashed-out'` / `'wallet-exhausted'`; `budget` becomes nullable. | `LDB-06` §11 item 6 |
+| 6 | **`presetId` moves onto the attempt.** `A-07e`'s named test measures completion rate and could only see sessions that completed. | `LDB-06` §11 item 7, §10 |
+| 7 | **The Activity type is the Mastery window's key, not `evidence.skillId`** — plus the `produced`-contract clause, which is D2's scope limit generalised. `LDB-04` never used the word `skillId`. | `LDB-06` §11 item 8 |
+| 8 | **The debrief replays every *produced element* that diverged** — Classification or action, not decisions only. | `LDB-06` D16 |
+| 9 | **The streak counts practised days, not closed sessions.** A session count rose for a learner who tapped "stop" and not for one who closed the tab. | `LDB-06` D8; §12 divergence 6 |
+| 10 | **A table Presentation opens Practice and does not spend the first-exposure licence.** Otherwise a hand dealt at Free Play permanently forecloses the curriculum's introduction. | `LDB-06` D13 |
+| 11 | **§15 criterion 3 reads its count from the taxonomy JSON**, and D4 gains five rows. `hand-sort` is **mixed** — a blocked hand-sort is a sorting task with one bin. | `LDB-06` §15, D4 |
+| 12 | **The bands order Skills; a second published rule picks the Activity type** from `primaryFor` ∪ `rehearses`. Band 3 opens with an Unmeasured Activity. Without this, five new types were unselectable — as `policy-paint` and `rule-contrast` already were. | `LDB-06` D14 |
+| 13 | **`A-23`'s register row re-grounded** on `LDB-04` D7's organic floor; the shape it cited was withdrawn on 2026-08-15. | `LDB-06` §10 |
+| 14 | **A chart-open hand does not move the Player score.** The rating gates difficulty (`LDB-05` D7), so inflating it hands the learner tables they cannot play. No damping factor. | `LDB-06` §12 divergence 9 |
+
+**The concept rename.** *Ungraded Activity* → **Unmeasured Activity**, and the five types are graded,
+show their verdict, and earn low XP — amending **approved** `LDB-09`, recorded as a banner on that
+document rather than a silent edit. The word had welded four separable properties into one: recorded,
+feeds the Recommender, verdict shown, moves a bar. `LDB-09` D8 already made the first two true; only
+the fourth is load-bearing, on `LDB-03` §6.1's ground that a decontextualised sort *"measures it out
+of the situation that makes it hard."* `AttemptDisposition`'s `{ status: 'ungraded' }` is unchanged —
+it describes grading *authority*.
+
+**Two findings about the instrument, not the design.** Instance B over-scoped an absence claim
+(`ungraded` *"appears nowhere"*; it appears three times) — **failure class 3 recurring inside a pass
+built to catch failure class 3**, third occurrence. And the largest ruling of the session, the chart
+at a Table sitting, was a handoff from instance A to instance B that **no carrier existed for**: they
+ran concurrently and B had already finished. Two parallel instances find more and route worse. Run
+the second after the first, or name an owner for the handoff before either starts.
+
+**Nine schema deltas now owed to phase 5** (was five), of which three are new fields and one — §11
+item 8 — is a reducer *rule* rather than a field, and is the one most easily lost: building the window
+the obvious way, one attempt one Skill, makes D2 unimplementable and will present as a D2 problem.
