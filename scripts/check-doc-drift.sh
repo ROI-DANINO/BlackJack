@@ -182,9 +182,60 @@ else
   note "one live board ($BOARD), plus $ARCH archived snapshot(s)"
 fi
 
+# 7 — an evidence-index page must not assert a correction is unapplied once the archive says it landed.
+#     This pair has drifted TWICE, both times against the same commit pair: 96b0f05 banked the index
+#     at 04:01 on 2026-07-26 and 6da7e9f landed the corrections at 04:18. The Phase 1 half was caught
+#     on 2026-08-15; the pass that caught it repeated the error in its own item 3 for the Phase 3 half,
+#     which stood until 2026-08-17 (LDB-10). A rule did not fire on the pass that wrote it, so this is
+#     a mechanism instead. Keys on correction IDs and verification-record names, which are stable
+#     tokens, not on prose.
+printf '7. evidence-index unapplied-claims vs archive landing markers\n'
+IDXDIR=docs/superpowers/research/evidence-index
+ARCHDIRS=docs/superpowers/research
+UNAPPLIED_RE='never applied|not (yet )?applied|unapplied|outstanding work item'
+if [ ! -d "$IDXDIR" ]; then
+  fail "no evidence-index directory at $IDXDIR; this check cannot run and must not pass silently"
+else
+  IDX_PAGES=$(find "$IDXDIR" -name '*.md' | sort)
+  IDX_COUNT=$(printf '%s\n' "$IDX_PAGES" | grep -c . )
+  if [ "$IDX_COUNT" -eq 0 ]; then
+    fail "no .md pages under $IDXDIR; an empty scan is not a clean scan"
+  else
+    MARKERS=$(grep -rhoE 'LANDED C-[A-Za-z0-9]+-[0-9]+[^]]*' "$ARCHDIRS" 2>/dev/null | sort -u)
+    MARKER_COUNT=$(printf '%s\n' "$MARKERS" | grep -c . )
+    LIVE_CLAIMS=0
+    CONTRADICTIONS=0
+    for f in $IDX_PAGES; do
+      # A claim is live only if it survives removal of ~~struck~~ spans; superseded text is history.
+      while IFS= read -r hit; do
+        [ -z "$hit" ] && continue
+        ln=${hit%%:*}
+        txt=${hit#*:}
+        stripped=$(printf '%s' "$txt" | sed 's/~~[^~]*~~//g')
+        printf '%s' "$stripped" | grep -qEi "$UNAPPLIED_RE" || continue
+        LIVE_CLAIMS=$((LIVE_CLAIMS + 1))
+        TOKENS=$(printf '%s' "$stripped" | grep -oE '(C-[A-Za-z0-9]+-[0-9]+|V-[A-Za-z0-9]+(-[A-Za-z0-9]+)*)' | sort -u)
+        for tok in $TOKENS; do
+          if printf '%s\n' "$MARKERS" | grep -qF "$tok"; then
+            fail "$f:$ln asserts an unapplied correction but the archive carries a LANDED marker naming $tok."
+            note "line: $(printf '%s' "$stripped" | cut -c1-140)"
+            note "the archive wins; fix the index page, not this check"
+            CONTRADICTIONS=$((CONTRADICTIONS + 1))
+          fi
+        done
+      done <<EOF
+$(grep -nEi "$UNAPPLIED_RE" "$f" 2>/dev/null)
+EOF
+    done
+    note "scanned $IDX_COUNT index page(s); archive landing markers found: $MARKER_COUNT"
+    note "live unapplied-claims (struck text excluded): $LIVE_CLAIMS; contradicted by the archive: $CONTRADICTIONS"
+    note "limit, stated: a claim naming no correction ID and no V- record cannot be cross-checked here"
+  fi
+fi
+
 printf '\n'
 if [ "$FAIL" -eq 0 ]; then
-  printf 'No document drift detected across 6 checks.\n'
+  printf 'No document drift detected across 7 checks.\n'
 else
   printf 'Document drift detected. Each pair above has drifted before; fix the document, not the check.\n'
 fi

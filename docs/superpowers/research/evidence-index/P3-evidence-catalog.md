@@ -2,7 +2,10 @@ I have read the complete Phase 3 archive (all 7 files, 2,758 lines) and the brid
 
 ---
 
-# PHASE 3 ARCHIVE — CITABLE CATALOG AND UNAPPLIED-CORRECTION WORK ITEM
+# PHASE 3 ARCHIVE — CITABLE CATALOG AND ~~UNAPPLIED-~~ CORRECTION RECORD
+
+> Title corrected 2026-08-17 at `LDB-10`: the corrections this page was written to chase were landed
+> on 2026-07-26. What follows is the record of what landed and where, not a work item.
 
 **Paths used throughout (all absolute):**
 - `A/` = `/home/roking/Desktop/Projects/blackjack/.claude/worktrees/wl-start-ee6c56/docs/superpowers/research/foundation-audit-p3/`
@@ -10,7 +13,24 @@ I have read the complete Phase 3 archive (all 7 files, 2,758 lines) and the brid
 
 Archive shape: `README.md` (113) · `GAP-SPEC.md` (105) · `collection/C7-probability-ev-variance.md` (1674) · `collection/C7-topup-report.md` (151) · `verification/V-C7.md` (218) · `verification/V-C7-topup.md` (313) · `landing/L-C7.md` (184).
 
-**One-line state of the archive:** two verification records raised **twenty** corrections total. `V-C7`'s ten (C-C7-001…010) **were landed** by `L-C7.md`. `V-C7-topup`'s ten (C-C7T-001…010) **were never applied** — that is the outstanding work item.
+**One-line state of the archive:** two verification records raised **twenty** corrections total. `V-C7`'s ten (C-C7-001…010) **were landed** by `L-C7.md`. ~~`V-C7-topup`'s ten (C-C7T-001…010) **were never applied** — that is the outstanding work item.~~ **`V-C7-topup`'s ten (C-C7T-001…010) were landed as well, by `6da7e9f` on 2026-07-26 — seventeen minutes after `96b0f05` banked this page. There is no outstanding correction work in this archive.**
+
+> **CORRECTED 2026-08-17 at `LDB-10`.** The struck sentence was true when this page was written at
+> 04:01 and false at 04:18 the same morning, when `6da7e9f` — *"land every correction the audits
+> raised and never applied"* — wrote all ten into `A/collection/C7-probability-ev-variance.md`.
+> Nobody came back to this page for twenty-two days.
+>
+> **Checked positively**, by naming each correction's own replacement string and reading the dossier
+> at each locus — not by looking for the absence of a problem. All ten are enumerated with the line
+> they landed at in §2 below. `git show 96b0f05:…` returns **0** `LANDED C-C7T` markers; `6da7e9f`
+> added **18** (ten corrections, four of them split across multiple loci).
+>
+> **The repetition is the finding.** This is the same error as `P1-unlanded-and-lost.md`, on the
+> Phase 3 half, against the same commit pair. `README.md`'s correction pass of 2026-08-15 diagnosed
+> the mechanism precisely, named `96b0f05` and `6da7e9f` by hash, corrected items 1 and 2 — and then
+> wrote in its own item 3 that the Phase 3 ten were *"still unapplied. This one is live."* It did not
+> check whether the commit it had just credited with landing the Phase 1 corrections had also landed
+> these. It had. A rule did not fire on the pass that wrote it.
 
 ---
 
@@ -18,7 +38,7 @@ Archive shape: `README.md` (113) · `GAP-SPEC.md` (105) · `collection/C7-probab
 
 Every finding carries status bucket `Evidence-backed` (the dossier assigned no `Product judgement` / `Assumption` / `Unsupported` labels). The differentiating labels are the **quality tier (Q1–Q6)** and **transfer distance (D1–D4)** against the target "an adult learning a probabilistic decision rule in a card game" (`A/collection/C7-probability-ev-variance.md:67-81`).
 
-**Legend:** ✅ = verified clean · 🔧 = was DEFECTIVE, **correction landed** (safe to cite) · ⛔ = **DEFECTIVE with corrections NOT applied — do not cite as written**
+**Legend:** ✅ = verified clean · 🔧 = was DEFECTIVE, **correction landed** (safe to cite) · ~~⛔ = **DEFECTIVE with corrections NOT applied — do not cite as written**~~ **⛔ is now unused: no finding on this page carries an unapplied correction. The five rows that bore it are 🔧 as of 2026-08-17 — see the correction block above.**
 
 ### G1 — Format: natural frequencies
 
@@ -26,7 +46,7 @@ Every finding carries status bucket `Evidence-backed` (the dossier assigned no `
 |---|---|---|---|
 | **F1** ✅ `:89` | Teaching adults to *construct* natural-frequency representations produced Bayesian performance as transferable as rule training and markedly more durable (no decay at 5 or 15 weeks, vs substantial rule-training decay), and a within-study control showed durability came from the *representation*, not the graphical aid. | Evidence-backed · **Q2** · **D3** | Sedlmeier & Gigerenzer (2001), *JEP:General* 130(3), 380–400, DOI 10.1037/0096-3445.130.3.380 — full text |
 | **F2** ✅ `:181` | The field's own meta-analysis confirms the format effect but reports *short menu formats* and *visual aids* among the strongest moderators, improving **both** probability and frequency formats — the format effect is real but not the only or largest lever. | Evidence-backed *(abstract-level only)* · **Q1 design / access-limited** · **D3** | McDowell & Jacobs (2017), *Psych Bulletin* 143(12), 1273–1312, PMID 29048176 |
-| **F17** ⛔ `:1331` | Even in the format that helps, ~3/4 of participants still fail the Bayesian task, and about half translate natural frequencies *back into probabilities* rather than using them. | Evidence-backed · **Q3** · **D3** | Weber, Binder & Krauss (2018), *Frontiers in Psychology* 9:1833, DOI 10.3389/fpsyg.2018.01833 |
+| **F17** 🔧 `:1331` | Even in the format that helps, ~3/4 of participants still fail the Bayesian task, and about half translate natural frequencies *back into probabilities* rather than using them. | Evidence-backed · **Q3** · **D3** | Weber, Binder & Krauss (2018), *Frontiers in Psychology* 9:1833, DOI 10.3389/fpsyg.2018.01833 |
 
 ### G2 — Description vs experience
 
@@ -41,9 +61,9 @@ Every finding carries status bucket `Evidence-backed` (the dossier assigned no `
 |---|---|---|---|
 | **F5** ✅ `:346` | **The behavioural null.** 198 university students taught probability theory using gambling examples showed superior odds calculation and fallacy resistance at six months, but **no decrease in actual gambling behaviour**. | Evidence-backed *(abstract-level)* · **Q3** · **D1–D2** | Williams & Connolly (2006), *Psych Addict Behav* 20(1), 62–68, PMID 16536666 |
 | **F6** ✅ `:382` | Decision rules *can* be taught briefly (abstract principle + concrete examples), but successfully trained rules were "relatively simple" or "familiar," and the same tradition predicts **Bayes' rule a poor training candidate**; awareness alone is insufficient. | Evidence-backed *(for what the chapter asserts as review)* · **Q5** · **D3** | Larrick (2004), ch.16, *Blackwell Handbook of JDM*, from p. 316 |
-| **F15** ✅ `:1108` | A **single ~60-min interactive game** reduced six cognitive biases by medium-to-large amounts persisting 8–12 weeks and beat a passive video on overall bias — but there is **no untrained control arm**, the six biases include none of this project's target concepts, and the **video beat the game on bias *knowledge***. | Evidence-backed · **Q2** · **D3 on content, closest match on *format*** | Morewedge, Yoon, Scopelliti, Symborski, Korris & Kassam (2015), *PIBBS* 2(1), 129–140, DOI 10.1177/2372732215600886 |
-| **F16** ⛔ `:1250` | A field study of the *same game* found debiasing transferred to a real, unannounced business decision weeks later (29% less likely to choose the inferior solution) — but assignment was **not randomised**, the study **not preregistered**, and the bias transferred was confirmation bias. | Evidence-backed · **Q3** · **D3** | Sellier, Scopelliti & Morewedge (2019), *Psych Science* 30(9), 1371–1379, DOI 10.1177/0956797619861429 |
-| **F20** ✅ `:1518` | Casino blackjack players use a **transparently false heuristic** — assume every upcoming card is a ten — easier to learn than optimal strategy and associated with better expected returns; the author contends inferring EV from subjective probability "may be both uncommon and non-normative" even in blackjack. | Evidence-backed *(abstract-level, for existence)* · **Q4** · **D1 — the only D1 blackjack item in the dossier** | Bennis (2025), *Mind & Society* 24(2), 275–301, DOI 10.1007/s11299-025-00346-9 |
+| **F15** 🔧 `:1108` | A **single ~60-min interactive game** reduced six cognitive biases by medium-to-large amounts persisting 8–12 weeks and beat a passive video on overall bias — but there is **no untrained control arm**, the six biases include none of this project's target concepts, and the **video beat the game on bias *knowledge***. | Evidence-backed · **Q2** · **D3 on content, closest match on *format*** | Morewedge, Yoon, Scopelliti, Symborski, Korris & Kassam (2015), *PIBBS* 2(1), 129–140, DOI 10.1177/2372732215600886 |
+| **F16** 🔧 `:1250` | A field study of the *same game* found debiasing transferred to a real, unannounced business decision weeks later (29% less likely to choose the inferior solution) — but assignment was **not randomised**, the study **not preregistered**, and the bias transferred was confirmation bias. | Evidence-backed · **Q3** · **D3** | Sellier, Scopelliti & Morewedge (2019), *Psych Science* 30(9), 1371–1379, DOI 10.1177/0956797619861429 |
+| **F20** 🔧 `:1518` | Casino blackjack players use a **transparently false heuristic** — assume every upcoming card is a ten — easier to learn than optimal strategy and associated with better expected returns; the author contends inferring EV from subjective probability "may be both uncommon and non-normative" even in blackjack. | Evidence-backed *(abstract-level, for existence)* · **Q4** · **D1 — the only D1 blackjack item in the dossier** | Bennis (2025), *Mind & Society* 24(2), 275–301, DOI 10.1007/s11299-025-00346-9 |
 
 ### G4 — Outcome bias / resulting
 
@@ -70,11 +90,11 @@ Every finding carries status bucket `Evidence-backed` (the dossier assigned no `
 | **F11** 🔧 `:755` | A three-cycle classroom programme found simulation software produced **disappointing** conceptual gains; gains appeared only when the activity forced students to **confront their own predictions against the simulated result** — the paper's own conclusion being simulations alone do not guarantee conceptual change. | Evidence-backed · **Q3** · **D3** | delMas, Garfield & Chance (1999), *J Statistics Education* 7(3) |
 | **F12** 🔧 `:813` | **Sequentially simulated outcomes** — watching outcomes unfold one at a time — enabled accurate probabilistic inferences on classic problems people fail from equivalent description, and many participants preferred that format (**"kind" environments only**). | Evidence-backed *(abstract-level)* · **Q2** · **D2–D3** | Hogarth & Soyer (2011), *JEP:General* 140(3), 434–463, PMID 21639669 |
 | **F13** ✅ `:855` | Adding **animated randomness** to a risk graphic improved alignment between risk estimates and risk perceptions but **reduced** healthy-behaviour intentions — a two-sided result. | Evidence-backed · **Q2** · **D3** | Witteman et al. (2014), *JMIR* 16(3), e80, DOI 10.2196/jmir.2895 |
-| **F19** ⛔ `:1456` | 2024 integrative review: simulation benefits are **tentative and confined to "habits of mind"**, with persistent failure on the law of large numbers and the absolute-vs-proportional sample-size misconception. | Evidence-backed · **Q3** · **D3** | Gok & Goldstone (2024), *Cognitive Research: P&I* 9:33, PMC11139845 |
+| **F19** 🔧 `:1456` | 2024 integrative review: simulation benefits are **tentative and confined to "habits of mind"**, with persistent failure on the law of large numbers and the absolute-vs-proportional sample-size misconception. | Evidence-backed · **Q3** · **D3** | Gok & Goldstone (2024), *Cognitive Research: P&I* 9:33, PMC11139845 |
 
-### Findings affected by the UNAPPLIED corrections
+### Findings affected by the corrections ~~UNAPPLIED~~ **— all landed `6da7e9f`, 2026-07-26**
 
-| Finding | Corrections outstanding | Direction |
+| Finding | Corrections ~~outstanding~~ **landed** | Direction |
 |---|---|---|
 | **F15** | C-C7T-001 | **Optimistic** (quality tier overstated) |
 | **F16** | C-C7T-002, -003, -004 | **Optimistic** ×2, contract-breach ×1 |
@@ -87,7 +107,35 @@ Every finding carries status bucket `Evidence-backed` (the dossier assigned no `
 
 ---
 
-## 2. ⚠️ MAIN DELIVERABLE — the ten unapplied corrections from `V-C7-topup.md`
+## 2. ⚠️ MAIN DELIVERABLE — the ten ~~unapplied~~ **landed** corrections from `V-C7-topup.md`
+
+> **Every one of the ten is present in the dossier as of `6da7e9f` (2026-07-26), each verified
+> first-hand at its own locus on 2026-08-17 by matching the exact replacement wording below against
+> `A/collection/C7-probability-ev-variance.md`. The replacement wording is retained here because it is
+> the specification the landing was checked against — it is a record, not an instruction to act.**
+
+**Landing loci, enumerated positively.** Every row was read in the target file, not in an audit
+record. All paths are `A/collection/C7-probability-ev-variance.md`. Four corrections landed at more
+than one locus; all their loci are listed, because a correction half-landed is the failure mode this
+enumeration exists to catch.
+
+| Correction | Landed at | What was checked there |
+|---|---|---|
+| **C-C7T-001** | `:1111-1120` | "two longitudinal experiments whose sample sizes were declared in advance to the government sponsor — a sample-size declaration, not a preregistration of hypotheses or analysis plan" — present verbatim |
+| **C-C7T-002** | `:1257-1266` | headline now "a real, unannounced ~~graded~~ business decision **solved in a regularly scheduled class** weeks later"; "graded" struck, not deleted |
+| **C-C7T-003a** | `:1302-1307` | `95% CI = [0.33, 0.92]` restored with the paper's `=` |
+| **C-C7T-003b** | `:1336-1343` | the dossier's inserted closing parenthesis replaced by a marked truncation `…"` |
+| **C-C7T-004** | `:1354-1362` | the "**Not independent corroboration of F15.**" paragraph, present verbatim as specified |
+| **C-C7T-005** | `:1398-1411` | "**Combined N = 180**… No arithmetic of mine is involved" replaces the refusal note; the truncated excluded-repeat-participants clause restored |
+| **C-C7T-006** | `:1428-1438` | Discussion quote restored from its start ("In an empirical study with *N* = 180 students…") |
+| **C-C7T-007a** | `:1417-1425` | 18% fragment's leading clause ("On the other hand, when they faced a probability version of a task…") restored |
+| **C-C7T-007b** | `:1454-1465` | "than the paper's framing implies" struck; the conservative-ceiling direction added |
+| **C-C7T-008** | `:1528-1533` · `:1571-1586` · `:1595-1607` · `:1803-1812` | all **four** loci moved together — headline, "Claimed strength" bullet, "Why this is the most useful G6 item", and the G6 line of "Sufficiency after the top-up" |
+| **C-C7T-009** | `:995` · `:1514-1521` · `:1755-1764` | absence claim retracted; G5 characterisation fixed; **written from `A/README.md:50-66`, not from the correction text** — see item 2 below |
+| **C-C7T-010** | `:1631-1635` · `:1677-1684` | volume/pages + affiliation on the Source line; the independence check in Caveats |
+
+**Twelve rows for ten corrections** because -003 and -007 each landed as two lettered halves. Nothing
+in the specification below is outstanding.
 
 Source: `A/verification/V-C7-topup.md:52-63` (table "Corrections raised"). Verifier: Claude Opus 4.8, fresh instance, no Bash. Every replacement string below is quoted by the verifier from a source it opened itself (`:50`).
 
@@ -171,7 +219,7 @@ Source: `A/verification/V-C7-topup.md:52-63` (table "Corrections raised"). Verif
   >
   > "**Consequence: it does not overturn §1.7 of the bridge spec.**" (`A/README.md:62`)
 
-  The absence-claim retraction (the editorial half) **is** valid — the study exists. The collection half is **already discharged** for Floyd (record: `journal/raw/_inbox/foundation-audit-p3/C8-floyd-2006.md`), abstract-only. **Steenbergh et al. (2004)** remains un-retrieved. The residual task, verbatim (`A/README.md:64-66`): "full text via institutional access to recover the operational definition of 'less risky gambling behavior' — the one unknown that could still move the verdict."
+  The absence-claim retraction (the editorial half) **is** valid — the study exists. The collection half is **already discharged** for Floyd (record: `docs/superpowers/research/foundation-audit-p3/collection/C8-floyd-2006.md`), abstract-only. **Steenbergh et al. (2004)** remains un-retrieved. The residual task, verbatim (`A/README.md:64-66`): "full text via institutional access to recover the operational definition of 'less risky gambling behavior' — the one unknown that could still move the verdict."
 
 ### C-C7T-010 — F20 · **PESSIMISTIC (runs in the source's favour)** · editorial
 `A/verification/V-C7-topup.md:63`
@@ -233,7 +281,7 @@ Note: **no line in the document carries `[UNVERIFIED]`.** The tag vocabulary is 
 | **1.5** `:92` | **Practice raises confidence even when the outcome is uncontrollable.** Brief practice significantly raised confidence on an uninfluenceable outcome; in a pure-chance card game adults bet more against a nervous-seeming opponent. | **`[VERIFIED]`** | F10 (Langer) | "**This is a hazard specific to what you are building.** … Confidence gain is not a proxy for learning and must never be used as one." |
 | **1.6** `:101` | **Frequency formats help, with a firm ceiling.** Natural frequencies beat probabilities — but roughly **three quarters still fail**, and ~half quietly translate frequencies back into probabilities. "In a sample *more* schooled than your users." | **`[DEFECTIVE-SOURCE — see §0]`** | F17 (Weber) | "**Use frequency framing; do not expect it to carry the concept on its own.**" |
 | **1.7** `:108` | **Teaching the maths does not by itself change play.** 198 students taught probability with gambling examples: superior odds calculation and fallacy resistance at six months, **no change in actual gambling behaviour**. | **`[VERIFIED]`** | F5 | "**The single most important line in this document for scoping.** … **Measure play, not quiz scores.**" |
-| **1.8** `:117` | **Blackjack players use a false heuristic that outperforms nothing-at-all.** Casino players assume the next card is a ten — far easier to learn than optimal strategy, associated with better expected returns than unaided play; EV inference from subjective probability may be "both uncommon and non-normative." | **`[VERIFIED]`** | F20 (Bennis) | "**Take the pedagogical point seriously:** a cheap wrong model that improves play may beat a correct model nobody internalises. That is a genuine design option, not a concession." |
+| **1.8** `:117` | **Blackjack players use a false heuristic that outperforms nothing-at-all.** Casino players assume the next card is a ten — far easier to learn than optimal strategy, associated with better expected returns ~~than unaided play~~ **(comparator NOT stated by the paper — corrected 2026-08-17 at `LDB-10`; see bridge §1.8's correction block)**; EV inference from subjective probability may be "both uncommon and non-normative." | **`[VERIFIED]`** | F20 (Bennis) | "**Take the pedagogical point seriously:** a cheap wrong model that improves play may beat a correct model nobody internalises. That is a genuine design option, not a concession." |
 
 > **Tag-integrity flags for the owner (two, both cheap to resolve):**
 > 1. **§1.4's `[DEFECTIVE-SOURCE]` tag looks stale.** Its source is F11 (delMas), whose defect was **C-C7-007 — and that correction WAS landed** (`A/landing/L-C7.md:59, 93-103`). The genuinely-unrepaired simulation defect is **F19/C-C7T-008**, which §1.4 does not cite. Either the tag is over-conservative or it is pointing at the wrong finding.
@@ -366,8 +414,32 @@ Source table: `BRIDGE:258-264`. Framing: "These are settled as *unanswerable fro
 
 ## Three things worth a card beyond what was asked
 
-1. **The ten unapplied corrections are net-pessimism-correcting.** Five run pessimistic vs four optimistic, and `V-C7`'s Axis-2 already named the pattern (`A/verification/V-C7.md:190`): "**the dossier is systematically pessimistic on trainability, and that pessimism is an artefact of where its search stopped, not of the literature.**" Landing them makes the evidence base *more* permissive, not less.
+1. **The ten corrections are net-pessimism-correcting — and they were landed before Phase 4 designed anything.** Five run pessimistic vs four optimistic, and `V-C7`'s Axis-2 already named the pattern (`A/verification/V-C7.md:190`): "**the dossier is systematically pessimistic on trainability, and that pessimism is an artefact of where its search stopped, not of the literature.**" Landing them makes the evidence base *more* permissive, not less.
+
+   **What the 2026-08-17 re-check changes about this item.** The landing (`6da7e9f`, 2026-07-26)
+   precedes every Phase 4 decision — `LDB-01` and `LDB-03` approved 2026-08-01, `LDB-04` 2026-08-03,
+   `LDB-05` 2026-08-05, `LDB-09` 2026-08-15. So the worry this page raised — *"Phase 4's blueprint was
+   designed on the uncorrected version"* — **is false of the dossier**: any card that opened
+   `A/collection/C7-probability-ev-variance.md` read the corrected text. The residual exposure is
+   narrower and runs the other way: a card that consulted **this page** instead saw five findings
+   flagged ⛔ *"do not cite as written"* when they were in fact safe to cite, and may have declined
+   evidence it was entitled to use. That is a question for `LDB-08` to check when it assembles, and it
+   is scoped to F15, F16, F17, F19 and F20 only.
 
 2. **C-C7T-009 must not be applied verbatim.** Its Floyd characterisation was itself an un-opened inherited citation and has been corrected in `A/README.md:50-66` — the README calls this "the *third* absence-or-characterisation claim in this program to collapse on independent re-checking" and "a citation inherited twice." The retraction of the absence claim is valid; the finding text must be written from the corrected record, not from the correction.
 
-3. **Byte-level integrity of F1–F14 is NOT established** (`A/verification/V-C7-topup.md:193-196`): "I have no Bash and therefore no git diff… I **cannot** certify that no character in F1–F14 changed." A `git log`/`git diff` on `C7-probability-ev-variance.md` would close that at zero cost, since the repo is under version control — the one verification gap in this archive that a shell can settle outright.
+   **RESOLVED — the trap was honoured at landing.** Verified first-hand 2026-08-17 at
+   `A/collection/C7-probability-ev-variance.md:1757-1764`, whose landing note reads: *"This landing
+   uses the corrected characterisation, not the verifier's original description, to avoid inheriting a
+   second error on the same citation."* The dossier text describes Floyd as a bundled lab study of
+   warning messages during simulated roulette for imaginary money, N=120, active control, no untrained
+   arm — the `README.md:50-66` version — and **not** as the RCT the verifier originally called it.
+
+3. ~~**Byte-level integrity of F1–F14 is NOT established**~~ **SETTLED 2026-08-17 — F1–F14 are byte-identical.** The gap as stated (`A/verification/V-C7-topup.md:193-196`): "I have no Bash and therefore no git diff… I **cannot** certify that no character in F1–F14 changed." Closed with the shell the verifier lacked. The dossier has exactly two commits — `55f24aa` (2026-07-22, original bank) and `6da7e9f` (2026-07-26, the landing). Each `#### Fn:` section was extracted from both revisions and SHA-256 compared:
+
+   | Findings | Verdict |
+   |---|---|
+   | **F1–F14** (all fourteen) | **IDENTICAL** — same hash at both revisions |
+   | **F15, F16, F17, F18, F19, F20** | CHANGED — and these six are exactly the sections the ten corrections target (F18 via C-C7T-009's G5 characterisation edit at `:1514-1521`) |
+
+   No finding outside the correction set moved a byte, and every finding inside it moved. The V-C7 corrections (`C-C7-001…010`, 22 landing markers) were already present at `55f24aa`, so `L-C7.md`'s landing was part of the original bank rather than a later pass.

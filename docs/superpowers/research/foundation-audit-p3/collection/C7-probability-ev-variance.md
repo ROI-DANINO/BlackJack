@@ -1748,7 +1748,7 @@ least two ways **and** checked against at least two hosts before being written d
   with no follow-up, and is never operationally defined in the abstract. Full text is closed-access; nine
   retrieval routes failed, so the record is **abstract-only**. **Consequence: it does not overturn §1.7 of
   the bridge spec** — a one-session lab endpoint on play money does not refute a six-month real-behaviour
-  null — and **G5 remains OPEN.** (Full record: `journal/raw/_inbox/foundation-audit-p3/C8-floyd-2006.md`;
+  null — and **G5 remains OPEN.** (Full record: `docs/superpowers/research/foundation-audit-p3/collection/C8-floyd-2006.md`;
   corrected characterisation at `README.md:50-66`.) The 2025 RCT of computerised cognitive training
   (Luquiens et al., *J Behav Addict*, PMID 39819891), whose active ingredient is inhibition training
   rather than instruction in randomness and which reports a null, remains not carried as a finding and is

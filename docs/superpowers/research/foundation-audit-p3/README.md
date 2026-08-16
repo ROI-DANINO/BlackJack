@@ -63,7 +63,7 @@ was.** Floyd, Whelan & Meyers (2006), *Psychology of Addictive Behaviors* 20(1),
 greater** than a paper already cited in the dossier — same journal, same issue, immediately following
 pages.
 
-**RESOLVED 2026-07-23 (record: `journal/raw/_inbox/foundation-audit-p3/C8-floyd-2006.md`).** Both this
+**RESOLVED 2026-07-23 (record: `docs/superpowers/research/foundation-audit-p3/collection/C8-floyd-2006.md`).** Both this
 page and the bridge spec described it as *"a randomised controlled trial of instruction on irrational
 gambling beliefs, positive on beliefs and play."* Its actual title is **"Use of warning messages to
 modify gambling beliefs and behavior in a laboratory investigation."** It is a lab study of **warning

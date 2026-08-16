@@ -21,15 +21,21 @@ spacing, deliberate practice, blackjack trainability) and
 
 ## 0. Read this before using anything below
 
-The Phase 3 dossier carries **known, recorded, unfixed defects.** The polish pass was deliberately
+~~The Phase 3 dossier carries **known, recorded, unfixed defects.**~~ **CORRECTED 2026-08-17 at
+`LDB-10`: it does not, and has not since 2026-07-26.** The polish pass was deliberately
 stopped (user decision, 2026-07-22) in favour of reaching design. What that costs you, precisely:
 
 - Three of six top-up findings were rated `DEFECTIVE` by an independent verifier, with ten
-  corrections specified and **not applied**. Authoritative list:
-  `docs/superpowers/research/foundation-audit-p3/verification/V-C7-topup.md`.
+  corrections specified and ~~**not applied**~~ **all ten applied by `6da7e9f` on 2026-07-26 —
+  four days after this document was written, and before any Phase 4 card opened it**. Authoritative
+  list: `docs/superpowers/research/foundation-audit-p3/verification/V-C7-topup.md`; the landed line
+  for each of the twelve loci is enumerated in
+  `docs/superpowers/research/evidence-index/P3-evidence-catalog.md` §2.
 - **Two of those defects run pessimistic** — the dossier understates its own evidence (a quote
   truncated just before the sample size the paper does print; a review glossed as having "no
-  controlled experiments" when it cites two).
+  controlled experiments" when it cites two). **Both are repaired in the dossier: the N = 180 is
+  restored at `C7-probability-ev-variance.md:1398-1411` and the review's scope is bounded to its own
+  inclusion corpus at `:1528-1533`, `:1571-1586`, `:1595-1607` and `:1803-1812`.**
 - ~~**One known-missing study**: Floyd, Whelan & Meyers (2006), PMID 16536667 — a randomised
   controlled trial of instruction on irrational gambling beliefs, positive on beliefs *and* play.~~
   **RETRIEVED AND CORRECTED 2026-07-23.** The description above was wrong — inherited, never checked
@@ -39,6 +45,37 @@ stopped (user decision, 2026-07-22) in favour of reaching design. What that cost
   **It does not overturn §1.7.** See §2.5 and
   `docs/superpowers/research/foundation-audit-p3/README.md`.
 - Sufficiency stands at **G1 closed; G2 closed; G3 evidenced-absence; G4, G5, G6 open.**
+
+> **What this correction is, and what it is not.** It is a statement of archive state, verified
+> first-hand on 2026-08-17 by opening the dossier at each of the twelve loci and matching the exact
+> replacement wording — not by reading an audit record. It changes **no ruling** in this document.
+> Every `[VERIFIED]` principle in §1 stands exactly as written; the sections below are untouched by
+> this pass.
+>
+> **Two tags are lifted — owner ruling at the `LDB-10` gate, 2026-08-17.** §1.4 and §1.6 carried
+> `[DEFECTIVE-SOURCE — see §0]`, which the rule below defines as "must not be leaned on without
+> reopening the source first." **Both now read `[VERIFIED]`**, because both meet this document's own
+> definition of that tag — *independently checked against the opened source*:
+>
+> - **§1.4 (F11, delMas, Garfield & Chance 1999).** The source was opened: dossier Access line, *"read
+>   at the journal's own archive"* (`jse.amstat.org/v7n3/delmas.cfm`), and `V-C7.md:30` records
+>   *"YES — jse.amstat.org, two independent targeted re-reads."* Its defect `C-C7-007` was corrected
+>   against verbatim source text quoted at `V-C7.md:96-98`, and landed at the original bank `55f24aa`
+>   — **so this tag was stale on the day this document was written.**
+> - **§1.6 (F17, Weber, Binder & Krauss 2018).** Full text read (`C7-probability-ev-variance.md:1377`),
+>   and the top-up verifier independently reopened it — `V-C7-topup.md:50`, every replacement string
+>   *"quoted by the verifier from a source it opened itself."* Its three defects (`C-C7T-005`, `-006`,
+>   `-007`) landed 2026-07-26 and are verified present at `:1398-1411`, `:1428-1438`, `:1417-1425` and
+>   `:1454-1465`.
+>
+> **What this releases.** Anything that hedged against these two sections may now lean on them
+> normally. One case is known and reported to `LDB-08`: `LDB-06` D11
+> (`2026-08-08-session-composition.md:801-805`) states *"this ruling does not lean on it beyond the
+> predict-first shape"* on the strength of §1.4's tag. That constraint is lifted; the decision it
+> guarded was independently grounded and does not change.
+>
+> **`[DEFECTIVE-SOURCE]` is now unused in this document**, as `[UNVERIFIED]` always was. The tag
+> vocabulary is retained — a future defect gets tagged again.
 
 **Rule for Phase 4:** anything below marked `[VERIFIED]` was independently checked against the opened
 source. Anything marked `[UNVERIFIED]` or `[DEFECTIVE-SOURCE]` must not be leaned on without
@@ -80,7 +117,7 @@ considered** when evaluating decisions.
 **Telling learners "judge the decision, not the result" will not be sufficient.** They will agree
 with you and keep doing it. See §2.1.
 
-### 1.4 Simulation alone does not produce understanding `[DEFECTIVE-SOURCE — see §0]`
+### 1.4 Simulation alone does not produce understanding `[VERIFIED]`
 A three-cycle classroom programme found simulation software produced *disappointing* conceptual
 gains; gains appeared only when the activity forced students to **confront their own prediction
 against the simulated result.** The paper's own conclusion is that simulations do not guarantee
@@ -98,7 +135,7 @@ nervous-seeming opponent than a confident one.
 skilled at blackjack is, on this evidence, doing something that happens whether or not their decisions
 actually improved. Confidence gain is not a proxy for learning and must never be used as one.
 
-### 1.6 Frequency formats help, with a firm ceiling `[DEFECTIVE-SOURCE — see §0]`
+### 1.6 Frequency formats help, with a firm ceiling `[VERIFIED]`
 Presenting chance as natural frequencies ("3 of every 13 hands") beats probabilities — but roughly
 **three quarters still fail** the target task, and about half quietly translate the frequencies back
 into probabilities. In a sample *more* schooled than your users.
@@ -116,8 +153,31 @@ are separate outcomes, and this product's goal is the second one. Measure play, 
 ### 1.8 Blackjack players use a false heuristic that outperforms nothing-at-all `[VERIFIED]`
 The only on-domain source in the dossier: casino blackjack players use a transparently false
 heuristic — *assume the next card is a ten* — which is far easier to learn than optimal strategy and
-is associated with better expected returns than unaided play. The paper further contends that
+is associated with better expected returns ~~than unaided play~~. The paper further contends that
 inferring EV from subjective probability may be "both uncommon and non-normative" even in blackjack.
+
+> **COMPARATOR CORRECTED 2026-08-17 at `LDB-10`, after the independent re-check `LDB-01` §5.3
+> required.** The words *"than unaided play"* were an addition. The publisher abstract — the only
+> level of this source anyone in this program has opened — states the claim bare, verbatim: *"it is
+> easier to learn than the optimal strategy, the cost of using it is trivial, and its use is
+> associated with better expected returns."* The single comparator in that sentence is bonded to
+> *ease of learning*, not to returns. Enumerated positively over the 244-word abstract and title:
+> `than` occurs twice (both accounted for above), and `unaided`, `compar*`, `relative to`, `versus`,
+> `control`, `outperform` and `basic strategy` occur **zero** times.
+>
+> **The comparator is not stated by the paper at abstract level. Do not supply one.** Two adjacent
+> sources do name one, and it is *players' own actual hit–stand play at all experience levels* —
+> **not** unaided play, and **not** basic strategy. Both are labelled leads, not the paper: the
+> author's own blog gloss, and Reb, Karelaia & Lejarraga (2025), the *Mind & Society* editorial.
+>
+> **The heading of this section now overstates its own body, and is left standing for the gate to
+> rule on.** On the author's own arithmetic — again the blog, not the paper — the heuristic is about
+> **0.04% worse** than perfect basic strategy. So the finding has opposite signs on its two limbs:
+> better than what players actually do, worse than correct play. *"Than unaided play"* invited the
+> inference that the heuristic beats the optimal strategy; it does not. Full record, including
+> eighteen retrieval routes and the near-miss on a different 2004 Bennis paper that search surfaces
+> for this query: `docs/superpowers/research/foundation-audit-p3/verification/V-A16-comparator.md`
+> (inbox = evidence, never authority). Full text remains unobtained; `oa_status: closed`.
 
 **Take the pedagogical point seriously:** a cheap wrong model that improves play may beat a correct
 model nobody internalises. That is a genuine design option, not a concession.
