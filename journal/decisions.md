@@ -630,6 +630,11 @@ baseline"*, and it is **unclosable as designed**, because the design produced no
    dossier is systematically pessimistic on trainability, and that pessimism is an artefact of where
    its search stopped."* **The blueprint was designed on the uncorrected version**, which bears
    directly on whether the design came out too strict.
+   > **SUPERSEDED 2026-08-17 at `LDB-10` — see the entry of that date.** The Phase 3 half was *not*
+   > open. `6da7e9f`, the same commit this item credits with landing the Phase 1 corrections, landed
+   > the Phase 3 ten as well, seventeen minutes after `96b0f05`. This item diagnosed the mechanism and
+   > then repeated it on its own third clause. The blueprint was designed on the **corrected**
+   > dossier; the design did not come out too strict for this reason.
 6. **Delete the duplicate rather than watch it.** ROADMAP's phase-4 deliverable **status** column
    drifted against the board three times — 2026-08-02, 2026-08-04, 2026-08-15 — each time the same
    way, each time caught only by a `/start` reader comparing by hand. The proposed fix was a seventh
@@ -793,3 +798,107 @@ the second after the first, or name an owner for the handoff before either start
 **Nine schema deltas now owed to phase 5** (was five), of which three are new fields and one — §11
 item 8 — is a reducer *rule* rather than a field, and is the one most easily lost: building the window
 the obvious way, one attempt one Skill, makes D2 unimplementable and will present as a D2 problem.
+
+## 2026-08-17 — `LDB-10`: the corrections were already landed, and the pass that said otherwise had just diagnosed why
+
+**The card's premise was false, and the falseness is the finding.** `LDB-10` existed to apply ten
+`V-C7-topup` corrections described as *"never applied — that is the outstanding work item."* All ten
+had been applied on **2026-07-26 in `6da7e9f`**, seventeen minutes after `96b0f05` banked the page
+that said they had not. Verified in the target file, not in an audit record: twelve loci opened in
+`C7-probability-ev-variance.md` and matched against the exact replacement wording, enumerated with
+line numbers in `P3-evidence-catalog.md` §2. Counting check — `96b0f05` holds **0** `LANDED C-C7T`
+markers, `6da7e9f` added **18**.
+
+**The repetition, not the staleness, is what earns a row here.** The 2026-08-15 evidence-index
+correction pass diagnosed this exact mechanism, named `96b0f05` and `6da7e9f` by hash, wrote *"nobody
+came back to this page"*, corrected its Phase 1 items 1 and 2 — and then asserted in its own **item
+3** that the Phase 3 ten were *"still unapplied. This one is live."* It never asked whether the
+commit it had just credited had also landed those. **Second documented instance of the
+rules-do-not-fire-on-their-author class**, after `LDB-06` D8. No new rule is proposed: the four
+evidence rules in `AGENTS.md` already forbade this and did not fire. What caught it was opening the
+file.
+
+**Four documents carried the false state; all four are corrected** — `P3-evidence-catalog.md`,
+`evidence-index/README.md`, **bridge §0** (the Phase 4 authority document every card was told to read
+first), and this log's 2026-08-15 item 5, marked superseded in place.
+
+**Two gaps that page left open are closed in the same pass.** The `C-C7T-009` trap was **honoured** at
+landing — `:1757-1764` states it used the corrected `README.md:50-66` characterisation of Floyd rather
+than the verifier's own wrong description. And the F1–F14 byte-integrity gap, which the verifier said
+only a shell could settle, **is settled**: each `#### Fn:` section hashed at `55f24aa` and again
+after the 2026-07-26 landing gives F1–F14 **identical** and exactly F15–F20 changed — precisely the
+correction set.
+
+**`A-16`'s comparator is resolved and landed at all three loci together.** An independent re-check
+reopened the source instead of reading reviewer records. *"Than unaided play"* is **an addition**: the
+publisher abstract states the claim bare — *"its use is associated with better expected returns"* —
+its only comparator bonded to *ease of learning*. Absence enumerated positively (`unaided`, `compar*`,
+`versus`, `control`, `outperform`, `basic strategy`: **zero** occurrences in 244 words), and
+corroborated against the dossier's own verbatim abstract at `C7:1643-1657`.
+
+**The correction runs opposite to the direction anyone expected.** Two adjacent sources *do* name a
+comparator — *players' actual hit–stand play*, not unaided play and not basic strategy — and on the
+author's own blog arithmetic the heuristic is **~0.04% worse** than perfect basic strategy. The
+finding has opposite signs on its two limbs, and the struck wording invited the inference that a false
+heuristic beats optimal play. Both figures stay **labelled leads, not Evidence-held**: F20 carries the
+standing prohibition *"nothing here may be cited as a number"* (`C7:1567`), and this card authorised
+no collection. `A-16`'s validation method is unchanged — a citation was corrected, not a ruling.
+
+**The product consequence inverts the worry that pulled the card forward.** The landing precedes every
+Phase 4 decision, so the blueprint was **not** designed on an uncorrected dossier. The residual
+exposure runs the other way: cards reading the *index* saw F15, F16, F17, F19, F20 flagged *"do not
+cite as written"* when all five were safe. **One confirmed cost, found by grep rather than assumed:**
+`LDB-06` D11 (`2026-08-08-session-composition.md:801-805`) declined to lean on bridge §1.4 on the
+strength of a `[DEFECTIVE-SOURCE]` tag that was stale the day the bridge was written — `C-C7-007` is
+present at the original bank `55f24aa`. The effect there is a weaker evidence label, not a different
+decision, and is reported to `LDB-08` at that weight.
+
+**Left for the owner, deliberately not applied:** lifting the `[DEFECTIVE-SOURCE]` tags on bridge §1.4
+and §1.6. Both defect sets are repaired, but lifting them changes what a spec may lean on — a ruling,
+not a side effect of a correction pass.
+
+**Two observations, neither acted on.** `check-doc-drift.sh` does not cover the evidence-index-versus-
+archive pair, which has now drifted twice against the same commit — the deletion precedent (2026-07-26
+item 6, *"delete the duplicate rather than watch it"*) has been applied instead by retiring the index's
+cite-the-correction-not-the-dossier instruction, and whether a seventh check is also wanted is open.
+And `journal/raw/` is gitignored with **zero** inbox records tracked, so this re-check's record — and
+three pre-existing records cited from authority documents — survive on one machine only.
+
+## 2026-08-17 — Three rulings at the `LDB-10` gate
+
+Taken together after the correction pass above, each on evidence gathered during it rather than on
+the shape of the problem.
+
+**1. Bridge §1.4 and §1.6 lift from `[DEFECTIVE-SOURCE]` to `[VERIFIED]`.** Not "repaired, status
+unclear" — both meet the bridge's own definition of the tag, *independently checked against the
+opened source*. §1.4's delMas was opened at `jse.amstat.org` and `V-C7.md:30` records *"two
+independent targeted re-reads"*, with `C-C7-007` corrected against verbatim source text and landed at
+`55f24aa` — **so that tag was stale the day the bridge was written**. §1.6's Weber was read in full
+and independently reopened by the top-up verifier (`V-C7-topup.md:50`). A `[REPAIRED]` third value was
+considered and declined: the vocabulary already declares three values and uses one, and a fourth would
+have to be learned by every future reader to say something `[VERIFIED]` already says. `[DEFECTIVE-SOURCE]`
+is now unused; the vocabulary is retained for the next real defect.
+
+**2. A seventh `check-doc-drift.sh` check, keyed on correction IDs.** The evidence bar in `AGENTS.md`
+— *"a documented failure or a measured retrofit cost, never just in case"* — is met twice over, both
+failures against the same commit pair. The 2026-07-26 *"delete the duplicate rather than watch it"*
+precedent was applied **first**: the index's *"where a row says a correction is unapplied, cite the
+correction, not the dossier"* instruction is retired, and its state claims are rewritten from
+transient (*unapplied*) to terminal (*landed at line N*). The check exists because deletion alone
+relies on a rule, and **this repository's most expensive lesson is that rules do not fire on their
+authors — mechanisms do**. It fails when an index page makes a live unapplied-claim naming a
+correction ID or `V-` record for which the archive carries a `LANDED` marker; struck text is excluded,
+so history stays readable. **Regression-tested, not asserted**: run against the pre-correction tree it
+fires at all four historical loci including `README.md:74`, the exact line the 2026-08-15 pass wrote;
+against the corrected tree, 7 checks clean. Its limit is stated in its own output — a claim naming
+neither an ID nor a record cannot be cross-checked.
+
+**3. A record an authority document cites gets promoted into the tracked archive.** `journal/raw/` is
+gitignored and held **zero** tracked records while four authority documents cited into it, so every
+one of those citations pointed at something that survived on one machine. Four records promoted and
+tracked: the A-16 re-check → `foundation-audit-p3/verification/V-A16-comparator.md`; the Floyd
+retrieval → `foundation-audit-p3/collection/C8-floyd-2006.md`; and the `LDB-01` and `LDB-03`
+claim-checks → `docs/superpowers/audits/`. Live-authority citations repointed; historical process
+records left alone, because the raw path was true when they were written. `journal/raw/` stays
+ignored — this is promote-on-citation, not tracking the inbox. Tracking it wholesale was declined:
+the remote is public and the ignore exists to keep scratch out of it.
