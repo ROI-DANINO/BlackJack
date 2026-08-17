@@ -420,7 +420,8 @@ and nobody in this repository has opened the paper.** Writing it into a correcti
 unopened-source defect would reproduce the defect. The follow-up is: open Howard et al. (2021),
 DOI 10.1177/1745691620966789, first-hand, then decide whether this row gains a positive research
 ground. Until then it stands on the product judgement above. Collected evidence, RAW under Inbox
-Rule 0: `journal/raw/_inbox/2026-08-17-streak-mechanics-research/findings.md`.
+Rule 0 until promoted 2026-08-17, now tracked:
+`docs/superpowers/research/design-evidence/2026-08-17-streak-mechanics.md`.
 
 ## Coverage Gaps and Conflicting Evidence
 

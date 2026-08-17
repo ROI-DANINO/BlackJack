@@ -668,7 +668,8 @@ least useful material, and the app is telling them so.
 `[Product judgement]` — its mission clause rests on this product's own `ALR-027`–`ALR-029`, and its
 one research citation was dropped at source as unable to support a mechanic claim. The streak
 evidence gathered at the gate is `[Evidence-backed]` but **relayed**: it lives at
-`journal/raw/_inbox/2026-08-17-streak-mechanics-research/findings.md` under Inbox Rule 0, and no one
+`docs/superpowers/research/design-evidence/2026-08-17-streak-mechanics.md` — tracked, and
+relayed: no one
 in this repository has opened any of its 18 external sources. The two claims sourced from it in D8 —
 that the mechanism runs through accomplishment rather than negative emotion, and that an intact
 streak did not reliably outperform no streak — carry that relay, not a first-hand reading.
@@ -1431,8 +1432,8 @@ superseded by the evidence pass of 2026-08-17.**
    licenses nothing**, leaving the entry resting on the reading of `ACT:388` alone.
 
    **Why it is struck.** A bounded evidence collection was run at the gate
-   (`journal/raw/_inbox/2026-08-17-streak-mechanics-research/findings.md`, RAW under Inbox Rule 0,
-   relayed — the gate session opened none of its 18 external sources). Three results, in the order
+   (`docs/superpowers/research/design-evidence/2026-08-17-streak-mechanics.md`, tracked and citable but
+   **not authoritative and not verified**; relayed — the gate session opened none of its 18 external sources). Three results, in the order
    they bear:
 
    - **The premise survives.** Divergence 6 was right that the motivational force need not come from
