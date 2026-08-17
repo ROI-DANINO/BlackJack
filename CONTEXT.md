@@ -28,6 +28,14 @@ The sole content partition of Skills — a named body of curriculum a learner wo
 do not overlap as containers, but a Skill may be exercised from more than one.
 _Avoid_: Cluster, module, course, topic, area
 
+**Unit**:
+A level in the game: a named group of Skills inside one Subject that a learner clears as a whole.
+Units are **ordered and they lock** — the learner moves forward one Unit at a time, moves backward
+freely over any Unit already cleared, and reaches a Unit further ahead only by passing a test on what
+they are skipping. Where the boundaries fall is a **sequencing choice**, not a Prerequisite claim, and
+it is registered as one (`A-30`).
+_Avoid_: Stage, module, chapter, lesson, tier
+
 **Grading authority**:
 What decides whether a response was correct: the engine (rules, totals, outcomes), the strategy
 oracle (basic-strategy correctness), or the catalog (authored answers). Never a model.
@@ -45,16 +53,20 @@ it may use. Feedback timing, scoring rule, and Condition settings are *parameter
 new types; the widget is not part of it at all.
 _Avoid_: Exercise, question type, activity pattern, format, drill
 
-**Ungraded Activity type**:
-An Activity type that produces **no mastery evidence at all** and is admitted anyway, because it is
-good to play. It declares `rehearses` in place of the Skills it measures, grades nothing, and never
-reaches a Mastery bar. Five exist: `hand-sort`, `estimate-and-check`, `procedure-order`,
-`principle-name`, `rule-battery`. Its attempts are still **recorded** — an activity that records
-nothing could not be instrumented, and `A-18` requires instrumenting it.
-_Avoid_: Free play, filler, warm-up, mini-game, unscored activity
+**Unmeasured Activity**:
+An Activity type that produces **no Mastery evidence at all** and is admitted anyway, because it is
+good to play. It is **admitted by declaring the Skills it `rehearses`** (`LDB-09` D2), which is what
+makes it one — not by having an empty `primaryFor`. Five exist: `hand-sort`, `estimate-and-check`,
+`procedure-order`, `principle-name`, `rule-battery`. It is never window-eligible, and it is still
+**graded**, still tells the learner the verdict, still recorded, still feeds the Recommender, and
+earns XP at a low rate (`LDB-06` §12 divergence 8). An activity that records nothing could not be
+instrumented, and `A-18` requires instrumenting it.
+_Avoid_: **ungraded activity** (it is graded — the word survives only as `AttemptDisposition`'s
+`{ status: 'ungraded' }`, which describes grading *authority*), toy, filler, mini-game, warm-up,
+free play, unscored activity
 
 **Rehearses**:
-The Skills an Ungraded Activity type gives practice at **without producing evidence for**. It is the
+The Skills an Unmeasured Activity gives practice at **without producing evidence for**. It is the
 price of admission for a type that grades nothing, and it is deliberately **not** coverage: a Skill
 named only in a `rehearses` list is still uncovered, and still reports as a gap against `LDB-01`.
 _Avoid_: Covers, measures, targets, supports, practises (as a coverage claim)
@@ -103,6 +115,41 @@ _Avoid_: Expired, lapsed, decayed, lost
 That a learner performed the required steps of a unit. Distinct from Mastery: it records work done,
 not capability shown, and it is the economy's trigger.
 _Avoid_: Mastery, done, passed
+
+## Sessions
+
+**Learning session**:
+A bounded run of Presentations with a named goal, a learner-chosen size, and a debrief. Covers
+curriculum work and Practice.
+_Avoid_: Session (unqualified), lesson, round
+
+**Table sitting**:
+One Free Play visit, from Buy-in to cash-out.
+_Avoid_: Session (unqualified), game, visit, run
+
+**Coached session**:
+A Learning session that repeats a segment until clean, corrects immediately, and may use `arranged`
+Provenance mode. The repeat-until-clean loop admits only Presentations that surface a verdict.
+_Avoid_: Drill, practice session, training run
+
+**Closing run**:
+A Learning session or Table sitting that plays one whole shoe in `organic` Provenance mode, with no
+correction until the debrief. In a Learning session the strategy table is **not offered**; at a Table
+sitting it is **available on request**, and opening it costs that Presentation its window
+eligibility.
+_Avoid_: Test, assessment, exam, final
+
+**Tutorial**:
+A learner's **first** encounter with a Skill. Where an Unmeasured Activity rehearses that Skill the
+Tutorial is that activity; where none does it is a real dealt hand with the strategy table on screen
+and immediate correction. A Tutorial **never produces Mastery evidence**, whatever the learner does
+with the chart. It does not repeat itself, and the learner may replay it on request.
+_Avoid_: Onboarding, intro, first lesson, walkthrough, demo
+
+**Recommender**:
+What proposes the next Skill to work on, from the live Mastery window and recency. It orders the
+Skills that carry a Mastery bar. Never a Grading authority, and never a lock.
+_Avoid_: Scheduler, planner, algorithm, AI
 
 ## Economy
 
@@ -182,6 +229,16 @@ _Avoid_: Engine context (when only the situation is meant)
 - "Outcome" is doubly loaded: `HandOutcome` in the engine means the result of a hand (win/loss/push)
   and is unrelated to a Learning outcome. The engine's meaning keeps the bare word; the learning
   side always says **Learning outcome** in full.
+- **"Level" is the everyday word for a Unit, and it is an _Avoid_ word elsewhere.** **Condition of
+  evidence** lists `level` among its avoided terms, and that entry stands: a Condition is never a
+  level. The two do not conflict — one is a body of curriculum a learner clears, the other is the
+  circumstances an attempt happened under — but the same word reaching for both is how they would
+  merge. Say **Unit** in any document; "level" is for talking to players, and never for a Condition.
+- **A Unit locks; a Prerequisite does not.** `LDB-01` §3 rules that a Prerequisite edge *"does not
+  assert teaching order, and it locks nothing"*, for an epistemic reason — the project holds no
+  citation for any of its orderings. That entry is unchanged. Locking is a property of a **Unit**, a
+  different concept, and the ordering it imposes is registered at `A-30` rather than smuggled into the
+  graph. Recorded at the `LDB-06` gate grill, 2026-08-17.
 - **"Table" is doubly loaded, and the schema uses both senses.** `ProgressAttempt.tableVisibility`
   (`web/src/progress/types.ts:32`) and `supportFading`'s `table-open` / `table-closed` mean the
   **strategy table** — the chart — because the `support` Condition axis is defined that way

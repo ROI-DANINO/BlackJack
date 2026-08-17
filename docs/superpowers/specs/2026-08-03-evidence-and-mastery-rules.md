@@ -294,9 +294,17 @@ A count model would have needed a patch here.
 Evidence from an Activity type that is **secondary** for a Skill is recorded, informs what to
 recommend next, and never reaches the bar.
 
-Two of the six Activity types are `primaryFor: []` — **`policy-paint`** and **`rule-contrast`**. Under
-this ruling they produce **no mastery evidence at all**, and that is stated as a result rather than
-left as a gap. They are teaching and diagnostic instruments.
+**`policy-paint`** and **`rule-contrast`** are `primaryFor: []`. Under this ruling they produce **no
+mastery evidence at all**, and that is stated as a result rather than left as a gap. They are
+teaching and diagnostic instruments.
+
+> **Count corrected 2026-08-17.** This paragraph read *"Two of the **six** Activity types are
+> `primaryFor: []`"*. `LDB-09` took the taxonomy from 6 types to 11 on 2026-08-15, and **seven** now
+> carry `primaryFor: []` — the two named here plus the five Ungraded Activity types `LDB-09` D2
+> admits. The ruling is unchanged and was never about the count; the count was an illustration that
+> went stale, and `LDB-09` cites this decision five times without noticing. The sentence now names
+> the two types it is about and states no total, so it cannot go stale again with the taxonomy.
+> Found by the `LDB-06` composition pass of 2026-08-17.
 
 **This is required by an already-approved ruling, not chosen here.** LDB-03 §4.1, approved
 individually at the gate on 2026-08-01: *"strategy-action, legal-fallback and adherence-under-loss are

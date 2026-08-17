@@ -181,7 +181,7 @@ This is the one the owner needs to decide about. From the audit (`U4-audit.md:64
 
 > *"Overstatement is specific and single: **reduced motion**. STD-001, re-opened — Reflow is SC 1.4.10 (**AA**), Text Spacing SC 1.4.12 (**AA**), Timing Adjustable SC 2.2.1 (**A**), but the only WCAG 2.2 criterion covering a reduced-motion preference is **SC 2.3.3 Animation from Interactions, Level AAA**. U4 states no target conformance level anywhere, so a reader building the ALR-036–ALR-041 set as one normative baseline will treat an AAA criterion as AA-mandatory."*
 
-Corroborated by the independent verifier (`V-U4.md:32-37`) and already carried into `docs/specs/2026-07-22-product-design-inputs.md:299-303`:
+Corroborated by the independent verifier (`V-U4.md:32-37`) and already carried into `docs/superpowers/specs/2026-07-22-product-design-inputs.md:359-363`:
 
 > *"the reduced-motion requirement rests on **WCAG 2.2 SC 2.3.3, which is Level AAA**, and was presented alongside AA and A criteria with no level stated. Phase 4 must **state a target conformance level** before treating that requirement set as one normative baseline."*
 
@@ -366,7 +366,7 @@ Framing constraints: *"This protocol is not a registry, technology catalogue, or
 
 ## Cross-cutting flags worth a card each
 
-1. **State a WCAG target conformance level** before treating ALR-036–ALR-041 as one baseline. ALR-040's reduced-motion element is AAA (SC 2.3.3); everything else in the set is A or AA. (`ACT:363-367`; `docs/specs/2026-07-22-product-design-inputs.md:299-303`)
+1. **State a WCAG target conformance level** before treating ALR-036–ALR-041 as one baseline. ALR-040's reduced-motion element is AAA (SC 2.3.3); everything else in the set is A or AA. (`ACT:363-367`; `docs/superpowers/specs/2026-07-22-product-design-inputs.md:359-363`)
 2. **Re-label ALR-001 and ALR-005** to drop unearned `PUBLISHED` tags. (`V-U4.md:38-65`)
 3. **Fix ALR-004 / ALR-022 evidence fields** — the `AttemptRecord` seam is the gap, not the support. (`V-U4.md:48-55`; `web/src/learn/types.ts:40-49`)
 4. **Disambiguate `STD-001` / `STD-002`** on every card — they mean different sources in the two research documents.
