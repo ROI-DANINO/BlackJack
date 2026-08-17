@@ -984,3 +984,52 @@ phase-4 row would have to guess whether a pack was skipped or forgotten, and the
 measurement that made it a no-op; (3) **the amended rule fires next time on its own**, rather than
 this ruling having to be remembered — which is this repository's most expensive lesson, that rules
 do not fire on their authors and mechanisms do.
+
+---
+
+## 2026-08-17 — `LDB-10` approved at its gate, and the eighth drift check
+
+**Chose:** approve `LDB-10` to Done, after correcting three stale claims the gate review found on
+`P3-evidence-catalog.md` and adding an eighth `check-doc-drift.sh` check that would have caught two
+of them.
+
+**What the gate review found, and it is the same defect one layer out.** The 2026-08-17 correction
+pass lifted bridge §1.4 and §1.6 to `[VERIFIED]` (Ruling 1 above) and updated the catalog's §1.8 row
+in place — and left §1.4 (`:280`) and §1.6 (`:282`) in that same table still printing
+`[DEFECTIVE-SOURCE — see §0]`. **One table, one current row and two stale ones.** The seventh check,
+added in the same pass to stop exactly this class, could not see it: it keys on unapplied-claim prose
+plus a correction ID (`check-doc-drift.sh:195,204`), and a stale tag carries neither, so it passed
+clean over both. This is the **third** consecutive instance of the rules-do-not-fire-on-their-author
+class — after `LDB-06` D8 and the 2026-08-15 pass's own item 3 — and the first where the mechanism
+built to end it was itself the thing that could not reach.
+
+**Why it was not cosmetic.** A Phase 4 card reads the catalog *instead of* the bridge, and the tag
+rule at `BRIDGE:81` says anything not `[VERIFIED]` *"must not be leaned on"*. `LDB-06` D11 was
+labelled down on precisely that reading. Leaving the index printing the retired tag would have kept
+the retired instruction live at the only address most readers use.
+
+**A third stale claim, found while fixing the first two and outside the approved scope.** The
+tag-integrity flag block's item 2 asserted §2.3 *"has silently absorbed C-C7T-002 while the dossier
+has not"*. Both limbs are false and had been since before the flag was written: **C-C7T-002** landed
+at `C7-probability-ev-variance.md:1258` with *"graded"* struck in the F16 headline at `:1257`, and
+**C-C7T-004**'s independence point at `:1358`, all in `6da7e9f` 2026-07-26. Fixed rather than left,
+because correcting item 1 and leaving item 2 stale in the block directly beneath it would have
+reproduced the defect being corrected. Both flags are rewritten from transient to terminal, per
+Ruling 2's precedent, and kept as a record of how they closed.
+
+**8. An evidence-index page must not attribute a tag to the bridge that the bridge no longer carries.**
+Check 7's sibling, keyed on the two stable shapes: the bridge's `### N.N <title> [TAG]` headings and
+the index's `**[TAG]**` column. The bridge is the authority; the index quotes it. **Regression-tested,
+not asserted** — run against the stale tree it fires at exactly `:280` and `:282` and clears the other
+six rows, so it is not a blanket failure; against the corrected tree, 8 checks clean. It refuses to
+pass on a missing bridge or a zero-section parse, because an empty map cannot certify anything. Its
+limit is printed in its own output: **an index page that paraphrases a tag instead of printing it is
+not read here** — which is exactly why item 2 above had to be found by a human reading the page, and
+is the honest boundary of what this mechanism buys.
+
+**Not done, deliberately.** `docs/superpowers/plans/2026-07-26-ldb-02-activity-pattern-catalog.md:1028`
+still expects *"across 5 checks"*. Left alone: it is a completed plan, true when written, and Ruling 3
+already set the precedent that historical process records are not retrofitted.
+
+**Checks:** `check-doc-drift.sh` 8 checks no drift; `kanban validate` exit 0;
+`check-ldb03-taxonomy.js` 8 passed 0 failed.
