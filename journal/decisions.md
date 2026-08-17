@@ -1122,3 +1122,134 @@ for the free-tier bound `LDB-05` §12 divergence 3 deferred to an energy or erro
 predicate omits it, so a phase-5 builder implementing it literally would admit every diagnostic attempt
 into the mastery window), the verifier-or-not question on the unre-checked examiner findings, and D11's
 label pending the `LDB-10` tag ruling.
+
+## 2026-08-17 — Units are ordered and they lock, and this does not reverse `LDB-01`
+
+**The ruling.** A learner moves **forward one Unit at a time**, moves **backward freely** over
+anything already cleared, and may **skip ahead only by passing a test on what they are skipping**.
+Owner decision at the `LDB-06` gate grill: *"only when the user actually knows what they're doing
+they can skip levels."*
+
+**Why it is not a reversal, checked rather than assumed.** `CONTEXT.md` defines a **Prerequisite** as
+*"never a lock"*, and `LDB-01` §3 (approved 2026-08-01) says an edge *"does not assert teaching order,
+and it locks nothing."* That reads as a collision and is not one. `LDB-01`'s reason is **epistemic,
+not motivational**: the project holds **no citation for any of its orderings** (`K-U7-003`,
+`K-U7-007`), so an edge that carried order would *"smuggle untested pedagogy in as structure."* The
+same paragraph then hands sequencing to the product in as many words — *"those orderings are simply
+not edges; they are sequencing choices `LDB-06` makes, and a register row covers any that get
+asserted."*
+
+So: **`CONTEXT.md`'s Prerequisite entry stands unchanged**, including `_Avoid_: unlock`. A Prerequisite
+still locks nothing. The thing that locks is a **Unit** — a different concept, which owes its own
+glossary term and does not have one yet.
+
+**What it cost.** `A-30`, opened in `assumption-register.md` with two named playtest measures: whether
+skip-test passers later lag in the skipped Units' Skills, and whether abandonment rises at a closed
+Unit — the second watching exactly what *"never a lock"* was protecting, against constraint 2. This
+follows `A-01`'s own standing instruction, written when its seven-stage ordering was withdrawn
+unvalidated on 2026-08-01: *"If a future design re-asserts a fixed stage order, **open a new row; do
+not reuse this one**."*
+
+**Scope, stated so it does not drift.** This is **not** an `LDB-06` item. Session composition decides
+what happens inside a session; Units and their ordering belong to blueprint assembly (`LDB-08`).
+Recorded here so the ruling does not evaporate between sessions, and so the `LDB-06` gate does not
+wait on it.
+
+## 2026-08-17 — `LDB-06` APPROVED: session composition, after a composition pass that found five defects in the rule it was told to check
+
+**Approved by the owner** at the `user-approval` gate, after the pass the gate had been held open for.
+`2026-08-08-session-composition.md` is authoritative for what a session is, how it starts, how large
+it is, how it ends, how pools are mixed, what a debrief contains, when Practice opens, how the
+Recommender orders work, and what persists.
+
+### What the composition pass found
+
+Four `audit-examiner` instances over disjoint surfaces, plus an orchestrator run of §15. The target
+was D14's `secondaryFor` branch — a selection rule written by the session that ruled it, never
+composed against anything. It carried **five** defects, and its own *"it composes with the four
+rulings it touches"* paragraph was wrong about the composition it explicitly checked:
+
+1. The on-request channel admitted into a Closing run exactly what D9 forbids. Found independently by
+   two instruments.
+2. Band 3's opener named an activity that does not exist for **12 of 18 Skills** — and the 12 are the
+   foundational ones. Found independently by two instruments. Answered by **D18, Tutorial**.
+3. D9's exclusion named a **class** whose name did not reach `policy-paint` or `rule-contrast`, while
+   the ground for it did. Replaced with a property rule.
+4. The citation to D12's reserved diagnostic was false under either reading. Filed as divergence 10.
+5. `named-region` had no producer. Handed to phase 5 rather than answered with an invented rule.
+
+Also: `variance-expectation` was Recommender-reachable at most once ever; D6's override set and band 3
+were exact complements, so a learner could never choose first contact; and the document contradicted
+itself on divergence count, chart availability, verifier status and type count.
+
+### Two defects that had already left the document
+
+- **`LDB-04` D6** (approved) read *"two of the **six** Activity types"*. `LDB-09` took the taxonomy to
+  11 and cites D6 five times without noticing. Corrected in place; the ruling was never about a count.
+- **`LDB-09:435-436`** carries *"`LDB-06` D14's type-selection rule decides the mix rather than a cap"*
+  as ANSWERED. D14 contains no mixing rule — it is **D7's Presentation bound** that decides the mix.
+  Owed to whoever next amends `LDB-09`.
+
+### A defect class no instrument was watching
+
+The phase-3 bridge gained 67 lines in `5c9988d` at **02:46**; the gate session ran at **03:43**. All
+four of `LDB-06`'s bridge anchors went stale in that hour, including the evidence-label line stamped
+*"reopened first-hand … again 2026-08-17"*, which after 02:46 pointed at unrelated prose. The evidence
+index was staled the same way and additionally cited a path where no file exists. All re-anchored.
+
+**`scripts/check-doc-drift.sh` ran clean over every one of them.** Its check 8 *opens the bridge* and
+compares section tags; **no check validates that a cited line still resolves to the cited text.** That
+is a documented failure with six live instances — the bar `AGENTS.md` sets before a new check may
+exist. Not built at this gate; recorded as owed.
+
+### §15 criterion 8 failed, and it is `RC-11`'s shape a third time
+
+Its enumeration was frozen at *"reopened first-hand on 2026-08-08"* while the document carried 24
+first-hand marks, twelve of them later and unlisted. Criteria 3 and 7 had been rewritten **that same
+day** to stop restating memorised counts; criterion 8 hard-coded a **date** instead, and nobody looked
+one item further down the list. Now enumerates from the document's own marks at gate time.
+
+Criterion 7's count-from-source rewrite then proved itself within the hour: divergence 10 was added,
+the criterion read ten where it had read nine, and self-corrected.
+
+### The two rows §14 owed, landing here because they had never landed
+
+1. **Engineered exposure teaches; `LDB-04` D7's organic floor closes the claim** (D3). This resolves
+   the phase-3 bridge's contradiction with itself — rare-event exposure stated as a requirement in
+   §4.6 and listed as an open decision in §7 — and resolves it in terms of *what evidence a session
+   must yield*, not what the engine can do. `create_prefix_shoe` (`crates/blackjack-core/src/shoe.rs`)
+   makes engineered exposure buildable without faking card flow: each arranged card replaces a
+   shuffled card of the same rank and suit, so composition is unchanged and arranged cards label
+   themselves in their ids. Whether arranged-only evidence can reach Mastery stays open at `A-23`.
+2. **The three unordered Condition axes stay unordered; table character carries the progression**
+   (D5). Scope, ruleset and pace are left unordered deliberately. This asserts **no** learning order
+   and files no register row — the absence is the decision.
+
+### What the glossary gained
+
+Six terms under a new `## Sessions` heading — **Learning session**, **Table sitting**, **Coached
+session**, **Closing run**, **Tutorial**, **Recommender** — plus a rename in the Learning model
+section: *Ungraded Activity type* → **Unmeasured Activity**, because divergence 8 rules those types
+*are* graded and do show verdicts. `Drill` was caught by the glossary before it landed: it collides
+with three existing `_Avoid_` entries.
+
+**The rename also fixed a defect in the term `LDB-06` §14 drafted.** It defined the class as
+*"`primaryFor: []`, … admitted under `LDB-09` D1 by declaring the Skills it `rehearses`"* — two
+clauses selecting different sets. **Seven** types carry `primaryFor: []`; **five** are admitted by
+`rehearses`. `policy-paint` and `rule-contrast` sat in the gap, which is precisely why D9's
+class-named exclusion failed to reach them. The `primaryFor` clause is dropped; admission route
+defines the class.
+
+### The risk accepted, named rather than waved through
+
+**Every repair above was written by the session that found the defect, and none has been independently
+verified.** That is `RC-04`'s exact shape — a finding verified, a repair written from it, and the
+defect surviving inside the repair — which happened twice in this document today. The owner approved
+knowing this. The bet is that a fifth *reading* pass buys another reading pass: of everything found
+today, the load-bearing findings all came from contact with data — parsing the taxonomy and skill
+graph, `git show` on the bridge, grepping `types.ts` — and not from reading prose more carefully.
+
+**The condition attached:** phase 5's first task is to implement §11 item 8's window predicate **as
+tests, one clause per test**. That predicate has now failed completeness **four** times and gained a
+sixth clause at this gate, so on this document's own record it is wrong again right now. A clause you
+can execute either passes or it does not.
