@@ -621,6 +621,12 @@ baseline"*, and it is **unclosable as designed**, because the design produced no
    are loss-framed by construction — a claim about other products. The standing rule is now in
    `AGENTS.md` §Constraints, and the evidence for it is that `LDB-05` §0.1 named the
    design-the-fun-out habit and `LDB-06` D8 removed streaks three decisions later anyway.
+
+   > ⚠ **The streak half of this item is SUPERSEDED — see 2026-08-17 below.** The up-only counter was
+   > struck on evidence and replaced by a forgiving weekly streak deferred to the account. **The
+   > removal rule half stands and is unaffected**; it remains binding and lives in `AGENTS.md`.
+   > Pointer added at the 2026-08-17 gate grill so a reader landing here does not take a superseded
+   > ruling as live.
 5. **The evidence index is corrected; the live half is carded.** Its README asserted in the present
    tense that 14 Phase 1 corrections were still absent from the archive. **False** — `96b0f05` banked
    the index, `6da7e9f` landed the corrections the same day, and nobody returned. Verified by
@@ -1033,3 +1039,86 @@ already set the precedent that historical process records are not retrofitted.
 
 **Checks:** `check-doc-drift.sh` 8 checks no drift; `kanban validate` exit 0;
 `check-ldb03-taxonomy.js` 8 passed 0 failed.
+
+---
+
+## 2026-08-17 — `LDB-06` divergence 6 struck: the up-only streak dies on evidence, a forgiving weekly one is deferred to the account
+
+*(Decided at a `grill-with-docs` session on divergence 6, the one entry in §12 that carried no
+disposition stamp. Q1/Q5/Q6/Q7/Q8 answered by the owner in four rounds.)*
+
+**Chose:** **no streak in v1.** The up-only cumulative day counter is **struck and replaced** by a
+**forgiving weekly streak** — weekly window; a week counts on **any committed Presentation**
+(attendance, not mastery); forgiveness free, earned by studying and auto-applied, never purchased;
+gain-framed copy weighting a new streak equally with a continued one. **Not built in phase 5. Trigger
+is the account**, because the mechanic's honesty depends on the number being true and browser-local
+IndexedDB is per-device.
+
+**Why — the mechanic was the untested variant while two evidenced designs sat unexamined.** A bounded
+evidence pass (`journal/raw/_inbox/2026-08-17-streak-mechanics-research/findings.md`, RAW, **relayed —
+nobody here opened any of its 18 external sources**) found: **no study anywhere** compares a
+never-falling counter with a resettable one; in the one study separating the parts an **intact** streak
+did **not** significantly beat showing no streak at all (p = .31), with the authors conceding that
+contrast was inconsistent — the reliably measurable effect is the **break**. Meanwhile Khan Academy
+removed daily streaks in 2021 for this exact worry and returned in 2024 with a **weekly** one;
+Brilliant's protection is **free, earned, auto-applied**; and the one large education RCT reporting **no
+discouragement effect** used a weekly, gain-framed streak.
+
+**Divergence 2's outcome is restored; its reasoning is not.** v1 ships no streak, which is what
+divergence 2 concluded — but on *"every shipped streak mechanic is loss-framed by construction"*, which
+the evidence contradicts specifically: the only mechanism test found the effect running through **sense
+of accomplishment**, not negative emotion, and loss aversion is contested in two recent re-analyses.
+Right answer, wrong reason, and both entries stay readable.
+
+**Attendance, not mastery — and the reason is local.** Khan gates its week on getting a skill to
+proficient. That shape was rejected here because `LDB-04`'s window is 8-of-10 with a ratchet, so a
+learner can practise hard for a week and move no bar; a mastery-gated streak would punish real work for
+not being productive enough, which is the pressure `ACT:388`'s mission clause forbids.
+
+**`ACT:388` is re-grounded at source, and it reaches past the streak.** Verified first-hand:
+`2026-07-16-adaptive-learning-product-activity-research.md:388` cited `SCI-007` plus
+`ALR-027`–`ALR-029`, and `:45` registers `SCI-007` (Howard et al. 2021) with the limitation *"Mostly
+correlational samples; **does not prove a specific interface mechanic causes autonomous motivation**."*
+**A source registered as unable to prove a mechanic claim was the sole research ground for a mechanic
+rejection** — checkable inside this repository, no journal access needed. `SCI-007` is dropped; the row
+keeps `ALR-027`–`ALR-029` and is relabelled `[Product judgement]`. Its disposition does not change.
+**Second consumer re-grounded with it:** `LDB-06` D8's no-cooldown ruling at `:545`.
+
+**Deliberately NOT written, and this is the discipline not an omission.** The evidence pass reports
+Howard et al. actually favours *identified regulation*, which would be a **stronger** ground than the one
+dropped. That reading is relayed twice over — through a subagent and through an abstract — and nobody
+here has opened the paper. Writing it into a correction issued *for* an unopened-source defect would
+reproduce the defect. Owed as a named follow-up: open DOI 10.1177/1745691620966789 first-hand.
+
+**§12's count was wrong and is fixed as a side effect.** It read *"Eight — seven approved, one struck"*
+over **nine** entries — the figure described §12 before divergence 9 was appended the same day, and
+§15 criterion 7 was edited that day to *mention* divergence 9 while its leading count stayed at eight.
+**The entry the count dropped was divergence 6, the only one with no disposition stamp.** This is
+`RC-11`'s shape one criterion over: criterion 3 was rewritten that day to stop hard-coding *"6 of 6"*,
+and nobody looked next door. Criterion 7 now reads its count from §12. **Nine entries, seven approved,
+two struck.**
+
+**Checked positively across every `ACT:388` consumer, because corrections do not execute themselves.**
+Twelve loci enumerated: `LDB-06` `:190 :545` D8 `:665` §12 §15 §13; this file at the 2026-08-15 entry
+(supersession pointer added, removal-rule half explicitly untouched); the evidence index at
+`activity-and-storage-catalog.md:150` (label note added). **One left deliberately unedited:**
+`docs/superpowers/audits/2026-08-15-ldb06-redraft-corrections.md:124`, a process record of what an
+audit found on the day — historical records are not retrofitted, per the precedent set at the
+2026-08-17 `LDB-10` gate.
+
+**Also landed:** `A-29` in the assumption register, carrying the claim that the deferred weekly streak
+fills the return-cadence gap, with return cadence against a no-streak arm as its named first test and a
+second test on whether lapsed learners fall *below* the no-streak arm — the harm the evidence actually
+establishes. `LDB-06` §13's handoff to `LDB-07` on rendering the up-only streak is **retired**; nothing
+is owed to `LDB-07` on this. And under the removal rule this very ruling establishes: **nothing carries
+return-cadence motivation in v1**, stated at D8 rather than left to be discovered.
+
+**Handed to `LDB-05`, not acted on:** Elevate sells streak freezes for money or 150 coins — a candidate
+for the free-tier bound `LDB-05` §12 divergence 3 deferred to an energy or error-rate mechanism.
+
+**What this does NOT do.** It settles one of nine divergences. The `LDB-06` gate still owes: divergence
+4's wording, the nine schema deltas, the **missing fifth clause** in §11 item 8's window predicate
+(`mode !== 'diagnostic'` — `types.ts:85` delegates that exclusion to the reducer and the four-clause
+predicate omits it, so a phase-5 builder implementing it literally would admit every diagnostic attempt
+into the mastery window), the verifier-or-not question on the unre-checked examiner findings, and D11's
+label pending the `LDB-10` tag ruling.
