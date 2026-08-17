@@ -9,8 +9,16 @@ evidence, never authority.
 1254 lines), plus one locus in `AGENTS.md`.
 
 > **Nothing here is confirmed.** Both passes were *examiners*, not verifiers. No independent instance
-> has re-checked their verdicts. Eight rows below (marked ✔ **owner-checked**) were re-checked
-> first-hand against the raw files during the report-back; the rest carry the examiner's reading only.
+> has re-checked their verdicts. The rows marked ✔ **owner-checked** were re-checked first-hand
+> against the raw files during the report-back; the rest carry the examiner's reading only. **Read the
+> marks, not a count** — as of 2026-08-17 they are ten: `RA-15`, `RA-15b`, `RA-01`, `RA-14`, `D11`,
+> `RC-01`, `UNOWNED`, `RC-03`, `RC-05`, `RC-07`.
+>
+> **This line said "Eight rows below" until 2026-08-17, and ten rows carried the glyph.** The
+> enumeration was always recoverable and the count next to it was not maintained — the same shape as
+> `RC-11` (criterion 3's hard-coded *"6 of 6"*) and the §12 divergence tally, now three times in this
+> one card's paperwork. The marks are the record; a number written beside them is a second source of
+> truth that only ever goes stale.
 > There are **no `Remove` and no `Replace` verdicts** across either pass — no claim in the redraft is
 > contradicted outright.
 

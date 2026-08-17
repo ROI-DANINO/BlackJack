@@ -951,8 +951,40 @@ Bjork.
 > offered.**
 >
 > **The candidate set for a goal Skill `S` is: every type that is `primaryFor` `S`, plus every type
-> whose `rehearses` list contains `S`.** No new field — `LDB-09` D1 requires a non-empty `rehearses`
-> on exactly the types that have no `primaryFor`, which is what makes them reachable at all.
+> whose `secondaryFor` list contains `S`, plus every type whose `rehearses` list contains `S`.** No
+> new field — all three lists already exist in `2026-08-01-activity-taxonomy.json`. `LDB-09` D1
+> requires a non-empty `rehearses` on every type that has **neither `primaryFor` nor `secondaryFor`**,
+> which is what makes *those* types reachable; the `secondaryFor` branch is what makes the rest
+> reachable.
+>
+> > **The `secondaryFor` branch was added 2026-08-17 by owner ruling, closing `RC-04`.** Until then
+> > the set had two branches and reached **9 of the 11** Activity types. The ground sentence also read
+> > *"on exactly the types that have no `primaryFor`"*, which misstates `LDB-09` — it scopes the
+> > requirement to types with empty `primaryFor` **and** empty `secondaryFor`
+> > (`2026-08-15-play-verdicts-and-ungraded-activities.md:618-619`, reopened first-hand). Two types
+> > sat in the gap the wider reading concealed, enumerated positively across all 11 types in the
+> > taxonomy:
+> >
+> > | type | `primaryFor` | `secondaryFor` | `rehearses` |
+> > |---|---|---|---|
+> > | `policy-paint` (`:108-109`) | *empty* | `strategy-action` | **absent** |
+> > | `rule-contrast` (`:158-159`) | *empty* | `read-rule-card`, `strategy-action` | **absent** |
+> >
+> > **D12 is what made this a contradiction rather than a gap.** It already rules that *"`policy-paint`
+> > runs over the Classification category the session is about"* — a statement that it *is* a session
+> > activity — while the two-branch candidate set could never select it. One document held both.
+>
+> **Band treatment: a `secondaryFor` type is drawn on the `rehearses` footing, not the `primaryFor`
+> one.** It is available at **band 3 and on request**, and **not** at bands 1, 2 and 4. The ground is
+> `LDB-04` D6 — *only `primaryFor` evidence enters the window* — so a `secondaryFor` type yields the
+> goal Skill no window-eligible evidence, exactly like a rehearsal type. Bands 1, 2 and 4 exist
+> because the session's goal **is** evidence, and spending a Presentation there on a type that cannot
+> move the bar would be the same defect in a new place. This keeps the two types reachable without
+> letting a Skill be served by a type that was deliberately denied primary evidence for it.
+>
+> **Cost: none in schema or data.** No field, no taxonomy edit, no validator change — the three lists
+> and the band rule all already exist. `[Product judgement]` on the band restriction;
+> `[Evidence-backed]` on the `LDB-04` D6 ground it rests on.
 >
 > **Within that set, one published rule, keyed to the same bands:**
 >
@@ -1177,7 +1209,7 @@ handoff names six and there are six** — checked positively against the JSON on
 | **`A-07e`** | **New.** The three session-size presets — Short 10, Standard 25, Long 50 Presentations (D7). Pooled, because moving one changes what the others mean — the convention `A-07a` set. **Named first test:** completion rate and return rate by preset, which is `A-08`'s existing instrument at no extra cost. Mode: **playtesting**, matching `A-08`'s declared mode — the instrument is shared, so the mode must be too. **⚠ Blocked until §11 item 7 lands (added 2026-08-17, `RC-07`):** the preset survives only on a closed session, so as things stand the test can see nothing but sessions that completed — and completion is what it measures. The row stands; its named method does not run until `presetId` reaches the attempt. |
 | **`A-07f`** | **New.** The Recommender's separation gap — a missed item may return after at least 3 intervening Presentations (D14). **Named first test:** does a shorter gap raise same-session accuracy while lowering next-session accuracy? Computable from stored attempts. Mode: **production telemetry**. |
 | `A-03` | **Note added, no new row.** D9 fixes the timing pairing rather than the timing, on the source's own finding that consistency matters more than timing. `A-03`'s validation method already reads *"the honest test is consistency versus timing"* — this design is now the arm that tests it. |
-| `A-23` | Cited, not restated. **No row is filed because the mitigation lives in an approved spec — `LDB-04` D7's organic floor — which this card cites rather than re-asserts.** *(Rewritten 2026-08-17, `RC-12`: the reason given was "no row is filed for the Coached-then-Closing shape", and that shape was withdrawn at D3 on 2026-08-15. The mitigation is in fact **stronger** than when the row was written — D9's band mapping now sends bands 1 and 4 into Closing runs, so organic whole-shoe play is a routine event in the design rather than something a bespoke rule had to force.)* |
+| `A-23` | Cited, not restated. **No row is filed because the mitigation lives in an approved spec — `LDB-04` D7's organic floor — which this card cites rather than re-asserts.** *(Rewritten 2026-08-17, `RC-12`: the row read **"D3's organic close is a mitigation of `A-23`, not a new assertion — which is why no row is filed for the Coached-then-Closing shape"** — retrieved verbatim from `git show 4f0b7e7`, not recalled — and that shape was withdrawn at D3 on 2026-08-15. **This note's own first version quoted the retired row wrongly**, giving "no row is filed for the Coached-then-Closing shape" as the **reason**; it was the **scope** of the unfiled row, and the reason was the mitigation clause before the dash. Corrected 2026-08-17 after independent verification — a repair note misdescribing the text it repairs is the founding error class operating on a correction, which is where this repository has already lost corrections twice. The mitigation is in fact **stronger** than when the row was written — D9's band mapping now sends bands 1 and 4 into Closing runs, so organic whole-shoe play is a routine event in the design rather than something a bespoke rule had to force.)* |
 | `A-15` | Cited. D4 adds nothing; `P-3` remains the instrument. |
 | `A-22` | Cited. D11 defers `configured-sandbox` and leaves the row live. |
 | `A-02` | Cited, inherited, **not re-asserted** (D5, D15). |
@@ -1215,8 +1247,12 @@ way. **Items 6–9 were added 2026-08-17**, each against the same file re-read f
    `docs/superpowers/specs/2026-07-17-progressstore-cycle1-design.md:452`, the approved parent the
    code declares itself an exact transcription of. Correcting only the code leaves the approved spec
    still saying the opposite, and **`scripts/check-doc-drift.sh` has no check for this pair** — its
-   six checks are board/milestone `next:`, QA role enumeration, closed-milestone prose, Rust test
-   count, in-progress plan, and single-live-board — so nothing would catch the re-divergence. This is
+   checks are board/milestone `next:`, QA role enumeration, closed-milestone prose, Rust test count,
+   in-progress plan, single-live-board, evidence-index unapplied-claims, and bridge tag attribution,
+   **eight as run 2026-08-17, none of them covering a code-comment-to-parent-spec pair** — so nothing
+   would catch the re-divergence. (This read *"its six checks are"* until 2026-08-17; checks 7 and 8
+   had been added since. The negative claim was unaffected, which is why it is corrected rather than
+   withdrawn — but a count written beside an enumerable list going stale is, again, `RC-11`.) This is
    the corrections-do-not-execute-themselves family in its cheapest form. (Examiner F4; the first
    draft named one target.)
 
@@ -1291,9 +1327,9 @@ way. **Items 6–9 were added 2026-08-17**, each against the same file re-read f
    **Ruled: the Activity type is the window key; `evidence.skillId` is the presentation's goal label.**
    The predicate, stated so phase 5 does not have to infer it:
 
-   > A Presentation enters Skill `S`'s window when **all four** hold: its Activity type is
-   > `primaryFor` `S`; it met that type's `produced` contract for `S`; it was **`table-closed`**; and
-   > it was not **abandoned**.
+   > A Presentation enters Skill `S`'s window when **all five** hold: its Activity type is
+   > `primaryFor` `S`; it met that type's `produced` contract for `S`; it was **`table-closed`**; it
+   > was not **abandoned**; and its `mode` was not **`'diagnostic'`**.
 
    > **The third and fourth clauses were missing from the first draft of this item, and are added
    > 2026-08-17 after a composition check.** `LDB-04`'s window is *"8 of the last 10 **table-closed**
@@ -1301,6 +1337,27 @@ way. **Items 6–9 were added 2026-08-17**, each against the same file re-read f
    > abandoned presentations *"recorded and excluded"* by its D5. A two-clause predicate reads as
    > complete and is not, and a phase-5 builder implementing it literally would admit both classes
    > into the window.
+   >
+   > **The fifth clause was still missing after that repair, and is added 2026-08-17 at the gate —
+   > the third consecutive time this item's completeness failed on its own correction.** It is not a
+   > new ruling: `ProgressAttempt.mode` is annotated *"diagnostic is STORED but excluded from mastery
+   > — **by the reducer, not the store**"* (`types.ts:85`, read first-hand), and `LDB-04` already
+   > names *"diagnostic-mode attempts excluded (schema contract)"* as a required reducer test group
+   > (`2026-08-03-evidence-and-mastery-rules.md:579`). Item 8's entire owed deliverable **is** that
+   > reducer's rule, so the one document that had to carry the clause is the one that dropped it.
+   >
+   > **The producer is D14 of this same document.** *"At any point, on request: any type in the
+   > candidate set, as the learner-opened diagnostic D12 already reserves"* (`:965-968`) — a
+   > diagnostic run on a `primaryFor` type satisfies all four earlier clauses. D14 even quotes the
+   > *"excluded from mastery"* annotation in the act of creating the case the predicate then admits.
+   > This is a live defect in an unbuilt reducer, not bookkeeping.
+   >
+   > **§11's own not-owed list is what let it through**, and the mechanism is worth naming because it
+   > will recur: *"the diagnostic view needs no field because `EvidenceMode` carries `'diagnostic'`"*
+   > is **true about fields** and was read as **true about the predicate**. A field that exists is
+   > evidence that storage is solved; it is no evidence at all that anything reads it. An
+   > enumerate-positively list protects against absence read as proof, and does not protect against a
+   > *present* fact answering a question it was never asked.
    >
    > **§12 divergence 7 is what makes this urgent rather than pedantic.** Making the chart available
    > at a Table sitting turns `table-closed` from an edge case into the single most common reason a
@@ -1341,7 +1398,9 @@ way. **Items 6–9 were added 2026-08-17**, each against the same file re-read f
 `ALR-018` requires already exists as `ProgressAttempt.engine` and `ProgressAttempt.activity`
 (`types.ts:103` / `56-62`, and `106-112`); the session shape needs no field because it is derivable from
 `mode` (`types.ts:85`); the diagnostic view needs no field because `EvidenceMode` carries
-`'diagnostic'`; the Skill-grain coverage rule needs no field because `evidence.skillId` exists
+`'diagnostic'` — **which is a claim about storage only, and is not a claim that any rule reads it;
+item 8's fifth clause is where it gets read, and this line was misread as covering that once
+already**; the Skill-grain coverage rule needs no field because `evidence.skillId` exists
 (`types.ts:79`); and the pace evidence needs no field because `elapsedMs` exists (`types.ts:116`).
 
 ### 12. Divergences, surfaced and approved
@@ -1402,8 +1461,23 @@ superseded by the evidence pass of 2026-08-17.**
 
    `LDB-05` D9 (approved 2026-08-05) rules every Free Play decision oracle-graded, and D2 follows D9.
    **The two approved specs disagree and the later one wins**, which is a divergence and is recorded
-   as one rather than argued away. **Owner ruling, 2026-08-08: declare it.** §11 item 2 now names
-   **both** correction targets.
+   as one rather than argued away. **APPROVED** — owner ruling, 2026-08-08: *declare it*. §11 item 2
+   now names **both** correction targets.
+
+   > **The stamp is normalised, not newly granted (2026-08-17, at the gate).** This entry carried the
+   > ruling as prose while the other six carried the word **APPROVED**, and the section's *"seven are
+   > approved"* has counted this entry as one of the seven throughout — nine total, less the two
+   > struck, is seven only if this one counts. Approving a divergence *means* accepting the departure
+   > and recording it, which is exactly what *"declare it"* ruled. **No decision moves here**; what
+   > changes is that a reader enumerating §12 no longer has to judge whether one entry's prose amounts
+   > to a disposition while six others say so outright.
+   >
+   > **It does not make the count greppable, and the first draft of this note wrongly said it did.**
+   > `grep '\*\*APPROVED'` over §12 returns **nine** hits for **seven** approved entries — this note
+   > itself is one, and the standing-rule approval trailing divergence 9 is another. Criterion 7 is
+   > right to prescribe *enumerating the numbered entries*; a word-count shortcut would have been the
+   > hard-coded-answer shape criterion 3 was rewritten to remove, invented afresh one section away and
+   > inside the repair for it.
 
    Both loci reopened first-hand 2026-08-08.
 
@@ -1869,8 +1943,13 @@ repairs are landed. The 13 filed items needed nothing.
 #### What this section is not
 
 **No verifier instance has re-checked either pass.** Every examiner verdict above remains unconfirmed
-in the sense `AGENTS.md` uses. Eight of the 36 were re-checked first-hand against the raw files during
-the report-back, and a further set — the `product-vision.md`, `LDB-05` D9, `LDB-04` D6/D3,
+in the sense `AGENTS.md` uses. A subset was re-checked first-hand against the raw files during the
+report-back — **enumerated by the ✔ marks in
+`docs/superpowers/audits/2026-08-15-ldb06-redraft-corrections.md`, which are the record; this document
+deliberately no longer restates their count.** (It said *"Eight of the 36"* until 2026-08-17; ten rows
+carried the glyph. Both the audit's legend and this sentence had memorised a number beside a list that
+could always be read — `RC-11`'s shape a third time.) A further set — the `product-vision.md`,
+`LDB-05` D9, `LDB-04` D6/D3,
 `journal/tasks.md:63` and `web/src/progress/types.ts` loci behind `RC-01`, `RC-05`, `RC-07`, `RC-09`,
 `RA-11` and divergences 7 and 9 — was reopened first-hand on 2026-08-17 before the corresponding
 ruling was written. **The rest carry an examiner's reading only, and this sentence is the record of
@@ -1878,3 +1957,38 @@ which is which** rather than an implied verification of all 36.
 
 There were **no `Remove` and no `Replace` verdicts** across either pass: no claim in the redraft was
 contradicted outright.
+
+#### 17.1 The scoped verifier pass of 2026-08-17
+
+**An independent `audit-verifier` was run at the gate over the six Group 2 gate rulings that no second
+party had re-checked** — `RC-04`, `RC-06`, `RC-08`, `RC-10`, `RC-11`, `RC-12`. The scope is the
+complement, enumerated positively rather than assumed: Group 2 holds thirteen; six carry the ✔
+owner-checked mark in the corrections file; `RC-09`'s loci were reopened first-hand on 2026-08-17
+before its ruling was written. The record is
+`journal/raw/_inbox/2026-08-17-ldb06-gate-verifier/verification-record.md` — **RAW under Inbox Rule 0,
+evidence and not authority.** The remaining 23 findings (Group 1's text repairs and Group 3's filed
+items) are still examiner-only, and this sentence is the record of that.
+
+**Five stale, one confirmed.** `RC-06`, `RC-08`, `RC-10`, `RC-11` and `RC-12` had each been overtaken
+by a repair already in this document — the findings were right when written and no longer describe the
+text. **`RC-04` survived, narrowed:** D14's candidate-set rule reached 9 of 11 Activity types, and its
+stated ground misread `LDB-09`'s scope. **Ruled by the owner the same day** — a third `secondaryFor`
+branch, drawn on the `rehearses` footing — and landed at D14. It was the only one of the six that
+still moved anything.
+
+**No new divergence is filed for it**, and the reason is stated rather than left to inference: a
+divergence records a departure from an approved *source*, and the candidate-set rule is this
+document's own invention at D14. Nothing outside it said otherwise. §12 stays at nine entries and
+criterion 7's count is unaffected.
+
+**Two verdicts were re-checked against the pre-repair text by this session, which the verifier could
+not open** — it has no shell and said so rather than inferring. `git show 4f0b7e7` confirms criterion
+3 read *"6 of 6"* at `:1148` and D13 carried *"the definition binds D4's curriculum-only blocked
+pool"* at `:671`. Both agree with the verifier's two-witness reasoning. **`RC-12`'s misquote was
+likewise settled from git rather than from memory**, and the corrected quotation is at §10's `A-23`
+row.
+
+**What this pass does not establish.** It verified six findings; it did not re-verify the rulings
+those findings produced, and no verifier has read this document's decisions as decisions. `RC-04`
+demonstrates the difference: the finding was verified, the repair written for it was not, and the
+repair is where the defect survived.

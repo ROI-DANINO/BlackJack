@@ -42,7 +42,8 @@ into any document here, by anyone.
   caveat written in prose returns nobody to anything.
 
 Run `scripts/check-doc-drift.sh` before republishing any authority document and at every `/wl-end`.
-It checks five pairs of documents that have each already drifted apart once in silence. It is a
+It checks pairs of documents that have each already drifted apart once in silence — the script
+reports its own check count as it runs, and this line deliberately does not restate it. It is a
 check, not a rule: the four rules above were all written down before the drift they forbid, and
 were written down again by the same session that created it.
 
