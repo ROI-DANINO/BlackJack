@@ -50,10 +50,18 @@ were written down again by the same session that created it.
 - Every new feature closes with its own scoped **feature QA** playtest before it is called done;
   every milestone closes with a **milestone QA** pack run whose product verdict gates the phase
   boundary. Process: `docs/specs/qa-playtest-process.md`.
-- QA is **ledger-driven**: read `journal/qa/ledger.md` before scoping a run. Deep-test only what
-  is new or changed since an area's last-passed commit; smoke-test proven areas. Record every
-  run and finding back into the ledger — that record is what keeps QA cheap without missing
-  regressions.
+- QA is **ledger-driven, and the ledger scopes the run**: read `journal/qa/ledger.md` before
+  scoping. Deep-test only what is new or changed since an area's last-passed commit; smoke-test
+  proven areas. Record every run and finding back into the ledger — that record is what keeps QA
+  cheap without missing regressions.
+- **Ledger scoping outranks the every-milestone phrasing above.** When no coverage area has a
+  changed watched file since its last-passed commit, the milestone pack has nothing in scope: record
+  a no-op run-log row carrying the measurement that made it one, and advance no baselines. This is
+  scoping, not exemption — a milestone that shipped even one line of product code still owes a
+  scoped run, and the test is mechanical (did a watched file move?), not a judgement call. A
+  design-only milestone is gated by owner approval of its output, not by a product verdict on a
+  document. *(Earned 2026-08-17: phase 4 produced 119 commits and 0 touching `crates/` or `web/`.
+  The rule was written when every milestone shipped code and had no reading for one that did not.)*
 
 ## Coding Stack
 - Match the tool to the task; this is a math/simulation trainer, not a single-language app by default.

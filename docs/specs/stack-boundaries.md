@@ -72,7 +72,10 @@ adapter are not installed or implemented yet — and the admission stays conditi
 the implementation slice must measure the real production bundle delta, and a material unacceptable
 delta reverses the choice to native IndexedDB. No account provider, BaaS, telemetry service, hosted
 database, or mobile framework has been admitted. The provider-neutral `ProgressStore` and
-outer-versioned record seam must be implemented by the first durable-progress slice.
+outer-versioned record seam must be implemented by the first durable-progress slice. A **destination**
+provider for the eventual accounts/sync trigger has been named — see *Hosted database and accounts
+provider* under "Banked evidence for future triggers". Naming it admits nothing and changes nothing
+in this section.
 
 ## Current boundary shape
 
@@ -132,6 +135,33 @@ Scan 2026-07-23, 24 sources opened; record `journal/raw/_inbox/2026-07-23-mobile
 
 The trade-off to carry into the eventual gate: the **proven** pattern is expensive (an additional
 native UI codebase per platform); the **cheap** patterns are unproven.
+
+### Hosted database and accounts provider (trigger not fired)
+
+Owner decision 2026-08-16, banked here 2026-08-17; record
+`journal/sessions/banked-and-reordered-2026-08-16T22-26-10-052Z.md`, ruling in `journal/decisions.md`.
+
+- **The destination provider is Supabase.** This is a **product judgement**, not an evidence-backed
+  comparison: the owner has standardised on it across projects and said so in those terms. No
+  alternative was measured here, and none of the six fields above has been filled. Whoever runs the
+  gate inherits a named candidate, not a completed admission — fields 1, 2, 3 and 6 are all still
+  open, and Supabase can lose the gate it has not yet been through.
+- **Trigger — any one of:** a second device, a second user, or server authority. Server authority is
+  already described at `ROADMAP.md:307`: the engine is client-authoritative and the browser can see
+  the entire undealt shoe, so a leaderboard on this architecture is forgeable, and a real one implies
+  an architecture change rather than a feature (`CLOUD-06`).
+- **Until then IndexedDB stays.** Phase 5 is one learner on one machine, and `P-1`, `P-3` and `P-5`
+  are answerable from local attempt data. Adopting a hosted store before that would buy no answer the
+  local store cannot give.
+- **The record layout already fits a relational backend — checked at each locus 2026-08-17, not
+  assumed.** `web/src/progress/idb-store.ts:111-114` creates three row-keyed object stores (`meta`
+  singleton on `id`, `attempts` on `attemptId` with a `by-revision` index, `sessions` on
+  `sessionId`); `learnerKey` is a column (`web/src/progress/types.ts:70`) and `attemptId` is
+  primary-plus-idempotency key (`types.ts:66`). `LearnerEnvelope` (`types.ts:146`) is a read
+  projection assembled by `load()`, not the storage shape. **Evidence-backed.**
+- **One residual for the adapter author:** `evidence.skillId` is nested inside a struct
+  (`web/src/progress/types.ts:75-80`) and wants promoting to an indexed column, because mastery folds
+  on it. Costless to defer — IndexedDB indexes nothing on it today either.
 
 ## Corrections to the record
 
