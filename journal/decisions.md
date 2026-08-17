@@ -1055,7 +1055,7 @@ is the account**, because the mechanic's honesty depends on the number being tru
 IndexedDB is per-device.
 
 **Why — the mechanic was the untested variant while two evidenced designs sat unexamined.** A bounded
-evidence pass (`journal/raw/_inbox/2026-08-17-streak-mechanics-research/findings.md`, RAW, **relayed —
+evidence pass (`docs/superpowers/research/design-evidence/2026-08-17-streak-mechanics.md`, promoted from the inbox 2026-08-17, **relayed —
 nobody here opened any of its 18 external sources**) found: **no study anywhere** compares a
 never-falling counter with a resettable one; in the one study separating the parts an **intact** streak
 did **not** significantly beat showing no streak at all (p = .31), with the authors conceding that
