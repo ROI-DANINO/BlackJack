@@ -233,9 +233,67 @@ EOF
   fi
 fi
 
+# 8 — an evidence-index page must not attribute a tag to the bridge that the bridge no longer carries.
+#     Check 7's sibling, and it exists because check 7 could not see this. On 2026-08-17 the LDB-10
+#     gate lifted bridge §1.4 and §1.6 from [DEFECTIVE-SOURCE] to [VERIFIED]; the same pass updated
+#     the catalog's §1.8 row in place and left §1.4 and §1.6 printing the old tag, so one table held
+#     one current row and two stale ones. Check 7 keys on unapplied-claim prose plus a correction ID
+#     and a stale tag carries neither, so it passed clean over both. The exposure is real rather than
+#     cosmetic: a Phase 4 card reads the catalog *instead of* the bridge, and the tag rule at
+#     BRIDGE:81 says anything not [VERIFIED] "must not be leaned on". LDB-06 D11 was labelled down
+#     on exactly that reading. The bridge is the authority; the index quotes it.
+printf '8. evidence-index attributed bridge tags vs the bridge itself\n'
+BRIDGE=docs/superpowers/specs/2026-07-22-product-design-inputs.md
+BT='`'
+TAGS_RE='VERIFIED|UNVERIFIED|DEFECTIVE-SOURCE'
+if [ ! -f "$BRIDGE" ]; then
+  fail "no bridge at $BRIDGE; this check cannot run and must not pass silently"
+elif [ ! -d "$IDXDIR" ]; then
+  fail "no evidence-index directory at $IDXDIR; this check cannot run and must not pass silently"
+else
+  # sec -> tag, read off the bridge's own section headings: ### N.N <title> `[TAG]`
+  BRIDGE_MAP=$(sed -nE "s/^### ([0-9]+\.[0-9]+) .*${BT}\[(${TAGS_RE})\]${BT}.*$/\1 \2/p" "$BRIDGE")
+  BRIDGE_MAP_COUNT=$(printf '%s\n' "$BRIDGE_MAP" | grep -c .)
+  if [ "$BRIDGE_MAP_COUNT" -eq 0 ]; then
+    fail "parsed zero tagged sections out of $BRIDGE; an empty map cannot certify any index page"
+    note "the heading shape this check reads is: ### N.N <title> ${BT}[TAG]${BT}"
+  else
+    ATTRIBUTED=0
+    MISMATCHED=0
+    for f in $IDX_PAGES; do
+      [ "$f" = "$BRIDGE" ] && continue
+      while IFS= read -r hit; do
+        [ -z "$hit" ] && continue
+        ln=${hit%%:*}
+        txt=${hit#*:}
+        # Only the tag column counts: **`[TAG]`**. A §2-style status word ("OPEN") is not a tag.
+        tag=$(printf '%s' "$txt" | grep -oE "\*\*${BT}\[(${TAGS_RE})" | head -1 | grep -oE "${TAGS_RE}")
+        [ -z "$tag" ] && continue
+        sec=$(printf '%s' "$txt" | sed -E 's/^\| \*\*([0-9]+\.[0-9]+)\*\*.*/\1/')
+        ATTRIBUTED=$((ATTRIBUTED + 1))
+        actual=$(printf '%s\n' "$BRIDGE_MAP" | sed -n "s/^${sec} //p")
+        if [ -z "$actual" ]; then
+          fail "$f:$ln attributes ${BT}[$tag]${BT} to bridge §$sec, which carries no tagged heading in $BRIDGE."
+          note "the bridge wins; fix the index page, not this check"
+          MISMATCHED=$((MISMATCHED + 1))
+        elif [ "$actual" != "$tag" ]; then
+          fail "$f:$ln says bridge §$sec is ${BT}[$tag]${BT}; the bridge says ${BT}[$actual]${BT}."
+          note "the bridge wins; fix the index page, not this check"
+          MISMATCHED=$((MISMATCHED + 1))
+        fi
+      done <<EOF
+$(grep -nE '^\| \*\*[0-9]+\.[0-9]+\*\*' "$f" 2>/dev/null)
+EOF
+    done
+    note "bridge sections carrying a tag: $BRIDGE_MAP_COUNT ($(printf '%s\n' "$BRIDGE_MAP" | awk '{printf "%s ", $1}'))"
+    note "index rows attributing a tag: $ATTRIBUTED; disagreeing with the bridge: $MISMATCHED"
+    note "limit, stated: an index page that paraphrases a tag instead of printing [TAG] is not read here"
+  fi
+fi
+
 printf '\n'
 if [ "$FAIL" -eq 0 ]; then
-  printf 'No document drift detected across 7 checks.\n'
+  printf 'No document drift detected across 8 checks.\n'
 else
   printf 'Document drift detected. Each pair above has drifted before; fix the document, not the check.\n'
 fi
