@@ -385,12 +385,42 @@ Existing project directions cross-check:
 | Deterministic coverage-complete skip tests | Adopt for the first mechanics proof | `SCI-008`, `ALR-034` | Matches the approved authority boundary and avoids unsupported claims of calibrated adaptive testing. | Progression policy and unit catalog |
 | AI-created activity kinds, executable UI, answers, or grading | Reject for the first mechanics proof | `TECH-001`, `TECH-002`, `ALR-002`, `ALR-023` | Public evidence emphasizes constrained representations and correctness review; the umbrella keeps truth deterministic. | Planner/coach validator and activity registry |
 | Forced same-item retries until a correct answer appears | Reject for the first mechanics proof | `SCI-001`, `SCI-002`, `ALR-004`, `ALR-031` | It can erase first-response evidence and substitute short-term repetition for later retrieval. | Session controller |
-| Loss-framed streaks, leagues, or penalties for ending a session | Reject for the first mechanics proof | `SCI-007`, `ALR-027`–`ALR-029` | Controlled pressure conflicts with non-punitive stopping and the training-product mission. | Learning-path motivation and session-end copy |
+| Loss-framed streaks, leagues, or penalties for ending a session | Reject for the first mechanics proof | `ALR-027`–`ALR-029` — **`SCI-007` dropped 2026-08-17, see note below** | Controlled pressure conflicts with non-punitive stopping and the training-product mission. **`[Product judgement]`** | Learning-path motivation and session-end copy |
 | Fixed numeric mastery thresholds copied from studies or competitors | Defer until wider curriculum research | `SCI-002`, `SCI-006`, `ALR-032` | Effects support general mechanisms, not blackjack-specific counts, intervals, or cut scores. | Wider curriculum and mastery calibration program |
 | Psychometrically adaptive item selection and termination | Defer until wider curriculum research | `SCI-008`, `ALR-034` | The first proof lacks calibrated item information and does not need CAT complexity for deterministic skip tests. | Future assessment research |
 | Broad learner analytics and product experimentation infrastructure | Defer until public web/multi-user work | `DUO-003`, `DUO-005`, `ALR-041` | No active external-beta consumer exists; feature QA and local attempt evidence are sufficient now. | External beta analytics/admission cycle |
 | Account sync and cross-device progress reconciliation | Defer until public web/multi-user work | `BRI-005`, `ALR-029` | Local anonymous progress is the approved proof boundary; sync semantics need a separate active consumer and gate. | Public deployment and cross-device sync program |
 | Copying competitor curriculum, wording, art, proprietary algorithms, or stack | Reject for the first mechanics proof | `DUO-004`, `BRI-001`, `TECH-001`, `TECH-002` | Only transferable behavior and boundary evidence is in scope; proprietary implementation and assets are neither verified nor authorized. | All downstream designs and authoring workflows |
+
+### Correction 2026-08-17 — `ACT:388` loses its research citation
+
+**`SCI-007` was dropped from the "Loss-framed streaks…" row above.** It was that row's only research
+source, and it cannot carry the claim. `SCI-007` is registered at this document's own source table as
+Howard et al. (2021), *Perspectives on Psychological Science*, a meta-analysis of motivation types —
+**with the limitation, written when it was registered: *"Mostly correlational samples; does not prove
+a specific interface mechanic causes autonomous motivation."*** A source registered as unable to
+prove a mechanic claim was the sole research ground for a mechanic **rejection**. The mismatch is
+checkable inside this repository against the two rows alone and needs no journal access.
+
+**What the row keeps.** `ALR-027`–`ALR-029` — this product's own session entry, size and stopping
+requirements — which is what *"conflicts with non-punitive stopping and the training-product
+mission"* actually rests on. The row's disposition does **not** change; only its evidence level does,
+from implicitly evidence-backed to `[Product judgement]`. Nothing that cited this row for its mission
+clause is weakened.
+
+**Found by** the `LDB-06` gate grill of 2026-08-17, when divergence 6 — which had reversed itself
+twice on readings of this row — was traced to its source. Consumers checked and updated the same day:
+`docs/superpowers/specs/2026-08-08-session-composition.md` at `:190`, `:545`, D8 and `:665`.
+
+**Owed, and deliberately not written here.** A bounded evidence pass reports that Howard et al.
+actually favours *identified regulation* — acting from personal value — which would give this row a
+**stronger** positive ground than the one dropped, and would also better describe what this product
+should reach for. **That reading is relayed twice over, through a subagent and through an abstract,
+and nobody in this repository has opened the paper.** Writing it into a correction issued *for* an
+unopened-source defect would reproduce the defect. The follow-up is: open Howard et al. (2021),
+DOI 10.1177/1745691620966789, first-hand, then decide whether this row gains a positive research
+ground. Until then it stands on the product judgement above. Collected evidence, RAW under Inbox
+Rule 0: `journal/raw/_inbox/2026-08-17-streak-mechanics-research/findings.md`.
 
 ## Coverage Gaps and Conflicting Evidence
 

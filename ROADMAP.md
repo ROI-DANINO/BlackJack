@@ -22,6 +22,19 @@ the hand, but they never rig card flow for lessons.
 Delivery is web-first. Mobile is a later surface, activated only after the web learning experience
 proves useful and a mobile runtime passes the Tool & Runtime Admission Protocol.
 
+**The long-run destination is multi-user**: accounts, cross-device progress, multiplayer Free Play
+tables with real people at them, and leaderboards ranked on **mastery** — never on chips or
+winnings, which `LDB-05` forbids as loss-chasing. `[Product judgement]`, recorded 2026-08-17 from
+the owner's stated direction. Not a dated commitment and not a scheduled phase.
+
+It is written here so the engine boundary stays a decision rather than an accident. Ordinary
+training is client-authoritative and the browser can see the entire undealt shoe, so multiplayer and
+any trustworthy leaderboard imply **server authority — an architecture change, not a feature**
+(`CLOUD-06`; see the Competitive / certified authority row under Need-activated platform
+capabilities). Supabase is the banked provider for the accounts-and-sync half
+(`journal/decisions.md` 2026-08-16) and does **not** address the authority half. Nothing is admitted
+until a trigger fires: a second device, a second user, or server authority.
+
 ## The three layers
 
 These are the same three tracks this roadmap has always carried, named for what they are. They are

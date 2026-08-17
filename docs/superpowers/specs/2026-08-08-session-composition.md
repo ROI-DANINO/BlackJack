@@ -189,6 +189,8 @@ cash-out or when the Wallet cannot cover the lowest Table tier's minimum Buy-in 
 a maximum activity count onto a casino visit is precisely the pressure the archive rejects outright —
 `ACT:388` via the catalog: *"Loss-framed streaks, leagues, or penalties for ending a session"*,
 reason *"Controlled pressure conflicts with non-punitive stopping and the training-product mission."*
+This use leans on the **mission clause**, which is the half that survived the 2026-08-17 re-grounding
+(see D8); `ACT:388` carries no research weight and its `SCI-007` citation was dropped at source.
 
 **Why not three.** Curriculum work and Practice differ in **what fills the pool**, not in shape: same
 entry, same size choice, same stopping, same debrief. That is a pool-source parameter, not a second
@@ -542,57 +544,93 @@ are adopted. **The shipped schema already encodes them**: `SessionRecord.closeRe
 §11 owes the delta.
 
 **At the bound the app offers a debrief and a natural end. Starting another session is immediate,
-with no cooldown, ever.** Constraint 2, and `ACT:388`'s rejection of penalties for ending a session.
+with no cooldown, ever.** Constraint 2, and `ACT:388`'s rejection of penalties for ending a session
+— **on its mission clause, which is the half that survived the 2026-08-17 re-grounding** (see the
+D8 streak passage below). That clause rests on `ALR-027`–`ALR-029`, this product's own non-punitive
+stopping requirements, and needs no research citation to stand.
 
 **Abandonment is already ruled and needs nothing here.** `LDB-04` D5: an abandoned Presentation is
 recorded, excluded from the window, and **not** counted as a failure. `AttemptDisposition` carries
 `{ status: 'abandoned' }` as a real domain value (`types.ts:50`, read first-hand). Stopping mid-hand
 is abandonment and costs nothing.
 
-**An up-only streak ships in v1. A losable one does not.** ⚠ **Reversed by owner decision
-2026-08-15; the 2026-08-08 ruling was no streak at all — see §12 divergences 2 and 6.**
+**No streak ships in v1. A forgiving weekly one is designed and deferred to the account.**
+⚠ **Settled 2026-08-17 at the gate grill, after two prior reversals — see §12 divergences 2 and 6 for
+the full history, which is preserved rather than flattened.**
 
-A **count of days on which the learner practised**, which only rises and can never be lost, broken,
-or reset. No fire, no "don't lose your streak", no notification, no repair purchase, no grace token —
-none of those are needed, because there is nothing to lose. It lives on the XP layer with `LDB-05`
-D8's levels and daily goals.
+The ruling moved three times: no streak (2026-08-08) → an up-only day counter (2026-08-15) → **no
+streak in v1, with a forgiving weekly streak designed and triggered by the account** (2026-08-17).
+The final position matches the first in **outcome only**. The 2026-08-08 reasoning —
+*"every shipped streak mechanic is loss-framed by construction: its entire motivational force is the
+fear of losing it"* — is **not** restored, because the evidence pass contradicted it specifically:
+the only located study testing the mechanism found the effect running through *sense of
+accomplishment*, not negative emotion, and loss aversion itself is contested in two recent
+re-analyses. Right answer, wrong reason.
 
-> **The unit is a committed Presentation, not a closed session — owner decision, 2026-08-17.**
+**What was struck, and why it was not simply kept.** The up-only counter incremented on any committed
+Presentation on a calendar day (`RC-06`, and that unit choice was correct — a *session* count would
+have risen for a learner who tapped "stop" and not for one who closed the tab, punishing one way of
+ending, against D8's own *"stopping is never punished"* and user story 13). It needed no new field;
+`occurredAt` is already on the attempt. What defeated it was not its unit but its **evidential
+standing**: no study compares a never-falling counter with a resettable one, and in the one study
+that separates the parts, an *intact* streak did not significantly outperform showing no streak at
+all, while the *break* carried the reliably measurable effect. Removing the break may remove the
+mechanic. Building the untested variant when two evidenced designs existed unexamined was the error.
+
+**What is designed instead.** A **weekly** window; the week counts when it contains **any committed
+Presentation**; forgiveness that is free, earned by studying and auto-applied, never purchased; and
+gain-framed copy weighting a new streak equally with a continued one. Attendance rather than mastery
+is deliberate: `LDB-04`'s window is 8-of-10 with a ratchet, so a learner can practise hard for a week
+and move no bar, and a mastery-gated streak would punish real work for not being productive enough.
+
+**Why it waits for the account.** The honesty of the mechanic depends on the number being true, and
+browser-local IndexedDB is per-device: a phone, a private window or a cleared cache drops it. A
+counter that cannot fall by design but falls by infrastructure delivers loss framing through an
+unguarded door. Trigger: accounts exist. See `journal/decisions.md` 2026-08-16.
+
+> **`ACT:388` is re-grounded, and this reaches past D8 — 2026-08-17.** Every version of this ruling,
+> in both directions, rested on `ACT:388`: *"Loss-framed streaks, leagues, or penalties for ending a
+> session"*, reason *"Controlled pressure conflicts with non-punitive stopping and the
+> training-product mission."*
 >
-> The 2026-08-15 ruling made this a *session* count, and a session count punishes one way of ending.
-> D17 emits no `SessionRecord` for a session that never closes, so a learner who shuts the tab has no
-> record that their evening happened, while a learner who taps "stop" gets `closeReason:
-> 'learner-stopped'` and a row. **The count would rise for one and not the other**, which contradicts
-> both D8's own *"stopping is never punished"* and user story 13, *"close the tab mid-session and lose
-> no work."*
+> **Its evidence column cites one research source, and that source cannot carry it.** Read
+> first-hand 2026-08-17: `docs/superpowers/specs/2026-07-16-adaptive-learning-product-activity-research.md:388`
+> cites `SCI-007` plus `ALR-027`–`ALR-029`, and `:45` registers `SCI-007` — Howard et al. (2021),
+> *Perspectives on Psychological Science* — with the limitation *"Mostly correlational samples; **does
+> not prove a specific interface mechanic causes autonomous motivation**."* A source registered as
+> unable to support a mechanic claim was the sole research ground for a mechanic **rejection**. The
+> mismatch is checkable inside this repository and needs no journal access.
 >
-> Incrementing on **any committed Presentation on a given calendar day** removes the asymmetry
-> entirely: `LDB-04` D3 commits on first response, so the day is banked before any question of how the
-> evening ended arises. It needs **no new field** — `occurredAt` is already on the attempt
-> (`types.ts`, the timing block, read first-hand) — and it makes the honest claim, *"you practised on
-> N days"*, rather than a claim about session hygiene. (`RC-06`.)
+> **What survives is the mission clause**, resting on `ALR-027`–`ALR-029`, this product's own
+> non-punitive stopping requirements. That is a `[Product judgement]` and it stands without a
+> research citation. `ACT:388`'s own row is corrected at source; **D8's no-cooldown ruling above is
+> the second consumer** and is re-grounded with it.
+>
+> **Deliberately not written here:** what Howard et al. *does* support. The evidence pass reports it
+> favours identified regulation — acting from personal value — which would be a better ground than
+> the one dropped. **That reading is relayed twice over, through an agent and through an abstract,
+> and no one in this repository has opened the paper.** Writing it would add a second-hand claim to a
+> passage being corrected for containing one. Owed as a named follow-up, not as prose.
 
-**Why the 2026-08-08 ruling was too wide.** It read: *"Every shipped streak mechanic is loss-framed
-by construction: its entire motivational force is the fear of losing it."* `ACT:388` bans
-*loss-framed* streaks — *"Loss-framed streaks, leagues, or penalties for ending a session"*, reason
-*"Controlled pressure conflicts with non-punitive stopping and the training-product mission."* A
-counter that cannot fall triggers none of that: it applies no pressure, penalises no ending, and is
-compatible with D8's *"stopping is never punished"* because stopping costs it nothing. The 2026-08-08
-generalisation was an empirical claim about **other products**, not a reading of the prohibition, and
-the owner declined to keep it.
+**`product-vision.md:90` is satisfied by absence in v1, and the absence is recorded.** It forbids
+punishing a learner for ending a session. No streak exists to punish anything.
 
-**`product-vision.md:90` is satisfied positively, not by absence.** It forbids punishing a learner for
-ending a session. A count of practised days records that practice happened and is indifferent to how
-any session ended.
-
-> **What `LDB-05` D12 does and does not license.** The first draft of this ruling said D12 *"already
-> anticipated exactly this shape"*, quoting *"if streaks exist at all they are gentle, XP-layer
-> only"*. **That quotation stops one clause early.** D12 continues *"and they remain a non-binding
-> progression idea **rather than an approved mechanic**"*
+> **What `LDB-05` D12 did and did not license — retained, because it corrected a real error.** The
+> 2026-08-15 draft said D12 *"already anticipated exactly this shape"*, quoting *"if streaks exist at
+> all they are gentle, XP-layer only"*. **That quotation stops one clause early.** D12 continues *"and
+> they remain a non-binding progression idea **rather than an approved mechanic**"*
 > (`2026-08-04-motivation-and-chips-economy.md:524-527`). D12 constrains what a streak may look like
-> if one ships; it does not pre-approve one. **The up-only streak therefore stands as this card's own
-> product judgement**, on the reading of `ACT:388` above, and not on a licence from an approved spec.
-> Divergence 6's ground moves with this correction. (`RA-14`.)
+> if one ships; it does not pre-approve one. (`RA-14`.) **The correction outlived the ruling it
+> corrected** — the deferred weekly streak still claims no licence from D12, and when it is built it
+> will need its own approval rather than inheriting one.
+
+> **The removal rule fires on this ruling, which is the first time it has fired on its own author.**
+> D8 removes the return-cadence mechanic and must therefore name what carries that motivation
+> instead. **Nothing does.** Every surviving mechanic — XP, the chips economy, the Player score,
+> mastery bars, the Recommender's goal — rewards depth *within* a session; none rewards coming back
+> tomorrow. That gap is real, it is unfilled in v1, and it is stated here rather than left for a
+> thirteenth item on a list nobody assembles until it is thirteen long. `A-29` in the assumption
+> register carries the claim that the deferred weekly streak will fill it.
 
 > **The standing rule this comes with: a removal must name its replacement.** ⚠ **Owner decision,
 > 2026-08-15, binding on every later card — see §12 divergence 6.**
@@ -624,8 +662,16 @@ least useful material, and the app is telling them so.
 > 2026-08-05. Declaring the story closed here would be the false-closure pattern this repository has
 > already shipped once.
 
-`[Product judgement]` throughout; `[Evidence-backed]` on the two code loci and on `ACT:388` as
-relayed by the evidence index.
+`[Product judgement]` throughout; `[Evidence-backed]` on the two code loci.
+
+**`ACT:388` was labelled `[Evidence-backed]` here until 2026-08-17 and is not.** It is a
+`[Product judgement]` — its mission clause rests on this product's own `ALR-027`–`ALR-029`, and its
+one research citation was dropped at source as unable to support a mechanic claim. The streak
+evidence gathered at the gate is `[Evidence-backed]` but **relayed**: it lives at
+`journal/raw/_inbox/2026-08-17-streak-mechanics-research/findings.md` under Inbox Rule 0, and no one
+in this repository has opened any of its 18 external sources. The two claims sourced from it in D8 —
+that the mechanism runs through accomplishment rather than negative emotion, and that an intact
+streak did not reliably outperform no streak — carry that relay, not a first-hand reading.
 
 ### D9. Two session shapes, with `feedbackTiming` and `segmentation` bound together
 
@@ -1299,16 +1345,26 @@ way. **Items 6–9 were added 2026-08-17**, each against the same file re-read f
 
 ### 12. Divergences, surfaced and approved
 
-**Eight.** Divergences 1–3 were put to the owner individually on 2026-08-08 and approved before this
+**Nine.** Divergences 1–3 were put to the owner individually on 2026-08-08 and approved before this
 document was written. Divergence 4 was found by the examiner pass afterwards and approved the same
 day. **Divergences 5 and 6 are new on 2026-08-15**, from a `grill-with-docs` session run at the
 owner's request *before* the gate rather than at it — he held the gate open on 2026-08-14 to grill
-phase 4 on playability and change-agility first. **Divergences 7 and 8 are new on 2026-08-17**, from
-the grill that closed this document's gate questions.
+phase 4 on playability and change-agility first. **Divergences 7, 8 and 9 are new on 2026-08-17**,
+from the grill that closed this document's gate questions.
 
-**Seven are approved. Divergence 2 is struck and superseded by 6** — so "all approved" would be
-false, and the count is stated as seven-and-one rather than as eight. (`RA-22`, corrected
-2026-08-17.)
+**Seven are approved. Two are struck: divergence 2, superseded by 6, and divergence 6 itself,
+superseded by the evidence pass of 2026-08-17.**
+
+> **The count was wrong until 2026-08-17 and the way it was wrong is the point.** It read *"Eight …
+> seven are approved"*, which described this section exactly as it stood **before divergence 9 was
+> appended the same day**. §15 criterion 7 was edited that day to *mention* divergence 9 and its
+> leading count was left at eight — so the criterion whose stated job is *"divergences are surfaced,
+> not applied silently"* was itself silently one short, and the entry it dropped (6) was the only one
+> carrying no disposition stamp. **This is `RC-11`'s shape reproducing in the criterion next door**:
+> criterion 3 was rewritten that same day to stop hard-coding *"6 of 6"* and read its count from the
+> taxonomy, and criterion 7 was left hard-coding its own. Criterion 7 now reads the count from this
+> section. (`RA-22` corrected the seven-and-one phrasing on 2026-08-17 and did not catch the total;
+> corrected again 2026-08-17 at the gate grill.)
 
 > **Two of this document's own 2026-08-08 rulings were reversed at that session, and are recorded as
 > divergences from *itself* rather than edited away:** D2's scope limit gains an opt-in escape
@@ -1363,20 +1419,63 @@ false, and the count is stated as seven-and-one rather than as eight. (`RA-22`, 
    delta distinguishes *strategy table* from *rule card*, and this is a third thing. The control
    itself is `LDB-07`'s. **APPROVED, owner 2026-08-15.**
 
-6. **An up-only streak ships, reversing divergence 2.** `ACT:388` forbids *loss-framed* streaks;
-   divergence 2 declined every streak on the wider judgement that all shipped streaks are loss-framed
-   by construction. That is a claim about other products, not a reading of the prohibition. A counter
-   that cannot fall applies no pressure and penalises no ending. **`LDB-05` D12 constrains the shape
-   such a streak may take — *"gentle, XP-layer only"* — but its own next clause says they *"remain a
-   non-binding progression idea rather than an approved mechanic"*, so it licenses nothing** and this
-   divergence rests on the reading of `ACT:388` alone (`RA-14`, corrected 2026-08-17).
+6. **~~An up-only streak ships, reversing divergence 2.~~ STRUCK 2026-08-17 by the evidence pass, and
+   replaced.** As written: *"`ACT:388` forbids* loss-framed *streaks; divergence 2 declined every
+   streak on the wider judgement that all shipped streaks are loss-framed by construction. That is a
+   claim about other products, not a reading of the prohibition. A counter that cannot fall applies no
+   pressure and penalises no ending."* Amended by `RC-06` to increment on a **committed Presentation
+   on a calendar day** rather than a closed session, so that a learner who tapped "stop" and one who
+   closed the tab were treated alike. `RA-14` had already stripped its second support: **`LDB-05` D12
+   constrains the shape such a streak may take — *"gentle, XP-layer only"* — but its own next clause
+   says they *"remain a non-binding progression idea rather than an approved mechanic"*, so it
+   licenses nothing**, leaving the entry resting on the reading of `ACT:388` alone.
 
-   **Amended 2026-08-17 (`RC-06`):** the counter's unit is a **committed Presentation on a calendar
-   day**, not a closed session. A session count would have risen for a learner who tapped "stop" and
-   not for one who closed the tab, which is the punishment D8 forbids. See D8.
+   **Why it is struck.** A bounded evidence collection was run at the gate
+   (`journal/raw/_inbox/2026-08-17-streak-mechanics-research/findings.md`, RAW under Inbox Rule 0,
+   relayed — the gate session opened none of its 18 external sources). Three results, in the order
+   they bear:
 
-   **Cost: none beyond this entry.** Stated because §15 criterion 7 requires every divergence's cost
-   named, and "none" is an answer where silence is not.
+   - **The premise survives.** Divergence 6 was right that the motivational force need not come from
+     losability. The only located study testing the mechanism finds the effect runs through *sense of
+     accomplishment*, not negative emotion. **So divergence 2's reasoning is not restored by this
+     strike** — see below.
+   - **But the mechanic buys nothing measurable.** In that study an *intact* streak did not
+     significantly beat showing no streak at all, while its authors concede the intact-vs-no-log
+     contrast was not consistent across their studies. The reliably measurable half of a streak's
+     effect is the *break*. An up-only counter removes the break and keeps the half that may be worth
+     nothing — and no study anywhere compares a never-falling counter against a resettable one, so
+     the design was reaching for an untested variant.
+   - **Two forgiving designs are evidenced and neither was considered.** Khan Academy removed daily
+     streaks in 2021 citing this exact worry, converted them to permanent badges, and returned in 2024
+     with a **weekly** streak. Brilliant's protection is **free, earned by studying, auto-applied**.
+     The one large education RCT reporting *no discouragement effect* used a **weekly** streak whose
+     messaging weighted starting a new one equally with extending one.
+
+   **What replaces it — a forgiving weekly streak, triggered by the account.** A **weekly** window; a
+   week counts when it contains **any committed Presentation** (attendance, not mastery — `LDB-04`'s
+   8-of-10 ratcheting window means a learner can work hard for a week and move no bar, so gating on
+   movement would punish real work, which is precisely what `ACT:388`'s mission clause forbids);
+   forgiveness free, earned and auto-applied rather than purchased; and gain-framed copy that treats
+   starting a new streak as equal to extending one.
+
+   **It does not ship in v1, and the trigger is the account, not a date.** The mechanic's honesty
+   depends on the number being true, and browser-local IndexedDB is per-device — a learner who opens
+   the app on a phone, in a private window, or after clearing storage watches it fall. A counter that
+   cannot fall by design but falls by infrastructure delivers the loss framing through a door nobody
+   guarded. It becomes buildable when accounts exist (`journal/decisions.md` 2026-08-16, Supabase
+   banked), which is also where `CLOUD-02` filed streaks in the first place.
+
+   **Divergence 2's outcome is restored; its reasoning is not.** v1 ships no streak, which is what
+   divergence 2 concluded. But divergence 2 rested on *"every shipped streak mechanic is loss-framed
+   by construction: its entire motivational force is the fear of losing it,"* and the first result
+   above contradicts that specifically. Right answer, wrong reason, and both entries stay readable so
+   the difference does not get flattened on a later reading.
+
+   **Cost: one register row and one owed sentence.** `A-29` in
+   `docs/superpowers/specs/assumption-register.md` carries the claim that a forgiving weekly streak
+   carries return-cadence motivation, with a named validation method. And under the removal rule this
+   very entry establishes, **nothing carries return-cadence motivation in v1** — recorded at D8 rather
+   than left to be noticed.
 
 7. **The strategy chart is available at a Table sitting, reversing this document's own D9 and D10.**
    As drafted, D9 gave a Closing run `Strategy table: none` and ruled *"a Table sitting is always a
@@ -1467,10 +1566,13 @@ false, and the count is stated as seven-and-one rather than as eight. (`RA-22`, 
   learner who ignores it forever loses nothing they had. Nearest approved precedent to design against
   is `LDB-04` D4's *"I'm not sure — show me"*, which is also an offered control with an evidence
   consequence.
-- **How the up-only streak renders without acquiring loss framing** (D8, divergence 6). This is the
-  whole risk in the mechanic: the *number* cannot fall, but a flame that greys out, a "keep it going"
-  string, or a notification re-introduces exactly the pressure `ACT:388` names. The count is the
-  mechanic; everything around it is where it can go wrong, and that is yours.
+- **~~How the up-only streak renders without acquiring loss framing.~~ RETIRED 2026-08-17 — there is
+  no streak in v1 to render** (D8, divergence 6 struck). It is retired rather than deleted because
+  the handoff's *content* survives the mechanic and transfers whole to the deferred weekly streak:
+  the number is the mechanic, and a flame that greys out, a "keep it going" string, or a notification
+  re-introduces the pressure `ACT:388`'s mission clause names, whatever the counter's arithmetic.
+  **Nothing is owed to `LDB-07` on this now**; the note travels with the mechanic to whichever card
+  builds it once accounts exist.
 - **The removal rule** (D8). When `LDB-07` declines a motivational mechanic — and an interaction
   card will — it names what carries that motivation instead, or records that nothing does.
 
@@ -1610,13 +1712,30 @@ fail when a record exists passes silently on a missing one.
    minimum → D3; engineered exposure remains available → D3. `LDB-05`: when Practice opens → D13;
    nothing bounds practice → D8, answered partially and said so; the `Review due` full-rate coupling →
    D14; the `"faded"` / D9 interaction → D10 with D2.
-7. **Divergences are surfaced, not applied silently.** **Eight — seven approved, one struck**, each in
-   §12 with its disposition; for divergence 1 its schema cost, for divergence 4 both of its correction
-   targets, for divergence 5 the per-Presentation record it owes that §11 item 3 does not cover, for
-   divergence 8 the two costs it carries, and for divergence 9 the reading of `LDB-05` D9 it rests on.
-   Divergences 6 and 7 state that they cost nothing beyond their own entries rather than being
-   silently omitted from this list. Divergence 2 is **struck and superseded** by 6 rather than
-   rewritten, so the reasoning that reversed it stays readable.
+7. **Divergences are surfaced, not applied silently.** **Every numbered entry in §12 carries a
+   disposition — approved, or struck with its supersession named — and the counts are read from that
+   section at gate time, not written here.** Every entry also states its cost, or states that it has
+   none; silence is not an answer. Checkable by enumerating §12's numbered entries and confirming each
+   has both.
+
+   > **Rewritten 2026-08-17 at the gate grill.** This criterion read *"**Eight — seven approved, one
+   > struck**"*. §12 held **nine** entries — the figure described the section as it stood before
+   > divergence 9 was appended earlier the same day, and this criterion was edited that day to
+   > *mention* divergence 9 while its leading count stayed at eight. The entry the count dropped was
+   > divergence 6, the only one then carrying no disposition stamp at all. **A criterion whose stated
+   > job is to stop divergences being applied silently was itself silently one short, and would have
+   > passed a gate on the entry it omitted.** This is `RC-11`'s shape one criterion over: criterion 3
+   > was rewritten the same day to stop hard-coding *"6 of 6"* and read its count from the taxonomy,
+   > and nobody looked at the neighbouring criterion doing the same thing. The count is now read from
+   > §12, so it cannot go stale without §12 going stale with it.
+
+   As of this gate: **nine entries, seven approved, two struck.** Divergence 1 names its schema cost;
+   divergence 4 both of its correction targets; divergence 5 the per-Presentation record it owes that
+   §11 item 3 does not cover; divergence 7 that it costs nothing beyond its entry; divergence 8 its
+   two costs; divergence 9 the reading of `LDB-05` D9 it rests on. **Divergence 2 is struck and
+   superseded by 6; divergence 6 is struck and replaced by the deferred weekly streak** — both kept
+   rather than rewritten, so the reasoning that reversed each stays readable, and so the difference
+   between divergence 2's restored *outcome* and its unrestored *reasoning* is not flattened.
 8. **No claim describes a source that was not opened.** Sources reopened first-hand for this document
    on 2026-08-08 and named as such: `run/U3/audit.md:31,33`; `run/U1/audit.md` rows `U1-5` and `U1-8`;
    `crates/blackjack-core/src/shoe.rs:62-100`; `web/src/progress/types.ts:1-179` (the whole file); the four binding
