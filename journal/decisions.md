@@ -751,6 +751,49 @@ authority; `ready-for-agent` would also have been a false label on a document th
 
 ---
 
+## 2026-08-16 — Supabase is banked as the named future provider; IndexedDB stays for phase 5
+
+*(Decided 2026-08-16 in `journal/sessions/banked-and-reordered-2026-08-16T22-26-10-052Z.md`; written
+into the record 2026-08-17, which is the owed half of the decision.)*
+
+**Chose:** when accounts and cross-device sync become real, the provider is **Supabase**. Nothing is
+adopted today: phase 5 persists to browser-local IndexedDB through the existing provider-neutral
+`ProgressStore`, because one user on one machine answers `P-1`, `P-3` and `P-5` from local attempt
+data alone.
+
+**Why — Product judgement, and deliberately so.** The owner's words: *"i want to use supabase as my
+database of choice, not preticular reason, i just decided that accross all my projects supabase is my
+goto."* This is a cross-project standard, not a comparison this repo ran. It is labelled as such so a
+later gate knows there is no admission evidence underneath it and does not mistake the name for a
+verdict.
+
+**This is not an admission.** The six-field Tool & Runtime Admission Protocol
+(`docs/specs/stack-boundaries.md`) has **not** been run: no active consumer, no alternatives
+compared, no exit condition. Nothing enters `web/package.json`. The stack document's *"no account
+provider, BaaS, telemetry service, or hosted database has been admitted"* stays literally true, and
+the bank is filed under *Banked evidence for future triggers* precisely because that section admits
+nothing. Naming the destination early buys one thing only: the protocol gets run against a known
+candidate instead of under deadline.
+
+**Trigger — any one of:** a second device, a second user, or server authority. The last is already
+described in `ROADMAP.md:307` — the engine is client-authoritative and the browser can see the whole
+undealt shoe, so a leaderboard on this architecture is forgeable and a real one means server
+authority, an architecture change rather than a feature (`CLOUD-06`).
+
+**Schema: no change owed — checked, not assumed.** The worry that the store was envelope-shaped and
+would need reshaping for a relational backend is wrong. `web/src/progress/idb-store.ts:111-114`
+creates three row-keyed object stores (`meta` singleton on `id`, `attempts` on `attemptId` with a
+`by-revision` index, `sessions` on `sessionId`); `learnerKey` is already a column
+(`web/src/progress/types.ts:70`) and `attemptId` is already primary-plus-idempotency key
+(`types.ts:66`). `LearnerEnvelope` (`types.ts:146`) is a read projection `load()` assembles, not the
+storage layout. **Evidence-backed** — each locus opened 2026-08-17.
+
+**One residual, for whoever writes the Supabase adapter:** `evidence.skillId` sits inside a nested
+struct (`web/src/progress/types.ts:75-80`) and wants promoting to an indexed column, since mastery
+folds on it. Not a phase-5 change; IndexedDB indexes nothing on it today either.
+
+---
+
 ## 2026-08-17 — The `LDB-06` gate grill: fourteen rulings closing the session-composition gate
 
 `/mattpocock-skills:grill-with-docs` over Group 2 of
@@ -902,3 +945,42 @@ claim-checks → `docs/superpowers/audits/`. Live-authority citations repointed;
 records left alone, because the raw path was true when they were written. `journal/raw/` stays
 ignored — this is promote-on-citation, not tracking the inbox. Tracking it wholesale was declined:
 the remote is public and the ignore exists to keep scratch out of it.
+
+---
+
+## 2026-08-17 — Phase 4 owes no milestone QA pack, and the QA rule gains its missing case
+
+**Chose:** phase 4 closes without a milestone QA pack run. The `AGENTS.md` QA rule is amended so
+ledger scoping is authoritative over the every-milestone phrasing, rather than phase 4 standing as a
+one-off exception.
+
+**Why — Evidence-backed, and mechanical.** Phase 4 produced no product code. 119 commits since
+`6686e50` (2026-07-19), of which **0** touch `crates/` or `web/`
+(`git rev-list --count 6686e50..HEAD -- crates/ web/`). Every coverage area in `journal/qa/ledger.md`
+carries a last-passed commit at or before that point, so no area has a changed watched file. A pack
+run today could not find a regression, because `git` already proves more completely and more cheaply
+that nothing regressed. It would re-stamp identical bytes and produce a PASS that means nothing.
+
+**The rule was underspecified, not too strict — and the second bullet already held the answer.**
+*"Every milestone closes with a milestone QA pack run whose product verdict gates the phase boundary"*
+was written when every milestone shipped code; phase 4 is the first design-only milestone and the
+clause has no reading for it. But the very next bullet says QA is **ledger-driven** — *"deep-test
+only what is new or changed since an area's last-passed commit"* — which applied honestly yields
+"nothing changed, so nothing is in scope." The amendment makes that precedence explicit. It is a
+**precision edit, not a relaxation**, and it opens no escape hatch: the test is mechanical (did a
+watched file move since the area's last-passed commit?), not a judgement anyone can argue their way
+through, and a milestone that shipped one line of product code still owes a scoped run.
+
+**Not a category error swapped for another.** Phase 4's output is a blueprint, and a *product*
+verdict on a document is the wrong instrument. What gates a design phase is owner approval — which
+phase 4 already has, as `LDB-08`'s exit criterion. Design is verified by review; behaviour is
+verified by QA. Nothing is going ungated here.
+
+**The removal names its replacement**, per the `AGENTS.md` rule. Three things carry the load a pack
+would have carried: (1) **no baseline moves** — every Last-passed commit in the ledger stands
+unchanged, so phase 5's first slice deep-tests against the phase-3 baseline and inherits no
+undeserved credit; (2) **the no-op is recorded in the run log, not omitted** — a reader seeing no
+phase-4 row would have to guess whether a pack was skipped or forgotten, and the row states the
+measurement that made it a no-op; (3) **the amended rule fires next time on its own**, rather than
+this ruling having to be remembered — which is this repository's most expensive lesson, that rules
+do not fire on their authors and mechanisms do.
