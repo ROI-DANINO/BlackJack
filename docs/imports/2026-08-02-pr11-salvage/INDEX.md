@@ -5,7 +5,9 @@ Material rescued from PR #11 before it was closed unmerged. Tracked here — rat
 closes the only other copy is a branch ref on a remote whose retention nobody here controls.
 
 **Source:** branch `claude/correct-work-rwm8me` @ `01c6974175fb328ea038656518f3b0830655e086`,
-PR [#11](https://github.com/ROI-DANINO/BlackJack/pull/11). The branch is **retained, not deleted**.
+PR [#11](https://github.com/ROI-DANINO/BlackJack/pull/11). The branch ref was **deleted 2026-08-19**
+after the reopen trigger resolved; its 19 commits are retained as the annotated tag
+`salvage/pr-11`, pushed to the same remote. See *Resolution* at the end.
 
 Dispositions use the project's 5 combinable labels:
 **Accepted · Covered · Deferred · Rejected · Archived**.
@@ -50,3 +52,36 @@ claim here rests on it.
 **Close condition met:** every file in the branch's 86-file diff has a disposition above.
 **Reopen trigger:** the LDB-04 and LDB-06 grills, which must read the two deferred specs as
 evidence — an argued position to answer, never a decision to inherit.
+
+---
+
+## Resolution (2026-08-19)
+
+The reopen trigger above has **fired and is spent**. Both grills ran and produced approved specs on
+`main`, written independently rather than inherited:
+
+| Card | Approved spec on `main` | Cites this import? |
+|---|---|---|
+| LDB-04 | `docs/superpowers/specs/2026-08-03-evidence-and-mastery-rules.md` | **Yes** — header line 22 and §14, "Answers, adopts nothing from" |
+| LDB-06 | `docs/superpowers/specs/2026-08-08-session-composition.md` (APPROVED 2026-08-17, 18 decisions) | **No** |
+
+That asymmetry is recorded, not smoothed. The LDB-06 spec was searched on 2026-08-19 for `imports`,
+`salvage`, `PR #11`, `pr-11`, `rwm8me`, and `2026-07-30` — **zero hits for each of the six**. So the
+deferred `2026-07-30-session-composition.md` either was read and left uncited, or was not read; this
+record cannot distinguish those and does not claim to. What is verifiable is that LDB-06 reached
+approval without a citation to it, and that no decision in it was inherited by citation.
+
+**Branch ref deleted; history preserved.** `claude/correct-work-rwm8me` was deleted from `origin` on
+2026-08-19 and the tip tagged `salvage/pr-11` (annotated, pushed). Verified after deletion:
+`git rev-list --count salvage/pr-11 ^origin/main` = **19**, and `salvage/pr-11^{commit}` =
+`01c6974175fb328ea038656518f3b0830655e086` — the same SHA this file names as its source.
+
+**Why deleting was safe.** Nothing above depends on the ref. Every **Accepted** item was re-derived
+first-hand into tracked files on `main` in 2026-08-02 (`findings.md` §1–§2, `journal/qa/ledger.md`),
+both **Deferred** specs are held verbatim in this directory, and the **Rejected** code cites
+branch-only LDB-04/LDB-06 section numbers that do not correspond to the documents `main` later
+approved — so it was never cherry-pickable, only readable. The tag keeps it readable.
+
+**No new reopen trigger.** This import is closed. If phase 5 wants the note-anchoring instrument from
+`findings.md` §2, that is now a phase-5 design question against `main`'s approved constants, and it
+starts from §2 — not from the tag.
