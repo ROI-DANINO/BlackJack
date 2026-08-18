@@ -126,8 +126,27 @@ old and was written by a session that had not opened `HandView.tsx`.
 `LDB-02` was commissioned because *"every exercise format this project holds is a dealt hand or a
 multiple-choice question."* It returned 32 patterns from 24 products. They were disposed as 15
 rejected, 10 adopted-as-parameter, 4 no-target, 3 adopted-as-type — and the design came out with
-**17 of 18 Mastery bars reachable only through `deal-and-decide` or `state-report`**: a dealt hand,
-or a question about a dealt hand. The catalog did not fail. It was never asked the question.
+**16 of the 17 Mastery bars reachable only through `deal-and-decide` or `state-report`**: a dealt
+hand, or a question about a dealt hand. The catalog did not fail. It was never asked the question.
+
+> **The count was corrected 2026-08-19 at the `LDB-08` assembly; the finding is unchanged.** This
+> read *"17 of 18 Mastery bars"*, which was wrong twice in one phrase, and **this document already
+> carried the right numbers in `D9`** — *"All 18 Skills stand, all 17 bars stand."*
+>
+> - **The union is 16, not 17.** `deal-and-decide` is `primaryFor` 8 Skills and `state-report` 8,
+>   disjoint, so 16 — computed from `2026-08-01-activity-taxonomy.json`, and it reads 16 at **every**
+>   commit of that file, including `702ad8d` (2026-08-01) and `4cf146a` (2026-08-15). It was never 17.
+>   The other two Skills are `read-rule-card` (via `rule-card-read`) and `variance-expectation` (via
+>   `predict-then-reveal`).
+> - **There are 17 bars, not 18.** `variance-expectation` carries **no bar** — `LDB-04` D12, *"gets no
+>   mastery bar in v1"* — so it cannot be one of the 18 denominators.
+>
+> **The finding is not weakened: 16/17 is 94%, against the 94% claimed.** Both cards this premise
+> founded — `LDB-09` and `LDB-10` — stand on it unchanged, and no decision in either moves. What
+> failed was a verification claim, not a judgement: the session record asserts this number was
+> *"verified against `2026-08-01-activity-taxonomy.json` rather than recalled"*, and re-deriving it
+> from that file returns 16. That is this repository's founding error class, caught here by
+> recomputation at the assembly the number was being assembled into.
 
 `classification.md`'s header records why. Its classifier was told *"not to rank on usefulness to the
 product, and not to invent a composite score"*, so its only axis is substantive-vs-cosmetic on

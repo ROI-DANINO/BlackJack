@@ -918,11 +918,23 @@ validation method; deferring is not rejecting.
 the learner was already having. That is bridge §1.4's mechanism: gains appeared *"only when the
 activity forced students to confront their own prediction against the simulated result."*
 
-`[Evidence-backed]` on `A-22`'s wording and on bridge §1.4's `[DEFECTIVE-SOURCE]` status, which is
-carried rather than hidden — §1.4 is flagged defective in bridge §0 and this ruling does not lean on
-it beyond the predict-first shape, which is ruled by `LDB-04` D12 and by the taxonomy's `revealMode`
-note — **not** by the register: `A-22` covers the *configurable sandbox*, not predict-first (examiner
-F8). `[Product judgement]` on deferring.
+`[Evidence-backed]` on `A-22`'s wording and on bridge §1.4, which this ruling may now lean on
+normally. `[Product judgement]` on deferring.
+
+> **Relabelled 2026-08-19 at the `LDB-08` assembly — the label changed, the ruling did not.** This
+> sentence previously read *"on bridge §1.4's `[DEFECTIVE-SOURCE]` status, which is carried rather
+> than hidden — §1.4 is flagged defective in bridge §0 and this ruling does not lean on it beyond the
+> predict-first shape"*. Bridge §1.4 now reads `[VERIFIED]`
+> (`2026-07-22-product-design-inputs.md:120`, ruling recorded at `:55-77` and in `journal/decisions.md`
+> under *"Three rulings at the `LDB-10` gate"*), and that tag was **stale on the day the bridge was
+> written** — `C-C7-007` is present at the original bank `55f24aa`. The hedge was therefore never
+> load-bearing: it was a discount taken against a defect that had already been repaired.
+>
+> What is unchanged, and why this is a relabel rather than a re-decision: predict-first remains
+> independently ruled by `LDB-04` D12 and by the taxonomy's `revealMode` note, **not** by the
+> register — `A-22` covers the *configurable sandbox*, not predict-first (examiner F8). Deferring
+> `configured-sandbox` is unaffected. This is the single relabel `LDB-10` reported forward, and the
+> `LDB-08` sweep found no second one.
 
 ### D12. `region: named-region`
 

@@ -144,9 +144,13 @@ which activities, measured by what evidence — and approves the slice to build 
 **A tenth and an eleventh, added 2026-08-15.** `LDB-09` re-verdicts the 19 catalog patterns nobody
 adopted, against a question never asked of them — *would this be good to play, accepting that it
 measures nothing* — and rules whether the eight `state-report` Skills keep Mastery bars. `LDB-10`
-lands the ten unapplied Phase 3 corrections. Both exist because of the same finding: **17 of the 18
+lands the ten unapplied Phase 3 corrections. Both exist because of the same finding: **16 of the 17
 Mastery bars are reachable only through `deal-and-decide` or `state-report`** — a dealt hand, or a
 question about a dealt hand — which is the thing the catalog was commissioned to escape.
+*(Count corrected 2026-08-19 at the `LDB-08` assembly, from "17 of the 18". The union of the two
+types' `primaryFor` sets is 16 and reads 16 at every commit of `2026-08-01-activity-taxonomy.json`;
+there are 17 bars, not 18, because `variance-expectation` carries none per `LDB-04` D12. The finding
+stands at the same 94% and neither card's decisions move — see `LDB-09` §Problem Statement.)*
 
 **A tenth, added 2026-07-26: the activity-pattern catalog.** Every exercise format in every
 document this project holds is a dealt hand or a multiple-choice question. A sweep of the whole

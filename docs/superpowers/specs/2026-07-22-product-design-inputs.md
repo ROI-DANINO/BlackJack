@@ -69,10 +69,18 @@ stopped (user decision, 2026-07-22) in favour of reaching design. What that cost
 >   `:1454-1465`.
 >
 > **What this releases.** Anything that hedged against these two sections may now lean on them
-> normally. One case is known and reported to `LDB-08`: `LDB-06` D11
-> (`2026-08-08-session-composition.md:801-805`) states *"this ruling does not lean on it beyond the
-> predict-first shape"* on the strength of §1.4's tag. That constraint is lifted; the decision it
-> guarded was independently grounded and does not change.
+> normally. One case was known and reported to `LDB-08`: `LDB-06` **D11** (`revealMode: play-it-out`)
+> stated *"this ruling does not lean on it beyond the predict-first shape"* on the strength of §1.4's
+> tag. **Discharged 2026-08-19 at the `LDB-08` assembly** — D11's label sentence is relabelled in
+> place, with the superseded wording quoted there; the decision it guarded was independently grounded
+> and did not change. The `LDB-08` sweep enumerated the rest positively and found no second case:
+> `F15`, `F16`, `F19` and `F20` appear in **no** Phase 4 spec, `F17` appears only here in §1.6's own
+> record, and §1.6 is hedged against nowhere.
+>
+> *Cited by decision, not by line.* This note previously read `2026-08-08-session-composition.md:801-805`,
+> which was **correct when written** (`63c35a4`) and stale by the end of the same day as that spec
+> grew — D11's label sentence now sits ~120 lines lower. `check-doc-drift.sh` has no line-anchor check
+> and passed clean over it, which is the measured retrofit cost the check's evidence bar asks for.
 >
 > **`[DEFECTIVE-SOURCE]` is now unused in this document**, as `[UNVERIFIED]` always was. The tag
 > vocabulary is retained — a future defect gets tagged again.
