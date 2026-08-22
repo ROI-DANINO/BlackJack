@@ -32,6 +32,7 @@ const T = JSON.parse(read('2026-08-01-activity-taxonomy.json'));
 const G = JSON.parse(read('2026-08-01-skill-graph.json'));
 const MD = read('2026-08-01-activity-taxonomy-and-skill-mapping.md');
 const REG = read('assumption-register.md');
+const UX  = read('2026-08-22-interaction-ux.md');
 
 let pass = 0, fail = 0;
 const check = (name, ok, detail) => {
@@ -133,9 +134,12 @@ const skillIds = new Set(skills.map(s => s.id));
   const citedPresent = d.cited.filter(rowPresent);
   // LDB-09: A-23 (LDB-03) plus A-26..A-28 (LDB-09). `A-25` must stay ABSENT — it was allocated to a
   // cap dropped at LDB-05 and is recorded as never filed; a reissue would collide with that record.
-  // LDB-11 (2026-08-22): A-31, A-32. A-17a is a SUB-ROW of A-17 and is listed under `cited`, not
+  // LDB-11 (2026-08-22): A-31, A-32. LDB-07 (2026-08-22): A-33, A-34, A-35 — session-shape naming,
+  // the change of kind at the bar, and reveal-without-verdict. A-21 stays under `cited`: D12 ships the
+  // brush ungraded, so it makes no measurement claim and does not spend the row.
+  // A-17a is a SUB-ROW of A-17 and is listed under `cited`, not
   // `new` — it is not a net-new id, the same convention A-07a..e follow.
-  const expectedNew = ['A-23', 'A-26', 'A-27', 'A-28', 'A-31', 'A-32'];
+  const expectedNew = ['A-23', 'A-26', 'A-27', 'A-28', 'A-31', 'A-32', 'A-33', 'A-34', 'A-35'];
   const newMatches = d.new.length === expectedNew.length && expectedNew.every(id => d.new.includes(id));
   const a25Reissued = d.new.includes('A-25');
   const missingNew = d.new.filter(id => !rowPresent(id));
@@ -292,6 +296,112 @@ const skillIds = new Set(skills.map(s => s.id));
     `provable skills=${[...provable].filter(id => skillIds.has(id)).length}; ` +
     `gated-but-unprovable=[${unprovable.join(', ') || 'none'}]; ` +
     `no-bar-and-unprovable=[${noBarUnprovable.join(', ') || 'none'}] (the hole D11 closes)`);
+}
+
+
+// --- helper: pull one markdown section, heading exclusive of the next same-or-higher heading ---
+const section = (md, heading) => {
+  const i = md.indexOf(heading);
+  if (i < 0) return '';
+  const depth = heading.match(/^#+/)[0].length;
+  const rest = md.slice(i + heading.length);
+  const m = rest.match(new RegExp(`\\n#{1,${depth}} `));
+  return m ? rest.slice(0, m.index) : rest;
+};
+
+// 12. Discharge completeness — LDB-07 D20. Three clauses against the spec's Discharge table.
+//     Earned by a documented failure, not written just in case: LDB-04 D11 reassigned `space` to
+//     LDB-07 on 2026-08-03 and the JSON still read owner:"LDB-04" NINETEEN DAYS later (LDB-07 D21).
+//     Nothing in this repository could have noticed. Clauses (a) and (b) would have.
+{
+  const disch = section(UX, '### Discharge');
+  const rows = disch.split('\n').filter(l => /^\|\s*(H|P|C)\d+\s*\|/.test(l));
+  const kind = k => rows.filter(r => new RegExp(`^\\|\\s*${k}\\d+\\s*\\|`).test(r));
+  const cRows = kind('C'), pRows = kind('P'), hRows = kind('H');
+
+  // (a) every Activity type has an operation-contract row
+  const missingTypes = types.map(t => t.id)
+    .filter(id => !cRows.some(r => r.includes('`' + id + '`')));
+
+  // (b) every parameter carrying owner:"LDB-07" has a disposition row
+  const owned = types.flatMap(t => (t.parameters || [])
+    .filter(p => p.owner === 'LDB-07').map(p => `${t.id}.${p.id}`));
+  const missingParams = owned
+    .filter(q => !pRows.some(r => r.includes('`' + q.split('.')[1] + '`')));
+
+  // (c) every "To LDB-07" handoff item is dispositioned, and every source spec is represented
+  const SOURCES = ['LDB-04', 'LDB-05', 'LDB-06', 'LDB-09', 'LDB-11'];
+  const sourcesSeen = SOURCES.filter(k2 => hRows.some(r => r.includes(k2)));
+  const sourcesMissing = SOURCES.filter(k2 => !sourcesSeen.includes(k2));
+  // and the source files must still carry the handoff they are being discharged against
+  const HANDOFF_FILES = {
+    'LDB-04': '2026-08-03-evidence-and-mastery-rules.md',
+    'LDB-05': '2026-08-04-motivation-and-chips-economy.md',
+    'LDB-06': '2026-08-08-session-composition.md',
+    'LDB-09': '2026-08-15-play-verdicts-and-ungraded-activities.md',
+    'LDB-11': '2026-08-19-challenge-and-unit-skip-test.md',
+  };
+  const lostAtSource = Object.entries(HANDOFF_FILES)
+    .filter(([, f]) => !/LDB-07/.test(read(f))).map(([k2]) => k2);
+
+  const DISPOSITIONS = ['answered', 'declined', 'forwarded'];
+  const undisposed = rows.filter(r => !DISPOSITIONS.some(d => r.toLowerCase().includes(d)));
+
+  const ok = rows.length > 0 && missingTypes.length === 0 && missingParams.length === 0
+    && sourcesMissing.length === 0 && lostAtSource.length === 0
+    && undisposed.length === 0 && hRows.length === 25;
+
+  check('12 discharge completeness (LDB-07 D20)', ok,
+    `rows=${rows.length} (C=${cRows.length} of ${types.length} types, P=${pRows.length} of ${owned.length} owned params, H=${hRows.length}, expect H=25); ` +
+    `types missing a contract row=[${missingTypes.join(', ') || 'none'}]; ` +
+    `owned params=[${owned.join(', ')}]; missing a disposition row=[${missingParams.join(', ') || 'none'}]; ` +
+    `handoff sources represented=[${sourcesSeen.join(', ') || 'none'}] missing=[${sourcesMissing.join(', ') || 'none'}]; ` +
+    `source files that no longer name LDB-07=[${lostAtSource.join(', ') || 'none'}]; ` +
+    `rows with no disposition word=${undisposed.length}; ` +
+    `limit, stated: the H count is DECLARED (25, enumerated by hand 2026-08-22), not derived — ` +
+    `a sixth spec adding a new "To LDB-07" handoff is not detected here`);
+}
+
+// 13. WCAG mapping integrity — LDB-07 D3 / Testing Decisions. Earned by K-U4-016, which found
+//     ALR-040 presenting an AAA criterion inside what read as an AA baseline; caught by a
+//     verification pass rather than by design.
+{
+  const d3 = section(UX, '### D3. Target Level AA, with two named voluntary commitments');
+  // the criterion -> level table: | 1.4.1 Use of Color | **A** |
+  const levels = {};
+  for (const m of d3.matchAll(/^\|\s*(\d\.\d+\.\d+)\s[^|]*\|\s*\*\*(A{1,3})\*\*\s*\|/gm)) levels[m[1]] = m[2];
+  // the ALR mapping table: | ALR-036 | ... | rests-on cell carries `4.1.2 (A)` style citations
+  const alrRows = d3.split('\n').filter(l => /^\|\s*ALR-0(3[6-9]|4[01])\b[^|]*\|/.test(l));
+  const alrSeen = alrRows.map(r => r.match(/ALR-0\d\d/)[0]);
+  const ALL = ['ALR-036', 'ALR-037', 'ALR-038', 'ALR-039', 'ALR-040', 'ALR-041'];
+  const alrMissing = ALL.filter(a => !alrSeen.includes(a));
+
+  const noSC = alrRows.filter(r => /no success criterion/i.test(r)).map(r => r.match(/ALR-0\d\d/)[0]);
+  const voluntary = alrRows.filter(r => /voluntary, above baseline/i.test(r)).map(r => r.match(/ALR-0\d\d/)[0]);
+
+  // every criterion cited in the mapping must appear in the level table, at the SAME level
+  const cited = [], mismatched = [], uncited = [];
+  for (const r of alrRows) {
+    for (const m of r.matchAll(/(\d\.\d+\.\d+)\s*\((A{1,3})\)/g)) {
+      cited.push(m[1]);
+      if (!levels[m[1]]) uncited.push(m[1]);
+      else if (levels[m[1]] !== m[2]) mismatched.push(`${m[1]}: mapping says ${m[2]}, table says ${levels[m[1]]}`);
+    }
+  }
+  const ok = alrMissing.length === 0 && noSC.length === 1 && noSC[0] === 'ALR-041'
+    && voluntary.length === 2 && voluntary.includes('ALR-039') && voluntary.includes('ALR-040')
+    && uncited.length === 0 && mismatched.length === 0 && Object.keys(levels).length > 0;
+
+  check('13 WCAG mapping integrity (LDB-07 D3)', ok,
+    `criteria in D3 level table=${Object.keys(levels).length} ` +
+    `(A=${Object.values(levels).filter(v => v === 'A').length}, ` +
+    `AA=${Object.values(levels).filter(v => v === 'AA').length}, ` +
+    `AAA=${Object.values(levels).filter(v => v === 'AAA').length}); ` +
+    `ALR rows found=[${alrSeen.join(', ') || 'none'}] missing=[${alrMissing.join(', ') || 'none'}]; ` +
+    `marked "no success criterion"=[${noSC.join(', ') || 'none'}] (expect exactly ALR-041); ` +
+    `marked "voluntary, above baseline"=[${voluntary.join(', ') || 'none'}] (expect exactly ALR-039, ALR-040); ` +
+    `criteria cited by the mapping=${cited.length}, absent from the level table=[${uncited.join(', ') || 'none'}], ` +
+    `level disagreements=[${mismatched.join('; ') || 'none'}]`);
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

@@ -136,7 +136,7 @@
       "primaryFor": [],
       "secondaryFor": ["strategy-action"],
       "parameters": [
-        { "id": "space", "values": ["presented-grid", "withheld"], "source": "U3-1", "owner": "LDB-04", "note": "presented-grid supplies the Classification; withheld does not, and is the setting that satisfies classificationIncluded:true" },
+        { "id": "space", "values": ["presented-grid", "withheld"], "source": "U3-1", "owner": "LDB-07", "note": "LDB-07 D12 rules presented-grid for v1; withheld is deferred, not removed. Reassigned from LDB-04 by LDB-04 D11 divergence 2 (2026-08-03), which also declared the prior rationale void: under LDB-04 D6 this parameter has no evidence consequence, because 4.1 requires dealt cards and policy-paint is posed either way. Landed 2026-08-22 at the LDB-07 gate, nineteen days late - the failure check 12 exists to catch." },
         { "id": "region", "values": ["whole-table", "named-region"], "owner": "LDB-06" }
       ],
       "register": "A-21",
@@ -395,7 +395,7 @@
   ],
 
   "registerDelta": {
-    "new": ["A-23", "A-26", "A-27", "A-28", "A-31", "A-32"],
+    "new": ["A-23", "A-26", "A-27", "A-28", "A-31", "A-32", "A-33", "A-34", "A-35"],
     "cited": ["A-02", "A-04", "A-07", "A-13", "A-18", "A-21", "A-22", "A-17", "A-17a", "A-30"],
     "checkedAndAlreadyPresent": [
       "A-21 covers U2-3's blank-grid analogue, which policy-paint adopts and LDB-09 forwards to LDB-07",
@@ -406,8 +406,8 @@
     "checkedAndDoesNotStretch": [
       "A-22 covers a CONFIGURABLE SANDBOX the learner sets up and runs. That is not point-estimate elicitation, which is why estimate-and-check gets A-27 rather than riding A-22. Checked rather than assumed."
     ],
-    "notReissued": "A-25 - allocated to a cap dropped at LDB-05 and recorded in the register as never filed. LDB-09's rows are A-26 to A-28 so that record stays readable. LDB-11's rows (2026-08-22) are A-17a, A-31, A-32; A-25 still not reissued.",
-    "netNewRows": 6,
+    "notReissued": "A-25 - allocated to a cap dropped at LDB-05 and recorded in the register as never filed. LDB-09's rows are A-26 to A-28 so that record stays readable. LDB-11's rows (2026-08-22) are A-17a, A-31, A-32; LDB-07's rows (2026-08-22) are A-33, A-34, A-35; A-25 still not reissued.",
+    "netNewRows": 9,
     "byCard": { "LDB-03": ["A-23"], "LDB-09": ["A-26", "A-27", "A-28"],
       "LDB-11": ["A-17a (sub-row of A-17, not a net-new id)", "A-31", "A-32"]
     }

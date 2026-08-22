@@ -1,6 +1,8 @@
 # Interaction UX for the activity set — LDB-07
 
-> **Status: DRAFT, awaiting the `user-approval` gate.** Produced by
+> **Status: APPROVED 2026-08-22** at the `user-approval` gate — all four divergences ruled
+> individually, and the second approval criterion (D20's discharge table) met after the ruling, not
+> before it. Landing evidence at §Gate. Produced by
 > `/mattpocock-skills:grill-with-docs` on 2026-08-22, four rounds, frontier emptied, shared
 > understanding confirmed by the owner before drafting.
 >
@@ -210,18 +212,52 @@ no archive record, so it was re-derived rather than inherited.
 
 | Criterion | Level |
 |---|---|
+| 1.3.1 Info and Relationships | **A** |
+| 1.3.2 Meaningful Sequence | **A** |
 | 1.4.1 Use of Color | **A** |
 | 2.1.1 Keyboard | **A** |
 | 2.2.1 Timing Adjustable | **A** |
 | 2.2.2 Pause, Stop, Hide | **A** |
+| 3.2.6 Consistent Help | **A** |
 | 3.3.1 Error Identification | **A** |
+| 4.1.2 Name, Role, Value | **A** |
 | 1.4.10 Reflow | **AA** |
 | 1.4.12 Text Spacing | **AA** |
 | 2.4.11 Focus Not Obscured (Minimum) | **AA** |
 | 2.5.7 Dragging Movements | **AA** |
 | 2.5.8 Target Size (Minimum) | **AA** |
+| 3.2.4 Consistent Identification | **AA** |
+| 3.3.3 Error Suggestion | **AA** |
+| 4.1.3 Status Messages | **AA** |
 | 2.3.3 Animation from Interactions | **AAA** |
 | 3.1.5 Reading Level | **AAA** |
+
+**Seven criteria were added to this table at the gate, on 2026-08-22.** The twelve above them were
+reopened when this card was drafted; the seven are the ones the requirement mapping below turned out
+to need and the drafted table did not carry — `ALR-036` had **no** criterion in it at all. Each of the
+seven was read on **its own** `Understanding` page rather than from a whole-document retrieval,
+because the whole-document retrieval returned **`4.1.2` at Level AA**, which its own criterion page
+contradicts verbatim with **`(Level A)`**. That is the same criterion whose level the phase-2
+verification pass could not confirm either (`V-U4.md:223-227`), so it has now defeated two retrievals
+and is recorded here as resolved first-hand rather than left to a third.
+
+#### The requirement mapping
+
+Every accessibility requirement this phase adopted, against the criteria it rests on. **Levels are
+this table's, not the requirement's** — that conflation is what `K-U4-016` caught.
+
+| ALR | Rests on | Highest level | Status against the target |
+|---|---|---|---|
+| ALR-036 — programmatic name, role, value, meaningful order | 4.1.2 (A), 1.3.2 (A) | A | within baseline |
+| ALR-037 — keyboard-operable, single-pointer alternative to dragging, target size | 2.1.1 (A), 2.5.7 (AA), 2.5.8 (AA), 2.4.11 (AA) | AA | within baseline |
+| ALR-038 — non-colour cues for correctness, selection, legality, progress, errors | 1.4.1 (A), 1.3.1 (A), 4.1.3 (AA) | AA | within baseline |
+| ALR-039 — concise instructions, consistent labels, predictable help, recoverable errors | 3.2.6 (A), 3.3.1 (A), 3.2.4 (AA), 3.3.3 (AA); the **concision** element has no normative anchor at any level, 3.1.5 (AAA) being about reading level instead | AA, plus one element with no anchor | **voluntary, above baseline** — the concision element only; claimed as conformance nowhere |
+| ALR-040 — no essential animation or time pressure; zoom, reflow, text spacing, reduced motion | 2.2.1 (A), 2.2.2 (A), 1.4.10 (AA), 1.4.12 (AA), 2.3.3 (AAA) | AAA via the reduced-motion element | **voluntary, above baseline** — the reduced-motion element only; the rest is within baseline |
+| ALR-041 — scoped accessibility checks and learning-integrity playtests in each feature QA | a process requirement; **no success criterion** in WCAG 2.2 | n/a | n/a — discharged by `docs/specs/qa-playtest-process.md`, not by conformance |
+
+**`ALR-041` is the one requirement with no criterion, and `ALR-039`/`ALR-040` are the only two
+carrying an above-baseline element.** Check 13 asserts exactly that shape, so a future requirement
+quietly promoted above AA fails the run.
 
 **The target is Level AA.** Two requirements sit above it and are labelled **voluntary
 above-baseline commitments**:
@@ -689,7 +725,8 @@ inferred.
 
 ### Divergences for the gate
 
-Put individually, so none is carried by another's assent.
+Put individually, so none is carried by another's assent. **All four were ruled approved by the
+owner on 2026-08-22**, each answered on its own.
 
 1. **The card's approval criterion gains a second half** (D20). Changes a `user-approval` gate's bar.
 2. **`LDB-11` D17's licence is declined** (D10). The licence was granted to this card and is being
@@ -704,15 +741,151 @@ Put individually, so none is carried by another's assent.
 
 Filed at approval, not before — the convention `LDB-04` §16 set.
 
+**Filed 2026-08-22 at the gate, and verified present in the target file by grep after writing** — not
+merely approved. `registerDelta.netNewRows` moves 6 → 9 and check 6's expected list moves with it.
+
 | Row | Assumption | Validation method |
 |---|---|---|
-| **New** | Naming the session shape is sufficient for a learner to tell a Closing run from a Proving run, given they share table-state and feedback timing. | Playtesting — ask learners mid-session which shape they are in, in both shapes. |
-| **New** | A change of *kind* at the Mastery bar reads as "held" rather than as "full", where a filled bar would not. | Playtesting — show both grammars and ask whether the count can still fall. |
-| **New** | Revealing the differing rule without a verdict preserves U3-4's invention effect rather than collapsing it into being told. | Playtesting against a verdict-surfaced arm; nearest precedent is `A-22`, whose evidence is *"None held"*. |
-| **`A-21`, unchanged** | Not spent by D12 — the brush ships ungraded and makes no measurement claim. | Unchanged; recorded here so a later reader does not think D12 spent it. |
+| **`A-33`** *(filed)* | Naming the session shape is sufficient for a learner to tell a Closing run from a Proving run, given they share table-state and feedback timing. | Playtesting — ask learners mid-session which shape they are in, in both shapes. |
+| **`A-34`** *(filed)* | A change of *kind* at the Mastery bar reads as "held" rather than as "full", where a filled bar would not. | Playtesting — show both grammars and ask whether the count can still fall. |
+| **`A-35`** *(filed)* | Revealing the differing rule without a verdict preserves U3-4's invention effect rather than collapsing it into being told. | Playtesting against a verdict-surfaced arm; nearest precedent is `A-22`, whose evidence is *"None held"*. |
+| **`A-21`, unchanged** | Not spent by D12 — the brush ships ungraded and makes no measurement claim. | Unchanged; stays under `registerDelta.cited`, never `new`, so a later reader does not think D12 spent it. |
 
 ### Discharge
 
-*(The table `check 12` reads. Populated at landing, one row per obligation: 25 handoff items across
-five specs, 7 `owner: "LDB-07"` parameters after D21, and 11 operation contracts. Each row cites its
-source file and carries **answered** / **declined, with what carries it** / **forwarded, by name**.)*
+The table `check 12` reads. One row per obligation: **25** handoff items across five specs, **7**
+`owner: "LDB-07"` parameters after D21, and **11** operation contracts. Each row carries
+**answered** / **declined, with what carries it instead** / **forwarded, by name**.
+
+The 25 were enumerated by hand on 2026-08-22 by reading each source's own handoff section, not by
+trusting any count written about them: `LDB-04` 4, `LDB-05` 4, `LDB-06` 7 live, `LDB-09` 4, `LDB-11` 6.
+`LDB-06` handed over an eighth — the up-only streak's rendering — which its own text retired on
+2026-08-17 with *"Nothing is owed to `LDB-07` on this now"*; it is excluded from the 25 and named here
+so a later reader does not count it as missing.
+
+#### Handoffs
+
+| # | Obligation | Source | Disposition |
+|---|---|---|---|
+| H1 | `policy-paint`'s `space` | `LDB-04` D11 §13 | **answered** — D12 rules `presented-grid`; D21 lands the owner correction |
+| H2 | How a published Mastery count renders without reading as a grade | `LDB-04` D10 §13 | **answered** — D8: a fact about evidence held, never a judgement |
+| H3 | The *"I'm not sure — show me"* control | `LDB-04` D4 §13 | **answered** — D7's costs-polarity pattern |
+| H4 | The asymmetry — the pre-mastery indicator may move backwards, the post-mastery state may not | `LDB-04` D10 §13 | **answered** — D8's change of kind at the bar |
+| H5 | How the player card renders three meters so they do not read as one number | `LDB-05` D7 §13 | **answered** — D8 (never summed, never a total) and D15 (one surface, no persistent chrome) |
+| H6 | The empty-wallet state | `LDB-05` D3, D12 §13 | **answered** — D11's honest-negative-state pattern |
+| H7 | The session summary's ordering — decision quality above profit and loss | `LDB-05` D12 §13 | **answered** — D9: one surface, the Debrief; ordering unchanged |
+| H8 | The *Free Play* / *Free Learn* naming collision | `LDB-05` §15 §13 | **answered** — D5: **Practice**; Free Learn retired |
+| H9 | How a Coached session and a Closing run are told apart at a glance | `LDB-06` D10 §13 | **answered** — D6: the shape is named at entry and stays named |
+| H10 | How the published Recommender order is stated without reading as a queue | `LDB-06` D14 §13 | **answered** — D8: one sentence, a steer not a gate |
+| H11 | The debrief's ordering | `LDB-06` D16 §13 | **answered** — D9 |
+| H12 | The *"nothing is due"* session goal, which must not read as an ending | `LDB-06` D8 §13 | **answered** — D11 |
+| H13 | The naming collision, with D13 making Practice's scope concrete | `LDB-06` D13 §13 | **answered** — D5 (same ruling as H8; recorded separately because it was handed over twice) |
+| H14 | The optional Classification control at the table | `LDB-06` D2 div 5 §13 | **answered** — D7's adds-polarity pattern, carrying the skippable-without-a-second-thought constraint verbatim |
+| H15 | The removal rule — name what carries the motivation instead | `LDB-06` D8 §13 | **answered** — discharged explicitly at D10, D11 and D12 rather than left to be inferred |
+| H16 | The `totalsDisclosure` control | `LDB-09` D6 §13 | **answered** — D18: learner-operated, under the help-seeking pattern |
+| H17 | The in-situ capture control | `LDB-09` D7 §13 | **answered** — D7's adds-polarity pattern |
+| H18 | The operation of the five new Unmeasured types | `LDB-09` D2 §13 | **answered** — D19 contracts C7–C11 |
+| H19 | U2-3's frontier brush, with its play verdict and `A-21` attached | `LDB-09` §13 | **answered** — D12: adopted ungraded; `A-21` explicitly unspent |
+| H20 | How a Challenge looks | `LDB-11` §9 | **answered** — D14 (the affordance) and D19 (what runs inside it) |
+| H21 | How the path renders | `LDB-11` §9 | **answered** in part — D13 fixes the interaction contract; **forwarded, by name** — the visual shell to **phase 6**, per D13's seam |
+| H22 | How the request control reads | `LDB-11` §9 | **answered** — D14: quiet *"I've got this"* on every Unit ahead, visibly distinct from the product's own louder invitation |
+| H23 | How the debrief is laid out | `LDB-11` §9 | **answered** — D9 |
+| H24 | Whether the Unit Challenge is a heavier ceremony with its own pacing | `LDB-11` D11 | **declined, with what carries it instead** — this card adds no ceremony weight. D14's affordance is identical at both scopes; the Unit Challenge's greater weight is carried by its **coverage-completeness** over every gated Skill in the Unit (`LDB-11` D11), which is structural rather than presentational |
+| H25 | The licence to skip the warm-up where nothing rehearses the target | `LDB-11` D17 | **declined, with what carries it instead** — D10 hands the licence back unused. A warm-up always runs; where nothing rehearses the target it is generic and the copy does not pretend otherwise. Ceremony carries it, and the honesty constraint moves to the copy |
+
+#### Owned parameters
+
+Seven after D21. **Four are answered here and three are forwarded** — the split is stated rather than
+smoothed, because a parameter this card owns and does not decide is exactly what the table exists to
+make visible.
+
+| # | Parameter | Type | Disposition |
+|---|---|---|---|
+| P1 | `space` | `policy-paint` | **answered** — D12: `presented-grid` for v1; `withheld` deferred, not removed |
+| P2 | `verdictSurfaced` | `rule-contrast` | **answered** — D17: reveal the differing rule, never the verdict; the grade is still recorded |
+| P3 | `probe` | `rule-contrast` | **answered** — D17: ships `which-rule-differs` only; `which-rule-would-flip-this` deferred as a second activity's build for the same Skill |
+| P4 | `subject` | `estimate-and-check` | **forwarded, by name** — to `LDB-08`. Both values stay live and D19's contract is identical under either, so which quantity ships follows the phase-5 slice's Skill subset, not the interaction |
+| P5 | `procedure` | `procedure-order` | **forwarded, by name** — to `LDB-08`, for the same reason: `dealer-routine` and `lookup-sequence` share one operation and differ only in authored content |
+| P6 | `groupSize` | `principle-name` | **forwarded, by name** — to **phase 5**'s build of `principle-name`. The value is literally `unset`; group size is a content-authoring parameter and no interaction in D19 depends on it |
+| P7 | `assembly` | `rule-battery` | **answered** — D19 and the JSON both fix `fixed-parts` only; the free-text form needs a rule language and a parser and stays rejected |
+
+#### Operation contracts
+
+| # | Type | Disposition |
+|---|---|---|
+| C1 | `deal-and-decide` | **answered** — D19 |
+| C2 | `state-report` | **answered** — D19 |
+| C3 | `policy-paint` | **answered** — D19, with D12's ungraded brush and D4's non-drag equivalent |
+| C4 | `rule-card-read` | **answered** — D19 |
+| C5 | `predict-then-reveal` | **answered** — D19 |
+| C6 | `rule-contrast` | **answered** — D19, with D17's reveal-without-verdict return |
+| C7 | `hand-sort` | **answered** — D19, with D4's select-then-place equivalent |
+| C8 | `estimate-and-check` | **answered** — D19 |
+| C9 | `procedure-order` | **answered** — D19, with D4's select-then-place equivalent |
+| C10 | `principle-name` | **answered** — D19 |
+| C11 | `rule-battery` | **answered** — D19 |
+
+---
+
+## Gate
+
+**Ruled 2026-08-22.** Four divergences, each put on its own and answered on its own.
+
+| # | Divergence | Ruling |
+|---|---|---|
+| 1 | The card's approval criterion gains a second half (D20) | **approved** |
+| 2 | `LDB-11` D17's warm-up licence is declined (D10) | **approved** — the licence is handed back unused |
+| 3 | `2026-08-01-activity-taxonomy.json` is edited (D21) | **approved** |
+| 4 | `LDB-09`'s *"path is phase 6"* scope line is narrowed (D13) | **approved** — contract here, shell in phase 6 |
+
+### What landed, counted in the target file after writing
+
+- `2026-08-01-activity-taxonomy.json` — `space.owner` **LDB-04 → LDB-07**, void note replaced with
+  D12's ruling; `owner: "LDB-07"` count **6 → 7**, read back out of the file by check 12.
+  `registerDelta.new` +3, `netNewRows` **6 → 9**, `notReissued` note extended. `schemaVersion`
+  unmoved — no id, bar or shape changed.
+- `assumption-register.md` — `A-33`, `A-34`, `A-35` filed, each with a named validation method and a
+  stated failure reading. `A-21` deliberately **not** filed as new.
+- `scripts/check-ldb03-taxonomy.js` — **11 → 13**. Check 6's expected list extended to match.
+- This file — §Discharge populated (43 rows), §D3 gained the requirement mapping and **seven
+  criteria**, status flipped.
+
+### The seven criteria, and why they are a finding rather than a formality
+
+D3 as drafted carried twelve criteria. Mapping the six adopted requirements onto them showed
+**`ALR-036` had no criterion in the table at all**, and `ALR-038` and `ALR-039` were partly covered.
+The card's own WCAG approval criterion — *every requirement is mapped to a criterion whose level was
+read first-hand* — was therefore **not met by the draft**, and check 13 written honestly failed on
+first run. D20's check found it one section over from where it was aimed.
+
+Each of the seven was read on its **own** `Understanding` page. This mattered: a whole-document
+retrieval returned **`4.1.2` at Level AA**, and the criterion's own page says **`(Level A)`** verbatim.
+`V-U4.md:223-227` records that the phase-2 verifier's retrieval of this same criterion came back with
+**no level string at all**. Two retrievals have now failed on 4.1.2 specifically. Every added
+criterion lands at A or AA, so **the Level AA target is unchanged** — the defect was coverage, not
+the target.
+
+### Evidence that the checks can fail
+
+Both new checks were **observed failing before the sections they read existed** — check 12 at
+`rows=0`, check 13 at `ALR rows found=[none]` — and each was then mutation-tested against the exact
+failure it was written for:
+
+| Mutation | Result |
+|---|---|
+| Mapping claims `4.1.2 (AA)` while the level table says A | `FAIL 13 … level disagreements=[4.1.2: mapping says AA, table says A]` |
+| A new `owner: "LDB-07"` parameter added with no disposition row | `FAIL 12 … missing a disposition row=[principle-name.canary]` |
+
+The second mutation is the `space` scenario itself, caught in the run that would have shipped it.
+
+**Final state:** `scripts/check-ldb03-taxonomy.js` **13 passed, 0 failed**;
+`scripts/check-doc-drift.sh` **no drift across 8 checks**. Both run after the last edit.
+
+### Two dispositions a reader should not skip
+
+- **Three of the seven owned parameters are forwarded, not answered** — `subject`, `procedure`,
+  `groupSize` (P4–P6). All three are content-authoring choices whose operation is identical under
+  either value, so the interaction contract does not depend on them; `LDB-08` and phase 5 receive
+  them by name. The table states this rather than smoothing it, which is the whole reason D20 exists.
+- **Two handoffs are declined** — H24 (Unit Challenge ceremony) and H25 (the warm-up licence), each
+  naming what carries it instead, per `LDB-06` D8's removal rule.
