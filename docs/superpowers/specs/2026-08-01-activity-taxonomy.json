@@ -35,6 +35,31 @@
     "ruling": "Arranged is dealt evidence for the Skill. Whether arranged-only evidence can reach mastery is LDB-04's to rule; see A-23."
   },
 
+  "sessionShapes": {
+    "card": "LDB-11",
+    "decision": "D14, approved 2026-08-22 - shape legality moves from prose (LDB-06 RC-03) into data so check 9 can be mechanical; the same move LDB-09 made with rehearses",
+    "values": ["coached-session", "closing-run", "proving-run"],
+    "shapeSource": "coached-session and closing-run: LDB-06 D9 (2026-08-08-session-composition.md); proving-run: LDB-11 D16 - a Challenge is a STRUCTURE (coached-session then proving-run) and never appears in a legality set",
+    "provenanceModes": {
+      "coached-session": ["organic", "arranged", "posed"],
+      "closing-run": ["organic"],
+      "proving-run": ["arranged", "organic"]
+    },
+    "coachedAdmitsPosed": "DERIVED at the LDB-11 landing 2026-08-22, not quoted from LDB-06: RC-03 clause 1 is stated to exclude policy-paint 'from every Closing run on its own' and from nowhere else, and RC-03 rules the Unmeasured types appear 'only in a Coached session' while procedure-order and rule-battery are provenance: [posed] - so a Coached session admits posed, or those two types are legal nowhere. Recorded as a derivation so it can be overturned by a reading of the source rather than silently trusted.",
+    "legalityRule": {
+      "source": "2026-08-08-session-composition.md RC-03 'Legality is a property rule, not a class rule' - UNCHANGED by LDB-11",
+      "clause1": "the type's provenance list intersects the shape's provenanceModes",
+      "clause2": "a type with primaryFor: [] yields no goal Skill window-eligible evidence and is legal only in coached-session; a type with a non-empty primaryFor is legal in a non-Coached shape only for a session whose goal Skill is in that primaryFor - that per-goal refinement is applied at composition time and is not encoded per type",
+      "derivedNotHandListed": "legalIn on each activity type is recomputed by scripts/check-ldb03-taxonomy.js check 9 from provenance and primaryFor; a hand edit that disagrees fails the check, and a type added without legalIn fails it too"
+    }
+  },
+
+  "masteryBar": {
+    "source": "LDB-04 D12 (2026-08-03-evidence-and-mastery-rules.md:454): predict-then-reveal scores a signed error and variance-expectation carries NO bar in v1. Every other Skill in 2026-08-01-skill-graph.json carries one (LDB-04 D6/D13; LDB-09 kept the eight state-report bars).",
+    "withoutBar": ["variance-expectation"],
+    "consequence": "LDB-11 D11 - a Challenge targets only Skills that carry a bar; check 11 asserts every such Skill has a primaryFor type that can run in a proving-run, which variance-expectation cannot (its only primary type is posed)."
+  },
+
   "coverageRule": {
     "forward": "every Activity type declares at least one Skill it measures, OR declares a non-empty rehearses",
     "reverse": "every Skill names at least one Activity type that could produce primary evidence for it",
@@ -63,6 +88,7 @@
       "withheld": "the Classification, the correct action, and the hand outcome",
       "gradedBy": ["engine", "oracle"],
       "provenance": ["organic", "arranged"],
+      "legalIn": ["coached-session", "closing-run", "proving-run"],
       "classificationSupplied": false,
       "primaryFor": ["hit", "stand", "double", "split", "classify-hand", "strategy-action", "legal-fallback", "adherence-under-loss"],
       "secondaryFor": [],
@@ -86,6 +112,7 @@
       "withheld": "the value itself, and for natural-blackjack the Classification",
       "gradedBy": ["engine"],
       "provenance": ["organic", "arranged"],
+      "legalIn": ["coached-session", "closing-run", "proving-run"],
       "classificationSupplied": false,
       "primaryFor": ["card-values", "hand-total", "ace-value", "bust", "dealer-info", "outcomes", "wager-result", "natural-blackjack"],
       "secondaryFor": [],
@@ -103,6 +130,7 @@
       "withheld": "the correct policy",
       "gradedBy": ["oracle"],
       "provenance": ["posed"],
+      "legalIn": ["coached-session"],
       "classificationSupplied": true,
       "classificationSuppliedNote": "In the presented-grid setting the grid is organised by pair / soft / hard, which hands the learner the Classification. Evidence from this type therefore covers the action-selection half of strategy-action only. The withheld setting does not supply it. LDB-04 rules whether classification-supplied evidence can reach mastery.",
       "primaryFor": [],
@@ -122,6 +150,7 @@
       "withheld": "the rule card",
       "gradedBy": ["engine"],
       "provenance": ["organic", "arranged"],
+      "legalIn": ["coached-session", "closing-run", "proving-run"],
       "classificationSupplied": false,
       "primaryFor": ["read-rule-card"],
       "secondaryFor": [],
@@ -137,6 +166,7 @@
       "withheld": "the outcome; the hands have not been played yet",
       "gradedBy": ["catalog"],
       "provenance": ["posed"],
+      "legalIn": ["coached-session"],
       "classificationSupplied": false,
       "primaryFor": ["variance-expectation"],
       "secondaryFor": [],
@@ -154,6 +184,7 @@
       "withheld": "the rule, and any surfaced verdict on the learner's answer",
       "gradedBy": ["engine"],
       "provenance": ["organic", "arranged"],
+      "legalIn": ["coached-session"],
       "classificationSupplied": false,
       "primaryFor": [],
       "secondaryFor": ["read-rule-card", "strategy-action"],
@@ -175,6 +206,7 @@
       "withheld": "which bucket each hand belongs in",
       "gradedBy": ["none"],
       "provenance": ["organic", "arranged"],
+      "legalIn": ["coached-session"],
       "classificationSupplied": false,
       "primaryFor": [],
       "secondaryFor": [],
@@ -194,6 +226,7 @@
       "withheld": "the true value, which already exists and is computable",
       "gradedBy": ["none"],
       "provenance": ["organic", "arranged", "posed"],
+      "legalIn": ["coached-session"],
       "classificationSupplied": false,
       "primaryFor": [],
       "secondaryFor": [],
@@ -218,6 +251,7 @@
       "withheld": "the order",
       "gradedBy": ["none"],
       "provenance": ["posed"],
+      "legalIn": ["coached-session"],
       "classificationSupplied": false,
       "primaryFor": [],
       "secondaryFor": [],
@@ -240,6 +274,7 @@
       "withheld": "the shared action, and the reason they are alike",
       "gradedBy": ["none"],
       "provenance": ["organic", "arranged"],
+      "legalIn": ["coached-session"],
       "classificationSupplied": true,
       "classificationSuppliedNote": "Grouping the situations tells the learner they are the same kind, which supplies the Classification. That is exactly why LDB-03 rejected U3-9 under the recognition rule - and it is harmless here ONLY because this type produces no evidence for any classificationIncluded:true Skill. If it ever became graded, the recognition ban would bite immediately.",
       "primaryFor": [],
@@ -263,6 +298,7 @@
       "withheld": "the cells where the rule breaks",
       "gradedBy": ["none"],
       "provenance": ["posed"],
+      "legalIn": ["coached-session"],
       "classificationSupplied": false,
       "primaryFor": [],
       "secondaryFor": [],
@@ -359,8 +395,8 @@
   ],
 
   "registerDelta": {
-    "new": ["A-23", "A-26", "A-27", "A-28"],
-    "cited": ["A-02", "A-04", "A-07", "A-13", "A-18", "A-21", "A-22"],
+    "new": ["A-23", "A-26", "A-27", "A-28", "A-31", "A-32"],
+    "cited": ["A-02", "A-04", "A-07", "A-13", "A-18", "A-21", "A-22", "A-17", "A-17a", "A-30"],
     "checkedAndAlreadyPresent": [
       "A-21 covers U2-3's blank-grid analogue, which policy-paint adopts and LDB-09 forwards to LDB-07",
       "A-22 covers U2-13's variance sandbox, which predict-then-reveal adopts as its reveal half",
@@ -370,8 +406,10 @@
     "checkedAndDoesNotStretch": [
       "A-22 covers a CONFIGURABLE SANDBOX the learner sets up and runs. That is not point-estimate elicitation, which is why estimate-and-check gets A-27 rather than riding A-22. Checked rather than assumed."
     ],
-    "notReissued": "A-25 - allocated to a cap dropped at LDB-05 and recorded in the register as never filed. LDB-09's rows are A-26 to A-28 so that record stays readable.",
-    "netNewRows": 4,
-    "byCard": { "LDB-03": ["A-23"], "LDB-09": ["A-26", "A-27", "A-28"] }
+    "notReissued": "A-25 - allocated to a cap dropped at LDB-05 and recorded in the register as never filed. LDB-09's rows are A-26 to A-28 so that record stays readable. LDB-11's rows (2026-08-22) are A-17a, A-31, A-32; A-25 still not reissued.",
+    "netNewRows": 6,
+    "byCard": { "LDB-03": ["A-23"], "LDB-09": ["A-26", "A-27", "A-28"],
+      "LDB-11": ["A-17a (sub-row of A-17, not a net-new id)", "A-31", "A-32"]
+    }
   }
 }

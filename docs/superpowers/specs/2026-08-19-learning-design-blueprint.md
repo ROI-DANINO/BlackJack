@@ -310,13 +310,44 @@ silently drop work that later cards assigned to phase 5:
 
 ### 7.3 What the slice must instrument — the phase-5 exit condition
 
-Phase 5 **cannot exit** without answering these from **recorded attempt data**, not impression.
+Phase 5 **cannot exit** until, for each declared question, there is a **named field or pair of fields
+recorded per attempt** and a **written query that would answer it** once enough data exists — the
+instrument, not the verdict. *Reworded 2026-08-22 at the `LDB-11` gate (D3; §10 divergence 4,
+approved with a tightening): the earlier wording — "without **answering** these from recorded attempt
+data" — was unmeetable at n = 1 (`A-24`: this product has one user) or an invitation to read a
+longitudinal curve off ten hands. The tightening: the query is **written** below, not described, so
+a fields-exist claim cannot pass as instrumentation. The same rewording lands at `ROADMAP.md` §Phase 5.*
 
 | Question | What must be recorded | Where it comes from |
 |---|---|---|
 | `P-1` | Decision correctness and hand outcome as **separate** fields per attempt, so agreement between them is measurable rather than assumed | `LDB-05` D9 already grades every decision by the oracle independently of the win; `LDB-05` D12 forbids leading with profit/loss |
 | `P-3` | The `blocked` / `mixed` setting per Presentation, against first-response correctness | `LDB-06` D4 — it bites on 3 of 11 types, and `deal-and-decide` is one |
 | `P-5` | A **self-rated confidence** signal captured alongside first-response correctness, so the two curves can diverge | `P-5`'s own statement: *"Track both; if they diverge, the product is producing false confidence"* |
+
+**The queries, written (2026-08-22).** Field names are `web/src/progress/types.ts` `ProgressAttempt`
+where the field exists today and `LDB-11` D13's declaration record where it does not; a name phase 5
+must add is marked *(to add)*.
+
+- **`P-1`** — over `ProgressAttempt` where `attemptOrdinal = 1` and `disposition.status = 'graded'`:
+  group by `(disposition.correct, won)` where `won` is derived from `engine.outcomes`; report
+  `P(correct | won)` against `P(correct | lost)`. The two rates should not differ; a gap is
+  outcome-bias in the evidence, which `LDB-05` D9 says the oracle already prevents at grading time.
+- **`P-3`** — over `ProgressAttempt` where `attemptOrdinal = 1`: group by `poolSetting` *(to add:
+  `blocked | mixed`, per Presentation — `LDB-06` D4)* × `disposition.correct`; report first-response
+  accuracy per setting, per `evidence.skillId`, over time.
+- **`P-5`** — over the declaration record (`LDB-11` D13) where `initiatedBy = 'learner'`: for each
+  declaration, `windowStateAtDeclaration` says whether the bar was met at that moment and `outcome`
+  says whether the Challenge cleared. The series is `declaredAt` → (bar met?, cleared?); the
+  divergence `P-5` asks about is the count of *asked while the bar was not met* against the count of
+  *cleared* in the same window — confidence running ahead of, or behind, measured Mastery. Nothing
+  here is self-rated: `LDB-11` D1 makes the request the signal.
+
+> *Superseded 2026-08-22 — kept for the trail until `LDB-08` reassembles this document.* The `P-5`
+> row above says **self-rated confidence**, and the callout below says phase 5 must add a confidence
+> capture or drop `P-5`. `LDB-11` (approved 2026-08-22) resolved that open item the other way: the
+> learner's **request** for a Challenge is the signal, the product never asks a self-rating, and the
+> declaration record (D13) is the capture. `LDB-08` carries the rewrite; this note is so the two do
+> not read as disagreeing in the meantime.
 
 > **`P-5` is the one that needs a deliberate addition, and this is the sharpest thing in this
 > document.** `P-1` and `P-3` fall out of fields the design already records. **`P-5` does not** — no

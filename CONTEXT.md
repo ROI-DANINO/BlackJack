@@ -31,8 +31,8 @@ _Avoid_: Cluster, module, course, topic, area
 **Unit**:
 A level in the game: a named group of Skills inside one Subject that a learner clears as a whole.
 Units are **ordered and they lock** — the learner moves forward one Unit at a time, moves backward
-freely over any Unit already cleared, and reaches a Unit further ahead only by passing a test on what
-they are skipping. Where the boundaries fall is a **sequencing choice**, not a Prerequisite claim, and
+freely over any Unit already cleared, and reaches a Unit further ahead only by clearing a Challenge on
+what they are skipping. Where the boundaries fall is a **sequencing choice**, not a Prerequisite claim, and
 it is registered as one (`A-30`).
 _Avoid_: Stage, module, chapter, lesson, tier
 
@@ -138,6 +138,26 @@ correction until the debrief. In a Learning session the strategy table is **not 
 sitting it is **available on request**, and opening it costs that Presentation its window
 eligibility.
 _Avoid_: Test, assessment, exam, final
+
+**Proving run**:
+The session shape a Challenge proves in: dealt hands only, `arranged` or `organic` Provenance mode,
+a **mixed** pool, cell-covering rather than whole-shoe, feedback deferred to the debrief, strategy
+table **not offered**, `EvidenceMode: assessment`. A third shape beside Coached session and Closing
+run (`LDB-11` D16).
+_Avoid_: Closing run (when the Challenge's proof is meant), final round
+
+**Challenge**:
+A learner's claim on a Skill or Unit ahead of them, tested: a Coached session followed by a Proving
+run over the claimed material. A **structure**, not a session shape (`LDB-11`).
+_Avoid_: Test, skip-test, exam, assessment, final
+
+**Skill Challenge**:
+A Challenge scoped to one Skill that carries a Mastery bar.
+_Avoid_: Spot check, quiz
+
+**Unit Challenge**:
+A Challenge scoped to one Unit, coverage-complete for every gated Skill in it.
+_Avoid_: Skip test, placement test, exam
 
 **Tutorial**:
 A learner's **first** encounter with a Skill. Where an Unmeasured Activity rehearses that Skill the

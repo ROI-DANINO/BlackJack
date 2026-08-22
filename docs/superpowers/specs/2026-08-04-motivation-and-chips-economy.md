@@ -509,6 +509,23 @@ is deferred. XP survives on its second job — levels, daily goals, the celebrat
 makes explicit. **No chip leaderboard may ever exist**, on D12's grounds independently of anti-cheat.
 `[Evidence-backed]`
 
+> ### State change: deferred → scheduled behind the second-user trigger — `LDB-11` D15, approved 2026-08-22
+>
+> D11 recorded the leaderboard as **deferred — inherited from `CLOUD-06`, not decided here**. It is
+> now **scheduled**, behind the hosted-database trigger `docs/specs/stack-boundaries.md` §"Hosted
+> database and accounts provider" already defines: a second device, a second user, or server
+> authority. Three things this does **not** do. It does not adopt Supabase — a named candidate whose
+> admission fields 1, 2, 3 and 6 are still open. It does not touch **D12 below, which is untouched:
+> no Chips leaderboard may ever exist**, on anti-superstition grounds independent of architecture. And
+> it unlocks nothing in phase 5, where storage stays IndexedDB. The declared anti-cheat target is
+> **replay verification** — the client submits the seed, the ruleset and the decision sequence and a
+> server re-runs `blackjack-core` to recompute the result — because a hosted store does not fix
+> forgeability (`ROADMAP.md:278`: the browser sees the undealt shoe) and the engine is already
+> deterministic and seeded (`crates/blackjack-core/src/session.rs:9`, `rng.rs:SeededRng`). Its schema
+> consequence — the seed and the decision sequence persist per session — is recorded in
+> `stack-boundaries.md`. `[Evidence-backed]` on the forgeability ground; `[Product judgement]` on replay
+> verification as the target.
+
 ### D12. What this economy may never do
 
 The four prohibitions, applied concretely so a later slice cannot violate them by inattention.

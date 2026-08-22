@@ -153,6 +153,21 @@ Owner decision 2026-08-16, banked here 2026-08-17; record
 - **Until then IndexedDB stays.** Phase 5 is one learner on one machine, and `P-1`, `P-3` and `P-5`
   are answerable from local attempt data. Adopting a hosted store before that would buy no answer the
   local store cannot give.
+- **The leaderboard is scheduled behind this trigger, not merely deferred** — `LDB-11` D15, approved
+  2026-08-22, changed `LDB-05` D11's state. Nothing is built by it, Supabase is not admitted by it, and
+  `LDB-05` D12's prohibition on any Chips leaderboard stands.
+- **Declared anti-cheat target: replay verification** (`LDB-11` D15). A hosted database does not fix
+  forgeability — the engine is client-authoritative and the browser can see the undealt shoe
+  (`ROADMAP.md:278`), so a client that can compute a false score can write it to a hosted store as
+  easily as to IndexedDB. The target is that the client submits the **seed, the ruleset and the
+  decision sequence** and a server re-runs `blackjack-core` to recompute the result; cheap because the
+  engine is already deterministic and seeded (`crates/blackjack-core/src/session.rs:9`,
+  `rng.rs:SeededRng`). `[Product judgement]` on the target; `[Evidence-backed]` on the forgeability
+  ground.
+- **Schema consequence for the adapter author, stated now because it is cheaper before the adapter
+  than after:** the **seed and the decision sequence must persist per session**, not only the
+  aggregate. `AttemptEngineContext.seed` exists per attempt today (`web/src/progress/types.ts`); the
+  per-session decision sequence does not. A second residual beside `evidence.skillId` below.
 - **The record layout already fits a relational backend — checked at each locus 2026-08-17, not
   assumed.** `web/src/progress/idb-store.ts:111-114` creates three row-keyed object stores (`meta`
   singleton on `id`, `attempts` on `attemptId` with a `by-revision` index, `sessions` on

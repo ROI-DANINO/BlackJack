@@ -1,14 +1,20 @@
 # The Challenge and the Unit Skip-Test — LDB-11
 
-> **Status: DRAFT 2026-08-19.** Not authoritative. Awaiting the `user-approval` gate.
+> **Status: APPROVED by the owner 2026-08-22 at the `user-approval` gate. Authoritative.** All eight
+> §10 divergences were put individually and approved; divergence 2 as option (a) — warm-up kept under
+> `D17`; divergence 4 with a tightening — the query that would answer each phase-5 question is
+> **written**, not described (see `D3`). Every §7 target and §8 row landed the same day and was
+> counted in its target file; gate record in `journal/decisions.md` (2026-08-22).
 >
 > **This spec implements owner rulings rather than proposing them.** Twelve rulings were taken at
 > the grill of 2026-08-19 and are recorded on card `LDB-11`. This document states them, grounds
 > them, and works out what they cost. It does not re-open them. Where it adds something the grill
 > did not settle, that addition is marked **[NEW HERE]** and is a gate item.
 >
-> **One approved decision is knowingly reversed** — `LDB-06` `RC-03` clause 2. See §6. It is stated
-> as a reversal with its evidence cost named, not rewritten as though it had always read that way.
+> **No approved decision is reversed.** An earlier draft of this spec reversed `LDB-06` `RC-03`
+> clause 2; that reversal is **withdrawn** at `D16`, because modelling a Challenge as a sequence of
+> two session shapes satisfies clause 2 unamended. §6 records the withdrawn reversal, and the
+> evidence cost that survives it, rather than deleting the trail.
 
 ---
 
@@ -62,14 +68,20 @@ signal, so `P-5` is currently unanswerable and the assumption is untestable.
 dealt hands with no strategy table and no correction until the debrief. Clear it and the learner
 moves; do not clear it and nothing is taken away.
 
-**A Challenge has two parts, and they are two session shapes rather than one.**
+**A Challenge has two parts, and they are two session shapes in sequence rather than one shape.**
+A Challenge is a **structure**, not a session shape — see `D16`, which is what keeps `RC-03` intact.
 
-1. **The warm-up** — a **Coached session**. Unmeasured Activities, multi-option questions, hand
-   drills, visual logic. The product corrects immediately. This part carries the variety and the
-   ceremony.
-2. **The proving run** — a **Closing run**. Real dealt hands, `arranged` provenance drawn to cover
-   the target's cells, **mixed** pool, strategy table **not offered**, feedback
-   `deferred-to-debrief`. This part carries the proof.
+1. **The warm-up** — a **Coached session**, the approved shape unchanged. Unmeasured Activities,
+   multi-option questions, hand drills, visual logic. The product corrects immediately. This part
+   carries the variety and the ceremony.
+2. **The proving run** — a **Proving run**, a **third session shape** this spec introduces (`D16`).
+   Real dealt hands, `arranged` provenance drawn to cover the target's cells, **mixed** pool,
+   strategy table **not offered**, feedback `deferred-to-debrief`. This part carries the proof.
+
+**It is not a Closing run, and calling it one was the draft's own error.** `LDB-06` D9 binds a
+Closing run to `organic` Provenance and `whole-shoe` segmentation — the two parameters D9 says are
+*"set as a pair and never toggled independently"*. A proving run is `arranged` and cell-covering, so
+it contradicts both. `CONTEXT.md`'s **Closing run** entry is therefore **left untouched**.
 
 **The measurement is the request, not a question.** The product never asks *"how confident are you?"*
 It records that the learner asked, and what the Mastery window said at that moment. The divergence
@@ -160,7 +172,7 @@ between the two is the `P-5` series.
 
 ## 4. Implementation Decisions
 
-Every decision carries an evidence label. Decisions **D1–D12** are the grill rulings; **D13–D15** are
+Every decision carries an evidence label. Decisions **D1–D12** are the grill rulings; **D13–D17** are
 consequences worked out here and marked **[NEW HERE]**.
 
 ### D1. The request for a Challenge is the confidence signal
@@ -216,6 +228,12 @@ old wording is either unmeetable or an invitation to read a curve off ten hands.
 fields already exist, which is an instrumentation claim. The reworded condition states what was
 already meant.
 
+**Tightening at the gate, 2026-08-22.** *"A query that would answer it"* is a weaker clause than the
+one it replaces, and a fields-exist claim could pass it. So the query is **written**, not described:
+the three queries live in the blueprint §7.3, over `ProgressAttempt` field names where the field
+exists today and over `D13`'s declaration record where it does not, with any field phase 5 must add
+marked as such. The condition is met when the query text is there, not when someone says it could be.
+
 `[Product judgement]`, grounded on `A-24` `[Evidence-backed]`.
 
 ### D4. Both may start a Challenge; only one kind is a signal
@@ -244,7 +262,22 @@ directly from `2026-08-01-activity-taxonomy.json` rather than taken from a summa
 | `deal-and-decide` | `hit`, `stand`, `double`, `split`, `classify-hand`, `strategy-action`, `legal-fallback`, `adherence-under-loss` |
 | `state-report` | `card-values`, `hand-total`, `ace-value`, `bust`, `dealer-info`, `outcomes`, `wager-result`, `natural-blackjack` |
 | `rule-card-read` | `read-rule-card` |
+| `predict-then-reveal` | `variance-expectation` |
 | every other type | `[]` |
+
+**Correction, recorded rather than silently fixed.** An earlier draft of this table gave
+`predict-then-reveal` an empty `primaryFor` under *"every other type"*. It is not empty, and this
+table claims to be computed from the JSON rather than summarised — so the error was exactly the class
+`AGENTS.md` names first. Recomputed 2026-08-19; the four rows above are every type with a non-empty
+`primaryFor`, and the remaining seven are empty.
+
+**Its consequence, which is a real hole and is closed at `D11`.** `predict-then-reveal` is
+`provenance: ["posed"]`, so `RC-03` **clause 1** — untouched by this spec — bars it from any run in
+`arranged` or `organic` mode. `variance-expectation` therefore has **no type that can appear in a
+proving run**, and a Skill Challenge on it could not be proved. It is the only such Skill: the other
+17 are served by `deal-and-decide`, `state-report` or `rule-card-read`, all
+`provenance: ["organic","arranged"]`. `LDB-04` D12 gives `variance-expectation` **no bar**, so
+restricting Challenge targets to Skills that carry one closes the hole exactly and costs nothing.
 
 Under `LDB-04` D6, evidence from a type that is not `primaryFor` a Skill *"is recorded, informs what to
 recommend next, and **never reaches the bar**."* So a quiz or a puzzle cannot certify anything, and
@@ -352,7 +385,13 @@ motivates that the falling window does not.
 | On clearing | Nothing structural — the window moved, as it does for any Presentations | The skipped Units are marked cleared and the learner arrives at the target Unit |
 | `P-5` role | The primary instrument | Also a declaration, recorded identically |
 
-Same shape, same screen, same rules. Only scope and length differ.
+Same structure, same screen, same rules. Only scope and length differ.
+
+**Both scopes target only Skills that carry a Mastery bar.** A Unit Challenge already did, through
+`ALR-034`'s *"every gated skill"*. A Skill Challenge now says so too, which `D5` shows is not a
+formality: `variance-expectation` carries no bar and its only primary type cannot appear in a proving
+run, so an unrestricted Skill Challenge would offer a claim the product cannot test. Unbarred Skills
+remain reachable through ordinary sessions; they are simply never a Challenge target.
 
 **The case against, recorded because it was raised:** two separate mechanics would let the Unit
 Challenge be a heavier ceremony with its own pacing. That difference is a **presentation** decision and
@@ -366,11 +405,31 @@ belongs to `LDB-07`; it does not require a second mechanic underneath.
 reworded from *"only by passing a test on what they are skipping"* to *"only by clearing a Challenge
 on what they are skipping"*, and `A-30` is reworded to match.
 
-**`test` joins the `Avoid` list.** It is already avoided under **Closing run** (*Avoid: Test,
-assessment, exam, final*), so `CONTEXT.md` currently contradicts itself: one entry forbids the word and
-another uses it for the product's most important assessment.
+**Four entries, not three.** `D16` introduces a third session shape, and a shape the glossary does
+not name is a shape that drifts. Proposed wording, held for landing at approval:
 
-domain-modeling.
+| Entry | Definition | _Avoid_ |
+|---|---|---|
+| **Challenge** | A learner's claim on a Skill or Unit ahead of them, tested: a Coached session followed by a Proving run over the claimed material. A **structure**, not a session shape. | Test, skip-test, exam, assessment, final |
+| **Skill Challenge** | A Challenge scoped to one Skill that carries a Mastery bar. | Spot check, quiz |
+| **Unit Challenge** | A Challenge scoped to one Unit, coverage-complete for every gated Skill in it. | Skip test, placement test, exam |
+| **Proving run** | The session shape a Challenge proves in: `arranged` or `organic` Provenance, **mixed** pool, cell-covering rather than whole-shoe, feedback `deferred-to-debrief`, strategy table **not offered**, `EvidenceMode: assessment`. | Closing run (when the Challenge's proof is meant), final round |
+
+**Where `test` goes, and it is not where the earlier draft put it.** `CONTEXT.md` contradicts itself
+today — line 34 uses *test* for the skip mechanic while line 140 forbids it under **Closing run**
+(*Avoid: Test, assessment, exam, final*). Counted positively on 2026-08-19: those are the **only two**
+occurrences of the word in the file. The fix is the **Challenge** entry carrying it in its own `Avoid`
+list, mirroring Closing run. It does **not** go in the **Unit** entry's list, which holds synonyms for
+*Unit* (*Stage, module, chapter, lesson, tier*) and where *test* would be a category error.
+
+**The Unit entry is reworded and nothing else about it moves.** *"only by passing a test on what they
+are skipping"* → *"only by clearing a Challenge on what they are skipping"*.
+
+**`CONTEXT.md`'s Closing run entry is untouched** — the earlier draft would have redefined it by
+implication (§2). Recorded because a redefinition by implication is the kind that lands unreviewed.
+
+Worked with `/mattpocock-skills:domain-modeling`, 2026-08-19. No ADR: `docs/agents/domain.md` rules
+this repo has one decision sink, `journal/decisions.md`, and that `docs/adr/` must not be created.
 
 ### D13. **[NEW HERE]** The declaration record
 
@@ -398,6 +457,7 @@ subtraction.
 
 `LDB-06`'s legality rule lives in prose today. For check 9 (§7) to be mechanical, the taxonomy JSON
 must carry the shapes each Activity type is legal in, derived from the rule rather than hand-listed.
+The shape vocabulary is the three `D16` leaves: `coached-session`, `closing-run`, `proving-run`.
 
 This is the same move `LDB-09` made when it put `rehearses` into the JSON so check 1 could enforce a
 coverage clause instead of promising it.
@@ -431,6 +491,77 @@ than after.
 `[Evidence-backed]` on the forgeability ground (`ROADMAP.md:307`, `E-7`, `CLOUD-06`).
 `[Product judgement]` on replay verification as the target.
 
+### D16. **[NEW HERE]** A Challenge is a structure; the Proving run is a third session shape
+
+**This decision is what withdraws the `RC-03` reversal**, so it is stated before §6 rather than
+inside it.
+
+**The problem it solves.** The earlier draft said two incompatible things: §2 called a Challenge *"two
+session shapes"*, while §6 and check 9 treated `Challenge` as a shape in its own right, legal alongside
+`Coached`. Those give different answers to whether an approved rule must be overridden.
+
+**The ruling.**
+
+- A **Challenge** is a **structure**: a Coached session, then a Proving run. It is not a shape and
+  never appears in a legality set.
+- A **Proving run** is a **third session shape**, joining Coached session and Closing run.
+
+**Why this leaves `RC-03` clause 2 standing, unamended.** Clause 2 requires that a type yielding the
+goal Skill no window-eligible evidence sit in a **Coached** shape. Under this model:
+
+| Part | Types it holds | Clause 2 |
+|---|---|---|
+| Warm-up | Unmeasured Activities — no window-eligible evidence | **Satisfied**: the shape *is* Coached |
+| Proving run | Only types `primaryFor` the target Skills (`D5`) — all window-eligible | **Does not apply** |
+
+No type in a Proving run triggers clause 2, and every type that triggers it is already in a Coached
+session. The clause needs no new wording to permit a Challenge.
+
+**What this costs: `LDB-06` D9 said the model closed at two shapes** — *"A Table sitting is always a
+Closing run. That is why the model closes rather than needing a third."* This spec needs a third, and
+that is a divergence (§10) rather than a detail.
+
+**The withdrawn structure this resembles, and why it does not inherit its deadlock.** `LDB-06` D3
+withdrew the per-session Closing run — *"a Learning session whose pool was `arranged` does not end
+without a Closing run over the same material, in `organic` Provenance mode"* — because it deadlocked:
+D7 bounds a Short session at 10 Presentations, D8 rules *"no activity begins after a bound or explicit
+stop"*, and D9 makes a Closing run `whole-shoe`, so a Short arranged session could not legally end. A
+Challenge escapes that **only** because a Proving run is cell-covering rather than `whole-shoe` — which
+is the same fact that stops it being a Closing run. **The escape and the third shape are one decision,
+not two**, and a later editor who "simplifies" the Proving run back into a Closing run re-creates a
+deadlock this project has already paid for once.
+
+`[Product judgement]` on the structure/shape split. `[Evidence-backed]` on the deadlock, via `LDB-06`
+D3, D7, D8 and D9.
+
+### D17. **[NEW HERE]** The warm-up holds Unmeasured Activities only
+
+A warm-up is a Coached session **restricted to the five Unmeasured Activity types** — `hand-sort`,
+`estimate-and-check`, `procedure-order`, `principle-name`, `rule-battery`. No `deal-and-decide`, no
+`state-report`, no `rule-card-read`: no type that is `primaryFor` anything.
+
+**Why the restriction is needed rather than implied.** `LDB-06` D9 gives a Coached session
+`feedbackTiming: immediate` and the strategy table **available**, and nothing in that shape excludes
+`deal-and-decide`. An unrestricted warm-up could therefore deal the very situations the proving run is
+about to test, correct them immediately, with the chart open — and the proving run would then measure
+what the app had just told the learner. That is user story 11 (*"the result reflects what I knew rather
+than what the app just told me"*) defeated by the mechanism meant to serve it. `D5` rules the warm-up
+is not **certification**; it does not rule the warm-up cannot **contaminate**. This does.
+
+**What it costs: nothing the warm-up was for.** Variety and ceremony are exactly what the five
+Unmeasured types carry.
+
+**What it costs elsewhere, stated because it is a real limit on user story 10.** The Unmeasured types
+rehearse only six Skills between them — `classify-hand`, `variance-expectation`, `dealer-info`,
+`strategy-action`, `outcomes`, `read-rule-card`. Of the **17 gated** Skills, **5** are rehearsed by
+some Unmeasured type and **12 are not**. So for most targets the warm-up is *ceremony rather than
+targeted rehearsal*, and user story 10's promise that *"the warm-up teaches me something"* holds fully
+for 5 targets and weakly for 12. Recorded rather than smoothed over; `LDB-07` may decide the warm-up is
+simply skipped where nothing rehearses the target.
+
+`[Evidence-backed]` on the type counts and `rehearses` values, recomputed from
+`2026-08-01-activity-taxonomy.json` on 2026-08-19. `[Product judgement]` on the restriction.
+
 ---
 
 ## 5. Testing Decisions
@@ -443,7 +574,7 @@ because it certifies.
 
 **Seams — zero new ones.**
 
-- **`scripts/check-ldb03-taxonomy.js`, 8 checks → 10.** It already reads
+- **`scripts/check-ldb03-taxonomy.js`, 8 checks → 11.** It already reads
   `2026-08-01-activity-taxonomy.json` and reports `N passed, M failed`. Extending it keeps the design's
   enforcement in one place. Prior art: `LDB-09` took it 6 → 8 for exactly this reason, and its check 1
   had to change because five new types would have failed it as written.
@@ -453,18 +584,30 @@ because it certifies.
   failures documented; adding a third without one would be the thing that bar exists to prevent.
 - **Rendering is not a seam.** It is `LDB-07`'s, per `LDB-04`'s precedent.
 
-**Check 9 — Challenge legality.** Reads D14's shape data. Asserts that every Activity type yielding the
-goal Skill no window-eligible evidence is legal in **exactly** `{Coached, Challenge}`; that no type is
-legal in a shape whose Provenance mode is absent from its own `provenance` list (`RC-03` clause 1,
-unchanged); and that every type declared in the taxonomy carries a legality entry. **It fails the
-moment a type is added without deciding its shape legality** — the failure mode `RC-03` clause 2 was
-written as a property rule to prevent.
+**Check 9 — shape legality.** Reads `D14`'s shape data over the three shapes `D16` leaves the model
+with — `Coached session`, `Closing run`, `Proving run`. Asserts that every Activity type yielding the
+goal Skill no window-eligible evidence is legal in **exactly** `{Coached session}` (`RC-03` clause 2,
+**unamended** — `Challenge` is a structure and never appears in a legality set); that no type is legal
+in a shape whose Provenance mode is absent from its own `provenance` list (clause 1, unchanged); and
+that every type declared in the taxonomy carries a legality entry. **It fails the moment a type is
+added without deciding its shape legality** — the failure mode `RC-03` clause 2 was written as a
+property rule to prevent.
 
 **Check 10 — confidence isolation.** Enumerates positively where the declaration record's field names
 appear across `web/src/progress/` and the approved specs, and fails if any of them appear in a Mastery
 computation, a meter computation, the Recommender, or difficulty selection. This is D2 made mechanical.
 It is the ruling most likely to be broken later by inattention rather than by decision, which is
 exactly what `LDB-05` D7's final column exists to stop.
+
+**Check 11 — every Challenge target is provable.** Asserts that every Skill carrying a Mastery bar has
+at least one `primaryFor` type whose `provenance` list contains a mode a Proving run can run in. It
+would currently pass at 17 of 17 gated Skills, and it earns its place under `AGENTS.md`'s bar —
+*"a documented failure or a measured retrofit cost; never just in case"* — because **the failure is
+documented in this spec**: `D5`'s table was written with `predict-then-reveal` miscomputed as
+`primaryFor: []`, which hid that `variance-expectation` has no provable instrument. A human recomputed
+that table to find it. This check is that recomputation, run every time.
+
+The count is therefore **8 → 11**, not 8 → 10.
 
 **Existing checks that must still pass, and one that will move on its own.** Check 6 (register delta)
 reads declared new rows against `assumption-register.md`, so it will fail until §8's rows are filed —
@@ -473,39 +616,59 @@ integrity in particular must not be weakened to accommodate the warm-up.
 
 ---
 
-## 6. The reversal — `LDB-06` `RC-03` clause 2
+## 6. The withdrawn reversal — `LDB-06` `RC-03` clause 2
 
-**Stated as a reversal, with what it costs, because the repository's own rule is that a removal names
-its replacement.**
+**This section records a reversal that an earlier draft of this spec proposed and that `D16`
+withdrew.** It is kept rather than deleted because the evidence cost it named is real and survives the
+withdrawal, and because a reader who sees only the final state cannot tell whether the override was
+considered and rejected or never noticed.
 
-**Current wording** (`2026-08-08-session-composition.md:836-846`, owner decision 2026-08-17):
+**The rule, unchanged** (`2026-08-08-session-composition.md:844-846`, owner decision 2026-08-17):
 
 > An Activity type is legal in a session shape when both hold:
 > 1. Its `provenance` list contains the shape's Provenance mode.
 > 2. **If it yields the goal Skill no window-eligible evidence, the shape is Coached.**
 
-**New wording:** clause 2 becomes *"…the shape is **Coached or a Challenge**."* Clause 1 is untouched.
+**What the earlier draft proposed:** clause 2 becomes *"…the shape is **Coached or a Challenge**."*
 
-**What is unchanged, and it is most of it.** Ordinary Closing runs and Table sittings keep the old
-rule. The owner ruled Free Play stays clean, on `RC-03`'s own ground: *"nobody wants a card-sorting
-puzzle in the middle of a shoe they paid to sit down for."* `policy-paint` remains excluded from every
-Closing run by clause 1 alone, mechanically, because it is `provenance: ["posed"]`.
+**Why it is no longer needed.** That wording was only required if a Challenge were a single shape
+holding both unmeasured warm-up Activities and measured proving hands. `D16` makes it a sequence of two
+shapes instead, and clause 2 is then satisfied without amendment — the warm-up *is* a Coached session,
+and a Proving run holds only types that yield window-eligible evidence. **Neither clause of `RC-03`
+moves.**
 
-**What it costs, named rather than minimised.** `RC-03`'s second ground is evidence-backed: Brummer's
-finding that *"a combination of feedback timing approaches was ineffective."* A warm-up that reveals its
-own answers, followed by a proving run whose feedback is deferred, is a combination of feedback
-timings. **That cost is accepted, not argued away.**
+**The cost that does not go away.** `RC-03`'s second ground is evidence-backed: Brummer's finding that
+*"a combination of feedback timing approaches was ineffective."* A warm-up that corrects immediately,
+followed by a proving run whose feedback is deferred, **is** a combination of feedback timings — and
+the learner experiences that combination whether the product models it as one shape or two. Renaming
+the parts does not answer Brummer. **The risk is accepted; what changed is that it is now accepted
+without overriding an approved rule to do it.**
 
-**Two things narrow it.** The two parts are sequential and separated by a boundary the learner can see,
-rather than interleaved within one run — which is not the same configuration Brummer measured, though
-this document does not claim the distinction is evidence-backed. And the warm-up is optional to the
-learner in the sense that it can be skipped straight to the proving run.
+**What actually narrows it, and it is mechanical rather than rhetorical.** Brummer's threat here is
+**contamination** — a warm-up that corrects the learner on the material the proving run then tests,
+leaving the proving run measuring recall of the correction. `D17` makes that structurally impossible:
+the warm-up holds only Unmeasured Activity types and **none of them is a dealt hand**, while the
+proving run is dealt hands only. The two parts cannot hand each other answers because they do not
+trade in the same currency — the warm-up rehearses concepts, the proving run tests decisions under
+real cards. Checkable against `2026-08-01-activity-taxonomy.json` rather than asserted.
+
+**Two weaker things also narrow it, and are labelled as weaker.** The parts are sequential and
+separated by a boundary the learner can see, rather than interleaved within one run — not the
+configuration Brummer measured, though this document does not claim that distinction is
+evidence-backed. And the warm-up can be skipped straight to the proving run.
 
 **Reopening condition:** if Challenge clear-rates for learners who take the warm-up come out **at or
 below** those who skip it, Brummer's finding has reproduced here and the warm-up should move out of the
 Challenge into ordinary Coached sessions. Computable from stored data with no new instrument.
 
-`[Product judgement]` on the reversal. `[Evidence-backed]` on the ground being overridden.
+**What `LDB-06` D9's pairing rule means here, stated because `D16` adds a shape to a table D9 owns.**
+D9 binds `feedbackTiming` and `segmentation` as a pair per shape, never toggled independently and never
+by the learner. A Proving run sets that pair once — `deferred-to-debrief` with cell-covering
+segmentation — and the learner never toggles it. The pairing discipline is kept; a third row is added
+to the table it governs.
+
+`[Evidence-backed]` on Brummer and on `RC-03` standing unamended. `[Product judgement]` on accepting
+the mixed-timing risk.
 
 ---
 
@@ -516,20 +679,39 @@ after writing**, and counted positively.
 
 | # | Target file | What lands |
 |---|---|---|
-| 1 | `2026-08-08-session-composition.md` | `RC-03` clause 2 reworded; superseded wording quoted in place |
+| 1 | `2026-08-08-session-composition.md` | `D9`'s shape table gains the **Proving run** row (`D16`); `RC-03` **unchanged**, and stated to be unchanged so a reader does not go looking for an edit |
 | 2 | `2026-08-04-motivation-and-chips-economy.md` | D11 state change (D15); D12 untouched and said to be untouched |
-| 3 | `CONTEXT.md` | Challenge, Skill Challenge, Unit Challenge; Unit entry reworded; `test` added to `Avoid` |
+| 3 | `CONTEXT.md` | **Four** entries — Challenge, Skill Challenge, Unit Challenge, Proving run (`D12`); Unit entry reworded; `test` into the **Challenge** entry's `Avoid`; **Closing run entry untouched** |
 | 4 | `assumption-register.md` | `A-30` reworded; new rows per §8 |
 | 5 | `docs/specs/stack-boundaries.md` | Replay verification as declared target + its schema consequence |
-| 6 | `2026-08-01-activity-taxonomy.json` | Shape legality data (D14) |
-| 7 | `scripts/check-ldb03-taxonomy.js` | Checks 9 and 10 |
+| 6 | `2026-08-01-activity-taxonomy.json` | Shape legality data over three shapes (D14) |
+| 7 | `scripts/check-ldb03-taxonomy.js` | Checks 9, 10 and 11 |
 | 8 | `journal/decisions.md` | The gate record |
+| 9 | `2026-08-19-learning-design-blueprint.md` §7.3 | The `D3` exit-condition rewording — **the blueprint is one of the two files that carries it** |
+| 10 | `ROADMAP.md:187` | The same `D3` rewording — *"answered from recorded attempt data"* appears here too |
+
+**Landed 2026-08-22, all ten, each counted in its target file after writing** — see the gate record in
+`journal/decisions.md` for the per-target count. Two things were decided at landing rather than at the
+gate and are recorded there so they can be overturned: a Coached session admits `posed` Provenance
+(derived from `RC-03`'s own text, carried in the JSON as `coachedAdmitsPosed`), and `A-30`'s first
+validation measure moved into its own row `A-32`.
+
+**Rows 9 and 10 are new, and their absence was the founding failure class about to run again.** `D3`
+rewords the phase-5 exit condition; that condition lives in **two** files, and the earlier draft's
+landing table named **neither**. A ruling with no target file is a ruling that does not happen —
+which is the exact defect `A-30` itself demonstrates and this card exists to repair. Counted
+positively on 2026-08-19: `grep -rn "recorded attempt data"` returns 2 hits,
+`2026-08-19-learning-design-blueprint.md:313` and `ROADMAP.md:187`, and no others.
 
 ---
 
 ## 8. Register rows this owes
 
 Filed at approval, not before — the convention `LDB-04` §16 set and `LDB-09` followed.
+
+**Filed 2026-08-22 as `A-17a`, `A-31`, `A-32`** — `A-25` still not reissued; `registerDelta` in the
+taxonomy JSON declares `A-31`/`A-32` as net-new and `A-17a` as a sub-row under `cited`, and check 6
+reads both.
 
 | Row | Assumption | Validation method |
 |---|---|---|
@@ -557,16 +739,37 @@ Filed at approval, not before — the convention `LDB-04` §16 set and `LDB-09` 
 ## 10. Divergences for the gate
 
 Put individually, so none is carried by another's assent — the stronger form `LDB-04` used, rather than
-`LDB-09`'s together-ruling.
+`LDB-09`'s together-ruling. **Eight, not six.** The list grew when
+`/mattpocock-skills:domain-modeling` was run against `D12` on 2026-08-19: checking three proposed
+glossary terms against the existing glossary found that the draft's proving run contradicted the
+approved **Closing run** entry, which unwound into `D16`. Two divergences left the list (the `RC-03`
+reversal, now withdrawn), and four arrived.
 
-1. **The `RC-03` clause-2 reversal** (§6). An approved, evidence-backed decision is knowingly
-   overridden inside one session shape.
-2. **`LDB-05` D11's state change** (D15). Approved as deferred; becomes scheduled.
-3. **The phase-5 exit condition rewording** (D3). It touches `P-1` and `P-3`, not only `P-5`, so it
-   changes a criterion on a card that is not this one.
-4. **`test` becoming an `Avoid` word** (D12), which edits an approved glossary entry.
-5. **D13, D14 and D15 are [NEW HERE]** — worked out in this document rather than ruled at the grill.
-6. **No new drift check** (§5), declined against a rule that could have been read as requiring one.
+1. **A third session shape** (`D16`). `LDB-06` D9 states the model *closes* at two — *"A Table sitting
+   is always a Closing run. That is why the model closes rather than needing a third."* This spec needs
+   a third, the **Proving run**, and adds a row to D9's table. **This divergence replaces the `RC-03`
+   clause-2 reversal that an earlier draft asked for**; approving it is what makes that reversal
+   unnecessary, and `RC-03` then stands unamended. §6 keeps the record of the withdrawn reversal.
+2. **The mixed-feedback-timing risk is accepted on its own** (§6). *Approved 2026-08-22 as option (a):
+   warm-up kept under `D17`; dropping the warm-up was put as the alternative and declined.* No rule is overridden, but Brummer's
+   evidence-backed finding is still knowingly run against: a Challenge combines immediate and deferred
+   feedback in one sitting. Put separately from divergence 1 because approving the shape model does not
+   oblige anyone to accept the evidence risk — the warm-up could be dropped instead. **Carries `D17`**,
+   which restricts the warm-up to Unmeasured Activity types so it cannot contaminate the proving run,
+   and which costs user story 10 its full force on 12 of 17 gated Skills.
+3. **`LDB-05` D11's state change** (D15). Approved as deferred; becomes scheduled.
+4. **The phase-5 exit condition rewording** (D3). It touches `P-1` and `P-3`, not only `P-5`, so it
+   changes a criterion on a card that is not this one. **Now carries landing targets** — §7 rows 9 and
+   10 — which the earlier draft omitted. **Approved 2026-08-22 with a tightening: the query is written, not
+   described** — see `D3`.
+5. **`test` becoming an `Avoid` word** (D12), which edits an approved glossary entry. Placed on the new
+   **Challenge** entry rather than the **Unit** entry.
+6. **Skill Challenges restricted to Skills carrying a Mastery bar** (D11). Narrower than the grill
+   ruling, which said *"one Skill"*. Forced by `D5`'s correction, not chosen.
+7. **D13, D14, D15 and D16 are [NEW HERE]** — worked out in this document rather than ruled at the
+   grill.
+8. **No new drift check** (§5), declined against a rule that could have been read as requiring one.
+   **One new taxonomy check is added** — check 11 — on a failure documented inside this spec.
 
 ---
 

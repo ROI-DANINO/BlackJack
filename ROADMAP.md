@@ -183,10 +183,14 @@ decided.
 
 ## Phase 5 — Vertical slice and learning proof
 
-**Exit criteria.** Real-player learning-integrity playtests pass, **and a declared subset of
-`P-1`…`P-5` is answered from recorded attempt data** — not from impression. The subset is chosen at
-`LDB-08` when the slice is picked, and whatever slice is built must instrument it. The owner is
-currently the only user and runs the playtests himself.
+**Exit criteria.** Real-player learning-integrity playtests pass, **and, for a declared subset of
+`P-1`…`P-5`, each question has a named field or pair of fields recorded per attempt and a written
+query that would answer it once enough data exists** — the instrument, not the verdict, and not from
+impression. *(Reworded 2026-08-22 at the `LDB-11` gate, D3: the earlier "is answered from recorded
+attempt data" was unmeetable at n = 1 — `A-24`, this product has one user — and the queries are
+written at `2026-08-19-learning-design-blueprint.md` §7.3.)* The subset is chosen at `LDB-08` when
+the slice is picked, and whatever slice is built must instrument it. The owner is currently the only
+user and runs the playtests himself.
 
 Without that second clause this phase can exit "passing" without answering the questions it exists
 to answer. The one existing instrumentation design covers `P-3` and `P-5`, hooks `P-1`, and does not

@@ -722,6 +722,7 @@ streak did not reliably outperform no streak — carry that relay, not a first-h
 | **Coached session** | `segment-repeat-until-clean` | `immediate` | `arranged` permitted | available | `acquisition` |
 | **Closing run** — in a Learning session | `whole-shoe` | `deferred-to-debrief` | `organic` | **not offered** | `assessment` |
 | **Closing run** — at a Table sitting | `whole-shoe` | `deferred-to-debrief` | `organic` | **available on request; opening it costs window eligibility** | `assessment` |
+| **Proving run** — inside a Challenge (`LDB-11` D16, approved 2026-08-22) | cell-covering — the claimed Skill's or Unit's cells, then interleaved; never `whole-shoe` | `deferred-to-debrief` | `arranged` or `organic`, **mixed** pool | **not offered** | `assessment` |
 
 **The strategy-table column is the only one that splits, and it splits on 2026-08-17 — see §12
 divergence 7 and the block below.** Everything else a Closing run *is* holds identically in both.
@@ -746,6 +747,37 @@ deferred to a debrief. Both rows were reopened first-hand 2026-08-08 in `run/U1/
 **A Table sitting is always a Closing run.** That is why the model closes rather than needing a third
 shape: the table already *is* the closing run, and D2 makes its evidence count — for the four action
 Skills, per D2's scope limit, or all eight when the learner takes the opt-in capture.
+
+> ### A third shape — the Proving run — `LDB-11` D16, approved by the owner 2026-08-22
+>
+> The paragraph above said the model closes at two shapes. **It now holds three**, and this block is
+> where that sentence stops being true, so a reader who finds the third row in the table does not go
+> looking for the decision somewhere else. A **Challenge** (`2026-08-19-challenge-and-unit-skip-test.md`)
+> is a *structure*, not a shape: a Coached session — the warm-up, restricted to Unmeasured Activity
+> types by `LDB-11` D17 — followed by a **Proving run**. The Proving run is what the Challenge proves
+> in: dealt hands only, `arranged` or `organic` Provenance, **mixed** pool, cell-covering rather than
+> `whole-shoe`, feedback `deferred-to-debrief`, strategy table not offered, `EvidenceMode: assessment`.
+>
+> **It is not a Closing run.** D9 binds a Closing run to `organic` and `whole-shoe` as a pair never
+> toggled independently; a Proving run is arranged and cell-covering, so it contradicts both halves of
+> that pair and needs its own row. The pairing discipline is kept — a Proving run sets its pair once
+> and the learner never toggles it — and the table simply governs a third row. Cell-covering
+> segmentation is also the one fact that keeps a Challenge out of the deadlock D3's withdrawal recorded
+> (a Short session bounded at 10 cannot legally end in a `whole-shoe` run): the escape and the third
+> shape are one decision, not two, and a later editor who "simplifies" the Proving run back into a
+> Closing run recreates that deadlock.
+>
+> **`RC-03` is unchanged by this — both clauses stand word for word.** The warm-up holds only types
+> that yield no window-eligible evidence and *is* a Coached session (clause 2 satisfied); a Proving run
+> holds only types `primaryFor` the claimed Skills (clause 2 does not apply). An earlier draft of
+> `LDB-11` would have amended clause 2 to read *"Coached or a Challenge"*; that amendment was withdrawn
+> before the gate and is recorded at `LDB-11` §6 together with the evidence cost that survives it —
+> Brummer's mixed-timing finding above still describes what a learner who takes the warm-up experiences.
+> The owner accepted that risk on 2026-08-22 as its own gate item, with `LDB-11` D17 as the structural
+> narrowing (the warm-up cannot deal the hands the run then tests) and a reopening condition computable
+> from stored data (warm-up takers clearing at or below skippers). Shape legality now lives as data in
+> `2026-08-01-activity-taxonomy.json` (`sessionShapes`, per-type `legalIn` — `LDB-11` D14) and is
+> enforced by `scripts/check-ldb03-taxonomy.js` check 9.
 
 > ### The Recommender's band selects the shape — owner decision, 2026-08-17
 >
@@ -862,6 +894,11 @@ Skills, per D2's scope limit, or all eight when the learner takes the opt-in cap
 > Presentation that never tells them anything. It may appear in a Coached session as ordinary work; it
 > is not eligible as a repeated segment. Stated as a property so it governs any future silent type
 > rather than naming this one.
+>
+> **Unchanged at the `LDB-11` gate, 2026-08-22 — stated so nobody goes looking for an edit.** Neither
+> clause moved. The Challenge's warm-up sits inside clause 2 as a Coached session and its Proving run
+> holds only `primaryFor` types, so the rule permits a Challenge as written; see the Proving run block
+> under D9 and `LDB-11` §6 for the withdrawn amendment.
 
 **No new field is needed to record which shape a session was.** `ProgressAttempt.mode` is
 `'acquisition' | 'assessment' | 'diagnostic'` (`types.ts:30`, annotated at `:85`, read first-hand), and `ALR-005`'s own
