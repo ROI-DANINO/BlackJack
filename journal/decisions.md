@@ -1253,3 +1253,69 @@ graph, `git show` on the bridge, grepping `types.ts` — and not from reading pr
 tests, one clause per test**. That predicate has now failed completeness **four** times and gained a
 sixth clause at this gate, so on this document's own record it is wrong again right now. A clause you
 can execute either passes or it does not.
+
+## 2026-08-22 — `LDB-11` APPROVED: the Challenge and the Unit skip-test, eight divergences ruled one at a time
+
+**Approved by the owner** at the `user-approval` gate, after reading §6 and §10 cold.
+`2026-08-19-challenge-and-unit-skip-test.md` is authoritative for what a Challenge is, what it proves
+in, what the request records, what clearing and not clearing cost, and which Skills may be a target.
+The gate was put as **eight** items, each ruled on its own so none rode on another's assent — the
+checkpoint before this session still said six, because the working tree had moved past it: the
+`RC-03` clause-2 reversal was **withdrawn** at D16 before the gate and never reached the owner as a
+reversal.
+
+### The eight rulings
+
+1. **A third session shape, the Proving run** (D16) — approved. `LDB-06` D9's *"the model closes
+   rather than needing a third"* is now false and says so in a dated block under D9. `RC-03` is
+   unchanged, both clauses, and stated to be unchanged beside the rule.
+2. **The mixed-feedback-timing risk, accepted on its own** (§6, D17) — approved **as option (a)**: the
+   warm-up stays, restricted to the five Unmeasured Activity types so it cannot deal the hands the
+   Proving run then tests; `LDB-07` may skip it where nothing rehearses the target (12 of 17 gated
+   Skills). The alternative put — drop the warm-up, Challenge = Proving run only — was declined.
+   Brummer's finding is still run against and the reopening condition is written (`A-31`).
+3. **`LDB-05` D11 deferred → scheduled behind the second-user trigger** (D15) — approved. Replay
+   verification is the declared anti-cheat target; its schema consequence (seed and decision sequence
+   persist per session) is recorded at `stack-boundaries.md`. Supabase is not admitted by this; D12 is
+   untouched.
+4. **The phase-5 exit condition reworded** (D3) — approved **with a tightening**: the "query that
+   would answer it" must be **written**, not described, or a fields-exist claim passes as
+   instrumentation. The three queries are now written at the blueprint §7.3, over `ProgressAttempt`
+   fields where they exist and `LDB-11` D13's declaration record where they do not. Landed in both
+   files that carry the condition — blueprint §7.3 and `ROADMAP.md` §Phase 5.
+5. **`test` becomes an `Avoid` word** on the new **Challenge** entry (D12) — approved.
+6. **Skill Challenges only on Skills carrying a Mastery bar** (D11) — approved; forced by D5's
+   correction, and check 11 now recomputes it every run (17 gated, 17 provable,
+   `variance-expectation` the one no-bar Skill whose only primary type is `posed`).
+7. **D13, D14, D15, D16 are [NEW HERE]** — approved (D13 the declaration record; D14 legality as data).
+8. **No new drift check; one new taxonomy check (11)** — approved. Validator 8 → 11.
+
+### What landed, counted in the target file after writing
+
+Ten targets (§7) and three register rows (§8), each verified present by grep after the write:
+`2026-08-08-session-composition.md` — Proving run row + D9 block + `RC-03` "unchanged" note;
+`2026-08-04-motivation-and-chips-economy.md` — D11 state-change block, D12 untouched;
+`CONTEXT.md` — Unit entry reworded, four entries added (Proving run, Challenge, Skill Challenge,
+Unit Challenge), Closing run untouched; `assumption-register.md` — `A-30` reworded, `A-17a`, `A-31`,
+`A-32` filed; `docs/specs/stack-boundaries.md` — replay verification + schema consequence;
+`2026-08-01-activity-taxonomy.json` — `sessionShapes`, `masteryBar`, per-type `legalIn`,
+`registerDelta` +2; `scripts/check-ldb03-taxonomy.js` — checks 9, 10, 11, all passing, check 9 shown
+to fail on a broken `legalIn`; this record; blueprint §7.3; `ROADMAP.md` §Phase 5.
+
+### Two things decided at landing rather than at the gate, recorded so they can be overturned
+
+- **A Coached session admits `posed` Provenance.** `LDB-06` never states a Coached session's mode
+  list; `RC-03` clause 1 needs one. Derived — not quoted — from `RC-03`'s own text: clause 1 is said
+  to exclude `policy-paint` *"from every Closing run on its own"* and from nowhere else, and the
+  Unmeasured types `procedure-order` and `rule-battery` are `provenance: ["posed"]` yet ruled to
+  appear in Coached sessions. Recorded in the JSON as `coachedAdmitsPosed` with that derivation.
+- **`A-30`'s measure (1) moved to its own row.** `A-30` had carried "does the skip-test work" as its
+  first validation measure; §8's third row is that claim. It is filed as `A-32` and `A-30` points to
+  it, so each row holds one claim.
+
+### Next
+
+`/mattpocock-skills:grill-with-docs` for `LDB-07` (interaction UX — the screens for whatever survived
+this gate), then `LDB-08` reassembles the blueprint with `A-30` and the Challenge in it, then the
+phase-4 gate. The blueprint's §7.3 `P-5` row and its callout still say *self-rated confidence*; a
+dated note beside them says they are superseded by D1/D13 and `LDB-08` carries the rewrite.
