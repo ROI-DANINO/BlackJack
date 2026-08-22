@@ -1432,3 +1432,112 @@ that limit on every run.
 predicate implemented as tests, one clause per test; `LDB-11` D15's seed and decision sequence
 persisting per session. Open but bounded: the storage boundary owed by `LDB-06` D17 — wallet and window
 persistence run **once** through the Tool & Runtime Admission Protocol.
+
+---
+
+## `LDB-08` REASSEMBLED — the blueprint carries `LDB-11` and the Unit cut (2026-08-22)
+
+Seventeen owner rulings taken in a four-round grill. **Five went against the recommendation**, and they
+are what shaped the result; they are marked ✋ below so a later reader can find them without rereading
+the transcript.
+
+### What the reassembly decided
+
+| # | Ruling | |
+|---|---|---|
+| 1 | `LDB-11` joins the assembly (74 → 91 decisions); **`LDB-07` stays a sibling**, not a dependency | |
+| 2 | `P-5` **stays** in the declared subset, captured by `LDB-11` D13's declaration record; no self-rating | |
+| 3 | **Units exist in phase 5** | ✋ |
+| 4 | **No Unmeasured Activity in ordinary sessions** — they live only in Challenge warm-ups | ✋ |
+| 5 | Both new drift checks built | |
+| 6 | Subject A's Units **redrawn**, not inherited from the shipped nine | ✋ |
+| 7 | **All three Subjects** get Units | ✋ |
+| 8 | **Two** warm-up types — `hand-sort` and `rule-battery` | ✋ |
+| 9 | §7.2 **restated**, phase 5 **not split** into 5a/5b | |
+| 10 | Both checks **fail** on drift, exit 1 | |
+| 11 | The 8-Unit prerequisite-closed cut confirmed | |
+| 12 | Order **interleaved**, not subject-blocked | |
+| 13 | Shipped content re-homed as Tutorials, **then** the file retired | |
+| 14 | The cut **rides `A-30`**; no new register row | |
+| 15 | `B3`'s one-of-two Unit Challenge **accepted** | |
+| 16 | The cut stays **inside `LDB-08`**; no new card | |
+| 17 | The `Unit` type change **declared as a delta**, fields named | |
+
+### The finding that mattered most
+
+**`LDB-06` D6 assigned the Unit cut to `LDB-08` on 2026-08-17** (`2026-08-08-session-composition.md:522`
+— *"Where the Unit boundaries fall is `LDB-08`'s to cut"*), and the `LDB-08` card's Outcome never
+recorded it. `LDB-11` §9 and `LDB-07` §705 each put the cut out of scope, both pointing at `A-30`, and
+`A-30` calls it a sequencing choice. **Three documents pointed away and one pointed here, and the one
+that pointed here was never read into the card.** It survived four gates. Enumerated positively at the
+reassembly: the blueprint contained **0** occurrences of "Unit" and **0** of `A-30`.
+
+This is the repository's own recorded failure class — *corrections do not execute themselves* — with an
+**assignment** substituted for a correction. It is worth naming as a variant: a handoff written into
+the *body* of an approved spec, rather than into the receiving card, has no mechanism behind it.
+
+### Costs accepted, not hidden
+
+- **Warm-up ceremony is 14 of 17 gated Skills**, not `LDB-11` D17's published *"12 of the 17"*. D17's
+  number is correct for all five ungraded types; ruling 8 ships two. The five-type derivation
+  reproduces 12 exactly, which is what establishes the method before the two-type number is trusted.
+  **`A-31`'s risk is larger than the number its own card published.**
+- **`A-18` does not close in phase 5.** Its method needs *"the first non-quiz activity against a quiz
+  baseline"*, and a warm-up-only `hand-sort` has none. `LDB-09` D10's expectation is superseded.
+- **`A-17a`'s blind spot is accepted**: `P-5`'s instrument sees only learners who *act* on confidence.
+- **A `B3` skipper never meets the variance framing** that `P-1` leans on — `variance-expectation` has
+  no bar, so `LDB-11` D11's coverage rule cannot reach it.
+
+### Two method defects found, both in verification rather than in decisions
+
+1. **`LDB-11` §7's positive count is unreproducible, and the reason is the tool.** It records
+   *"`grep -rn "recorded attempt data"` returns 2 hits"*. It now returns **0** in both target files —
+   because the phrase **wraps across a line break** in each. The landing itself is fine, verified by
+   reading both files. **A positive count is only as good as the tool that produced it**, and a
+   line-oriented grep over reflowed prose silently becomes a zero-count over unchanged content. Where
+   a phrase must be counted, normalise newlines first.
+2. **Three of four line anchors written during this session were wrong when written**, caught by hand
+   one commit before check 10 existed to catch them. Recorded because it is the same failure §8 item 3
+   documented, reproduced by the session building the check against it.
+
+### The two new checks, and why check 10 is not the obvious one
+
+`check-doc-drift.sh` **8 → 10**.
+
+- **Check 9** cross-checks every cited `A-NN` against the register **inward**. The outward direction —
+  walk the rows, confirm each is owned — can only fail when a row exists, and it shipped that way:
+  `A-07e`/`A-07f` were declared filed, reported absent by an examiner on 2026-08-15, and the
+  2026-08-17 gate recorded *"PASS with a caveat"* and approved anyway.
+- **Check 10** does **not** verify that a cited line exists. A range check would have passed clean over
+  the documented failure — `session-composition.md:801-805` was stale while the file still had 800+
+  lines. It compares the cited line's **text** at the citing document's last commit against the target
+  today, and fires only when that text has **moved elsewhere**, reporting where it went. An edit in
+  place is not anchor drift and is counted separately. **Check 10 catches its own founding failure.**
+
+**Both negative-tested**, because a check only ever seen passing is the guard-that-cannot-fail shape
+this repository has already paid for: check 9 fired on a planted `A-99`; check 10 fired on a one-line
+target shift and named the new location. Both restored, 10 of 10 clean, exit 0.
+
+Two false-positive classes were found and closed rather than tuned around: a quoted **historical**
+anchor is not a live citation, and an anchor written in an **uncommitted** edit has no baseline — the
+latter would otherwise have flagged every anchor repair as drift.
+
+**Check 10 found four stale anchors on the day it shipped, and one repair made from its report was
+wrong.** Three of the four were line numbers into `journal/tasks.md` — the sharpest class, because
+`scripts/kanban.ts` rewrites that file on every lane move, so **no anchor into the board may ever be a
+line number**; all three are now cited by card and field. The wrong repair is the more useful record:
+the check reported that a **range's start line** had moved, the anchor was updated to follow it, and
+the content the range actually pointed at was 34 lines further on. Cited by content now. **Trusting a
+drift report as if it were a citation check is a new instance of an old habit** — reading a record
+instead of the source — committed by the session that built the check. Two limits were added to the
+check's own printed output rather than left implicit: a range's start is not the range, and the check
+reports that text *moved*, never that an anchor was *correct to begin with*.
+
+### Next
+
+**The phase-4 gate is the owner approving the blueprint.** `LDB-07` is approved and Done; `LDB-08` sits
+in Active with everything it owed landed and verified in its target file. Phase 5's scope is nine items
+(blueprint §7.2), deliberately not split into 5a/5b because `P-5`'s instrument *is* the declaration
+record. Standing into phase 5, unchanged: `LDB-06` §11 item 8's window predicate as tests, one clause
+per test; `LDB-11` D15's seed and decision sequence persisting per session. Open but bounded: the
+storage boundary owed by `LDB-06` D17.
