@@ -1319,3 +1319,116 @@ to fail on a broken `legalIn`; this record; blueprint §7.3; `ROADMAP.md` §Phas
 this gate), then `LDB-08` reassembles the blueprint with `A-30` and the Challenge in it, then the
 phase-4 gate. The blueprint's §7.3 `P-5` row and its callout still say *self-rated confidence*; a
 dated note beside them says they are superseded by D1/D13 and `LDB-08` carries the rewrite.
+
+---
+
+## 2026-08-22 — Specs and decision tickets may be published to the public issue tracker
+
+**Asked twice across two sessions and unanswered until now; it gated any tracker write, and nothing
+had been published while it stood open.** Ruled **yes**: specs and decision tickets may go to GitHub
+Issues on `ROI-DANINO/BlackJack` via the `gh` CLI, per `docs/agents/issue-tracker.md`.
+
+The consequence, stated once so it is on the record rather than rediscovered: **the remote is public**,
+so a published spec body is world-readable at publish time and persists in the tracker's history even
+if the issue is later edited or closed. The kanban board at `journal/tasks.md` remains the
+current-phase execution authority; issues do not override it.
+
+Nothing was published at this gate — the LDB-07 gate touches no tracker.
+
+---
+
+## 2026-08-22 — `LDB-07` APPROVED: interaction UX, four divergences ruled one at a time
+
+The gate was put as **four** items — the number of places the spec diverges from something already
+approved — each ruled on its own so none rode on another's assent. All four approved.
+
+### The four rulings
+
+1. **The card's approval criterion gains a second half** (D20) — approved. The bar had checked only
+   the WCAG half, so the card could have been approved with all 25 handoffs untouched. It now carries
+   a **discharge table**, one row per obligation, and **check 12** enforces completeness mechanically
+   rather than by a prose clause that passes silently on a missing row.
+2. **`LDB-11` D17's warm-up licence is declined** (D10) — approved. The licence is handed back unused
+   with the measurement stated: of the 17 gated Skills, **5 are rehearsed by some Unmeasured type and
+   12 are not**, so taking the licence would open **12 of 17** Challenges cold. A warm-up always runs;
+   where nothing rehearses the target it is generic and the copy does not pretend otherwise.
+3. **`2026-08-01-activity-taxonomy.json` is edited** (D21) — approved. It executes a decision approved
+   on 2026-08-03 rather than making a new one.
+4. **`LDB-09`'s *"path is phase 6"* scope line is narrowed** (D13) — approved. The path's
+   **interaction contract** is this card's; the **shell** stays phase 6. The third option — defer the
+   path wholesale — was put and declined, because it would strand `A-30` in the drawer `LDB-11` exists
+   to pull it out of.
+
+### What landed, counted in the target file after writing
+
+- **`2026-08-01-activity-taxonomy.json`** — `space.owner` **LDB-04 → LDB-07** and the note that
+  `LDB-04` D11 declared void replaced with D12's ruling, **nineteen days late**. `owner: "LDB-07"`
+  count **6 → 7**, read back out of the file by check 12 rather than asserted. `registerDelta.new`
+  +`A-33`/`A-34`/`A-35`, `netNewRows` **6 → 9**, `notReissued` extended (`A-25` still not reissued).
+  `schemaVersion` unmoved.
+- **`assumption-register.md`** — `A-33` (session-shape naming is sufficient), `A-34` (a change of kind
+  reads as held), `A-35` (reveal-without-verdict preserves the invention effect). Each carries a named
+  validation method **and a stated failure reading**. `A-21` stays under `cited`, never `new` — D12
+  ships the brush ungraded, so it makes no measurement claim and does not spend the row.
+- **`scripts/check-ldb03-taxonomy.js`** — **11 → 13**, plus check 6's expected list extended.
+- **`docs/superpowers/specs/2026-08-22-interaction-ux.md`** — §Discharge populated at **43 rows**
+  (25 handoffs + 7 owned parameters + 11 operation contracts), §D3 gained the requirement mapping and
+  **seven criteria**, §Gate written, status **DRAFT → APPROVED**.
+
+**Final state:** `check-ldb03-taxonomy.js` **13 passed, 0 failed**; `check-doc-drift.sh` **no drift
+across 8 checks**. Both run after the last edit.
+
+### The 25 were counted, not inherited
+
+Enumerated by hand from each source's own handoff section: `LDB-04` 4, `LDB-05` 4, `LDB-06` 7 live,
+`LDB-09` 4, `LDB-11` 6. `LDB-06` handed over an eighth — the up-only streak's rendering — which its own
+text retired on 2026-08-17 with *"Nothing is owed to `LDB-07` on this now"*. It is excluded from the 25
+and named in the table so a later reader does not count it as missing.
+
+### The WCAG gap D20's check found one section over from where it was aimed
+
+D3 as drafted carried **twelve** criteria. Mapping the six adopted requirements onto them showed
+**`ALR-036` had no criterion in the table at all**, with `ALR-038` and `ALR-039` partly covered. The
+card's own WCAG approval criterion — *every requirement is mapped to a criterion whose level was read
+first-hand* — was **not met by the draft**, and check 13 failed on its first run.
+
+Seven criteria were added, each read on its **own** `Understanding` page rather than from a
+whole-document retrieval — because the whole-document retrieval returned **`4.1.2` at Level AA** while
+the criterion's own page says **`(Level A)`** verbatim. `V-U4.md:223-227` records that the phase-2
+verifier's retrieval of that same criterion came back with **no level string at all**. Two retrievals
+have now failed on `4.1.2` specifically; it is resolved first-hand here rather than left for a third.
+**Every added criterion lands at A or AA, so the Level AA target is unchanged** — the defect was
+coverage, not the target.
+
+### The checks were shown to fail before they were shown to pass
+
+Both were written **before** the sections they read and observed failing — check 12 at `rows=0`, check
+13 at `ALR rows found=[none]`. Each was then mutation-tested: a mapping claiming `4.1.2 (AA)` against a
+table saying A produced `level disagreements=[4.1.2: mapping says AA, table says A]`; a new
+`owner: "LDB-07"` parameter with no disposition row produced
+`missing a disposition row=[principle-name.canary]`. **That second mutation is the `space` scenario
+itself**, caught in the run that would have shipped it.
+
+Check 12 carries one stated limit rather than an implied guarantee: the handoff count **25 is
+declared, not derived** — a sixth spec adding a new *"To `LDB-07`"* handoff is not detected. It prints
+that limit on every run.
+
+### Two dispositions recorded at landing, so they can be overturned
+
+- **Three of the seven owned parameters are forwarded rather than answered** — `subject`
+  (`estimate-and-check`), `procedure` (`procedure-order`), `groupSize` (`principle-name`). Each is a
+  content-authoring choice whose operation under D19 is identical either way, so the interaction
+  contract does not depend on it; `LDB-08` and phase 5 receive them **by name**. The card owns seven
+  and answers four, and the table says so.
+- **Two handoffs are declined**, each naming what carries it instead per `LDB-06` D8's removal rule:
+  H24 (a heavier Unit Challenge ceremony — carried by coverage-completeness, which is structural not
+  presentational) and H25 (the warm-up licence — carried by ceremony, with the honesty constraint moved
+  onto the copy).
+
+### Next
+
+`LDB-08` reassembles the blueprint with `A-30` and the Challenge in it, picks the phase-5 slice and the
+`P`-subset, and then the phase-4 gate. Standing into phase 5, unchanged: `LDB-06` §11 item 8's window
+predicate implemented as tests, one clause per test; `LDB-11` D15's seed and decision sequence
+persisting per session. Open but bounded: the storage boundary owed by `LDB-06` D17 — wallet and window
+persistence run **once** through the Tool & Runtime Admission Protocol.
