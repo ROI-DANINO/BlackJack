@@ -127,6 +127,12 @@ _Avoid_: Session (unqualified), lesson, round
 One Free Play visit, from Buy-in to cash-out.
 _Avoid_: Session (unqualified), game, visit, run
 
+**Debrief**:
+The single surface that closes a Learning session or a Table sitting. Its contents are fixed
+(`LDB-06` D16) and its ordering puts decision quality above profit and loss (`LDB-05` D12), with the
+Table stack result as one plain fact. One surface, one name: there is no separate session summary.
+_Avoid_: Session summary, results, score screen, report card
+
 **Coached session**:
 A Learning session that repeats a segment until clean, corrects immediately, and may use `arranged`
 Provenance mode. The repeat-until-clean loop admits only Presentations that surface a verdict.
@@ -215,8 +221,8 @@ _Avoid_: Casino mode (when the product surface is meant), sandbox, practice
 
 **Practice**:
 The always-available learning mode over already-covered material, which pays into the Wallet. Named
-to keep "free" meaning only "no chips required to enter". _(Proposed; the naming call against "Free
-Learn" travels to `LDB-07`.)_
+to keep "free" meaning only "no chips required to enter". The naming call against "Free Learn" was
+settled here on 2026-08-22 (`LDB-07`); **Free Learn is retired** and survives only as a term to avoid.
 _Avoid_: Free learn, free play, drill, grind
 
 ## Strategy decisions

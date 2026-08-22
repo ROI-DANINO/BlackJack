@@ -29,6 +29,9 @@
 - Gate: user-approval
 - Evidence: ASSEMBLED 2026-08-19, awaiting owner approval. Blueprint: docs/superpowers/specs/2026-08-19-learning-design-blueprint.md (registered in journal/docs-map.md). All 74 decisions from the eight Depends-on cards appear with evidence labels: LDB-01 10, LDB-03 8, LDB-09 11, LDB-04 15, LDB-06 18, LDB-05 12. ASSEMBLED AGAINST [VERIFIED] on bridge sections 1.4 and 1.6, verified first-hand by opening 2026-07-22-product-design-inputs.md:120,138 rather than relaying the card. P-2 and P-4 recorded as deliberate exclusions (unanswerable by this product: no EV-instructed arm, no heuristic-policy arm); declared subset P-1/P-3/P-5. SLICE: the graded-decision-practice parameterisation CONFIRMED (deal-and-decide x deferred-to-debrief x binary) on three grounds independent of the convergence LDB-01/02/03 each warned about, with phase-5 scope growth named (LDB-05 economy deltas 1-4+6, LDB-06 D18 Tutorials, D9 shape pairing). FIVE CHANGES AT ASSEMBLY, none moving a decision: (1) LDB-06 D11 relabelled off the lifted [DEFECTIVE-SOURCE] hedge; (2) LDB-10 sweep completed and enumerated positively, no second case - F15/F16/F19/F20 appear in no phase-4 spec, F17 only in bridge 1.6's own record, 1.6 hedged against nowhere; (3) a stale line anchor in the bridge fixed, correct when written at 63c35a4 and stale the same day, which 8-of-8 drift checks passed clean over; (4) the founding premise of LDB-09 and LDB-10 corrected from '17 of 18 Mastery bars' to '16 of the 17' - the union of deal-and-decide and state-report primaryFor is 16 at EVERY commit of the taxonomy JSON and variance-expectation carries no bar per LDB-04 D12; LDB-09's own D9 already said 17 bars; the finding stands at the same 94 percent; (5) A-07e and A-07f, declared filed by LDB-06 D7/section 10, did not exist in the register - an examiner reported this 2026-08-15 and the 2026-08-17 gate approved criterion 2 as PASS-with-a-caveat; both now landed, register 32 to 34 rows. ALSO DISCHARGED: the carried debt claiming LDB-09's ANSWERED note miscredits D14 is itself wrong - D7's own text assigns the mix to D14 verbatim; no LDB-09 amendment owed. OPEN FOR OWNER: P-5 has no confidence capture in any approved decision - add one or drop P-5 from the subset. check-doc-drift.sh 8/8 clean after every edit.
 - Updated: 2026-08-19T00:31:54.049Z
+
+
+## Active
 ### LDB-07 — Design the interaction UX for the activity set
 - Type: design
 - Milestone: LDB
@@ -40,10 +43,7 @@
 - Load: docs/superpowers/research/evidence-index/activity-and-storage-catalog.md
 - Gate: user-approval
 - Evidence: pending
-- Updated: 2026-08-19T00:31:54.282Z
-
-
-## Active
+- Updated: 2026-08-22T16:21:16.465Z
 
 
 ## Verification
