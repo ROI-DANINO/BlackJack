@@ -354,7 +354,9 @@ left the session-shaped half here — *"Engineered exposure still teaches, still
 fills most of a window — it simply cannot be the only thing a learner ever met"* — and this card's
 answer is now that **no session-shaped rule is needed**: D7 is a claim about a Skill's window, which
 is exactly the form the card asked for (*"resolve the contradiction in terms of what evidence a
-session must yield rather than in terms of what the engine can do"* — `journal/tasks.md:63`, quoted
+session must yield rather than in terms of what the engine can do"* — this card's own board entry on
+`journal/tasks.md` (re-anchored 2026-08-22 from `:63`; the board is rewritten on every lane move, so
+no anchor into it may be a line number), quoted
 verbatim; the redraft paraphrased the opening clause as *"resolve it"*, `RA-11`), and it binds across
 sessions rather than inside one. A per-session rule could only ever
 have been the same guarantee, scoped worse.
@@ -459,7 +461,9 @@ dispositions.
 ### D5. The three unordered Condition axes stay unordered
 
 `LDB-01` §4 left `scope`, `ruleset` and `pace` deliberately unordered and assigned the question here,
-and the `LDB-06` card's own `FROM LDB-01` handoff (`journal/tasks.md:51`) states the consequence
+and the `LDB-06` card's own `FROM LDB-01` handoff (**this card's `Next:` field on `journal/tasks.md`**
+— re-anchored 2026-08-22 from `:51`, cited by card and field because the board is rewritten on every
+lane move) states the consequence
 verbatim: *"order them or state that you decline to, and note that any ordering asserted here becomes
 an Assumption needing a register row."*
 
@@ -2158,7 +2162,7 @@ ruling rather than a citation were put to the owner and decided by them.
 |---|---|---|
 | **F5** | D2's *"counts exactly like any other"* overreached. `deal-and-decide`'s `produced` contract requires the Classification for `classificationIncluded: true` Skills; a table decision produces the action only. | **Owner call:** D2 scoped to `hit`/`stand`/`double`/`split`. Propagated to the Solution, D9 and §13, where the `A-20` coverage claim is **withdrawn**. |
 | **F3** | §12 claimed no approved document contradicted D2. The approved ProgressStore cycle-1 design `:452` does. | **Owner call:** new §12 **divergence 4**; §11 item 2 now names both targets (**F4**). |
-| **F2** | D5 attributed a verbatim sentence to `LDB-01` §4; it is the board card's `FROM LDB-01` handoff (`journal/tasks.md:51`). **Second occurrence of the class `LDB-04` §12 divergence 0 caught.** | Re-cited at D5, with the recurrence named. |
+| **F2** | D5 attributed a verbatim sentence to `LDB-01` §4; it is the board card's `FROM LDB-01` handoff — **this card's own `Next:` field on `journal/tasks.md`**, cited by card and field rather than by line. *Re-anchored 2026-08-22: it read `journal/tasks.md:51`, and the line had moved to `:71`. A line citation into the board is structurally unstable — `scripts/kanban.ts` rewrites the whole file on every lane move — so no anchor into it should ever be a line number. Caught by `check-doc-drift.sh` check 10 on the day that check shipped, fired by an unrelated lane move.* **Second occurrence of the class `LDB-04` §12 divergence 0 caught.** | Re-cited at D5, with the recurrence named. |
 | **F12** | D4 attached bridge §1.1's *"grade-7 mathematics, n = 140"* caveat to Kornell & Bjork's figures — a different study — while labelling them `[Evidence-backed]`. | D4's caveat rewritten; both studies' limits stated. |
 | **F9** | Out of Scope asserted `Assistance` retains `'instruction'`; `LDB-04` **D15** ruled it renamed to `'retry-2'`. | Corrected; §11 item 3's argument unaffected. |
 | **F1** | §15 criterion 8 claimed relay was *"labelled at each use"* and omitted two relayed primary sources. | Claim narrowed; Kornell & Bjork and the SACAA guide added to the relay set. |
@@ -2273,7 +2277,9 @@ deliberately no longer restates their count.** (It said *"Eight of the 36"* unti
 carried the glyph. Both the audit's legend and this sentence had memorised a number beside a list that
 could always be read — `RC-11`'s shape a third time.) A further set — the `product-vision.md`,
 `LDB-05` D9, `LDB-04` D6/D3,
-`journal/tasks.md:63` and `web/src/progress/types.ts` loci behind `RC-01`, `RC-05`, `RC-07`, `RC-09`,
+the `LDB-06` card on `journal/tasks.md` (re-anchored 2026-08-22 from `:63`, which is now an
+`- Updated:` timestamp line — same board-instability reason) and the `web/src/progress/types.ts` loci
+behind `RC-01`, `RC-05`, `RC-07`, `RC-09`,
 `RA-11` and divergences 7 and 9 — was reopened first-hand on 2026-08-17 before the corresponding
 ruling was written. **The rest carry an examiner's reading only, and this sentence is the record of
 which is which** rather than an implied verification of all 36.

@@ -291,9 +291,98 @@ EOF
   fi
 fi
 
+# 9 — every A-NN cited anywhere, cross-checked against the register.
+#     THE DIRECTION MATTERS. The outward check — walk the register's rows and confirm each is
+#     owned — can only fail when a row exists, so it passes silently on a missing one. That is
+#     the defect AGENTS.md names, and it shipped: LDB-06 D7 declared A-07e and A-07f filed, an
+#     examiner reported them absent on 2026-08-15, and the 2026-08-17 gate recorded criterion 2
+#     as "PASS with a caveat" and approved anyway. This check runs INWARD instead.
+printf '9. cited A-NN identifiers vs the assumption register\n'
+REG=docs/superpowers/specs/assumption-register.md
+if [ -f "$REG" ]; then
+  ROWS=$(grep -oE '^\| `?A-[0-9]+[a-z]?`? \|' "$REG" | grep -oE 'A-[0-9]+[a-z]?' | sort -u)
+  CITED=$(grep -rhoE '\bA-[0-9]{2}[a-z]?\b' docs/superpowers/specs/*.md ROADMAP.md 2>/dev/null | sort -u)
+  ROW_N=$(printf '%s\n' "$ROWS" | grep -c . || true)
+  CITED_N=$(printf '%s\n' "$CITED" | grep -c . || true)
+  # Deliberate non-rows, each recorded in the register's own closing note as drafted-then-dropped.
+  KNOWN='A-07d A-25'
+  MISSING=0
+  for id in $CITED; do
+    printf '%s\n' "$ROWS" | grep -qx "$id" && continue
+    if printf '%s' "$KNOWN" | grep -qw "$id"; then continue; fi
+    fail "$id is cited in a spec or ROADMAP.md but has no row in $REG."
+    note "add the row, or record it in the register's closing note as deliberately never filed"
+    MISSING=$((MISSING + 1))
+  done
+  note "register rows: $ROW_N; distinct A-NN cited: $CITED_N; cited without a row: $MISSING"
+  note "known non-rows, excluded by name: $KNOWN (recorded in the register as never filed)"
+  note "limit, stated: this reads identifiers, not whether a row's content matches its citation"
+else
+  fail "no $REG — the inward cross-check cannot run, and silence here would be absence-as-proof."
+fi
+
+# 10 — line anchors that have gone stale because the cited content MOVED.
+#     The documented failure: the bridge cited 2026-08-08-session-composition.md:801-805, which
+#     was correct at 63c35a4 and stale by the end of the same day as the spec grew ~120 lines.
+#     Checks 1-8 passed clean over it. A range check would ALSO have passed — the file still had
+#     800+ lines — so this compares the cited line's TEXT at the citing document's last commit
+#     against the target today, and reports only when that text has moved elsewhere in the file.
+#     An edit in place is not anchor drift and is counted separately, not failed.
+printf '10. line anchors vs where the cited text actually sits\n'
+SPECDIR=docs/superpowers/specs
+A_TOTAL=0; A_CHECKED=0; A_UNRES=0; A_MOVED=0; A_EDITED=0; A_HIST=0; A_NEW=0
+for D in $SPECDIR/*.md ROADMAP.md; do
+  [ -f "$D" ] || continue
+  DC=$(git log -1 --format=%H -- "$D" 2>/dev/null)
+  [ -z "$DC" ] && continue
+  while IFS= read -r hit; do
+    [ -z "$hit" ] && continue
+    dln=${hit%%:*}; cite=${hit#*:}
+    A_TOTAL=$((A_TOTAL + 1))
+    ctx=$(sed -n "${dln}p" "$D")
+    # A quoted historical anchor is not a live citation. The repo's own repair for a stale
+    # anchor is to quote it and re-cite by decision, and that quote must not re-fire forever.
+    if printf '%s' "$ctx" | grep -qiE -- 'previously read|cited by decision|superseded|was correct when written|stale by|re-anchored'; then
+      A_HIST=$((A_HIST + 1)); continue
+    fi
+    # An anchor written in an uncommitted edit has no baseline to compare against, and
+    # comparing it to the OLD target would flag every fresh anchor repair as drift. If this
+    # exact citing line is absent from the committed document, the anchor is new — skip it.
+    if ! git show "$DC:$D" 2>/dev/null | grep -qxF -- "$ctx"; then
+      A_NEW=$((A_NEW + 1)); continue
+    fi
+    path=${cite%%:*}; start=${cite##*:}; start=${start%%-*}
+    T=""
+    if [ -f "$path" ]; then T="$path"; elif [ -f "$SPECDIR/$path" ]; then T="$SPECDIR/$path"; fi
+    if [ -z "$T" ] || [ "$T" = "$D" ]; then A_UNRES=$((A_UNRES + 1)); continue; fi
+    old=$(git show "$DC:$T" 2>/dev/null | sed -n "${start}p")
+    if [ -z "$old" ]; then A_UNRES=$((A_UNRES + 1)); continue; fi
+    new=$(sed -n "${start}p" "$T" 2>/dev/null)
+    A_CHECKED=$((A_CHECKED + 1))
+    [ "$old" = "$new" ] && continue
+    at=$(grep -nxF -- "$old" "$T" 2>/dev/null | head -1 | cut -d: -f1)
+    if [ -n "$at" ]; then
+      A_MOVED=$((A_MOVED + 1))
+      fail "$D:$dln cites $T:$start, but that text now sits at $T:$at."
+      note "re-cite by decision rather than by line, or update the anchor to :$at"
+    else
+      A_EDITED=$((A_EDITED + 1))
+    fi
+  done <<EOF
+$(grep -nohE '[A-Za-z0-9_./-]+\.(md|ts|js|rs|json|sh):[0-9]+' "$D" 2>/dev/null)
+EOF
+done
+note "anchors seen: $A_TOTAL; compared against history: $A_CHECKED; MOVED: $A_MOVED"
+note "quoted historical anchors skipped: $A_HIST; cited text edited in place (not drift): $A_EDITED"
+note "not comparable: $A_UNRES — path did not resolve, or the target had no such line at that commit"
+note "new since the citing document's last commit (no baseline): $A_NEW"
+note "limit, stated: a NEW anchor is unverifiable here by construction — it is read on the next run, once committed"
+note "limit, stated: for a RANGE (:N-M) only the start line N is tracked; N moving is not proof that what the range pointed at moved with it"
+note "limit, stated: it reports that text MOVED, never that a citation was correct to begin with — a wrong anchor written correctly-shaped passes"
+
 printf '\n'
 if [ "$FAIL" -eq 0 ]; then
-  printf 'No document drift detected across 8 checks.\n'
+  printf 'No document drift detected across 10 checks.\n'
 else
   printf 'Document drift detected. Each pair above has drifted before; fix the document, not the check.\n'
 fi

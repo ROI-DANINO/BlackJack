@@ -125,7 +125,9 @@ rediscover them.
 - Bankroll and learning score stay visually distinct; a lucky wrong decision must not receive the
   same celebration as a correct one (`docs/imports/v2-research-2026-07-11/research/v2-research-06-ux-foundations.md:87,135-142`).
 - Confidence must never be used as a mastery signal
-  (`docs/superpowers/specs/2026-07-22-product-design-inputs.md:210`).
+  (`docs/superpowers/specs/2026-07-22-product-design-inputs.md:278`, §1.5 — *"Confidence must not be
+  a mastery signal"*. Re-anchored 2026-08-22 from `:210`, where the content no longer sits; cited by
+  content as well as by line so the next move is self-correcting.)
 
 ## What this unblocks
 

@@ -623,7 +623,12 @@ withdrew.** It is kept rather than deleted because the evidence cost it named is
 withdrawal, and because a reader who sees only the final state cannot tell whether the override was
 considered and rejected or never noticed.
 
-**The rule, unchanged** (`2026-08-08-session-composition.md:844-846`, owner decision 2026-08-17):
+**The rule, unchanged** — `2026-08-08-session-composition.md`, the two-clause legality rule beginning
+*"An Activity type is legal in a session shape when both hold"* (owner decision 2026-08-17). *Cited by
+content, not by line. It read `:844-846`; that range was already stale — the rule heading now sits at
+`:880` — and a first repair on 2026-08-22 wrongly moved it to `:846-848` by trusting a drift report
+that tracks a range's **start line**, not the thing the range was pointing at. Found by re-reading the
+file, not by the check, which by construction cannot verify an anchor written in the same edit.*
 
 > An Activity type is legal in a session shape when both hold:
 > 1. Its `provenance` list contains the shape's Provenance mode.
@@ -700,8 +705,26 @@ validation measure moved into its own row `A-32`.
 rewords the phase-5 exit condition; that condition lives in **two** files, and the earlier draft's
 landing table named **neither**. A ruling with no target file is a ruling that does not happen —
 which is the exact defect `A-30` itself demonstrates and this card exists to repair. Counted
-positively on 2026-08-19: `grep -rn "recorded attempt data"` returns 2 hits,
-`2026-08-19-learning-design-blueprint.md:313` and `ROADMAP.md:187`, and no others.
+positively on 2026-08-19 — **this count and its anchors are superseded; see the note below, and do
+not re-run it as written**: `grep -rn "recorded attempt data"` returned 2 hits at
+`2026-08-19-learning-design-blueprint.md:313` — **superseded anchor, content now at :373** — and
+`ROADMAP.md:187`, and no others.
+
+> **That count is not reproducible today, and the reason is a defect in the *method*, not in the
+> landing** — recorded 2026-08-22 rather than quietly re-run. **The rewording did land in both files
+> and still stands**, verified by reading them: `ROADMAP.md` §Phase 5's exit criteria carry *"a named
+> field or pair of fields recorded per attempt and a written query that would answer it"*, and the
+> blueprint carries the same at §7.3. But `grep -rn "recorded attempt data"` now returns **0** hits in
+> both, because in each file the phrase **wraps across a line break** — `recorded` ends one line and
+> `attempt data` begins the next. A line-oriented grep over reflowed prose returns zero for text that
+> is present. **A positive count is only as good as the tool that produced it**, and this one silently
+> became a zero-count over unchanged content. Where a phrase must be counted, normalise the newlines
+> first (`tr '\n' ' '`), which returns 1 in each file today.
+>
+> **The `:313` anchor is also stale** — that content now sits at `2026-08-19-learning-design-blueprint.md:373`,
+> moved by the 2026-08-22 reassembly. Re-cited **by decision, not by line**: the exit condition is
+> §7.3's opening paragraph in the blueprint and the *Exit criteria* paragraph of `ROADMAP.md`
+> §Phase 5. Found by `check-doc-drift.sh` check 10 on the day that check shipped.
 
 ---
 
