@@ -173,7 +173,7 @@ weight table, no decay constant, no per-family rule.
 | D8 | Mastery **does not decay with time**; `Review due` is triggered by the window falling, never the calendar | `[Evidence-backed]`, `[Product judgement]` — `A-06` takes no sub-row |
 | D9 | **Mastery locks nothing** — it drives a strong recommendation and gates no content | `[Evidence-backed]` |
 | D10 | The criteria are **published** — rule and live count both | `[Product judgement]` |
-| D11 | The six `LDB-03` parameter values owned here (the board's handoff named five; `space` was omitted) | — |
+| D11 | The six `LDB-03` parameter values owned here (the board's handoff named five; `space` was omitted) | `[Product judgement]` × 6 — each parameter a design choice, read first-hand at `2026-08-03-evidence-and-mastery-rules.md:433-446`; `[Evidence-backed]` on the board text for the five-versus-six discrepancy. `A-04` and `A-21` are recorded there as **unspent**. `scoringRule` also appears at D12, labelled there. *Labelled 2026-09-05: this cell read `—`, the only one of the 91 rows without a label, so criterion 1's count of 91 was reachable only by counting the row that failed it.* |
 | D12 | `predict-then-reveal` scores a **signed error and carries no bar** | `[VERIFIED]` bridge §1.2, `[Product judgement]` |
 | D13 | `k = 8`, `n = 10` | **`[Assumption]` — `A-07a`** |
 | D14 | `K-U6-003` landed in corrected form | `[Evidence-backed]`, `[Product judgement]` |
@@ -573,9 +573,18 @@ this card had been carrying unrecorded since `LDB-06` D6.
    in preference to the other.
 2. **The register has no unowned row, and no owned assumption is missing a row.** **Both directions
    checked mechanically, because one direction is the check that cannot fail.**
-   - *Outward:* **34 rows**, every live one naming a validation method with a declared mode. The three
-     that name no mode are exactly `A-01` (struck), `A-10` (retired, as its own row predicted) and
-     `A-14` (dormant, reopening condition stated, original method held).
+   - *Outward:* **every live row names a validation method with a declared mode.** The rows naming
+     no mode are exactly three, enumerated positively: `A-01` (struck), `A-10` (retired, as its own
+     row predicted) and `A-14` (dormant, reopening condition stated, original method held).
+
+     *Corrected 2026-09-05.* This read ***"34 rows"*** — written 2026-08-19 (`65821e6`) and never
+     moved as `A-30` through `A-35` were filed. The register held **40** rows at the correction, and
+     the outward direction was re-run over all 40: the three exceptions are unchanged, so the check
+     held while its stated count did not. **The count is now deliberately absent**, for exactly the
+     reason criterion 1's correction note gives one paragraph above — a criterion that states a count
+     goes stale independently of the thing it counts. That note declared the failure could not recur
+     and then did not fire on the row count twelve lines below itself. The exception list is what was
+     ever doing the work.
    - *Inward:* every `A-NN` identifier cited in any spec or `ROADMAP.md` cross-checked against the
      register. **Two are absent and both are accounted for**: `A-07d` and `A-25` are recorded at
      `assumption-register.md:86-91` as drafted-then-dropped and deliberately never filed. This
@@ -713,7 +722,9 @@ Unit may not span Subjects.
 
 ### 14.2 The cut — 8 Units, 18 Skills, 17 gated
 
-Computed from `2026-08-01-skill-graph.json`, over all 18 prerequisite edges.
+Computed from `2026-08-01-skill-graph.json`, over all **21** prerequisite edges.
+
+> *Corrected 2026-09-05.* This said **18** here and again in §14.3. **18 is the Skill count**, written in as the edge count; the graph declares **21** edges over its 18 Skills — counted by walking `skills[].prerequisites` in the JSON. The enumeration below was always the full 21 and matches the JSON edge for edge, so the cut and its closure never depended on the wrong number; **§14.3's claim about the alternative order did**, and now carries its own enumeration.
 
 | Unit | Title | Skills | Count |
 |---|---|---|---|
@@ -747,8 +758,36 @@ A1  A2  │  B1  B2  │  A3  A4  │  B3  │  C1
 ```
 
 Both this and the subject-blocked alternative (`A1 A2 A3 A4 │ B1 B2 B3 │ C1`) are **fully
-prerequisite-closed** — each was checked against all 18 edges — so the graph does not decide this and
-it is purely a product call.
+prerequisite-closed** — so the graph does not decide this and it is purely a product call.
+
+**Both checked positively, edge by edge, rather than asserted against a count.** *Added 2026-09-05:
+this clause read "each was checked against all 18 edges", and 18 is the Skill count — see §14.2. A
+claim resting on a wrong count and no enumeration is the shape this repository keeps failing on, so
+the enumeration is written out.* The 21 edges of §14.2 collapse to **13 distinct Unit-to-Unit pairs**;
+a cut is closed under an order iff every dependent Unit's position is ≥ its prerequisite's.
+
+| Unit pair (dependent ← prerequisite) | Edges | Interleaved `A1 A2 B1 B2 A3 A4 B3 C1` | Subject-blocked `A1 A2 A3 A4 B1 B2 B3 C1` |
+|---|---|---|---|
+| `A1` ← `A1` | 3 | 1 ≥ 1 ✓ | 1 ≥ 1 ✓ |
+| `A2` ← `A1` | 1 | 2 ≥ 1 ✓ | 2 ≥ 1 ✓ |
+| `A3` ← `A1` | 2 | 5 ≥ 1 ✓ | 3 ≥ 1 ✓ |
+| `A3` ← `A3` | 1 | 5 ≥ 5 ✓ | 3 ≥ 3 ✓ |
+| `A4` ← `A1` | 1 | 6 ≥ 1 ✓ | 4 ≥ 1 ✓ |
+| `A4` ← `A3` | 2 | 6 ≥ 5 ✓ | 4 ≥ 3 ✓ |
+| `B1` ← `A1` | 3 | 3 ≥ 1 ✓ | 5 ≥ 1 ✓ |
+| `B2` ← `A2` | 1 | 4 ≥ 2 ✓ | 6 ≥ 2 ✓ |
+| `B2` ← `B1` | 1 | 4 ≥ 3 ✓ | 6 ≥ 5 ✓ |
+| `B2` ← `B2` | 1 | 4 ≥ 4 ✓ | 6 ≥ 6 ✓ |
+| `B3` ← `A3` | 2 | 7 ≥ 5 ✓ | 7 ≥ 3 ✓ |
+| `B3` ← `B2` | 1 | 7 ≥ 4 ✓ | 7 ≥ 6 ✓ |
+| `C1` ← `A4` | 2 | 8 ≥ 6 ✓ | 8 ≥ 4 ✓ |
+| **Total** | **21** | **closed** | **closed** |
+
+**What the enumeration shows that the count hid.** No edge points from a later Subject back into an
+earlier one — every cross-Subject edge runs `B←A` or `C←A`, never `A←B`. That is *why* both orders
+close, and it means any interleaving preserving each Subject's internal order is also legal. The
+graph does not narrow the field to two; it leaves it wide, and §14.3 picks one on product grounds
+alone.
 
 **Chosen because the strategy chart appears at Unit 4 of 8 rather than Unit 6 of 8.** The confirmed
 phase-5 slice is `deal-and-decide`, which is `primaryFor` `strategy-action`, `classify-hand` and
