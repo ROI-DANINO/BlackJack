@@ -4,8 +4,8 @@ The canonical vocabulary for this project. A glossary and nothing else: no desig
 implementation detail, no rationale. Decisions live in `journal/decisions.md`; designs live in
 `docs/superpowers/specs/`.
 
-Terms land here the moment a naming collision is resolved, so the resolution is visible to every
-later card, document, and identifier rather than to one design doc.
+Terms land here the moment a naming collision is resolved. Current product scope is governed by
+`docs/superpowers/specs/2026-09-05-playful-learning-direction.md`. Detailed LDB session/window vocabulary below describes retained design candidates where that decision delta supersedes the old universal contract.
 
 ## Learning model
 
@@ -14,8 +14,8 @@ A single trainable thing the learner can do. The node type of the skill graph.
 _Avoid_: Capability, outcome (as a noun for the node), learning target
 
 **Learning outcome**:
-The sentence stated about one Skill, phrased as an observable decision behaviour — what the learner
-does, given what. Exactly one per Skill.
+The observable thing a learner can do given a situation, including conceptual reasoning and
+statistical predictions as well as blackjack decisions. Exactly one per Skill.
 _Avoid_: Objective, competency, can-do statement
 
 **Prerequisite**:
@@ -29,11 +29,9 @@ do not overlap as containers, but a Skill may be exercised from more than one.
 _Avoid_: Cluster, module, course, topic, area
 
 **Unit**:
-A level in the game: a named group of Skills inside one Subject that a learner clears as a whole.
-Units are **ordered and they lock** — the learner moves forward one Unit at a time, moves backward
-freely over any Unit already cleared, and reaches a Unit further ahead only by clearing a Challenge on
-what they are skipping. Where the boundaries fall is a **sequencing choice**, not a Prerequisite claim, and
-it is registered as one (`A-30`).
+A named group of learning content and Skills with a suitable completion challenge. The prior
+eight-Unit cut and universal dealt-hand skip test are retained candidates, not the current course
+contract. Unit ordering and locks are product design choices, not comprehension dependencies.
 _Avoid_: Stage, module, chapter, lesson, tier
 
 **Grading authority**:
@@ -153,8 +151,9 @@ run (`LDB-11` D16).
 _Avoid_: Closing run (when the Challenge's proof is meant), final round
 
 **Challenge**:
-A learner's claim on a Skill or Unit ahead of them, tested: a Coached session followed by a Proving
-run over the claimed material. A **structure**, not a session shape (`LDB-11`).
+A bounded opportunity to apply understanding or playing skill. Its assessment fits the learning
+outcome. The LDB-11 Coached/Proving sequence is a retained strategy-assessment candidate, not the
+required structure of every challenge.
 _Avoid_: Test, skip-test, exam, assessment, final
 
 **Skill Challenge**:
@@ -216,7 +215,7 @@ never with hand outcome. Drives difficulty only.
 _Avoid_: XP, level, mastery, rank (when the number is meant rather than its display)
 
 **Free Play**:
-The honest casino simulator: real rules, real settlement, a real Table stack.
+Accurate blackjack table play with persistent chips, real rules and settlement. It can affect the Wallet.
 _Avoid_: Casino mode (when the product surface is meant), sandbox, practice
 
 **Practice**:
@@ -224,6 +223,11 @@ The always-available learning mode over already-covered material, which pays int
 to keep "free" meaning only "no chips required to enter". The naming call against "Free Learn" was
 settled here on 2026-08-22 (`LDB-07`); **Free Learn is retired** and survives only as a term to avoid.
 _Avoid_: Free learn, free play, drill, grind
+
+**Practice table**:
+Always-available table play using temporary session chips. No effect on Wallet, XP, Player score,
+Mastery or Recommender; in-session feedback is allowed. Distinct from learning Practice.
+_Avoid_: Practice (unqualified when the table is meant)
 
 ## Strategy decisions
 

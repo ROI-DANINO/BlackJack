@@ -1541,3 +1541,8 @@ in Active with everything it owed landed and verified in its target file. Phase 
 record. Standing into phase 5, unchanged: `LDB-06` §11 item 8's window predicate as tests, one clause
 per test; `LDB-11` D15's seed and decision sequence persisting per session. Open but bounded: the
 storage boundary owed by `LDB-06` D17.
+
+
+## 2026-09-05 — Playful learning direction and bounded next build
+
+[Product judgement; owner-approved direction in conversation.] Teach blackjack and statistical understanding through an attractive playful learning path, with persistent chip-based Free Play and an isolated Practice table. Learning completion pays base chips with possible performance bonus. Counting remains expansion. Replace the old no-EV/no-maths restriction, warm-up-only activities, universal dealt-hand challenge, mandatory eight-Unit migration and nine-item next-build bundle with the explicit decision delta in `docs/superpowers/specs/2026-09-05-playful-learning-direction.md`. Keep completed code and research; passing old design checks does not validate the new direction. First build candidate: the bounded ace activity prototype; it is not the ten-minute experience. A-36 through A-38 record untested product effects. This entry does not approve the old blueprint wholesale or claim any implementation or playtest.

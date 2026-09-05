@@ -4,7 +4,7 @@
 > Authoritative per `journal/docs-map.md`.
 
 ## Mission
-Build a Duolingo-like blackjack training game that feels approachable while modeling real shoe blackjack accurately enough for Basic Strategy, card counting, and later casino-like training.
+Build an attractive Duolingo/Brilliant-inspired game that teaches blackjack and statistical thinking through play, with an accurate chip-based Free Play table and a separate Practice table. Counting and casino-like training are later expansion. Current product decisions and explicit replacements of older LDB scope: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md`.
 
 ## Constraints
 - Treat this as a training product, not gambling software.

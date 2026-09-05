@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "card": "LDB-01",
   "spec": "docs/superpowers/specs/2026-08-01-learning-outcomes-and-skill-graph.md",
-  "note": "Design data, not shipped content. Phase 5 decides where this lives in the source tree. Every Learning outcome names a grading authority; an outcome that could only name 'none' is not observable and is not here.",
+  "note": "PREVIOUS-DESIGN SNAPSHOT (2026-09-05): not runtime content and not the next-build specification. Curriculum exclusions, exhaustiveness and delivery scope are superseded by docs/superpowers/specs/2026-09-05-playful-learning-direction.md section 4. Historical mappings below are preserved for reuse and integrity checks. Design data, not shipped content. Phase 5 decides where this lives in the source tree. Every Learning outcome names a grading authority; an outcome that could only name 'none' is not observable and is not here.",
 
   "conditionAxes": [
     { "id": "support", "values": ["table-open", "table-closed"], "primary": true, "basis": "owner decision 2026-07-23 — tableOpen is the project's mastery axis" },

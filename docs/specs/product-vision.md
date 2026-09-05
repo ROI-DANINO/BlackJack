@@ -1,115 +1,63 @@
-# Product Vision — Blackjack Training Game
+# Product Vision — Playful Blackjack Learning
 
-> Status: directional. This is the durable product north star, not an implementation task list.
+> Status: owner-approved direction, 2026-09-05. Product judgement; the intended learning and engagement effects require playtesting.
 
-## Core Idea
-Build a Duolingo-like training game for learning blackjack and card counting. *(Product judgement
-— a positioning/genre commitment, not an empirical claim; audited 2026-07-26, K-U2-001.)*
+## Core idea
 
-This is not a gambling app and not a casual blackjack toy. The long-term goal is to train
-a player to think and act like a realistic casino blackjack player:
+An attractive, approachable game that teaches blackjack and statistical thinking through play.
+Duolingo and Brilliant are experience references: short approachable encounters, experimentation,
+useful feedback and satisfying progress. They are not proof that our activities work.
 
-1. Play Basic Strategy almost without mistakes.
-2. Track the table and understand the shoe.
-3. Learn running count.
-4. Learn true count.
-5. Apply count-aware decisions.
-6. Handle multiple seats, faster pace, and real casino-like cognitive load.
-7. Later: bet sizing, table selection, advanced count systems, casino rule variations, and CSM/ASM table variants.
+Learning blackjack includes understanding its rules and actions, improving decisions, and exploring
+probability, expected value and variance. Statistical understanding is also a goal in its own right.
+Card counting and casino-like cognitive load belong to later expansion.
 
-*(Product judgement + COVERAGE GAP — no evidence held bears on this ladder's ordering or rungs;
-audited 2026-07-26, K-U2-003.)*
+## Three connected experiences
 
-## Product Feel
-The product should eventually feel like:
+- **Learning path:** interactive lessons and challenges, with concise explanations where useful.
+  Completing learning sincerely earns base chips, with a possible performance bonus.
+- **Free Play:** accurate blackjack with persistent chips that can be won, lost and exhausted.
+  Lessons and challenges offer a way to earn more. Money does not buy chips.
+- **Practice table:** always-available table play with temporary session chips and optional feedback.
+  It has no effect on Wallet, XP, Player score, Mastery or Recommender.
 
-- a fun, light, approachable training game;
-- short learning loops, like Duolingo; *(Assumption — sets session length; an open conflict against
-  Brilliant's longer sessions; audited 2026-07-26, K-U2-002.)*
-- precise and serious under the hood;
-- realistic enough that the user feels like they are training for a real table;
-- not an academic simulator with boring UI;
-- not a gambling product centered on chips, bankroll, or casino fantasy.
+The practice table is distinct from learning Practice over already-covered material.
+The economy must not be the only reason a learner tolerates a lesson; test that risk explicitly.
 
-Early milestones are more technical because they build the foundations, but the project must not
-drift into a dry debugging tool. The long-term vision is a fun learning game with strong simulation
-accuracy.
+## First experience
 
-## Platform and Experience Direction
+A beginner should want to spend about ten minutes and leave with an orientation to the rules and
+basic actions. This is not a promise of mastery in ten minutes. Attractive presentation belongs in
+this first experience, not behind completion of the whole learning backend.
 
-Ship and prove the learning product on the web first. Mobile is a later product surface, not a
-preselected framework or a requirement to make every current implementation cross-platform. When
-mobile becomes active, choose its runtime against the real WASM, lifecycle, accessibility, and
-delivery constraints through the project's admission process.
+Start by testing one small activity, then compose a coherent opening connecting learning and table
+play. A successful isolated puzzle is not a successful ten-minute experience.
 
-The product should grow into one coherent app-shell and game experience rather than a collection of
-disconnected simulator and lesson screens. Navigation, learning progress, Free Play, and feedback
-should feel like parts of the same training product even when their implementation slices land at
-different times.
+## Teaching and feedback
 
-Success, failure, and instructional feedback must remain understandable without color alone. Use
-text, shape, iconography, and other accessible cues as appropriate, and design motion so future
-reduced-motion needs can be respected. Detailed visual rules belong to the visual-system design and
-research cycle, not this north-star document.
+Use exploration, construction, prediction and decisions when they serve the learning outcome.
+Not every useful explanation needs to become a replayable mini-game. Activities can teach inside
+ordinary lessons; they are not restricted to assessment warm-ups.
 
-## Main Modes
-### Learning Path
-Short, focused units. Each unit trains a specific skill, but learning should happen through
-gameplay decisions rather than long lectures.
+Distinguish completion, conceptual understanding and playing skill. An end-of-unit challenge should
+fit its content. A statistical prediction and a real dealt-hand decision can require different
+assessment formats; neither is automatically evidence of mastery.
 
-Learning loop:
+Keep decision quality separate from hand outcome: a sound decision may lose and a poor one may win.
+Feedback must be understandable without color alone; respect reduced-motion needs. Engine-owned
+rules and totals remain authoritative, not AI-generated judgements.
 
-```text
-short drill -> decision -> feedback -> weakness detection -> targeted repetition -> mastery gate
-```
+## Simulation and platform
 
-### Free Play
-A real table mode where the user can simply sit and play.
+Free Play and Practice table deal from an honest ordered shoe with traceable card identities,
+ruleset-aware legal actions and settlement. Puzzles may use explicitly arranged cards, but never
+pretend the learner can select future cards in real blackjack. Keep simulation UI-independent.
 
-Free Play should not manipulate cards for lesson purposes. Cards come from the actual shoe.
-The learning layer helps around the game through optional table access, hints, count tools,
-and post-session feedback.
+Web first. Mobile, accounts, sync and multiplayer remain need-activated future capabilities subject
+to the existing stack admission requirements.
 
-## Educational Philosophy
-The game teaches execution first.
+## Current design
 
-The goal is not to make the player a blackjack theorist. Explanations should be short and
-useful, serving correct play and long-term mastery.
-
-*(Product judgement — held evidence runs mildly against this flat framing; worked examples reduce
-novice load, a nuance it drops; audited 2026-07-26, K-U2-010.)*
-
-Feedback judges the quality of a decision against the active ruleset-matched strategy, never the
-hand result. *(Product judgement, Layer 1: COVERAGE GAP — no reviewed source tests gambling outcome
-bias; correct by game mathematics and product integrity, not a learning-science finding; audited
-2026-07-26, K-U2-007.)* A correct decision can lose and a poor decision can win; the product must
-show those as separate facts so it teaches skill rather than superstition.
-
-Motivation should reward practice, comprehension, and improving decision quality. It must not
-celebrate money won, encourage loss chasing, imply guaranteed profit, or punish a learner for
-ending a session.
-
-Basic Strategy should be learned in small chunks but tested in realistic mixtures. The player
-should gradually move from:
-
-1. playing with the table open;
-2. playing without the table but without time pressure;
-3. playing without the table at realistic table pace.
-
-*(Assumption — the principle of fading assistance is evidence-backed; these specific three rungs
-are not; audited 2026-07-26, K-U2-006.)*
-
-## What Makes This Different
-The simulation must respect the logic of real blackjack:
-
-- a shoe is created before play;
-- decks have IDs;
-- cards have traceable origins;
-- cards are shuffled once into a sequence;
-- cards are dealt from that sequence;
-- cards are not generated randomly one by one;
-- cut card / penetration matters;
-- session logs can be replayed and debugged.
-
-This matters because blackjack and card counting are statistical. The game must not fake
-the table.
+The decision delta, superseded scope, three horizons and first activity candidate live in
+`docs/superpowers/specs/2026-09-05-playful-learning-direction.md`.
+`ROADMAP.md` owns delivery order; `journal/tasks.md` owns current execution.

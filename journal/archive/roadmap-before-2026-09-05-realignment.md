@@ -1,0 +1,352 @@
+> Historical snapshot before the 2026-09-05 product realignment. Not current authority. Read the root ROADMAP.md and docs/superpowers/specs/2026-09-05-playful-learning-direction.md for the replacement.
+
+# Roadmap
+
+> Destination, layers, phases, exit criteria.
+>
+> Two axes, deliberately separate. **Layers** are the architecture — what the software is made of.
+> They mature independently and never end. **Phases** are the delivery sequence — what gets built
+> when. A phase names which layers it advances. `journal/milestone.md` binds to the numbered
+> phase list via `roadmap_step:`.
+>
+> QA gates: every feature ships with a scoped feature QA; every phase closes with a milestone QA
+> pack run before the next opens (`docs/specs/qa-playtest-process.md`).
+
+## Destination
+
+An approachable blackjack training game with accurate shoe simulation, Free Play, Basic Strategy
+mastery, card counting practice, and later casino-like cognitive load.
+
+The product is a training app with gameplay, not a gambling app and not an academic simulator.
+Free Play deals from the real shoe; learning layers may add hints, feedback, and reports around
+the hand, but they never rig card flow for lessons.
+
+Delivery is web-first. Mobile is a later surface, activated only after the web learning experience
+proves useful and a mobile runtime passes the Tool & Runtime Admission Protocol.
+
+**The long-run destination is multi-user**: accounts, cross-device progress, multiplayer Free Play
+tables with real people at them, and leaderboards ranked on **mastery** — never on chips or
+winnings, which `LDB-05` forbids as loss-chasing. `[Product judgement]`, recorded 2026-08-17 from
+the owner's stated direction. Not a dated commitment and not a scheduled phase.
+
+It is written here so the engine boundary stays a decision rather than an accident. Ordinary
+training is client-authoritative and the browser can see the entire undealt shoe, so multiplayer and
+any trustworthy leaderboard imply **server authority — an architecture change, not a feature**
+(`CLOUD-06`; see the Competitive / certified authority row under Need-activated platform
+capabilities). Supabase is the banked provider for the accounts-and-sync half
+(`journal/decisions.md` 2026-08-16) and does **not** address the authority half. Nothing is admitted
+until a trigger fires: a second device, a second user, or server authority.
+
+## The three layers
+
+These are the same three tracks this roadmap has always carried, named for what they are. They are
+the durable architecture; they do not sequence work and they do not end.
+
+### L1 — Core engines (blackjack truth)
+
+Ordered-shoe simulation, rules, settlement, replayable logs, ruleset-matched strategy, later
+counting truth and table/machine variants.
+
+**State: mature and proven.** Rust core with deterministic seeded shoes, traceable card origins,
+verified H17/S17 strategy profiles, and a single JSON command crossing the WASM boundary that the
+CLI and the browser share by construction. 80 Rust tests (counted 2026-07-26; an inflated count
+was corrected once before, so this one is a count and not a recollection), golden fixtures guarding
+the wire contract from the TypeScript side.
+
+**Known gaps.** The strategy oracle exists and is exhaustively chart-tested but is **not a
+`CoreCommand`** — the browser cannot ask what the correct play is. Surrender is not modelled at
+all; insurance is auto-decline only. No test runs on the wasm32 target, so native↔WASM parity is
+guarded by a freshness script rather than proven. That script does not watch `Cargo.lock` or
+`build-wasm.sh`; the gap has ridden past two slices.
+
+**Evidence posture.** No research phase bears on this layer, and none needs to. Its authority is
+code, tests, and `docs/specs/research-brief.md`. A task claiming research backing for an L1
+decision is citing something that does not exist.
+
+### L2 — Learning material (curriculum, activities, mastery)
+
+Typed curriculum, deterministic lesson flow, engine-owned grading, feedback, practice, evidence,
+mastery, and later counting instruction.
+
+**State: deeply researched, shallowly built.** Nine mechanics units ship as authored data with a
+referential-integrity validator and a content-agnostic renderer. Underneath them, the mastery model
+is one line — every required check answered correctly once, ever — and `validate.ts` restricts
+required checks to multiple-choice questions, so **a played hand can never satisfy completion**.
+Completion gates nothing. A full durable-progress schema exists with an IndexedDB adapter, passes
+28/28 contract gates in two browsers, and **has no product consumer**.
+
+**The disqualifying constraint.** The project's own evidence bridge rules that a mastery model
+which cannot ingest played-hand evidence is disqualified, and that the measure is play, not quiz
+scores. The shipped model is structurally incapable of both.
+
+**Evidence posture.** Roughly 90 of the 96 Phase 1 findings, all 20 Phase 3 findings, and all 41
+activity requirements bear on this layer. Index:
+`docs/superpowers/research/evidence-index/`. What may be asserted, what is product judgement, and
+what is an untested assumption is settled in `P2-verdict-catalog.md` §Bottom line.
+
+### L3 — Visual system (product experience)
+
+Coherent navigation, onboarding, game feel, accessible feedback, responsive presentation, and later
+mobile delivery.
+
+**State: does not exist.** There is no CSS anywhere in `web/`. Navigation is a two-value `useState`
+with two buttons — no router, no deep links, no history. The interface is unstyled semantic HTML
+and reads as a debug harness (`QA-014`, open).
+
+**Evidence posture.** Three Phase 1 findings touch this layer, all indirectly. Decisions here are
+**product judgement by default** — which is fine, provided they are labelled that way rather than
+dressed as evidence-backed. The one hard external constraint is accessibility, and a target WCAG
+conformance level must be stated before the requirement set is treated as one baseline: the
+reduced-motion element rests on SC 2.3.3, **Level AAA**, while the rest of the set is A or AA.
+
+## Delivery map
+
+Numbered phases. `journal/milestone.md` binds here via `roadmap_step:`, and every kanban milestone
+node's `Roadmap:` must equal the active number.
+
+1. [x] **Simulation foundations** — the L1 engine, Free Play, and an honest ordered shoe.
+2. [x] **Learning mechanics prototype** — nine Blackjack Foundations units, verified strategy profiles, and the durable-progress port. Built before it was designed; treated as a prototype, not a constraint.
+3. [x] **Research foundation** — evidence collection, a per-claim audit of the project's own learning claims, and the subject-matter top-up. Made the foundation trustworthy enough to design from; built no product. *(This is where the audit program's `P1`, `P2` and `P3` live. Those P-numbers are the research phases and are not delivery phases: `P4` ≙ phase 4, `P5` ≙ phase 5, and the charter's `P6` splits into phases 6 and 7. Directory names like `foundation-audit-p1/` use the audit numbering.)*
+4. [ ] **Learning design blueprint** (current) — the curriculum, skill graph, activity taxonomy, evidence and mastery rules, session shape, motivation economy, and interaction UX. Designs L2; builds nothing.
+5. [ ] **Vertical slice and learning proof** — build the L2 foundation and wire it into the surface that already exists, so real attempts produce real data and the playtest questions can be answered.
+6. [ ] **Visual system and first playable** — build L3 on a learning design that has been tested on a human; a coherent shell containing a first playable game with beginner learning material.
+7. [ ] **Expansion** — the full curriculum and activity catalog; strategy, table reading, and the counting on-ramp scaled to learner level.
+
+## Phase 4 — Learning design blueprint (current)
+
+**Exit criteria.** The owner approves a blueprint that says what is taught, in what order, through
+which activities, measured by what evidence — and approves the slice to build in Phase 5.
+
+**Deliverables — the list, not the status.**
+
+> **The status column was deleted 2026-08-15, by owner decision.** It said how many deliverables were
+> done and which, and it drifted against the board three times — on 2026-08-02, 2026-08-04, and
+> 2026-08-15, each time the same way, each time caught only because a `/start` reader compared it
+> against the board by hand. The proposed fix had been a seventh `check-doc-drift.sh` check. The
+> owner took the other option: **delete the duplicate rather than add a mechanism to watch it.**
+> `journal/tasks.md`'s Done lane is now the single record of what is finished, and it is the one a
+> tool already validates.
+>
+> The list below survives because it defines phase 4's *scope*, which never drifted — only the status
+> did. Deliverable 8 in particular has no `LDB` card: it was approved 2026-07-25, before the board
+> existed, and deleting the whole table would have deleted the only record of it.
+
+| # | Deliverable | Where it is decided |
+|---|---|---|
+| 1 | Skill graph and prerequisites | `docs/superpowers/specs/2026-08-01-learning-outcomes-and-skill-graph.md` + `2026-08-01-skill-graph.json` (`LDB-01`) |
+| 2 | Learning outcomes — probability, EV and variance discharged **by decision behaviour, not by topic coverage** (amended 2026-08-01): they ship only where they change a decision at the table, with no separate maths Subject and no lesson unit. §1.7 `[VERIFIED]` is the ground — teaching the maths produced knowledge gain and no behaviour change. EV gets no Skill at all (`A-14` dormant, reopening condition recorded). | Same spec, §5 (`LDB-01`) |
+| 3 | Activity taxonomy | `docs/superpowers/specs/2026-08-01-activity-taxonomy-and-skill-mapping.md` + `2026-08-01-activity-taxonomy.json` (`LDB-03`) |
+| 4 | Which activity measures which capability | Same spec, the skill mapping half; all 32 pattern verdicts available as data in the JSON (`LDB-03`) |
+| 5 | Per-activity evidence and mastery rules — mastery is 8 of the last 10 table-closed presentations | `docs/superpowers/specs/2026-08-03-evidence-and-mastery-rules.md` (`LDB-04`) |
+| 6 | Session composition | `docs/superpowers/specs/2026-08-08-session-composition.md` (`LDB-06`) |
+| 7 | Interaction UX | `LDB-07` |
+| 8 | The first vertical slice, designed | `docs/superpowers/specs/2026-07-23-graded-decision-practice-design.md`, approved 2026-07-25. **No card** — it predates the board |
+| 9 | Motivation and economy — chips earned by winning **or** learning, money never buys chips, chips buy table time and nothing else, three meters never blended | `docs/superpowers/specs/2026-08-04-motivation-and-chips-economy.md`, answering `E-1`–`E-7` (`LDB-05`). The captured premise it supersedes is `docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md`, whose governing paragraph was amended at the gate |
+
+**A tenth and an eleventh, added 2026-08-15.** `LDB-09` re-verdicts the 19 catalog patterns nobody
+adopted, against a question never asked of them — *would this be good to play, accepting that it
+measures nothing* — and rules whether the eight `state-report` Skills keep Mastery bars. `LDB-10`
+lands the ten unapplied Phase 3 corrections. Both exist because of the same finding: **16 of the 17
+Mastery bars are reachable only through `deal-and-decide` or `state-report`** — a dealt hand, or a
+question about a dealt hand — which is the thing the catalog was commissioned to escape.
+*(Count corrected 2026-08-19 at the `LDB-08` assembly, from "17 of the 18". The union of the two
+types' `primaryFor` sets is 16 and reads 16 at every commit of `2026-08-01-activity-taxonomy.json`;
+there are 17 bars, not 18, because `variance-expectation` carries none per `LDB-04` D12. The finding
+stands at the same 94% and neither card's decisions move — see `LDB-09` §Problem Statement.)*
+
+**A tenth, added 2026-07-26: the activity-pattern catalog.** Every exercise format in every
+document this project holds is a dealt hand or a multiple-choice question. A sweep of the whole
+corpus for interactive, manipulable, or game-like formats returns essentially nothing. This is not
+a new idea —
+`docs/imports/v2-research-2026-07-11/research/v2-research-03-course-and-source-audit.md:116` names a
+competitor exercise-pattern catalog as a recommended research artifact, and it was never produced.
+The product's stated intent is Duolingo- and Brilliant-style learning games, not only blackjack
+hands, and nothing in the corpus supports that intent today.
+
+**Binding inputs.** `docs/superpowers/specs/2026-07-22-product-design-inputs.md` is what Phase 4 may
+assume. Its §0 states what may not be leaned on. Every numeric threshold, interval, and duration
+this phase picks is a product judgement until calibrated on this product's own data — the phrase
+"research-calibrated" is not available.
+
+**Order — intent; the board is the running order.** Broadly: outcomes and skill graph, the activity
+taxonomy, evidence and mastery rules, the economy, then session composition and interaction UX.
+
+The board (`journal/tasks.md`) is what actually sequences the work — its dependency graph and
+lane order, which `journal/docs-map.md` assigns priority to. Two deliberate departures from the
+prose above: **`LDB-02`, the pattern catalog, runs first or in parallel** — it is dependency-free
+research feeding the taxonomy, and it addresses the corpus's largest hole; and session composition
+may become selectable before the economy, which is acceptable. Priority is never encoded as a
+dependency.
+
+The one ordering that is not negotiable: **the economy comes after evidence and mastery rules.** Its
+load-bearing open question — whether a won hand returns chips — is an evidence-and-mastery question
+wearing an economy costume, and cannot be answered before what counts as learning evidence is
+decided.
+
+## Phase 5 — Vertical slice and learning proof
+
+**Exit criteria.** Real-player learning-integrity playtests pass, **and, for a declared subset of
+`P-1`…`P-5`, each question has a named field or pair of fields recorded per attempt and a written
+query that would answer it once enough data exists** — the instrument, not the verdict, and not from
+impression. *(Reworded 2026-08-22 at the `LDB-11` gate, D3: the earlier "is answered from recorded
+attempt data" was unmeetable at n = 1 — `A-24`, this product has one user — and the queries are
+written at `2026-08-19-learning-design-blueprint.md` §7.3.)* The subset is chosen at `LDB-08` when
+the slice is picked, and whatever slice is built must instrument it. The owner is currently the only
+user and runs the playtests himself.
+
+Without that second clause this phase can exit "passing" without answering the questions it exists
+to answer. The one existing instrumentation design covers `P-3` and `P-5`, hooks `P-1`, and does not
+cover `P-2` or `P-4` — and `LDB-08` is permitted to replace that design, which would silently take
+the instrumentation with it.
+
+**Amended 2026-08-01 (`LDB-01`, approved):** `P-2` and `P-4` are **declared unanswerable by
+this product**, not merely uncovered. `P-2` has no EV-instructed arm because EV is not taught
+explicitly; `P-4` has no heuristic-policy arm because the heuristic is adopted as an explanatory
+frame only. The candidate subset is therefore `P-1`, `P-3`, `P-5`. `LDB-08` still chooses the subset
+and must record these as **deliberate exclusions** — the standing slice design happening to cover
+exactly this set is convergence, not confirmation.
+
+**Scope.** Build the L2 foundation the blueprint specifies and wire it into the **existing**
+unstyled web surface. This phase does not build L3. It ends with something a person can sit down
+and use, ugly and complete, producing durable attempts.
+
+It wires both orphans: the strategy oracle gets a `CoreCommand` so the browser can ask what is
+correct, and `ProgressStore` gets its first product consumer.
+
+**The economy is built here — added 2026-08-15, by owner decision.** `LDB-05` was approved
+2026-08-05 and **no phase claimed it**: phase 5's scope named only the L2 foundation and the two
+orphans, phase 6 named L3, and the standing phase-5 candidate slice was designed 2026-07-23, before
+`LDB-05` existed. So the Wallet, the Buy-in and Table stack transfer, `Completion` and `Review due`
+paying, the practice trickle, XP, and the Player score are **phase 5**, on `LDB-05` §11's schema
+deltas 1–4 and 6. The Wallet is also what makes `ProgressStore`'s first consumer a real one, and
+`LDB-05` D3 — *learning is the only refill* — is unplayable without it.
+
+**Two of `LDB-05`'s six deltas are deferred to phase 6**, and the reason is reversal cost, not
+scope. Delta 5, the **table catalogue** (per Table tier: a minimum bet, a minimum buy-in, a maximum
+buy-in), lands in the **Rust engine** — `Ruleset` (`crates/blackjack-core/src/types.rs:63-74`)
+declares no bet limit of any kind and `validate_bet` (`session.rs:499-507`) enforces only `bet > 0`
+and the 3:2 even-units rule. That crosses the WASM boundary, the JSON wire contract, and the golden
+fixtures, and every number in it is invented (`A-07b`). Phase 5 therefore ships **one tier**, and
+delta 6 — Free Play's open/closed test as `wallet ≥ lowest tier's minimum buy-in` — reads that one
+tier rather than a hardcoded zero, which is the `LDB-05` D3 boundary stated correctly from the start.
+
+**Why playable rather than infrastructure-only.** Five questions are settled as unanswerable from
+literature and routed to playtest — whether decision/outcome separation can be trained, whether EV
+instruction changes play, whether mixed practice helps this audience or overwhelms beginners,
+whether a cheap false heuristic beats correct strategy for novices, and whether confidence rises
+faster than skill (`P-1`…`P-5`). None can be answered without a player, and no threshold this
+product uses can be calibrated without the data a player produces.
+
+The graded-decision-practice slice is the designed candidate; its 11-task plan is
+`docs/superpowers/plans/2026-07-23-graded-decision-practice.md`. It carries the overdue L1
+freshness-guard fix as a passenger.
+
+## Phase 6 — Visual system and first playable
+
+**Exit criteria.** A coherent app shell containing a first playable game that teaches someone who
+has never heard of blackjack: what it is, the basic rules, what actions exist, how you win, and why
+strategy matters.
+
+**Scope.** L3 from nothing — navigation and routing, onboarding, game feel, progression and mastery
+presentation, accessible feedback, responsive layout. State a target WCAG conformance level first.
+Plus the two `LDB-05` deltas phase 5 deferred: the **table catalogue** in the engine, and the Table
+tiers it denominates.
+
+This phase builds on a learning design that Phase 5 has tested on a human. Building the visual
+system before that test would style an untested pedagogy.
+
+**The shell pass is owed here, and is named now so it is not a discovery at the end — added
+2026-08-15, by owner decision.** `LDB-02` catalogued **exercise formats** from 24 products. Nothing
+in this project has ever catalogued the **shell**: the path, the map, the daily goal, the return
+ritual, unlocks, characters, sound — what actually makes a Duolingo-shaped product feel like one.
+That is L3 and it cannot be designed before there is a loop to wrap, which is why it is here and not
+in phase 4. But it is the likeliest remaining home of "the product is one-dimensional", and phase 6's
+exit criterion is *a first playable game*. Discovering the shell is missing at that exit would be the
+mirror of the error this roadmap already refuses two paragraphs above.
+
+## Phase 7 — Expansion
+
+The full curriculum and activity catalog; basic strategy, table reading, and the counting on-ramp,
+each scaled to learner level. Each major topic gets its own research, spec, and implementation plan
+when it becomes active.
+
+**It is not purely additive, and the two structural items are named here — added 2026-08-15.** The
+phase reads as "just more content" and two things in it are not.
+
+1. **The counting on-ramp adds a fifth Condition axis.** `2026-08-01-learning-outcomes-and-skill-graph.md`
+   §4 states the axis set is open and *"card counting is expected to add a fifth (count visible /
+   hidden)"*. That is a change to the evidence model every stored attempt is recorded against, not a
+   new Subject. `LDB-01` designed for it deliberately — *"naming it open now means a later axis is an
+   extension rather than a schema break"* — so it is cheap **if** it stays additive, and it is named
+   here so nobody discovers it as a migration.
+2. **A real leaderboard is an architecture change.** Per the capability table below: the engine is
+   client-authoritative and the browser can see the entire undealt shoe, so a leaderboard here is
+   forgeable. `CLOUD-06` defers it, and a real one implies server authority.
+
+**What is genuinely additive:** curriculum content, activity instances, and Subject growth. The phase
+is mostly that. These two are the exceptions, and they are the ones worth costing before it opens.
+
+## Historical milestone record
+
+The V1/V2/V3 milestone names are retained so completed scope, QA evidence, and commit references
+keep their original identifiers. They map onto the numbered phases above: **V1** is phase 1;
+**V2 — Learning Foundations** spans phases 2 through 5; **V3 — UX and Game Experience** is phase 6.
+The V-names were also being read as layers, which is what made the two axes collide; the layer
+question is now answered by L1/L2/L3 above.
+
+### V1 — Simulation Foundations
+- [x] Free Play skeleton — exit criteria MET (2026-07-09): one player plays complete rounds vs a dealer from a seeded 6-deck shoe with cut card / penetration, legal actions, outcomes, logs, and shoe continuity. Playable in-browser via WASM with JSONL history and per-hand notes.
+- [x] V1 milestone QA — exit criteria MET (2026-07-10): full milestone QA plus targeted remediation re-test; all six V1-gating findings verified, product verdict GO in `journal/qa/ledger.md`.
+
+Scope: web app foundation with mobile-responsive thinking; one active player vs dealer in the UI
+with the engine table-shaped for more seats later; real shoe creation from multiple decks with
+stable card/deck IDs, seeded shuffle, cut card / penetration, and round/session logs; a configured
+modern-classic ruleset with no rules scattered through UI code.
+
+### V2 — Learning Foundations
+- [ ] Exit criteria: a new player can learn the current table's legal actions, navigate the matching Basic Strategy table, and use it in guided practice with feedback that keeps decision quality separate from hand outcome.
+
+Two ordered, replayable subjects were planned:
+- [x] **Blackjack Foundations** — nine units teaching hit/stand, then double and split, through short guided simulations. Shipped 2026-07-11; treated since as a prototype placeholder, not a constraint on the Phase 4 design.
+- [ ] **Strategy Table Fundamentals** — hand classification and table navigation, then table-open guided practice and checkpoints. **Intentionally paused**; it resumes against the contracts Phase 4 designs and Phase 5 builds.
+
+The shared **Strategy Profile Foundation** is complete: H17/S17 strategy truth is verified and
+lessons gate against the active ruleset (`5bbc0b4`). Durable progress reached cycle 1 — the
+provider-neutral port, versioned envelope, and contract suite shipped and passed feature QA
+(`4a197b6`) — and has had no product consumer since.
+
+### V3 — UX and Game Experience
+- [ ] Exit criteria: mobile-friendly table UI, onboarding, progression, and session feedback feel like a game rather than a simulator.
+
+## Need-activated platform capabilities
+
+| Capability | Activation trigger | Guardrail / current status |
+|---|---|---|
+| Local durable progress | The first requirement that completion survive reload. | **Triggered.** `idb` 8.0.3 is admitted conditionally behind the approved pseudonymous local learner key and the `ProgressStore` seam; the cycle-1 foundation shipped and passed feature QA. The bundle-delta condition is **measured and passed** — 1,382 bytes gzipped against a 5 KB alarm, ledger PASS 2026-07-18 — but via a pre-adapter probe, since no real adapter existed to measure. Re-confirm against the real adapter when Phase 5 wires the consumer, which is also the outstanding condition. |
+| Accounts and cross-device sync | Learners need progress on more than one device. | Ordinary training stays client-authoritative; research identity, storage, migration, offline, and conflict semantics before selecting a provider. Backend runtime runs the Admission Protocol. See `journal/decisions.md` 2026-07-16. |
+| Product observability | External beta creates concrete learning or drop-off questions. | Research event purpose, consent/privacy, retention, batching, and offline failure before adding telemetry. |
+| Independently published curriculum | Content must ship without an application release. | Research integrity, schema compatibility, rollback, and provenance before remote payloads or admin tooling. |
+| Mobile runtime | Mobile becomes an active slice after the web path is proven. | Admission spike for WASM packaging, lifecycle suspension/restore, offline behaviour, and update delivery; no framework selected. |
+| Competitive / certified authority | Leaderboards, multiplayer, or certified mastery require anti-cheat guarantees. | **Load-bearing for the economy design.** The engine is client-authoritative and the browser can see the entire undealt shoe in every response, so a leaderboard on this architecture is forgeable. `CLOUD-06` defers leaderboards pending anti-cheat authority; a real one implies server authority, which is an architecture change rather than a feature. |
+
+## Non-goals, and one that changed
+
+Not in scope now: full Basic Strategy memorization, no-table and timed assessments, card counting
+instruction, accounts and backend, generic course-platform abstractions, CSM/ASM simulation, and
+real-money or chips-first gameplay.
+
+**Changed 2026-07-26: rank and XP systems are no longer a non-goal.** They were listed as one, and
+an XP-and-chips economy has since been adopted as an owner premise for Phase 4 — chips earned by
+completing lessons, spent only in Free Play, never purchased, affecting nothing but realism. The
+prohibition that stands is the one in `docs/specs/product-vision.md:27`: the product is not centred
+on chips, bankroll, or casino fantasy. The captured model is compatible with it. See
+`docs/superpowers/specs/2026-07-26-chips-xp-and-progression-economy.md`.
+
+## Later
+
+Running count mastery · true count · multi-seat tables · simulated players · casino pace · bet and
+unit sizing · count deviations · advanced counting systems · table-rule literacy and ruleset-matched
+strategy deltas · CSM/ASM and machine-buffer table variants · leaderboards · daily challenges ·
+shared daily shoe.
+
+Each major topic gets its own research, spec, and implementation plan when it becomes active.

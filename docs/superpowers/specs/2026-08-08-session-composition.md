@@ -1,5 +1,5 @@
 # Session Composition — LDB-06
-
+> **2026-09-05 partial supersession:** Fixed session shapes and first-task window implementation no longer define the next build. Activities can teach in ordinary lessons. Retain window integrity obligations for a future window consumer. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: APPROVED by the owner 2026-08-17 at the `user-approval` gate. Authoritative.**
 >
 > Drafted 2026-08-08; revised 2026-08-15 and twice on 2026-08-17 — at the gate grill, and again at the

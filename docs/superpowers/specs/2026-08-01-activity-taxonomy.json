@@ -3,7 +3,7 @@
   "card": "LDB-03",
   "spec": "docs/superpowers/specs/2026-08-01-activity-taxonomy-and-skill-mapping.md",
   "consumes": "docs/superpowers/specs/2026-08-01-skill-graph.json",
-  "note": "Design data, not shipped content. An Activity type is individuated by shown x produced x withheld. Feedback timing, scoring rule, provenance and Condition-axis settings are parameters, not types. Widget is not here at all - it is LDB-07's.",
+  "note": "PREVIOUS-DESIGN SNAPSHOT (2026-09-05): not runtime content and not the next-build specification. Curriculum exclusions, exhaustiveness and delivery scope are superseded by docs/superpowers/specs/2026-09-05-playful-learning-direction.md section 4. Historical mappings below are preserved for reuse and integrity checks. Design data, not shipped content. An Activity type is individuated by shown x produced x withheld. Feedback timing, scoring rule, provenance and Condition-axis settings are parameters, not types. Widget is not here at all - it is LDB-07's.",
 
   "poolRule": {
     "id": "measurement-target-test",

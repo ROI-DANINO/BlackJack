@@ -1,5 +1,5 @@
 # Learning, Mastery, and Scoring — Future Design Notes
-
+> **2026-09-05 partial supersession:** Existing ladders, tiers and scoring formulas are candidates, not next-build prerequisites. The current direction distinguishes completion, understanding and play skill. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > Status: **relabelled design notes** (Phase 2 audit, landed 2026-07-26). Its ladders, hint levels,
 > spacing model, and error-severity tiers are **product judgements and assumptions that phase 4 may
 > adopt as design choices** — not research conclusions and not binding requirements. See the inline

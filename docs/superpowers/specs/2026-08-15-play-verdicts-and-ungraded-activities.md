@@ -1,5 +1,5 @@
 # Play Verdicts and Ungraded Activities — LDB-09
-
+> **2026-09-05 partial supersession:** Playful activities may introduce and teach concepts in lessons; the old catalog is not exhaustive and does not itself prove learning or enjoyment. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: APPROVED 2026-08-15** at the `user-approval` gate. Authoritative.
 >
 > > ### ⚠ AMENDED 2026-08-17 by the `LDB-06` gate grill — owner decision

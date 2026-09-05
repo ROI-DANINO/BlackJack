@@ -1,5 +1,5 @@
 # Learning Outcomes and the Skill Graph — LDB-01
-
+> **2026-09-05 partial supersession:** §5 no-maths/no-EV exclusions are superseded. The old graph is a candidate snapshot, not the full future curriculum. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: APPROVED 2026-08-01** (owner, `LDB-01` user-approval gate). Authoritative for what is
 > taught and what must precede what.
 >

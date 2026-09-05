@@ -20,11 +20,14 @@ Strategy is engine-owned through verified H17 and S17 profiles, and lessons are 
 declared profile does not match the active ruleset. Those nine units are treated as a prototype
 placeholder, not a constraint on what comes next.
 
-The current phase is **design, not build**: phase 4 decides the curriculum, skill graph, activity
-taxonomy, evidence and mastery rules, session shape, and motivation economy. Graded Decision
-Practice — a free-decision activity graded against the verified oracle and wired to a durable
-learner record — is the designed candidate for the phase-5 build, pending confirmation against the
-finished blueprint. Strategy Table Fundamentals was approved and then intentionally paused.
+The current phase is **product-design realignment**. The direction is playful blackjack and
+statistical learning, connected to chip-based Free Play and a separate Practice table. Those
+integrated experiences are planned, not all implemented in the current prototype.
+
+Start with `docs/specs/product-vision.md`, then `ROADMAP.md` and
+`docs/superpowers/specs/2026-09-05-playful-learning-direction.md`.
+The next build candidate is a small ace-value activity prototype, followed by a human observation;
+the previous large phase-5 bundle is superseded. `journal/tasks.md` owns current execution.
 
 ## Quick start
 

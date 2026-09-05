@@ -1,5 +1,5 @@
 # Graded Decision Practice Implementation Plan
-
+> **2026-09-05 partial supersession:** Retained historical implementation proposal, not an executable next-build plan. Re-scope against a selected future consumer before use. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **For agentic workers:** REQUIRED SUB-SKILL: use `subagent-driven-development` (recommended) or
 > `executing-plans` to run this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for
 > tracking.

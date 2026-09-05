@@ -1,5 +1,5 @@
 # The Learning Design Blueprint — `LDB-08`
-
+> **2026-09-05 partial supersession:** §7 next-build bundle/instrumentation, §12 first-task ordering, §13 warm-up-only activity placement and §14 mandatory Unit replacement are superseded. The full prior blueprint is not awaiting blanket approval for execution. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: reassembled 2026-08-22, awaiting owner approval.** This is phase 4's gate artifact. It
 > assembles the approved decisions named in `LDB-08`'s `Depends on` — `LDB-01` through `LDB-06`, plus
 > `LDB-09`, `LDB-10` and `LDB-11` — and names the phase-5 slice with the `P-` subset that slice must
