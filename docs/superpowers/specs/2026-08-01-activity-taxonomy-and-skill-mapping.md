@@ -1,5 +1,5 @@
 # The Activity Taxonomy and the Skill Mapping — LDB-03
-
+> **2026-09-05 partial supersession:** The taxonomy remains a prior assessment design, not an exhaustive list of permitted teaching interactions. Discovery activities may occur in ordinary lessons. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: APPROVED 2026-08-01** (owner, `LDB-03` user-approval gate). Authoritative for *what is
 > asked and what it measures*; owns no threshold, session shape, or widget.
 >

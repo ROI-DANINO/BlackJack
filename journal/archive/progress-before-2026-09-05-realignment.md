@@ -1,3 +1,5 @@
+> Historical snapshot before the 2026-09-05 product realignment. Not current authority. Read the root PROGRESS.md and docs/superpowers/specs/2026-09-05-playful-learning-direction.md for the replacement.
+
 # Progress
 
 > What is done / in progress *now*, and open questions.
@@ -63,22 +65,58 @@
 
 ## In progress
 
-Phase 4 remains active as product-design realignment. The owner-approved September 5 direction
-is recorded in `docs/superpowers/specs/2026-09-05-playful-learning-direction.md`; LDB-08 tracks
-review of the landed reconciliation. Earlier completed work above remains historical evidence,
-including its dated test counts, not fresh verification in this documentation pass.
+**Phase 4 — the learning design blueprint — is active, and it builds nothing.** Delivery phases 1–3
+are closed: the simulation foundation, the learning-mechanics prototype, and the research
+foundation. Its eight cards are on the board as milestone `LDB` (`journal/tasks.md`), which is also
+what sequences them — four Done (`LDB-01` through `LDB-04`, the last approved 2026-08-03) and four
+open (`LDB-05` through `LDB-08`). `ROADMAP.md` §Phase 4 holds their scope, their exit criteria, and
+the ordering intent behind the board, and is authoritative for **deliverable** state — which counts
+nine, not eight, and does not map one-to-one onto the cards.
 
-The new direction allows statistical learning as an independent goal and playful activities in
-ordinary lessons, preserves chips and adds a separate Practice table. The previous large phase-5
-bundle is not the next implementation instruction. No runtime code changed in this pass.
+The 2026-07-26 restructure landed: an evidence index over the three research archives
+(`docs/superpowers/research/evidence-index/`), every outstanding audit correction applied, ROADMAP
+split into layers and numbered phases, and the board rebuilt. What it still owes is enumerated in
+`docs/superpowers/audits/2026-07-26-restructure-review.md`, which reviewed it and returned
+**not yet**.
 
-## Next build and open design work
+Assumptions the product runs on now have a home:
+`docs/superpowers/specs/assumption-register.md`, each with a named validation method. Nothing there
+closes without measurement.
 
-- First candidate: the bounded Build the Hand ace prototype. Its engine/UI seam still needs a scoped implementation plan.
-- Test the activity with a beginner; then compose and test the whole opening. No human playtest has occurred in this pass.
-- Full curriculum, reward tuning and navigation are not finalized. Existing units remain reusable content.
-- The standalone prototype need not consume ProgressStore. Storage and mastery integration retain their engineering obligations when built.
-- A-36 through A-38 record the new engagement/learning hypotheses; previous hypotheses remain records, not automatically validated.
+Carried detail, still true:
 
-Earlier open-question wording is preserved in
-`journal/archive/progress-before-2026-09-05-realignment.md`; revisit against the current design before treating it as outstanding work.
+- **Skill-grained evidence already exists and is misnamed** (verified 2026-07-17):
+  `AttemptRecord.outcomeId` is a validated foreign key into `Subject.skills` — `validate.ts:51-55`
+  requires every `unit.outcomes` entry to be a known skill id, `:70-75` requires every question
+  step's `outcomeId` to be in `unit.outcomes` — over a real 16-skill taxonomy. Mastery has a usable
+  key today. The name collides with `engine.outcomes: HandOutcome[]` (win/loss/push) one field away
+  in the same record, so the durable projection should rename rather than re-derive.
+- **The first real write/reload consumer arrives in phase 5**, which wires the L2 foundation into
+  the existing surface. `ProgressStore` has had no product consumer since it shipped; phase 5
+  supplies one, and with it the re-confirmation of the `idb` bundle delta against a real adapter.
+- **Boundary hardening — the freshness half rides phase 5 as a passenger.**
+  `web/scripts/check-wasm-fresh.sh:12` watches only `crates/blackjack-core/src` and its `Cargo.toml`,
+  so the root `Cargo.lock` and `web/scripts/build-wasm.sh` are invisible to it — a one-line `find`
+  fix with zero wire dependency. It has now failed to ride a Core wire slice twice, and nothing on
+  the remaining V2 path is guaranteed to be wire-changing. Only the native↔built-WASM parity half
+  genuinely needs a build-and-compare harness and a carrier.
+
+## Open questions
+- What is a "session" — its identity, boundary, and lifecycle? `learning-mastery-and-scoring.md:114`
+  requires mastery evidence to span sessions, but no owned doc defines one, and attempts cannot be
+  attributed without it.
+- What bounds the raw attempt log? The owned instruction is to keep raw attempts, with no stated cap;
+  retention appears only under the unfired external-beta telemetry trigger, so there is no authority
+  to import one.
+- Should the attempt record pin the strategy-profile version? Lessons already gate on
+  `unit.profileId`, but no owned doc pins it into evidence — so evidence collected under a future
+  S17 profile would be indistinguishable from H17 evidence.
+- Was dropping the "production" rung — the learner names the play before seeing options — from the
+  exercise ladder in `learning-mastery-and-scoring.md:85-95` intentional? The fold added two rungs
+  and dropped that one without a recorded reason.
+- Which existing learner action becomes the first durable write/reload consumer? Deferred to the
+  adaptive-mechanics proof rather than answered by AL-D1.
+- What provider-neutral local AI boundary can meet the approved authority, validation, privacy,
+  token, latency, and deterministic-fallback constraints?
+- Should a later ruleset support player-taken insurance, or should V1/V2 keep training auto-decline?
+- What exact card lifecycle model will support future CSM/ASM variants cleanly?

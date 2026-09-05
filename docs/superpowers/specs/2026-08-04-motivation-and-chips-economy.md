@@ -1,5 +1,5 @@
 # The Motivation and Chips Economy — LDB-05
-
+> **2026-09-05 partial supersession:** Learning pays a base completion reward plus possible performance bonus. Add an always-available, progression-isolated Practice table; depletion gates chip-based Free Play only. Numeric tuning remains unvalidated. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: APPROVED by the owner 2026-08-05 at the `user-approval` gate. Authoritative.**
 >
 > Every ruling below was put to the owner during a `grill-with-docs` session on 2026-08-04 and

@@ -1,5 +1,5 @@
 # The Challenge and the Unit Skip-Test — LDB-11
-
+> **2026-09-05 partial supersession:** The warm-up/dealt-hand proof structure remains a strategy-assessment candidate, not a universal challenge contract. Assessment must fit the learning outcome; its full implementation is not the next-build dependency. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: APPROVED by the owner 2026-08-22 at the `user-approval` gate. Authoritative.** All eight
 > §10 divergences were put individually and approved; divergence 2 as option (a) — warm-up kept under
 > `D17`; divergence 4 with a tightening — the query that would answer each phase-5 question is

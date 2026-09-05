@@ -1,5 +1,5 @@
 # Architecture
-
+> **2026-09-05 partial supersession:** Runtime ownership below is unchanged. Old phase-5 consumer timing is replaced; the isolated ace prototype precedes economy/mastery integration. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 Blackjack separates the simulation from its browser presentation so a realistic engine remains
 auditable, deterministic, and usable by future learning tools.
 

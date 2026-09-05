@@ -1,5 +1,5 @@
 # Interaction UX for the activity set — LDB-07
-
+> **2026-09-05 partial supersession:** Add the distinct Practice table and allow discovery activities in regular lessons. This earlier navigation/session design is not the final UI contract for the revised product. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: APPROVED 2026-08-22** at the `user-approval` gate — all four divergences ruled
 > individually, and the second approval criterion (D20's discharge table) met after the ruling, not
 > before it. Landing evidence at §Gate. Produced by
@@ -288,7 +288,7 @@ binds hardest on `hand-sort` (sorting hands into buckets), the frontier brush (D
 baseline this document commits to. Naming it before phase 5 builds costs nothing; discovering it
 after costs a rebuild of the three most tactile activities in the catalog.
 
-Responsive layout and mobile delivery remain phase 6 (`ROADMAP.md:87, :249`). This decision is about
+Responsive presentation now belongs to the first experience; mobile delivery remains need-activated (`ROADMAP.md`, delivery map; superseded September 5). This decision is about
 *modalities the contract must support*, not about which devices v1 ships on.
 
 `[Evidence-backed]` on the criterion levels. `[Product judgement]` on stating it at this altitude.

@@ -1,5 +1,5 @@
 # Graded Decision Practice — Phase 4 first slice
-
+> **2026-09-05 partial supersession:** Retained component proposal only; not the next slice. Its old scope cannot override the playful-learning direction. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: APPROVED 2026-07-25** (owner, as-is; recorded in `journal/decisions.md`). Phase 4 of
 > the adaptive-learning arc, bounded to one activity type. Designs from
 > `docs/superpowers/specs/2026-07-22-product-design-inputs.md` without reopening Phases 1–3.

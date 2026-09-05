@@ -98,6 +98,16 @@ because the 2026-08-05 gate dropped the cap itself (§12 divergence 3). No row w
 existed. A future free-tier bound — the energy or error-rate mechanism recorded as deferred in
 `journal/decisions.md` — will need its own rows and must be argued against `how-to-teach.md:122`.
 
+## Current direction assumptions — 2026-09-05
+
+Prior rows retain their history; old phase-5 validation schedules do not gate the isolated prototype.
+
+| # | Assumption | Evidence held | Confidence | Validation method |
+|---|---|---|---|---|
+| A-36 | An attractive beginner opening can sustain voluntary interest for about ten minutes while introducing basic blackjack rules and actions. | None; owner product target, not a retention finding. | Untested | **playtesting:** observe beginners using the full opening; record voluntary continuation, stopping points, confusion and answers to new basic-rule situations separately. Do not infer ten-minute success from the isolated ace puzzle. |
+| A-37 | Completion rewards plus performance bonuses can motivate learning without making lessons feel like compulsory work for table access. | None for this product; chip economy is an owner preference. | Untested | **playtesting:** observe lesson choice and reactions before and after chip depletion; ask what motivated continuation and whether the activity itself was interesting. Compare this with voluntary use of the isolated Practice table once built. |
+| A-38 | Build the Hand can make the ace-value change understandable and interesting to a beginner. | Proposed interaction only; no human playtest. | Untested | **playtesting:** observe the three moments in 2026-09-05-playful-learning-direction.md §3 without step-by-step coaching; record selection confusion, guessing, explanation of the ace change, transfer-hand answer and desire for another activity separately. |
+
 ## How to use this
 
 - **Writing a design document:** if a claim would change under contradicting data, it belongs here.

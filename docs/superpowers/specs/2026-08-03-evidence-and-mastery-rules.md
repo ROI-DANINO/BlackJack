@@ -1,5 +1,5 @@
 # Per-Activity Evidence and Mastery Rules — LDB-04
-
+> **2026-09-05 partial supersession:** The window remains a candidate for measured play, not a requirement for the first isolated prototype or all statistical learning. Do not implement its reducer without its existing integrity tests. Current replacement: `docs/superpowers/specs/2026-09-05-playful-learning-direction.md` §4. Prior approvals below remain history; unaffected correctness and evidence obligations retain their scope.
 > **Status: APPROVED 2026-08-03** at the `user-approval` gate. All five §12 divergences were put to
 > the owner; **divergences 0, 1 and 2 were approved as ruled** — one mastery state per Skill (D1),
 > `supportFading` binary with the fade reassigned to LDB-06 (D11), and `space` declined and reassigned
